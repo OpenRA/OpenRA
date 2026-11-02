@@ -200,6 +200,9 @@ ProducedGDIUnits = {}
 ProductionBusy = {}
 HarvesterBuilding = false
 EconomyWatchdogRunning = false
+NoHarvesterSince = nil
+LastEconomySale = -100000
+AllOutAttackStarted = false
 BaseUnderAttackUntil = 0
 WavesStopped = false
 AirstrikeStopped = false
@@ -415,15 +418,21 @@ RebuildBusy = false
 RebuildPending = {}
 RebuildPollSeconds = 5
 RebuildSiteTimeoutAttempts = 20
+RebuildSoldDelaySeconds = 15
 
 -- `Actor.BuildTime` needs an explicit queue because `fact` is not listed in
 -- any public queue; the actors themselves are created directly, like 11a/11b.
 GDIRebuildQueueType = "Building.GDI"
-GDIBuildingPriority = { fact = 1, nuk2 = 2, proc = 3, pyle = 4, weap = 5, atwr = 6, gtwr = 7 }
+GDIBuildingPriority = { fact = 1, nuk2 = 2, proc = 3, pyle = 4, weap = 5, atwr = 6, gtwr = 7, hpad = 8 }
 GDIBuildingFootprint = {
 	fact = { 3, 3 }, proc = { 3, 4 }, weap = { 3, 3 }, pyle = { 2, 3 },
-	nuk2 = { 2, 3 }, atwr = { 1, 1 }, gtwr = { 1, 1 },
+	nuk2 = { 2, 3 }, atwr = { 1, 1 }, gtwr = { 1, 1 }, hpad = { 2, 2 },
 }
+
+-- Hard, while GDI has no harvester: only these are rebuilt (money is needed
+-- for the harvester). On Easy/Normal sold buildings may come back after the
+-- usual delay.
+EconomyRebuildTypes = { fact = true, proc = true, weap = true }
 
 BuildingKey = function(building)
 	return building.type .. ":" .. building.pos.X .. "," .. building.pos.Y
@@ -508,15 +517,20 @@ StartRebuildWorker = function()
 	Trigger.AfterDelay(DateTime.Seconds(1), ProcessGDIRebuild)
 end
 
-QueueGDIRebuild = function(building)
-	local key = BuildingKey(building)
-	for _, entry in ipairs(RebuildQueue) do
-		if BuildingKey(entry) == key then
+QueueGDIRebuild = function(building, sold)
+	local entry = { type = building.type, pos = building.pos, sold = sold }
+	if sold then
+		entry.due = DateTime.GameTime + DateTime.Seconds(RebuildSoldDelaySeconds)
+	end
+
+	local key = BuildingKey(entry)
+	for _, queued in ipairs(RebuildQueue) do
+		if BuildingKey(queued) == key then
 			return
 		end
 	end
 
-	table.insert(RebuildQueue, building)
+	table.insert(RebuildQueue, entry)
 	StartRebuildWorker()
 end
 
@@ -699,6 +713,8 @@ FinishGDIBuilding = function(building, attempt)
 end
 
 PickRebuildCandidate = function()
+	local hard = Difficulty == "hard"
+	local now = DateTime.GameTime
 	local yardAlive = #GDI.GetActorsByType("fact") > 0
 	local eligible = {}
 
@@ -709,11 +725,14 @@ PickRebuildCandidate = function()
 	local canProcess = harvesterAlive or refineryAlive
 
 	for _, entry in ipairs(RebuildQueue) do
-		local ok = not GDIBuildingExists(entry)
+		local ok = (entry.due == nil or now >= entry.due) and not GDIBuildingExists(entry)
 		if ok and entry.type ~= "fact" and not yardAlive then
 			ok = false
 		end
 		if ok and entry.type == "proc" and not canProcess then
+			ok = false
+		end
+		if ok and hard and NoHarvesterSince ~= nil and (entry.sold or not EconomyRebuildTypes[entry.type]) then
 			ok = false
 		end
 		-- While the base is under attack nothing is rebuilt: the credits are
@@ -752,9 +771,11 @@ ProcessGDIRebuild = function()
 		return
 	end
 
+	local now = DateTime.GameTime
 	local remaining = {}
 	for _, entry in ipairs(RebuildQueue) do
-		if not GDIBuildingExists(entry) then
+		-- Keep sold entries until their rebuild delay has passed.
+		if (entry.due ~= nil and now < entry.due) or not GDIBuildingExists(entry) then
 			table.insert(remaining, entry)
 		end
 	end
@@ -872,7 +893,7 @@ StartBaseDefense = function()
 	end)
 
 	ForEach(GDI.GetActorsByType("orca"), function(orca)
-		if IsLive(orca) then
+		if IsLive(orca) and not IsOrcaRetreating(orca) then
 			IdleHunt(orca)
 		end
 	end)
@@ -978,6 +999,64 @@ ProduceGDIUnit = function(buildingType)
 	end
 end
 
+-- An Orca that lost more than 75 % of its health flies home to the helipad to
+-- be repaired and is left out of further attacks until it is repaired
+-- (OrcaWatch). Without a helipad it keeps fighting.
+OrcaRetreating = {}
+
+IsOrcaRetreating = function(orca)
+	for _, other in ipairs(OrcaRetreating) do
+		if other == orca then
+			return true
+		end
+	end
+	return false
+end
+
+SetOrcaRetreating = function(orca, retreating)
+	local list = {}
+	for _, other in ipairs(OrcaRetreating) do
+		if other ~= orca and not other.IsDead then
+			table.insert(list, other)
+		end
+	end
+	if retreating then
+		table.insert(list, orca)
+	end
+	OrcaRetreating = list
+end
+
+OrcaDamaged = function(orca)
+	if orca.IsDead or IsOrcaRetreating(orca) then
+		return
+	end
+
+	if orca.Health * 4 > orca.MaxHealth or #GDI.GetActorsByType("hpad") == 0 then
+		return
+	end
+
+	SetOrcaRetreating(orca, true)
+	orca.Stop()
+	orca.ReturnToBase()
+end
+
+OrcaWatch = function()
+	if GDI.HasNoRequiredUnits() then
+		return
+	end
+
+	Trigger.AfterDelay(DateTime.Seconds(5), OrcaWatch)
+
+	Utils.Do(GDI.GetActorsByType("orca"), function(orca)
+		if IsOrcaRetreating(orca) and orca.Health * 10 >= orca.MaxHealth * 9 then
+			SetOrcaRetreating(orca, false)
+			if BaseDefenseTriggered then
+				IdleHunt(orca)
+			end
+		end
+	end)
+end
+
 -- Orcas: the two helipads on the map may launch aircraft. They defend the
 -- base and join the hunt once the main base is attacked. Three powered SAMs
 -- still keep the A10 away, but Orcas are the Nod player's own problem.
@@ -1015,6 +1094,7 @@ ProduceOrca = function()
 			end
 
 			orca.Stance = "AttackAnything"
+			Trigger.OnDamaged(orca, OrcaDamaged)
 			if BaseDefenseTriggered then
 				IdleHunt(orca)
 			end
@@ -1059,6 +1139,49 @@ BuildGDIHarvester = function(factory)
 	end)
 end
 
+-- If GDI has lost its last harvester and cannot afford a new one, sell
+-- non-essential buildings to recover. Silos are never sold: the mission's
+-- storage capacity depends on them.
+EconomySellOrder = { "gtwr", "atwr", "pyle", "hpad" }
+PowerPlantType = "nuk2"
+PowerPlantOutput = 200
+EconomyGraceSeconds = 30
+EconomySellCooldownSeconds = 20
+
+-- Returns true while a sale was made or is still cooling down, false if there
+-- is nothing left to sell.
+SellForEconomy = function()
+	local candidate = nil
+	for _, buildingType in ipairs(EconomySellOrder) do
+		local list = GDI.GetActorsByType(buildingType)
+		-- Orcas need the helipad to repair and return: sold last.
+		local keepPad = buildingType == "hpad" and #GDI.GetActorsByType("orca") > 0
+		if #list > 0 and not keepPad then
+			candidate = list[1]
+			break
+		end
+	end
+
+	if candidate == nil then
+		local plants = GDI.GetActorsByType(PowerPlantType)
+		if #plants > 0 and GDI.PowerProvided - PowerPlantOutput >= GDI.PowerDrained then
+			candidate = plants[1]
+		end
+	end
+
+	if candidate == nil then
+		return false
+	end
+
+	if DateTime.GameTime - LastEconomySale >= DateTime.Seconds(EconomySellCooldownSeconds) then
+		LastEconomySale = DateTime.GameTime
+		QueueGDIRebuild({ type = candidate.Type, pos = candidate.Location }, true)
+		candidate.Sell()
+	end
+
+	return true
+end
+
 -- GDI economy watchdog: keep one harvester alive so the base does not run
 -- dry. The normal path is the weapons factory (the production queue pays).
 -- Without a factory the harvester is placed at the refinery directly.
@@ -1072,21 +1195,30 @@ StartEconomyWatchdog = function()
 end
 
 CheckGDIEconomy = function()
-	if GDI.HasNoRequiredUnits() or not GDIHarvestingStarted then
+	if GDI.HasNoRequiredUnits() or AllOutAttackStarted or not GDIHarvestingStarted then
 		EconomyWatchdogRunning = false
 		return
 	end
 
 	Trigger.AfterDelay(DateTime.Seconds(10), CheckGDIEconomy)
 
-	if #GDI.GetActorsByType("harv") > 0 or HarvesterBuilding then
+	if #GDI.GetActorsByType("harv") > 0 then
+		NoHarvesterSince = nil
+		return
+	end
+
+	if NoHarvesterSince == nil then
+		NoHarvesterSince = DateTime.GameTime
+	end
+
+	if HarvesterBuilding then
 		return
 	end
 
 	local factories = GDI.GetActorsByType("weap")
 	local refineries = GDI.GetActorsByType("proc")
 
-	if #factories > 0 and #refineries > 0 then
+	if #factories > 0 and #refineries > 0 and GDI.Cash >= Actor.Cost("harv") then
 		BuildGDIHarvester(factories[1])
 		return
 	end
@@ -1104,6 +1236,22 @@ CheckGDIEconomy = function()
 				harvester.FindResources()
 			end
 		end)
+		return
+	end
+
+	-- Not enough money: sell something after a short grace period.
+	if DateTime.GameTime - NoHarvesterSince < DateTime.Seconds(EconomyGraceSeconds) then
+		return
+	end
+
+	if SellForEconomy() then
+		return
+	end
+
+	-- Nothing left to do: all-out attack (not on Easy).
+	if Difficulty ~= "easy" then
+		AllOutAttackStarted = true
+		StartBaseDefense()
 	end
 end
 
@@ -1230,6 +1378,7 @@ TryStartGDIProduction = function()
 	ProduceGDIUnit("weap")
 	ProduceOrca()
 	StartEconomyWatchdog()
+	OrcaWatch()
 end
 
 StartAttackSchedule = function()
