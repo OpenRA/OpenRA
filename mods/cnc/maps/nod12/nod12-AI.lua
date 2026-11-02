@@ -922,9 +922,8 @@ ProduceGDIUnit = function(buildingType)
 		return
 	end
 
-	-- Only the refinery and affordable funds count, no harvester check: on
-	-- easy/normal the harvester economy (CheckGDIEconomy) only runs on hard.
-	if #GDI.GetActorsByType("proc") == 0 or GDI.Cash + GDI.Resources < 500 then
+	-- Production depends on the economy: no harvester, no new units.
+	if #GDI.GetActorsByType("harv") == 0 then
 		retry()
 		return
 	end
@@ -995,8 +994,9 @@ ProduceOrca = function()
 	end
 
 	local pads = GDI.GetActorsByType("hpad")
-	if #pads == 0 or #GDI.GetActorsByType("orca") >= MaxOrcas[Difficulty or "normal"]
-		or GDI.Cash + GDI.Resources < 500 then
+	-- Same economy rule as ProduceGDIUnit: no harvester, no new units.
+	if #pads == 0 or #GDI.GetActorsByType("harv") == 0
+		or #GDI.GetActorsByType("orca") >= MaxOrcas[Difficulty or "normal"] then
 		retry()
 		return
 	end
