@@ -56,7 +56,7 @@ NodBase = { NodConYard, NodNuke, NodHQ }
 
 StrikeTeamSafe = false
 RefineryGoal = 3
-StartingCashBonus = { easy = 1500, normal = 1000, hard = 0 }
+StartingCashBonus = { easy = 1500, normal = 1000, hard = 1000 }
 
 NodBaseDiscovered = function(_, discoverer)
 	if not Nod.IsObjectiveCompleted(FindBase) and discoverer == Nod then
