@@ -888,9 +888,8 @@ ProduceOrca = function()
 	local retry = function() ProduceOrca() end
 	local pads = GDI.GetActorsByType("hpad")
 
-	-- Same economy rule as ProduceGDIUnit: refinery and affordable funds.
-	if #pads == 0 or #GDI.GetActorsByType("proc") == 0
-		or GDI.Cash + GDI.Resources < 500
+	-- Same economy rule as ProduceGDIUnit: no harvester, no new units.
+	if #pads == 0 or #GDI.GetActorsByType("harv") == 0
 		or #GDI.GetActorsByType("orca") >= MaxOrcas[Difficulty or "normal"] then
 		Trigger.AfterDelay(DateTime.Seconds(15), retry)
 		return
@@ -983,12 +982,12 @@ ProduceGDIUnit = function(buildingType)
 	end
 end
 
--- Hard only: if GDI has lost its last harvester it (1) builds a new one at the
+-- If GDI has lost its last harvester it (1) builds a new one at the
 -- Weapons Factory, (2) without a factory re-creates the refinery (a new
 -- refinery brings a free harvester), (3) sells buildings for money (never the
 -- Construction Yard, HQ, Weapons Factory or Refinery; power plants only last
 -- and only while power stays sufficient), (4) as a last resort all
--- GDI ground units and Orcas attack.
+-- GDI ground units and Orcas attack (not on Easy).
 EconomySellOrder = { "silo", "gtwr", "atwr", "pyle", "hpad" }
 -- Power plants are sold last and only while the remaining power still covers
 -- the drain (never the HQ: it is not in any sell list).
