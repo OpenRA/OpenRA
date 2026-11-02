@@ -614,7 +614,7 @@ end
 PlaceGDIBuilding = function(building)
 	RebuildPending[BuildingKey(building)] = true
 	RebuildBusy = true
-	GDI.Cash = GDI.Cash - Actor.Cost(building.type)
+	SpendGDIFunds(Actor.Cost(building.type))
 
 	Trigger.AfterDelay(Actor.BuildTime(building.type), function()
 		FinishGDIBuilding(building, 0)
@@ -681,7 +681,7 @@ PickRebuildCandidate = function()
 
 	for _, entry in ipairs(eligible) do
 		local cost = Actor.Cost(entry.building.type)
-		if GDI.Cash >= cost then
+		if GDIFunds() >= cost then
 			return entry
 		end
 	end
@@ -997,6 +997,13 @@ GDIFunds = function()
 	return GDI.Cash + GDI.Resources
 end
 
+-- Spend stored resources first, then cash, matching PlayerResources.TakeCash.
+SpendGDIFunds = function(amount)
+	local fromResources = math.min(GDI.Resources, amount)
+	GDI.Resources = GDI.Resources - fromResources
+	GDI.Cash = GDI.Cash - (amount - fromResources)
+end
+
 BuildGDIHarvester = function(factory)
 	HarvesterBuilding = true
 	local stamp = DateTime.GameTime
@@ -1033,8 +1040,8 @@ CreateGDIRefinery = function(position, delay, attempt)
 	RefineryBusy = true
 	Trigger.AfterDelay(delay, function()
 		local cost = Actor.Cost("proc")
-		if GDI.Cash >= cost then
-			GDI.Cash = GDI.Cash - cost
+		if GDIFunds() >= cost then
+			SpendGDIFunds(cost)
 			RegisterGDIBuilding(Actor.Create("proc", true, { Owner = GDI, Location = position }))
 			RefineryBusy = false
 		elseif attempt < RefineryPayAttempts then
@@ -1117,11 +1124,11 @@ CheckGDIEconomy = function()
 	local refineries = GDI.GetActorsByType("proc")
 
 	if #factories > 0 and #refineries > 0 then
-		if GDI.Cash >= Actor.Cost("harv") then
+		if GDIFunds() >= Actor.Cost("harv") then
 			BuildGDIHarvester(factories[1])
 			return
 		end
-	elseif GDI.Cash + (#refineries > 0 and ProcRefund(refineries[1]) or 0) >= Actor.Cost("proc") then
+	elseif GDIFunds() + (#refineries > 0 and ProcRefund(refineries[1]) or 0) >= Actor.Cost("proc") then
 		-- No factory (or no refinery): a new refinery brings a free harvester.
 		-- A replacement is paid partly by the refund of the sold refinery.
 		if #refineries > 0 then
