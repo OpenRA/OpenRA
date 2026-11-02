@@ -56,7 +56,29 @@ NodBase = { NodConYard, NodNuke, NodHQ }
 
 StrikeTeamSafe = false
 RefineryGoal = 3
-StartingCashBonus = { easy = 1500, normal = 1000, hard = 0 }
+StartingCashBonus = { easy = 1500, normal = 1000, hard = 1000 }
+
+CommandoTypes = { easy = "rmbo.easy", normal = "rmbo", hard = "rmbo" }
+
+-- The map ships the normal Commando. Only Easy gets the tougher, regenerating
+-- variant; Normal and Hard keep AutoTarget and AttackMove.
+SetCommandoVariant = function(nod, difficulty)
+	local commandoType = CommandoTypes[difficulty] or "rmbo"
+	if commandoType ~= "rmbo" and not Commando.IsDead then
+		local location = Commando.Location
+		local facing = Commando.Facing
+		Commando.Destroy()
+		local newCommando = Actor.Create(commandoType, true, { Owner = nod, Location = location, Facing = facing })
+		for i, actor in ipairs(StrikeTeam) do
+			if actor == Commando then
+				StrikeTeam[i] = newCommando
+			end
+		end
+		Commando = newCommando
+	end
+
+	Commando.Stance = "Defend"
+end
 
 NodBaseDiscovered = function(_, discoverer)
 	if not Nod.IsObjectiveCompleted(FindBase) and discoverer == Nod then
@@ -149,6 +171,8 @@ WorldLoaded = function()
 	end)
 
 	local difficulty = Difficulty or "normal"
+
+	SetCommandoVariant(Nod, difficulty)
 
 	Nod.Cash = Nod.Cash + StartingCashBonus[difficulty]
 
