@@ -632,11 +632,11 @@ Actors:
 		Location: 58,56
 		Owner: Nod
 		Facing: 256
-	Actor185: jeep
+	BridgeHumvee: jeep
 		Location: 16,21
 		Owner: GDI
 		Facing: 896
-	Actor186: mtnk
+	WestEdgeTank: mtnk
 		Location: 10,25
 		Owner: GDI
 		Facing: 896
@@ -651,7 +651,7 @@ Actors:
 		Location: 43,60
 		Owner: GDI
 		Facing: 768
-	Actor190: htnk
+	SouthBridgeTank: htnk
 		Location: 33,54
 		Owner: GDI
 		Facing: 768
@@ -821,25 +821,25 @@ Actors:
 		Owner: Neutral
 		Facing: 384
 		SubCell: 2
-	Actor227: e2
+	SouthGrenadier1: e2
 		Location: 46,57
 		Owner: GDI
 		SubCell: 1
-	Actor228: e2
+	SouthGrenadier2: e2
 		Location: 48,55
 		Owner: GDI
 		Facing: 896
 		SubCell: 4
-	Actor229: e2
+	SouthGrenadier3: e2
 		Location: 44,60
 		Owner: GDI
 		Facing: 768
 		SubCell: 2
-	Actor230: e3
+	SouthRocketSoldier1: e3
 		Location: 42,55
 		Owner: GDI
 		SubCell: 2
-	Actor231: e3
+	SouthRocketSoldier2: e3
 		Location: 42,55
 		Owner: GDI
 		SubCell: 4

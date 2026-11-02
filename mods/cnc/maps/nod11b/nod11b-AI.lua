@@ -9,10 +9,10 @@
 
 -- GDI attacks, cell triggers and production for Nod mission 11b.
 
--- Seconds after mission start. The 11a port interprets the original TD
--- trigger time values as seconds; 11b uses the same convention so both
--- variants play at a comparable pace. The original values are in tenths of
--- a minute (6 s), so the schedule below is compressed by roughly the same
+-- Seconds after the Nod base was taken over. The 11a port interprets the
+-- original TD trigger time values as seconds; 11b uses the same convention so
+-- both variants play at a comparable pace. The original values are in tenths
+-- of a minute (6 s), so the schedule below is compressed by roughly the same
 -- factor as 11a.
 WaveTimes = {
 	easy = { atk2 = 330, atk3 = 360, atk4 = 380, atk5 = 400, atk7 = 700, atk6 = 710, auto = 480 },
@@ -27,8 +27,7 @@ WaveTimes = {
 AirstrikeFirstDelay = { easy = 325, normal = 255, hard = 190 }
 AirstrikeInterval = { easy = 160, normal = 140, hard = 120 }
 
--- Seconds after mission start until GDI starts producing units if the player
--- has not entered the original `prod` cell trigger yet.
+-- Seconds after the base takeover until GDI starts producing units.
 ProductionStartDelay = { easy = 420, normal = 300, hard = 240 }
 AttackGroupSize = { easy = 4, normal = 5, hard = 6 }
 DefenderReserve = { easy = 2, normal = 3, hard = 4 }
@@ -64,6 +63,110 @@ HuntBuildings = {
 	GDINuke1, GDINuke2, GDINuke3,
 	GDIBarracks, GDICYard, GDIProc, GDIWeaponsFactory,
 }
+
+IsMobileNod = function(actor)
+	return actor.Owner == Nod and actor.HasProperty("Move")
+end
+
+local function IsDeadOrIdle(actor)
+	return actor.IsDead or actor.IsIdle
+end
+
+-- Guard units stay near their post, attack intruders in a small area and then
+-- return. Once the group is idle again it is re-armed.
+local function GuardArea(guards, center, range)
+	guards = Utils.Where(guards, function(guard)
+		return not guard.IsDead
+	end)
+
+	if #guards == 0 then
+		return
+	end
+
+	local activated = false
+	local refreshed = false
+
+	Trigger.OnEnteredProximityTrigger(center, range, function(target, id)
+		if activated or not IsMobileNod(target) then
+			return
+		end
+
+		activated = true
+		Trigger.RemoveProximityTrigger(id)
+
+		Utils.Do(guards, function(guard)
+			if guard.IsDead or not guard.IsIdle then
+				return
+			end
+
+			guard.AttackMove(target.Location, 2)
+			guard.AttackMove(guard.Location)
+		end)
+	end)
+
+	Utils.Do(guards, function(guard)
+		guard.Stance = "Defend"
+
+		Trigger.OnIdle(guard, function()
+			if refreshed or not activated or not Utils.All(guards, IsDeadOrIdle) then
+				return
+			end
+
+			refreshed = true
+
+			Utils.Do(guards, function(g)
+				if g.IsDead then
+					return
+				end
+
+				Trigger.Clear(g, "OnIdle")
+			end)
+
+			Trigger.AfterDelay(10, function()
+				GuardArea(guards, center, range)
+			end)
+		end)
+	end)
+end
+
+PrepareAreaGuards = function()
+	local teams =
+	{
+		{ actors = { SouthGrenadier1, SouthGrenadier2, SouthGrenadier3, SouthRocketSoldier1, SouthRocketSoldier2 }, range = 6 },
+		{ actors = { SouthBridgeTank }, range = 8 },
+		{ actors = { WestEdgeTank } },
+		{ actors = { BridgeHumvee } },
+	}
+
+	Utils.Do(teams, function(team)
+		local radius = WDist.FromCells(team.range or 7)
+		local center = team.center or team.actors[1].CenterPosition
+		GuardArea(team.actors, center, radius)
+	end)
+end
+
+-- The two outpost guard towers reveal themselves when a Nod unit approaches.
+-- This is cosmetic (2.5 cells around the tower).
+local function RevealTechBaseTower(tower)
+	if tower.IsDead then
+		return
+	end
+
+	tower.GrantCondition("revealed")
+end
+
+PrepareTowerReveals = function()
+	Utils.Do({ GDIOutpostGTWR1, GDIOutpostGTWR2 }, function(tower)
+		Trigger.OnEnteredProximityTrigger(tower.CenterPosition, WDist.FromCells(9), function(actor, id)
+			if not IsMobileNod(actor) then
+				return
+			end
+
+			Trigger.RemoveProximityTrigger(id)
+			RevealTechBaseTower(tower)
+		end)
+	end)
+end
 
 -- West waves enter at waypoint0 (41,15), the southern gate of the GDI main
 -- base. East waves enter at waypoint7 (53,4).
@@ -146,20 +249,12 @@ local function Cells(coords)
 	return cells
 end
 
--- Original [CellTriggers] for atk1 (west river crossing), prod (central
--- approach), delx (strike team rendezvous) and grd1 (east flank).
+-- Original [CellTriggers] for atk1 (west river crossing), delx (strike team
+-- rendezvous) and grd1 (east flank).
 Atk1Cells = Cells({
 	{19,42}, {20,42}, {21,42}, {19,43}, {20,43}, {21,43},
 	{18,44}, {19,44}, {20,44}, {21,44},
 	{19,45}, {20,45}, {21,45}, {19,46}, {20,46}, {21,46},
-})
-
-ProdCells = Cells({
-	{23,31}, {24,31}, {25,31}, {26,31}, {27,31}, {28,31}, {29,31}, {30,31}, {31,31}, {32,31},
-	{23,32}, {24,32}, {25,32}, {26,32}, {27,32}, {28,32}, {29,32}, {30,32}, {31,32}, {32,32},
-	{23,33}, {24,33}, {25,33}, {26,33}, {27,33}, {28,33}, {29,33}, {30,33}, {32,33},
-	{33,40}, {34,40}, {35,40}, {33,41}, {34,41}, {35,41}, {33,42}, {34,42}, {35,42},
-	{33,43}, {34,43}, {35,43}, {33,44}, {34,44}, {35,44}, {33,45}, {34,45}, {35,45},
 })
 
 DelxCells = Cells({
@@ -843,10 +938,8 @@ ProduceGDIUnit = function(buildingType)
 	local retry = function() ProduceGDIUnit(buildingType) end
 	local factories = GDI.GetActorsByType(buildingType)
 
-	-- Only the refinery and affordable funds count; otherwise easy/normal
-	-- would stop forever (CheckGDIEconomy only runs on hard).
-	if #factories == 0 or #GDI.GetActorsByType("proc") == 0
-		or GDI.Cash + GDI.Resources < 500
+	-- Production depends on the economy: no harvester, no new units.
+	if #factories == 0 or #GDI.GetActorsByType("harv") == 0
 		or CountProducedUnits() >= MaxProducedUnits[Difficulty or "normal"] then
 		TrySendGroup()
 		Trigger.AfterDelay(DateTime.Seconds(10), retry)
@@ -1054,9 +1147,11 @@ CheckGDIEconomy = function()
 		return
 	end
 
-	-- Nothing left to do: all-out attack.
-	AllOutAttackStarted = true
-	StartBaseDefense()
+	-- Nothing left to do: all-out attack. Easy never does this.
+	if Difficulty ~= "easy" then
+		AllOutAttackStarted = true
+		StartBaseDefense()
+	end
 end
 
 TryStartGDIProduction = function()
@@ -1071,9 +1166,7 @@ TryStartGDIProduction = function()
 	ProduceOrca()
 	OrcaWatch()
 
-	if Difficulty == "hard" then
-		Trigger.AfterDelay(DateTime.Seconds(10), CheckGDIEconomy)
-	end
+	Trigger.AfterDelay(DateTime.Seconds(10), CheckGDIEconomy)
 end
 
 StartBaseDefense = function()
@@ -1122,7 +1215,8 @@ StartAttackSchedule = function()
 	Trigger.AfterDelay(WaveDelay(times.auto), AutoWave)
 	Trigger.AfterDelay(WaveDelay(AirstrikeFirstDelay[Difficulty or "normal"]), Airstrike)
 
-	-- Fallback if the player never enters the original `prod` cell trigger.
+	-- GDI starts producing units only after this fixed delay following the
+	-- takeover, as in 11a.
 	Trigger.AfterDelay(DateTime.Seconds(ProductionStartDelay[Difficulty or "normal"]), function()
 		ProdTriggered = true
 		TryStartGDIProduction()
@@ -1131,6 +1225,8 @@ end
 
 SetupAI = function()
 	InitSouthGroup()
+	PrepareAreaGuards()
+	PrepareTowerReveals()
 
 	Trigger.OnEnteredFootprint(Atk1Cells, function(actor, id)
 		if actor.Owner == Nod and not Atk1Sent then
@@ -1156,14 +1252,6 @@ SetupAI = function()
 			else
 				Grd1Pending = true
 			end
-		end
-	end)
-
-	Trigger.OnEnteredFootprint(ProdCells, function(actor, id)
-		if actor.Owner == Nod and not ProdTriggered then
-			ProdTriggered = true
-			Trigger.RemoveFootprintTrigger(id)
-			TryStartGDIProduction()
 		end
 	end)
 

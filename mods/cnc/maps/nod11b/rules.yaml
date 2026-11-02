@@ -58,6 +58,30 @@ BOAT.easy:
 	Armament:
 		Weapon: BoatMissile.easy
 
+RMBO.easy:
+	Inherits: RMBO
+	Health:
+		HP: 30000
+	ChangesHealth:
+		Step: 500
+		Delay: 10
+		StartIfBelow: 50
+		DamageCooldown: 200
+	RenderSprites:
+		Image: RMBO
+
+GTWR:
+	ExternalCondition@REVEALED:
+		Condition: revealed
+	RevealsShroud@REVEALED:
+		RequiresCondition: revealed
+		ValidRelationships: Enemy
+		Range: 2c512
+	RevealOnDeath:
+		RequiresCondition: revealed
+		Duration: 1
+		RevealForRelationships: Enemy
+
 ARTY:
 	ExternalCondition@DIFFICULTY-EASY:
 		Condition: difficulty-easy
