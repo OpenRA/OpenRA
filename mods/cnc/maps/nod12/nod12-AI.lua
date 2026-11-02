@@ -543,6 +543,17 @@ StartGDIRebuild = function()
 	StartRebuildWorker()
 end
 
+GDIFunds = function()
+	return GDI.Cash + GDI.Resources
+end
+
+-- Spend stored resources first, then cash, matching PlayerResources.TakeCash.
+SpendGDIFunds = function(amount)
+	local fromResources = math.min(GDI.Resources, amount)
+	GDI.Resources = GDI.Resources - fromResources
+	GDI.Cash = GDI.Cash - (amount - fromResources)
+end
+
 PlaceGDIBuilding = function(building)
 	if building.type == "fact" then
 		StartMCVRebuild(building)
@@ -551,7 +562,7 @@ PlaceGDIBuilding = function(building)
 
 	RebuildPending[BuildingKey(building)] = true
 	RebuildBusy = true
-	GDI.Cash = GDI.Cash - Actor.Cost(building.type)
+	SpendGDIFunds(Actor.Cost(building.type))
 
 	Trigger.AfterDelay(Actor.BuildTime(building.type, GDIRebuildQueueType), function()
 		FinishGDIBuilding(building, 0)
@@ -752,7 +763,7 @@ PickRebuildCandidate = function()
 	-- An important building that is too expensive must not hold up cheap
 	-- ones (artillery towers, ground weapons, silos).
 	for _, entry in ipairs(eligible) do
-		if GDI.Cash >= Actor.Cost(entry.type) then
+		if GDIFunds() >= Actor.Cost(entry.type) then
 			return entry
 		end
 	end
@@ -1218,15 +1229,15 @@ CheckGDIEconomy = function()
 	local factories = GDI.GetActorsByType("weap")
 	local refineries = GDI.GetActorsByType("proc")
 
-	if #factories > 0 and #refineries > 0 and GDI.Cash >= Actor.Cost("harv") then
+	if #factories > 0 and #refineries > 0 and GDIFunds() >= Actor.Cost("harv") then
 		BuildGDIHarvester(factories[1])
 		return
 	end
 
 	-- No weapons factory (or no refinery to hand it to): place a replacement
 	-- harvester next to the refinery and let it harvest right away.
-	if #refineries > 0 and GDI.Cash >= Actor.Cost("harv") then
-		GDI.Cash = GDI.Cash - Actor.Cost("harv")
+	if #refineries > 0 and GDIFunds() >= Actor.Cost("harv") then
+		SpendGDIFunds(Actor.Cost("harv"))
 		local proc = refineries[1]
 		local harvester = Actor.Create("harv", true,
 			{ Owner = GDI, Location = CPos.New(proc.Location.X + 2, proc.Location.Y + 2) })
@@ -1367,7 +1378,7 @@ TryStartGDIProduction = function()
 	end
 
 	-- A little reserve, otherwise GDI would start broke and instantly dry.
-	if GDI.Cash + GDI.Resources < 1000 then
+	if GDIFunds() < 1000 then
 		Trigger.AfterDelay(DateTime.Seconds(30), TryStartGDIProduction)
 		return
 	end
