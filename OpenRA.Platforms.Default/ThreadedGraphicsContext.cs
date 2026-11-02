@@ -55,6 +55,7 @@ namespace OpenRA.Platforms.Default
 		Action<object> doDrawElements;
 		Action<object> doEnableScissor;
 		Action<object> doSetBlendMode;
+		Action<object> doSetStencilReference;
 		Action<object> doSetVSync;
 
 		public ThreadedGraphicsContext(Sdl2GraphicsContext context, int vertexBatchSize, int indexBatchSize)
@@ -141,6 +142,7 @@ namespace OpenRA.Platforms.Default
 							context.EnableScissor(t.Item1, t.Item2, t.Item3, t.Item4);
 						};
 					doSetBlendMode = mode => context.SetBlendMode((BlendMode)mode);
+					doSetStencilReference = reference => context.SetStencilReference((byte)reference);
 					doSetVSync = enabled => context.SetVSyncEnabled((bool)enabled);
 
 					Monitor.Pulse(constructorMonitor);
@@ -502,6 +504,11 @@ namespace OpenRA.Platforms.Default
 		public void SetBlendMode(BlendMode mode)
 		{
 			Post(doSetBlendMode, mode);
+		}
+
+		public void SetStencilReference(byte reference)
+		{
+			Post(doSetStencilReference, reference);
 		}
 
 		public void SetVSyncEnabled(bool enabled)
