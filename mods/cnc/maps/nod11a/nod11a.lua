@@ -42,6 +42,28 @@ RefineryGoal = 3
 StartingCashBonus = { easy = 1500, normal = 1000, hard = 0 }
 BaseTakenOver = false
 
+CommandoTypes = { easy = "rmbo.easy", normal = "rmbo", hard = "rmbo" }
+
+-- The map ships the normal Commando. Only Easy gets the tougher, regenerating
+-- variant; Normal and Hard keep AutoTarget and AttackMove.
+SetCommandoVariant = function(nod, difficulty)
+	local commandoType = CommandoTypes[difficulty] or "rmbo"
+	if commandoType ~= "rmbo" and not Commando.IsDead then
+		local location = Commando.Location
+		local facing = Commando.Facing
+		Commando.Destroy()
+		local newCommando = Actor.Create(commandoType, true, { Owner = nod, Location = location, Facing = facing })
+		for i, actor in ipairs(InitialUnits) do
+			if actor == Commando then
+				InitialUnits[i] = newCommando
+			end
+		end
+		Commando = newCommando
+	end
+
+	Commando.Stance = "Defend"
+end
+
 StartMammothPatrol = function()
 	if Mammoth.IsDead then
 		return
@@ -111,8 +133,6 @@ WorldLoaded = function()
 
 	Trigger.OnCapture(TechCenter, TechCenterCaptured)
 
-	Commando.Stance = "Defend"
-
 	-- The harvester next to the Nod base only starts working once the base is
 	-- taken over (see ConYardDiscovered), so it does not strip the nearby
 	-- Tiberium before the player can use it.
@@ -125,6 +145,8 @@ WorldLoaded = function()
 	end)
 
 	local difficulty = Difficulty or "normal"
+
+	SetCommandoVariant(Nod, difficulty)
 
 	Nod.Cash = Nod.Cash + StartingCashBonus[difficulty]
 

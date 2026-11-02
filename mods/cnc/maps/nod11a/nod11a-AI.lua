@@ -75,6 +75,117 @@ HuntBuildings = {
 	GDIBarracks, GDICYard, GDIProc, GDIWeaponsFactory,
 }
 
+IsMobileNod = function(actor)
+	return actor.Owner == Nod and actor.HasProperty("Move")
+end
+
+IsNorthOfRiver = function(actor)
+	return actor.Location.Y < RiverCenter.Location.Y
+end
+
+local function IsDeadOrIdle(actor)
+	return actor.IsDead or actor.IsIdle
+end
+
+-- Guard units stay near their post, attack intruders in a small area and then
+-- return. Once the group is idle again it is re-armed.
+local function GuardArea(guards, center, range)
+	guards = Utils.Where(guards, function(guard)
+		return not guard.IsDead
+	end)
+
+	if #guards == 0 then
+		return
+	end
+
+	local activated = false
+	local refreshed = false
+
+	Trigger.OnEnteredProximityTrigger(center, range, function(target, id)
+		if activated or not IsMobileNod(target) then
+			return
+		end
+
+		activated = true
+		Trigger.RemoveProximityTrigger(id)
+
+		Utils.Do(guards, function(guard)
+			if guard.IsDead or not guard.IsIdle then
+				return
+			end
+
+			guard.AttackMove(target.Location, 2)
+			guard.AttackMove(guard.Location)
+		end)
+	end)
+
+	Utils.Do(guards, function(guard)
+		guard.Stance = "Defend"
+
+		Trigger.OnIdle(guard, function()
+			if refreshed or not activated or not Utils.All(guards, IsDeadOrIdle) then
+				return
+			end
+
+			refreshed = true
+
+			Utils.Do(guards, function(g)
+				if g.IsDead then
+					return
+				end
+
+				Trigger.Clear(g, "OnIdle")
+			end)
+
+			Trigger.AfterDelay(10, function()
+				GuardArea(guards, center, range)
+			end)
+		end)
+	end)
+end
+
+PrepareAreaGuards = function()
+	local teams =
+	{
+		{ actors = { SouthGrenadier1, SouthGrenadier2, SouthGrenadier3, SouthGrenadier4 }, range = 6 },
+		{ actors = { SouthBridgeTank }, range = 8 },
+		{ actors = { WestEdgeTank } },
+		-- 6 instead of the default 7: the northern starting squad is 6.3 cells
+		-- away, so the jeep does not attack it before the player has moved.
+		{ actors = { BridgeHumvee }, range = 6 },
+	}
+
+	Utils.Do(teams, function(team)
+		local radius = WDist.FromCells(team.range or 7)
+		local center = team.center or team.actors[1].CenterPosition
+		GuardArea(team.actors, center, radius)
+	end)
+end
+
+-- The two guard towers at the hidden Nod base reveal themselves when a Nod
+-- unit approaches from the north. This is cosmetic (2.5 cells around the
+-- tower) and mirrors the original mission's reveal-on-approach.
+local function RevealTechBaseTower(tower)
+	if tower.IsDead then
+		return
+	end
+
+	tower.GrantCondition("revealed")
+end
+
+PrepareTowerReveals = function()
+	Utils.Do({ TechBaseTower1, TechBaseTower2 }, function(tower)
+		Trigger.OnEnteredProximityTrigger(tower.CenterPosition, WDist.FromCells(9), function(actor, id)
+			if not IsMobileNod(actor) or not IsNorthOfRiver(actor) then
+				return
+			end
+
+			Trigger.RemoveProximityTrigger(id)
+			RevealTechBaseTower(tower)
+		end)
+	end)
+end
+
 -- Waves enter on the top map edge (y = 3) instead of inside the playable
 -- area, so they walk in rather than pop up.
 WaveSpawn = CPos.New(waypoint6.Location.X, 3)
@@ -1104,6 +1215,8 @@ end
 
 SetupAI = function()
 	InitSouthGroup()
+	PrepareAreaGuards()
+	PrepareTowerReveals()
 
 	Trigger.OnEnteredFootprint(Atk1Cells, function(actor, id)
 		if actor.Owner == Nod and BaseTakenOver and not Atk1Sent then
