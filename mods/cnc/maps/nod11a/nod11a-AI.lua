@@ -84,10 +84,6 @@ local function CanAttackMove(actor)
 	return actor.HasProperty("AttackMove")
 end
 
-IsNorthOfRiver = function(actor)
-	return actor.Location.Y < RiverCenter.Location.Y
-end
-
 local function IsDeadOrIdle(actor)
 	return actor.IsDead or actor.IsIdle
 end
@@ -198,7 +194,7 @@ end
 PrepareTowerReveals = function()
 	Utils.Do({ TechBaseTower1, TechBaseTower2 }, function(tower)
 		Trigger.OnEnteredProximityTrigger(tower.CenterPosition, WDist.FromCells(9), function(actor, id)
-			if not IsMobileNod(actor) or not IsNorthOfRiver(actor) then
+			if not IsMobileNod(actor) then
 				return
 			end
 
