@@ -48,9 +48,6 @@ HARV:
 		SearchFromProcRadius: 30
 		SearchFromHarvesterRadius: 20
 
-BOAT:
-	MustBeDestroyed:
-
 BOAT.easy:
 	Inherits: BOAT
 	RenderSprites:
