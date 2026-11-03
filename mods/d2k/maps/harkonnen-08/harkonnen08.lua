@@ -286,12 +286,6 @@ CheckAttackToAtreides = function()
 		Trigger.OnDamaged(unit, function(self, attacker)
 			if attacker.Owner == Harkonnen and not Check then
 				ChangeOwner(AtreidesNeutral, AtreidesEnemy)
-
-				-- Ensure that harvesters that was on a carryall switched sides.
-				Trigger.AfterDelay(DateTime.Seconds(15), function()
-					ChangeOwner(AtreidesNeutral, AtreidesEnemy)
-				end)
-
 				Check = true
 				Media.DisplayMessage(UserInterface.GetFluentMessage("atreides-hostile"), Mentat)
 			end
@@ -408,11 +402,7 @@ WorldLoaded = function()
 		DefendAndRepairBase(AtreidesNeutral, AtreidesBase, 0.75, AttackGroupSize[Difficulty])
 		IdlingUnits[AtreidesNeutral] = IdlingUnits[AtreidesEnemy]
 
-		-- Ensure that harvesters that was on a carryall switched sides.
-		Trigger.AfterDelay(DateTime.Seconds(15), function()
-			ChangeOwner(AtreidesEnemy, AtreidesNeutral)
-			CheckAttackToAtreides()
-		end)
+		Trigger.AfterDelay(DateTime.Seconds(15), CheckAttackToAtreides)
 	end)
 
 	Trigger.OnAllKilledOrCaptured(OrdosBase, function()
