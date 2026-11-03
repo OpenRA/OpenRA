@@ -68,6 +68,11 @@ IsMobileNod = function(actor)
 	return actor.Owner == Nod and actor.HasProperty("Move")
 end
 
+-- AttackMove is not defined on every mobile actor (e.g. harvesters).
+local function CanAttackMove(actor)
+	return actor.HasProperty("AttackMove")
+end
+
 local function IsDeadOrIdle(actor)
 	return actor.IsDead or actor.IsIdle
 end
@@ -86,16 +91,26 @@ local function GuardArea(guards, center, range)
 	local activated = false
 	local refreshed = false
 
+	local function activeGuards()
+		local out = {}
+		for _, guard in ipairs(guards) do
+			if not guard.IsDead and CanAttackMove(guard) then
+				table.insert(out, guard)
+			end
+		end
+		return out
+	end
+
 	Trigger.OnEnteredProximityTrigger(center, range, function(target, id)
-		if activated or not IsMobileNod(target) then
+		if activated or not IsMobileNod(target) or not CanAttackMove(target) then
 			return
 		end
 
 		activated = true
 		Trigger.RemoveProximityTrigger(id)
 
-		Utils.Do(guards, function(guard)
-			if guard.IsDead or not guard.IsIdle then
+		Utils.Do(activeGuards(), function(guard)
+			if not guard.IsIdle then
 				return
 			end
 
@@ -1235,6 +1250,19 @@ CountProducedUnits = function()
 	return #alive
 end
 
+-- Same as CountProducedUnits, but only units that can receive a scripted
+-- AttackMove. Harvesters queued on the vehicle factory do not count against
+-- the group size.
+CountAttackGroupUnits = function()
+	local count = 0
+	for _, actor in ipairs(ProducedGDIUnits) do
+		if not actor.IsDead and CanAttackMove(actor) then
+			count = count + 1
+		end
+	end
+	return count
+end
+
 -- Sends the oldest produced units as one attack group once the pool holds the
 -- defender reserve plus a full group. Routes are the scripted wave routes.
 GroupRoutes = { "gdi2", "gdi4" }
@@ -1246,16 +1274,30 @@ TrySendGroup = function()
 
 	local difficulty = Difficulty or "normal"
 	local size = AttackGroupSize[difficulty]
-	if CountProducedUnits() < size + DefenderReserve[difficulty] then
+
+	-- A harvester queued on the vehicle factory would otherwise take a group
+	-- slot and never be attack-moved. It stays in the defender pool.
+	local movable = {}
+	local remaining = {}
+	for _, unit in ipairs(ProducedGDIUnits) do
+		if CanAttackMove(unit) then
+			table.insert(movable, unit)
+		else
+			table.insert(remaining, unit)
+		end
+	end
+
+	if #movable < size + DefenderReserve[difficulty] then
 		return
 	end
 
 	NextGroupTime = DateTime.GameTime + DateTime.Seconds(AttackGroupCooldown[difficulty])
 
 	local moves = TeamDefs[Utils.Random(GroupRoutes)].moves
-	local remaining = {}
-	for i, unit in ipairs(ProducedGDIUnits) do
-		if i <= size then
+	local sent = 0
+	for _, unit in ipairs(movable) do
+		if sent < size then
+			sent = sent + 1
 			unit.Stance = "AttackAnything"
 			Utils.Do(moves, function(cell)
 				unit.AttackMove(cell)
@@ -1287,7 +1329,7 @@ PullDefenders = function(actor, attacker, damage)
 	local target = attacker.Location
 
 	Utils.Do(ProducedGDIUnits, function(unit)
-		if not unit.IsDead then
+		if not unit.IsDead and CanAttackMove(unit) then
 			local home = unit.Location
 			unit.Stop()
 			unit.AttackMove(target)
@@ -1526,7 +1568,7 @@ ProduceGDIUnit = function(buildingType)
 
 	-- Production depends on the economy: no harvester, no new units.
 	if #factories == 0 or #GDI.GetActorsByType("harv") == 0
-		or CountProducedUnits() >= MaxProducedUnits[Difficulty or "normal"] then
+		or CountAttackGroupUnits() >= MaxProducedUnits[Difficulty or "normal"] then
 		TrySendGroup()
 		Trigger.AfterDelay(DateTime.Seconds(10), retry)
 		return
