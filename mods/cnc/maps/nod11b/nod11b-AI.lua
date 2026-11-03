@@ -190,13 +190,16 @@ PrepareTowerReveals = function()
 	end)
 end
 
--- West waves enter at waypoint0 (41,15), the southern gate of the GDI main
--- base. East waves enter at waypoint7 (53,4).
-WestSpawn = CPos.New(41, 15)
+-- West waves enter at the far-left road south of the northern strike team.
+-- They drive east over the ford at (15,11), advance to the GDI main base and
+-- only then follow the old route south to the Nod base. East waves still
+-- enter at waypoint7 (53,4).
+WestSpawn = CPos.New(2, 10)
+Ford = CPos.New(15, 11)
 EastSpawn = CPos.New(53, 2)
 APCStart = CPos.New(60, 4)
 
-WestRoute = { waypoint0.Location, waypoint1.Location, waypoint2.Location, waypoint3.Location, waypoint4.Location, waypoint5.Location }
+WestRoute = { Ford, waypoint0.Location, waypoint1.Location, waypoint2.Location, waypoint3.Location, waypoint4.Location, waypoint5.Location }
 EastRoute = { waypoint7.Location, waypoint8.Location, waypoint9.Location, waypoint10.Location, waypoint11.Location, waypoint4.Location, waypoint5.Location }
 
 TeamDefs = {
@@ -207,10 +210,10 @@ TeamDefs = {
 	gdi5 = { units = { "e2", "e2", "e3", "e3" }, start = EastSpawn, moves = { waypoint7.Location, waypoint8.Location } },
 	auto1 = { units = { "e1", "e1", "e2", "e2" }, start = WestSpawn, moves = WestRoute },
 	auto2 = { units = { "e2", "e2", "e2", "e3", "e3" }, start = WestSpawn, moves = WestRoute },
-	auto3 = { units = { "msam" }, start = WestSpawn, moves = { waypoint0.Location, waypoint1.Location, waypoint2.Location, waypoint6.Location } },
+	auto3 = { units = { "msam" }, start = WestSpawn, moves = { Ford, waypoint0.Location, waypoint1.Location, waypoint2.Location, waypoint6.Location } },
 	auto4 = { units = { "htnk" }, start = EastSpawn, moves = EastRoute },
-	auto5 = { units = { "e1", "e1", "e2", "e2", "e3", "e3" }, start = WestSpawn, moves = { waypoint0.Location, waypoint1.Location, waypoint2.Location, waypoint3.Location } },
-	auto6 = { units = { "e3", "e3", "jeep" }, start = WestSpawn, moves = { waypoint0.Location, waypoint1.Location, waypoint2.Location, waypoint3.Location } },
+	auto5 = { units = { "e1", "e1", "e2", "e2", "e3", "e3" }, start = WestSpawn, moves = { Ford, waypoint0.Location, waypoint1.Location, waypoint2.Location, waypoint3.Location } },
+	auto6 = { units = { "e3", "e3", "jeep" }, start = WestSpawn, moves = { Ford, waypoint0.Location, waypoint1.Location, waypoint2.Location, waypoint3.Location } },
 	auto7 = { units = { "apc" }, start = WestSpawn, moves = WestRoute },
 	heavy1 = { units = { "apc" }, start = WestSpawn, moves = { waypoint0.Location, waypoint1.Location, waypoint2.Location, waypoint3.Location, waypoint4.Location, waypoint5.Location, waypoint13.Location } },
 	heavy2 = { units = { "mtnk", "mtnk" }, start = WestSpawn, moves = WestRoute },
