@@ -211,12 +211,26 @@ CheckForRefineries = function()
 	return #Nod.GetActorsByType("proc") >= RefineryGoal
 end
 
+-- A starting unit loaded into a transport is temporarily out of the world but
+-- still alive. Do not treat that as the loss of the starting group.
+local function StartingGroupAlive()
+	for _, actor in ipairs(StrikeTeam or {}) do
+		if not actor.IsDead then
+			return true
+		end
+	end
+	return false
+end
+
 Tick = function()
-	if GDI.HasNoRequiredUnits() then
+	if not Nod.IsObjectiveCompleted(EliminateGDI) and not Nod.IsObjectiveFailed(EliminateGDI)
+		and DateTime.GameTime >= (PendingGDIReinforcementsUntil or 0) and GDI.HasNoRequiredUnits() then
 		Nod.MarkCompletedObjective(EliminateGDI)
 	end
 
-	if DateTime.GameTime > DateTime.Seconds(2) and Nod.HasNoRequiredUnits() then
+	if not Nod.IsObjectiveCompleted(EliminateGDI) and not Nod.IsObjectiveFailed(EliminateGDI)
+		and DateTime.GameTime > DateTime.Seconds(2) and Nod.HasNoRequiredUnits()
+		and (BaseTakenOver or not StartingGroupAlive()) then
 		Nod.MarkFailedObjective(EliminateGDI)
 	end
 
