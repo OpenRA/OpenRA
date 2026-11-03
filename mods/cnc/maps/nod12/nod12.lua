@@ -64,6 +64,13 @@ end
 CenterDestroyed = function()
 	IonCannonOnline = false
 	Media.DisplayMessageToPlayer(Nod, UserInterface.GetFluentMessage("advanced-communications-center-destroyed"))
+
+	-- Capturing it already won the mission. A late hit during the game-over
+	-- delay must not flip the completed objective to failed.
+	if Nod.IsObjectiveCompleted(CaptureCenter) or Nod.IsObjectiveFailed(CaptureCenter) then
+		return
+	end
+
 	Nod.MarkFailedObjective(CaptureCenter)
 end
 
@@ -141,7 +148,8 @@ WorldLoaded = function()
 end
 
 Tick = function()
-	if DateTime.GameTime > DateTime.Seconds(2) and Nod.HasNoRequiredUnits() then
+	if not Nod.IsObjectiveCompleted(CaptureCenter) and not Nod.IsObjectiveFailed(CaptureCenter)
+		and DateTime.GameTime > DateTime.Seconds(2) and Nod.HasNoRequiredUnits() then
 		Nod.MarkFailedObjective(CaptureCenter)
 	end
 
