@@ -1,0 +1,115 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, nod13a.lua, nod13a-AI.lua
+	MusicPlaylist:
+		StartingMusic: march
+		VictoryMusic: nod_win1
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: nod13.vqa
+		LossVideo: nodlose.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+	MapBuildRadius:
+		BuildRadiusCheckboxEnabled: False
+	-LegacyBridgeLayer:
+
+Player:
+	EnemyWatcher:
+	PlayerResources:
+		DefaultCash: 3000
+	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
+		Enabled: True
+
+HARV:
+	Harvester:
+		SearchFromProcRadius: 30
+		SearchFromHarvesterRadius: 20
+
+# The original mission relies on capturing northern buildings to establish a
+# foothold across the river. Engineers capture them rather than sabotaging them.
+^BaseBuilding:
+	Capturable:
+		Types: building
+
+# The hospital is owned by GDI in the original and counts as a building for
+# the all-destroyed victory condition, unlike a normal neutral tech building.
+HOSP:
+	MustBeDestroyed:
+
+# Capture the northern helipad before building additional helipads.
+HPAD:
+	Buildable:
+		Prerequisites: proc, hpad
+
+GTWR:
+	AnnounceOnSeen:
+
+ATWR:
+	AnnounceOnSeen:
+
+HQ:
+	AirstrikePower:
+		Prerequisites: gdi
+		SquadSize: 3
+
+# Nod SAM sites must be able to intercept the scripted GDI airstrikes.
+A10:
+	Health:
+		HP: 10000
+	Armor:
+		Type: Light
+	Targetable:
+		TargetTypes: Air
+	HitShape:
+
+# The campaign's three previously collected components are assumed present in
+# this standalone mission. The original single-player strike recharges for
+# fourteen minutes and can only be fired once.
+TMPL:
+	NukePower:
+		ChargeInterval: 21000
+		OneShot: true
+		-PauseOnCondition:
+
+# These empty helicopters land on the south island in the original mission.
+# Making only this variant capturable preserves the engineer airlift route.
+E6:
+	Captures@transport:
+		CaptureTypes: mission-transport
+		ValidRelationships: Enemy
+
+# The original All Destr. check ignores empty transport aircraft.
+TRAN:
+	-MustBeDestroyed:
+
+TRAN.CAPTURE:
+	Inherits: TRAN
+	RenderSprites:
+		Image: TRAN
+	Buildable:
+		Prerequisites: ~disabled
+	Cargo:
+		LoadedCondition: carrying-passengers
+	CaptureManager:
+	Capturable:
+		Types: mission-transport
+		RequiresCondition: !airborne && !carrying-passengers
+
+# Transient GDI reinforcements do not count towards the original All Destr.
+TRAN.IN:
+	Inherits: TRAN
+	RenderSprites:
+		Image: TRAN
+	Buildable:
+		Prerequisites: ~disabled
+	RejectsOrders:
+	-Selectable:
+	Interactable:
