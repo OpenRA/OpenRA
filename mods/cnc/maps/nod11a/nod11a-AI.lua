@@ -239,6 +239,7 @@ GDIBaseBuildings = {
 	{ type = "proc", pos = CPos.New(45, 6) },
 	{ type = "hq", pos = CPos.New(48, 6) },
 	{ type = "weap", pos = CPos.New(56, 8) },
+	{ type = "hpad", pos = CPos.New(44, 4) },
 }
 
 GDIProductionTypes = {
@@ -568,7 +569,7 @@ ScriptBuildTime = function(buildingType)
 	return time
 end
 -- Hard: restored every time they are killed.
-HardRebuildTypes = { fact = true, proc = true, weap = true, pyle = true, nuke = true, hq = true }
+HardRebuildTypes = { fact = true, proc = true, weap = true, pyle = true, nuke = true, hq = true, hpad = true, silo = true }
 -- Hard, while GDI has no harvester: only these are rebuilt (money is needed for the harvester).
 EconomyRebuildTypes = { fact = true, proc = true, weap = true, nuke = true }
 
@@ -616,7 +617,9 @@ FixedSiteBlocker = function(building)
 		if actor.IsDead or not actor.IsInWorld then
 			return
 		end
-		if actor.HasProperty("Move") and not actor.HasProperty("Land") then
+		-- Movable actors, including aircraft, are handled by BlockingUnits
+		-- and must not turn a site into a permanent blocker.
+		if actor.HasProperty("Move") then
 			return
 		end
 		blocker = actor
@@ -644,6 +647,137 @@ ClearBuildingSite = function(building, ignore)
 		end
 	end)
 	return free
+end
+
+-- A captured (or otherwise permanently blocked) original site must not keep
+-- GDI from restoring a building. Search a nearby free cell for the same
+-- footprint instead of overbuilding the blocker. The plan is updated so later
+-- existence checks and kill/capture handlers use the new site.
+AlternativeSiteSearchRadius = 10
+
+local function FootprintFor(buildingType)
+	return GDIBuildingFootprint[buildingType] or { 2, 2 }
+end
+
+local function FootprintsOverlap(aPos, aSize, bPos, bSize)
+	return aPos.X < bPos.X + bSize[1] and bPos.X < aPos.X + aSize[1]
+		and aPos.Y < bPos.Y + bSize[2] and bPos.Y < aPos.Y + aSize[2]
+end
+
+local function IsTerrainBuildable(cell)
+	-- C&C buildings use TerrainTypes Clear,Road. Out-of-map cells throw in the
+	-- engine; catch that instead of relying on a separate bounds API.
+	local ok, terrain = pcall(Map.TerrainType, cell)
+	return ok and (terrain == "Clear" or terrain == "Road")
+end
+
+local function IsPlannedFootprintFree(site, ignoreType, ignorePos)
+	local size = FootprintFor(site.type)
+	for _, planned in ipairs(GDIBaseBuildings) do
+		local isIgnored = planned.type == ignoreType
+			and planned.pos.X == ignorePos.X and planned.pos.Y == ignorePos.Y
+		if not isIgnored and FootprintsOverlap(site.pos, size, planned.pos, FootprintFor(planned.type)) then
+			return false
+		end
+	end
+	return true
+end
+
+local function IsVacantSite(site, ignoreType, ignorePos)
+	if not IsPlannedFootprintFree(site, ignoreType, ignorePos) then
+		return false
+	end
+
+	local size = FootprintFor(site.type)
+	for x = site.pos.X, site.pos.X + size[1] - 1 do
+		for y = site.pos.Y, site.pos.Y + size[2] - 1 do
+			if not IsTerrainBuildable(CPos.New(x, y)) then
+				return false
+			end
+		end
+	end
+
+	-- Do not move units for an alternative site: pick one that is already free.
+	return FixedSiteBlocker(site) == nil and #BlockingUnits(site) == 0
+end
+
+FindAlternativeSite = function(building)
+	local origin = building.pos
+	local candidates = {}
+	for dx = -AlternativeSiteSearchRadius, AlternativeSiteSearchRadius do
+		for dy = -AlternativeSiteSearchRadius, AlternativeSiteSearchRadius do
+			if dx ~= 0 or dy ~= 0 then
+				table.insert(candidates, {
+					dx = dx,
+					dy = dy,
+					ring = math.max(math.abs(dx), math.abs(dy)),
+					order = math.abs(dx) + math.abs(dy),
+				})
+			end
+		end
+	end
+
+	table.sort(candidates, function(a, b)
+		if a.ring ~= b.ring then
+			return a.ring < b.ring
+		end
+		if a.order ~= b.order then
+			return a.order < b.order
+		end
+		if a.dy ~= b.dy then
+			return a.dy < b.dy
+		end
+		return a.dx < b.dx
+	end)
+
+	for _, candidate in ipairs(candidates) do
+		local site = { type = building.type, pos = CPos.New(origin.X + candidate.dx, origin.Y + candidate.dy) }
+		if IsVacantSite(site, building.type, origin) then
+			return site.pos
+		end
+	end
+
+	return nil
+end
+
+RelocateRebuildSite = function(building, newPos)
+	local oldPos = building.pos
+	local exactMatch = nil
+	local planEntries = 0
+	for _, planned in ipairs(GDIBaseBuildings) do
+		if planned.type == building.type then
+			planEntries = planEntries + 1
+			if planned.pos.X == oldPos.X and planned.pos.Y == oldPos.Y then
+				exactMatch = planned
+			end
+		end
+	end
+
+	if exactMatch ~= nil then
+		exactMatch.pos = newPos
+	elseif planEntries == 1 then
+		-- Emergency rebuilds can start from a position that already moved
+		-- away from the plan; follow the single plan entry for this type. Do
+		-- not move a plan whose current site still has a live building.
+		for _, planned in ipairs(GDIBaseBuildings) do
+			if planned.type == building.type then
+				local occupied = false
+				for _, actor in ipairs(GDI.GetActorsByType(planned.type)) do
+					if not actor.IsDead and actor.Location.X == planned.pos.X
+						and actor.Location.Y == planned.pos.Y then
+						occupied = true
+						break
+					end
+				end
+				if not occupied then
+					planned.pos = newPos
+				end
+				break
+			end
+		end
+	end
+
+	building.pos = newPos
 end
 
 RegisterGDIBuilding = function(actor)
@@ -728,6 +862,21 @@ EnsureHQ = function()
 	end
 end
 
+-- Without the airfield, Orcas cannot land and repair. Rebuild it on every
+-- difficulty, not only when StartGDIRebuild runs once.
+EnsureAirfield = function()
+	if #GDI.GetActorsByType("hpad") > 0 then
+		return
+	end
+
+	for _, building in ipairs(GDIBaseBuildings) do
+		if building.type == "hpad" then
+			QueueGDIRebuild(building, false)
+			return
+		end
+	end
+end
+
 -- FACT is not in the build menu. Build an MCV in the Weapons Factory, drive
 -- it to the old yard site and deploy it there with the regular transform.
 FactMcv = nil
@@ -750,6 +899,21 @@ FinishGDIFact = function(building, attempt)
 		return
 	end
 
+	-- A captured building can occupy the original yard site. Move the plan to
+	-- the nearest free footprint before ordering an MCV.
+	if PermanentSiteBlocker(building) then
+		local newPos = FindAlternativeSite(building)
+		if newPos ~= nil then
+			local oldKey = key
+			RelocateRebuildSite(building, newPos)
+			if RebuildPending[oldKey] then
+				RebuildPending[oldKey] = nil
+				key = BuildingKey(building)
+				RebuildPending[key] = true
+			end
+		end
+	end
+
 	if PermanentSiteBlocker(building) or not ClearBuildingSite(building, FactMcv) then
 		if attempt < RebuildSiteTimeoutAttempts then
 			Trigger.AfterDelay(DateTime.Seconds(3), function()
@@ -763,7 +927,7 @@ FinishGDIFact = function(building, attempt)
 	end
 
 	-- Get an MCV from the real production queue (or reuse an existing one).
-	if FactMcv == nil or FactMcv.IsDead then
+	if FactMcv == nil or FactMcv.IsDead or FactMcv.Type ~= "mcv" then
 		FactMcv = GDI.GetActorsByType("mcv")[1]
 		if FactMcv == nil then
 			local weapons = GDI.GetActorsByType("weap")
@@ -780,7 +944,9 @@ FinishGDIFact = function(building, attempt)
 				end
 
 				local mcv = units[1]
-				if mcv == nil or mcv.IsDead then
+				-- A stale callback can deliver a different product. Only a
+				-- real MCV may be moved and deployed.
+				if mcv == nil or mcv.IsDead or mcv.Type ~= "mcv" then
 					Trigger.AfterDelay(DateTime.Seconds(5), function()
 						FinishGDIFact(building, attempt)
 					end)
@@ -811,7 +977,7 @@ FinishGDIFact = function(building, attempt)
 	end
 
 	local mcv = FactMcv
-	if mcv == nil or mcv.IsDead then
+	if mcv == nil or mcv.IsDead or mcv.Type ~= "mcv" then
 		FactMcv = nil
 		Trigger.AfterDelay(DateTime.Seconds(5), function()
 			FinishGDIFact(building, attempt)
@@ -914,6 +1080,21 @@ FinishGDIBuilding = function(building, attempt)
 		return
 	end
 
+	-- The original site may be permanently blocked by a captured building.
+	-- Move to the nearest free footprint instead of overbuilding it.
+	if PermanentSiteBlocker(building) then
+		local newPos = FindAlternativeSite(building)
+		if newPos ~= nil then
+			local oldKey = key
+			RelocateRebuildSite(building, newPos)
+			if RebuildPending[oldKey] then
+				RebuildPending[oldKey] = nil
+				key = BuildingKey(building)
+				RebuildPending[key] = true
+			end
+		end
+	end
+
 	if not ClearBuildingSite(building) then
 		if attempt >= RebuildSiteTimeoutAttempts then
 			GDI.Cash = GDI.Cash + Actor.Cost(building.type)
@@ -951,8 +1132,16 @@ PickRebuildCandidate = function()
 		if ok and not CanBuildGDIBuilding(buildingType) then
 			ok = false
 		end
+		-- A permanently blocked site is still rebuildable if a nearby free
+		-- footprint exists. Relocate once here so the search does not run on
+		-- every rebuild poll; Finish* handles a blocker that appears later.
 		if ok and PermanentSiteBlocker(entry.building) then
-			ok = false
+			local newPos = FindAlternativeSite(entry.building)
+			if newPos == nil then
+				ok = false
+			else
+				RelocateRebuildSite(entry.building, newPos)
+			end
 		end
 		if ok and hard and (NoHarvesterSince ~= nil or noHarvester) and (entry.sold or not EconomyRebuildTypes[buildingType]) then
 			ok = false
@@ -1209,8 +1398,10 @@ ProduceOrca = function()
 
 	local pads = GDI.GetActorsByType("hpad")
 
-	-- Same economy rule as ProduceGDIUnit: no harvester, no new units.
+	-- Same economy rule as ProduceGDIUnit: no harvester, no new units. ORCA
+	-- also needs anyhq, so a rejected order must not occupy the Orca slot.
 	if #pads == 0 or #GDI.GetActorsByType("harv") == 0
+		or not GDI.HasPrerequisites({ "anyhq" })
 		or #GDI.GetActorsByType("orca") >= MaxOrcas[Difficulty or "normal"] then
 		Trigger.AfterDelay(DateTime.Seconds(15), retry)
 		return
@@ -1488,6 +1679,18 @@ CreateGDIRefinery = function(position, delay, attempt)
 		end
 
 		local site = { type = "proc", pos = position }
+		if PermanentSiteBlocker(site) then
+			local newPos = FindAlternativeSite(site)
+			if newPos ~= nil then
+				local oldPos = position
+				RelocateRebuildSite(site, newPos)
+				position = newPos
+				if oldPos.X == GDIRefineryPosition.X and oldPos.Y == GDIRefineryPosition.Y then
+					GDIRefineryPosition = newPos
+				end
+			end
+		end
+
 		local canPlace = #GDI.GetActorsByType("fact") > 0
 			and CanBuildGDIBuilding("proc") and ClearBuildingSite(site)
 		if not canPlace then
@@ -1579,6 +1782,7 @@ CheckGDIEconomy = function()
 	Trigger.AfterDelay(DateTime.Seconds(10), CheckGDIEconomy)
 	EnsurePowerPlants()
 	EnsureHQ()
+	EnsureAirfield()
 
 	if #GDI.GetActorsByType("harv") > 0 then
 		NoHarvesterSince = nil
