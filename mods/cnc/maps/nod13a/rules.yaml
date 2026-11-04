@@ -56,6 +56,11 @@ ATWR:
 	AnnounceOnSeen:
 
 HQ:
+	# The eastern HQ is the high-tech source for the surviving GDI forces.
+	# It provides the EYE prerequisite so the eastern base can build Mammoth
+	# Tanks normally without adding a second Ion Cannon structure.
+	ProvidesPrerequisite@eye:
+		Prerequisite: eye
 	AirstrikePower:
 		Prerequisites: gdi
 		SquadSize: 3
