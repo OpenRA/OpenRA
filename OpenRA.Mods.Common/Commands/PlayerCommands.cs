@@ -39,6 +39,12 @@ namespace OpenRA.Mods.Common.Commands
 		const string WhisperAmbiguousPlayer = "notification-whisper-ambiguous-player";
 
 		[FluentReference]
+		const string WhisperSelf = "notification-whisper-self";
+
+		[FluentReference]
+		const string WhisperEmptyMessage = "notification-whisper-empty-message";
+
+		[FluentReference]
 		const string WhisperSpectator = "notification-whisper-spectator";
 
 		World world;
@@ -85,6 +91,19 @@ namespace OpenRA.Mods.Common.Commands
 						break;
 					}
 
+					if (target.Index == Game.LocalClientId)
+					{
+						TextNotificationsManager.Debug(FluentProvider.GetMessage(WhisperSelf));
+						break;
+					}
+
+					var message = arg[target.Name.Length..].Trim();
+					if (string.IsNullOrEmpty(message))
+					{
+						TextNotificationsManager.Debug(FluentProvider.GetMessage(WhisperEmptyMessage));
+						break;
+					}
+
 					var targetPlayer = world.Players.FirstOrDefault(p => p.ClientIndex == target.Index && p.PlayerReference.Playable);
 					var senderSpectating = world.LocalPlayer == null || world.LocalPlayer.Spectating;
 					var targetSpectating = target.IsObserver || targetPlayer == null || targetPlayer.Spectating;
@@ -97,7 +116,7 @@ namespace OpenRA.Mods.Common.Commands
 					world.IssueOrder(new Order("Whisper", null, false)
 					{
 						IsImmediate = true,
-						TargetString = arg[target.Name.Length..].Trim(),
+						TargetString = message,
 						ExtraData = (uint)target.Index
 					});
 
