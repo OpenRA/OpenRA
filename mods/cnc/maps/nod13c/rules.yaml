@@ -1,0 +1,128 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, nod13c.lua, nod13c-AI.lua
+	MusicPlaylist:
+		StartingMusic: march
+		VictoryMusic: nod_win1
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: nod13.vqa
+		LossVideo: bombaway.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+	MapBuildRadius:
+		BuildRadiusCheckboxEnabled: False
+	-LegacyBridgeLayer:
+
+Player:
+	EnemyWatcher:
+	PlayerResources:
+		DefaultCash: 5000
+	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
+		Enabled: True
+
+HARV:
+	Harvester:
+		SearchFromProcRadius: 30
+		SearchFromHarvesterRadius: 20
+
+# The original mission expects the player to capture GDI buildings with
+# engineers, including the construction yard in the south-eastern outpost.
+^BaseBuilding:
+	Capturable:
+		Types: building
+
+GTWR:
+	AnnounceOnSeen:
+
+ATWR:
+	AnnounceOnSeen:
+
+HQ:
+	# GDI keeps Mammoth Tank access in the northern base even after the EYE
+	# in the south-western base has been destroyed.
+	ProvidesPrerequisite@eye:
+		Prerequisite: eye
+	# The original air1 team is a pair of A10s. The airstrike trigger is not
+	# attached to a building in SCB13EC, so the strikes repeat forever.
+	AirstrikePower:
+		Prerequisites: gdi
+		SquadSize: 2
+
+# Nod SAM sites must be able to intercept the scripted GDI airstrikes.
+A10:
+	Health:
+		HP: 10000
+	Armor:
+		Type: Light
+	Targetable:
+		TargetTypes: Air
+	HitShape:
+
+# The campaign's three previously collected components are assumed present in
+# this standalone mission. The original single-player strike recharges for
+# fourteen minutes and can only be fired once.
+TMPL:
+	NukePower:
+		ChargeInterval: 21000
+		OneShot: true
+		-PauseOnCondition:
+
+# The church near the starting area drops a money crate when demolished.
+# The offset matches the original WCRATE at (6,19); without it the crate can
+# land inside the 2x2 church footprint and become unreachable. A dedicated
+# actor keeps the decorative V25 buildings in the eastern village untouched.
+CHURCH:
+	Inherits: V25
+	RenderSprites:
+		Image: v25
+	SpawnActorOnDeath:
+		Actor: moneycrate
+		Offset: 0,1
+
+# The original All Destr. check ignores empty transport aircraft.
+TRAN:
+	-MustBeDestroyed:
+
+# Gunboats count towards the original All Destr. victory condition.
+BOAT:
+	MustBeDestroyed:
+
+# The empty GDI transport that lands next to the starting area can be taken
+# by an engineer. Only this variant is capturable.
+E6:
+	Captures@transport:
+		CaptureTypes: mission-transport
+		ValidRelationships: Enemy
+
+TRAN.CAPTURE:
+	Inherits: TRAN
+	RenderSprites:
+		Image: TRAN
+	Buildable:
+		Prerequisites: ~disabled
+	Cargo:
+		LoadedCondition: carrying-passengers
+	CaptureManager:
+	Capturable:
+		Types: mission-transport
+		RequiresCondition: !airborne && !carrying-passengers
+
+# Scripted GDI transport reinforcements must not be hijacked through the
+# normal transport UI.
+TRAN.IN:
+	Inherits: TRAN
+	RenderSprites:
+		Image: TRAN
+	Buildable:
+		Prerequisites: ~disabled
+	RejectsOrders:
+	-Selectable:
+	Interactable:
