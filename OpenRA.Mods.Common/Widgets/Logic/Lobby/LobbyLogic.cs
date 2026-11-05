@@ -720,6 +720,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				TextNotificationsManager.AddSystemLine(BotsDisabled);
 
 			lobbyOptions = newLobbyOptions;
+
+			foreach (var mapFaction in map.WorldActorInfo.TraitInfos<FactionInfo>())
+				if (factions.ContainsKey(mapFaction.InternalName))
+					factions[mapFaction.InternalName] = new LobbyFaction
+					{
+						Selectable = mapFaction.Selectable,
+						Name = mapFaction.Name,
+						Side = mapFaction.Side,
+						Description = mapFaction.Description
+					};
 		}
 
 		void UpdateCurrentMap()
