@@ -31,7 +31,6 @@ local retreatingOrcas = {}
 local orcaBase = {}
 local orcaHandled = {}
 local defenseResponses = {}
-local buildingInProgress = false
 local airliftIndex = 1
 local SouthRegion = 0
 local RebuildHarvester
@@ -47,16 +46,16 @@ local BaseReliefBuildings = { fact = true, proc = true, weap = true, pyle = true
 	hq = true, eye = true, nuke = true, nuk2 = true, hpad = true, atwr = true, gtwr = true }
 -- Original SCB13EB trigger times (tenths of a minute, multiplied by six):
 -- attacks at 19.8-29.8 min, first airstrike at 19.8, Ion Cannon at 39.8.
+-- The port deliberately shortens the first Ion Cannon to 40/32/25 min.
 local WaveStart = { easy = 1426, normal = 1188, hard = 1010 }
 local FirstLanding = { easy = 706, normal = 588, hard = 500 }
 local AirstrikeFirstDelay = { easy = 1426, normal = 1188, hard = 1010 }
 local AirstrikeInterval = { easy = 600, normal = 480, hard = 420 }
-local IonCannonFirstDelay = { easy = 2866, normal = 2388, hard = 2030 }
+local IonCannonFirstDelay = { easy = 2400, normal = 1920, hard = 1500 }
 local IonCannonInterval = { easy = 900, normal = 720, hard = 600 }
 local AirliftFirstDelay = { easy = 1786, normal = 1488, hard = 1265 }
 local AirliftInterval = { easy = 480, normal = 360, hard = 300 }
 local AutoWaveInterval = { easy = 240, normal = 180, hard = 120 }
-local MaxOrcas = { easy = 1, normal = 1, hard = 2 }
 
 local passable = { Clear = true, Rough = true, Road = true, Bridge = true,
 	Tiberium = true, BlueTiberium = true, Beach = true }
@@ -77,12 +76,6 @@ local function AnyGDIPlayer()
 		if p ~= nil and not HouseEliminated(p) then return p end
 	end
 	return nil
-end
-
-local function GDIOrcaCount()
-	local count = 0
-	for _, p in ipairs(gdiPlayers) do count = count + #p.GetActorsByType("orca") end
-	return count
 end
 
 local function CellKey(x, y)
@@ -407,6 +400,61 @@ local function FindUnitSpot(anchor)
 	return nil
 end
 
+-- The western base's relief force enters at the south-western Tiberium field
+-- instead of materialising inside the base under attack.
+local WestReliefSpawn = CPos.New(6, 50)
+local WestReliefOffsets = {
+	{ 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { -1, 0 },
+	{ 0, 1 }, { 1, 1 }, { 2, 1 }, { 3, 1 }, { -1, 1 },
+	{ 0, -1 }, { 1, -1 }, { 2, -1 }, { 3, -1 }, { -1, -1 },
+}
+
+local function FindReliefCell(anchor, used)
+	for radius = 0, 12 do
+		for dx = -radius, radius do
+			for dy = -radius, radius do
+				if math.abs(dx) == radius or math.abs(dy) == radius then
+					local cell = CPos.New(anchor.X + dx, anchor.Y + dy)
+					if cell.X >= 2 and cell.X <= 61 and cell.Y >= 1 and cell.Y <= 60
+						and SameLand(anchor, cell) and not used[cell.X * 1000 + cell.Y] then
+						local terrain = Map.TerrainType(cell)
+						if passable[terrain] then
+							local blockers = Map.ActorsInCircle(Map.CenterOfCell(cell), WDist.New(1024), function(actor)
+								return IsLive(actor) and actor.HasProperty("Location")
+									and (actor.HasProperty("Health") or IsTerrainObstacle(actor))
+							end)
+							if #blockers == 0 then return cell end
+						end
+					end
+				end
+			end
+		end
+	end
+	return nil
+end
+
+local function StageWestRelief(team, owner, targetBase)
+	local used = {}
+	local staged = {}
+	for i, unit in ipairs(team) do
+		if IsLive(unit) and unit.Owner == owner and unit.IsInWorld then
+			local offset = WestReliefOffsets[(i - 1) % #WestReliefOffsets + 1]
+			local cell = FindReliefCell(CPos.New(WestReliefSpawn.X + offset[1], WestReliefSpawn.Y + offset[2]), used)
+			if cell ~= nil then
+				if unit.HasProperty("Stop") then unit.Stop() end
+				if unit.HasProperty("Teleport") then unit.Teleport(cell) end
+				table.insert(staged, unit)
+			end
+		end
+	end
+	if #staged == 0 then return end
+	local target = FindUnitSpot(CPos.New(targetBase.yard[1], targetBase.yard[2]))
+	if target == nil then target = CPos.New(targetBase.yard[1], targetBase.yard[2]) end
+	Trigger.AfterDelay(DateTime.Seconds(1), function()
+		SendTeam(staged, owner, { { Location = target } }, false)
+	end)
+end
+
 -- A base that loses a key building or its harvester asks the other base for
 -- help. A scratch does not trigger this; relief also leaves a home guard.
 RequestRelief = function(base)
@@ -414,7 +462,8 @@ RequestRelief = function(base)
 	if DateTime.GameTime < (base.reliefCooldown or 0) then return end
 	base.reliefCooldown = DateTime.GameTime + DateTime.Seconds(ReliefCooldown[difficulty])
 	for _, helper in ipairs(bases) do
-		if helper ~= base and not HouseEliminated(helper.player) then
+		if helper ~= base and not HouseEliminated(helper.player)
+			and not (helper == bases[1] and WestReinforcementsStopped) then
 			local available = #helper.reserve + #helper.produced
 			local keep = math.min(DefenderReserve[difficulty], available)
 			local takeLimit = math.min(ReliefSize[difficulty], math.max(0, available - keep))
@@ -437,9 +486,13 @@ RequestRelief = function(base)
 				end
 			end
 			if #team > 0 then
-				local cell = FindUnitSpot(CPos.New(base.yard[1], base.yard[2]))
-				if cell == nil then cell = CPos.New(base.yard[1], base.yard[2]) end
-				SendTeam(team, helper.player, { { Location = cell } }, false)
+				if helper == bases[1] then
+					StageWestRelief(team, helper.player, base)
+				else
+					local cell = FindUnitSpot(CPos.New(base.yard[1], base.yard[2]))
+					if cell == nil then cell = CPos.New(base.yard[1], base.yard[2]) end
+					SendTeam(team, helper.player, { { Location = cell } }, false)
+				end
 			end
 		end
 	end
@@ -704,8 +757,8 @@ local prerequisites = {
 	fix = { "proc" }, fact = { "proc" },
 }
 
-local function StartBuilding(entry, yard)
-	if buildingInProgress then return false end
+local function StartBuilding(base, entry, yard)
+	if base.rebuilding then return false end
 	local player = yard.Owner
 	local kind = entry[1]
 	local cost = Actor.Cost(kind)
@@ -714,10 +767,10 @@ local function StartBuilding(entry, yard)
 	if player.PowerState == "Low" or player.PowerState == "Critical" then
 		buildTime = math.ceil(buildTime * 1.5)
 	end
-	buildingInProgress = true
+	base.rebuilding = true
 	local spentResources = SpendGDIFunds(player, cost)
 	Trigger.AfterDelay(buildTime, function()
-		buildingInProgress = false
+		base.rebuilding = false
 		if MissionFinished then return end
 		if not IsLive(yard) or yard.Owner ~= player or not yard.IsInWorld
 			or BuildingAt(entry) ~= nil or not SiteFree(entry, nil, player) then
@@ -735,7 +788,7 @@ end
 -- prerequisite chain, so rebuild the power plant, refinery and barracks
 -- without their tech gates first.
 local function Bootstrap(base)
-	if buildingInProgress then return false end
+	if base.rebuilding then return false end
 	local yard = LocalBuilding(base, "fact")
 	if yard == nil then return false end
 
@@ -743,7 +796,7 @@ local function Bootstrap(base)
 		for _, entry in ipairs(base.nodes) do
 			if entry[1] == kind and BuildingAt(entry) == nil
 				and GDIFunds(base.player) >= Actor.Cost(kind) and SiteFree(entry, nil, base.player) then
-				return StartBuilding(entry, yard)
+				return StartBuilding(base, entry, yard)
 			end
 		end
 		return false
@@ -756,11 +809,25 @@ local function Bootstrap(base)
 end
 
 local function Rebuild(base)
-	if buildingInProgress then return end
+	if base.rebuilding then return end
 	local yard = LocalBuilding(base, "fact")
 	if yard == nil then return end
 	if Bootstrap(base) then return end
 	if not HasLiveHarvester(base) then return end
+
+	-- Low power pauses radar and support powers, including the Ion Cannon.
+	-- Rebuild a local power plant before spending on anything else.
+	local power = base.player.PowerState
+	if (power == "Low" or power == "Critical")
+		and GDIFunds(base.player) >= Actor.Cost("nuk2") + 800
+		and LocalTech(base, "nuk2") and base.player.HasPrerequisites(prerequisites.nuk2) then
+		local entry = FindNearbySite(base, "nuk2", yard.Location, nil)
+		if entry ~= nil then
+			StartBuilding(base, entry, yard)
+			return
+		end
+	end
+
 	for _ = 1, #base.nodes do
 		base.nodeIndex = (base.nodeIndex or 1) % #base.nodes + 1
 		local entry = base.nodes[base.nodeIndex]
@@ -771,7 +838,7 @@ local function Rebuild(base)
 			local required = prerequisites[entry[1]] or {}
 			if GDIFunds(base.player) >= cost + reserve and base.player.HasPrerequisites(required)
 				and SiteFree(entry, nil, base.player) then
-				if StartBuilding(entry, yard) then return end
+				if StartBuilding(base, entry, yard) then return end
 			end
 		end
 	end
@@ -818,6 +885,7 @@ end
 local infantry = { "e3", "e1", "e1", "e1" }
 local eastInfantry = { "e1", "e2", "e3", "e1" }
 local westVehicles = { "mtnk", "jeep", "jeep" }
+local hardWestVehicles = { "htnk", "mtnk", "msam", "jeep" }
 local eastVehicles = { "htnk", "mtnk", "msam", "jeep" }
 local unitPrerequisites = {
 	e1 = { "barracks" }, e3 = { "barracks" }, e2 = { "anyhq", "~techlevel.medium" },
@@ -874,7 +942,7 @@ local function Produce(base)
 	local total, infantryCount, vehicleCount = ProducedCounts(base)
 	if total >= MaxProducedUnits[difficulty] then return end
 	local categoryLimit = math.max(4, math.floor(MaxProducedUnits[difficulty] / 2))
-	local vehicles = base == bases[1] and westVehicles or eastVehicles
+	local vehicles = base == bases[1] and (difficulty == "hard" and hardWestVehicles or westVehicles) or eastVehicles
 	local infantryTypes = base == bases[1] and infantry or eastInfantry
 	local specs = base.nextProduction == "vehicle"
 		and { { "weap", vehicles, vehicleCount }, { "pyle", infantryTypes, infantryCount } }
@@ -925,18 +993,30 @@ local function OnProduced(factory, unit, productionType)
 end
 
 local function EnsureHelipad(base)
-	if MissionFinished or LocalBuilding(base, "hpad") ~= nil then return end
+	if MissionFinished or base.rebuilding or LocalBuilding(base, "hpad") ~= nil then return end
 	local yard = LocalBuilding(base, "fact")
 	if yard == nil or GDIFunds(base.player) < Actor.Cost("hpad") + 1500 then return end
 	if not LocalTech(base, "hpad") or not base.player.HasPrerequisites(prerequisites.hpad) then return end
 	local entry = FindNearbySite(base, "hpad", yard.Location, nil)
-	if entry ~= nil then StartBuilding(entry, yard) end
+	if entry ~= nil then StartBuilding(base, entry, yard) end
+end
+
+-- Every helipad of a base keeps one Orca. The eastern and western bases each
+-- build for their own pads, so the shared players no longer cap each other.
+local function LocalBuildingCount(base, kind)
+	local count = 0
+	for _, actor in ipairs(base.player.GetActorsByType(kind)) do
+		if IsLive(actor) and actor.IsInWorld and IsLocal(base, actor) then count = count + 1 end
+	end
+	return count
 end
 
 local function ProduceOrca(base)
 	if MissionFinished or base.orcaBusy ~= nil then return end
 	local pad = LocalBuilding(base, "hpad")
-	if pad == nil or GDIOrcaCount() >= MaxOrcas[difficulty] then return end
+	local pads = LocalBuildingCount(base, "hpad")
+	if pad == nil or pads == 0 then return end
+	if #base.player.GetActorsByType("orca") >= pads then return end
 	if not LocalTech(base, "orca") or not base.player.HasPrerequisites(prerequisites.orca)
 		or GDIFunds(base.player) < Actor.Cost("orca") + 800 then return end
 
@@ -1088,6 +1168,17 @@ local function SendChinook(cargo, landing, paid, owner)
 			end)
 		end)
 	end
+	return true
+end
+
+-- chn2: the early empty transport lands on the northern island and stays
+-- there. Unlike the armed TRAN.IN landings it can be captured by Nod's E6.
+local function SendEmptyChinook(landing)
+	if MissionFinished then return false end
+	local owner = AnyGDIPlayer()
+	if owner == nil then return false end
+	Reinforcements.ReinforceWithTransport(owner, "tran.capture", nil,
+		{ GDIAirEntry.Location, landing.Location })
 	return true
 end
 
@@ -1301,6 +1392,7 @@ SetupAI = function()
 		base.defenseUntil = 0
 		base.reserveRelease = 0
 		base.combatPending = nil
+		base.rebuilding = false
 		base.orcaBusy = nil
 		base.harvester = nil
 		base.harvesterBuilding = false
@@ -1363,6 +1455,16 @@ SetupAI = function()
 		end
 	end
 
+	-- The western base calls its relief force in through this Communications
+	-- Center. Destroying or capturing it permanently stops the relief.
+	local westHQ = LocalBuilding(bases[1], "hq")
+	if westHQ ~= nil then
+		Trigger.OnKilled(westHQ, function() StopWestReinforcements() end)
+		Trigger.OnCapture(westHQ, function(_, _, oldOwner, newOwner)
+			if IsGDIPlayer(oldOwner) and not IsGDIPlayer(newOwner) then StopWestReinforcements() end
+		end)
+	end
+
 	Trigger.OnAnyProduction(OnProduced)
 
 	for i, offset in ipairs(waveOffsets) do
@@ -1371,7 +1473,7 @@ SetupAI = function()
 
 	-- chn2: one empty transport at 0.4 minutes. chn4/chn5: two armed
 	-- landings at 9.8 and 9.9 minutes.
-	Trigger.AfterDelay(DateTime.Seconds(24), function() SendChinook(nil, waypoint0) end)
+	Trigger.AfterDelay(DateTime.Seconds(24), function() SendEmptyChinook(waypoint0) end)
 	Trigger.AfterDelay(DateTime.Seconds(FirstLanding[difficulty]), function()
 		SendChinook({ "e1", "e1", "e2", "e2" }, waypoint0)
 	end)
