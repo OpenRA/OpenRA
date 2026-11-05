@@ -40,6 +40,10 @@ Player:
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
 		Enabled: True
 
+^BaseBuilding:
+	Capturable:
+		Types: building
+
 FACT:
 	AnnounceOnSeen:
 
