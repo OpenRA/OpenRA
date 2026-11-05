@@ -75,6 +75,25 @@ TMPL:
 TRAN:
 	-MustBeDestroyed:
 
+# The empty GDI transport from chn2 lands and can be captured by Nod's E6.
+E6:
+	Captures@transport:
+		CaptureTypes: mission-transport
+		ValidRelationships: Enemy
+
+TRAN.CAPTURE:
+	Inherits: TRAN
+	RenderSprites:
+		Image: TRAN
+	Buildable:
+		Prerequisites: ~disabled
+	Cargo:
+		LoadedCondition: carrying-passengers
+	CaptureManager:
+	Capturable:
+		Types: mission-transport
+		RequiresCondition: !airborne && !carrying-passengers
+
 # Gunboats count towards the original All Destr. victory condition. The
 # ^Ship default has no MustBeDestroyed trait, so it is added back here.
 BOAT:

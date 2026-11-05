@@ -19,8 +19,9 @@
 -- Tanks require that fourth-building escalation. The western Ion Cannon
 -- starts 60 seconds after the first airstrike. The north bases keep a
 -- difficulty-scaled mobile garrison: a lost harvester is rebuilt (or paid for
--- by selling a support building) instead of triggering an all-out attack,
--- and only a real base assault commits the whole garrison.
+-- by selling a support building) instead of triggering an all-out attack.
+-- On Hard, any local building hit releases two reserves and the Orcas;
+-- Easy and Normal keep the narrower key-building alarm.
 
 local difficulty
 local land = {}
@@ -28,12 +29,15 @@ local bases
 local assigned = {}
 local guarded = {}
 local defenseResponses = {}
+local harvesterResponses = {}
 local autoStarted = false
 local atk4Triggered = false
 local grd1Triggered = false
 local westUnderAttackUntil = 0
 local eastReliefUntil = 0
 local retreatingOrcas = {}
+local huntingOrcas = {}
+local ionAnnounced = false
 local MaxOrcas = { easy = 1, normal = 2, hard = 2 }
 local airstrikeStopped = false
 local airliftBaseIndex = 1
@@ -61,12 +65,15 @@ local StartGarrison = {
 -- Hard gets a second starting harvester per base so losing one does not stop
 -- the economy. Set to 0 to keep only the normal replacement behaviour.
 local ExtraHarvestersOnHard = 1
+local HarvesterTarget = { easy = 1, normal = 1, hard = 2 }
+local HarvesterReserve = 500
 local BaseDefenseAlarmSeconds = 45
 local HarvesterDefenseLockSeconds = 10
+local ReserveReleaseCooldownSeconds = 30
 local EconomySellCooldownSeconds = 20
 local EconomySellOrder = { "gtwr", "atwr", "pyle" }
--- Only a hit on a production/tech building is a real base assault. Poking a
--- guard tower or silo must not pull the whole garrison out of position.
+-- On Hard every repairable building, including guard towers and silos,
+-- triggers the local alarm. Easy and Normal keep the old key-building filter.
 local BaseDefenseBuildings = { fact = true, proc = true, weap = true, pyle = true, hq = true, eye = true }
 
 local RebuildHarvester
@@ -204,6 +211,16 @@ local function Owned(player, kind)
 	return nil
 end
 
+-- Counts existing harvesters plus a replacement that is already queued or
+-- provided by the emergency refinery's free actor.
+local function HarvesterCount(base)
+	local count = base.harvesterBuilding and 1 or 0
+	for _, actor in ipairs(base.player.GetActorsByType("harv")) do
+		if IsLive(actor) and actor.Owner == base.player then count = count + 1 end
+	end
+	return count
+end
+
 local function IsLocal(base, actor)
 	local dx, dy = actor.Location.X - base.yard[2], actor.Location.Y - base.yard[3]
 	return dx * dx + dy * dy <= 24 * 24
@@ -333,6 +350,24 @@ local function AddAssault(base, team)
 	for _, unit in ipairs(team) do
 		if not IsAssaultUnit(base, unit) then table.insert(base.assault, unit) end
 	end
+end
+
+-- Two units leave the local reserve for a base alarm. They stay tracked as
+-- defenders so their slot is released when they go idle again and the
+-- regular attack loop does not pull them away immediately.
+local function ReleaseReserve(base, limit)
+	local team = {}
+	PruneReserve(base)
+	for i = #base.reserve, 1, -1 do
+		if #team >= limit then break end
+		local unit = base.reserve[i]
+		if IsLive(unit) and unit.IsInWorld then
+			table.remove(base.reserve, i)
+			table.insert(base.defenders, unit)
+			table.insert(team, unit)
+		end
+	end
+	return team
 end
 
 local function TargetOnLand(origin, target)
@@ -492,6 +527,33 @@ local function RequestEastRelief(attacker)
 	SendTeam(team, GDI, { target }, true)
 end
 
+-- Orcas need an explicit order. Stance and Hunt alone leave them hovering at
+-- the pad until the enemy is almost inside the base, and then they only engage
+-- whatever AutoTarget happens to see. Register the idle hunt only once.
+local function StartOrcaHunt(orca)
+	if not IsLive(orca) or huntingOrcas[orca] then return end
+	huntingOrcas[orca] = true
+	IdleHunt(orca)
+end
+
+local function DefendWithOrcas(owner, target, release)
+	if target == nil or not target.HasProperty("Location") then return end
+	for _, orca in ipairs(owner.GetActorsByType("orca")) do
+		-- A damaged Orca stays in its repair retreat; pulling it out again
+		-- would make it trade its remaining health for the next hit.
+		if IsLive(orca) and orca.IsInWorld and not retreatingOrcas[orca] then
+			if orca.HasProperty("Stance") then orca.Stance = "AttackAnything" end
+			if orca.HasProperty("Stop") then orca.Stop() end
+			if orca.HasProperty("AttackMove") then orca.AttackMove(target.Location, 2) end
+			if release then
+				StartOrcaHunt(orca)
+			elseif orca.HasProperty("ReturnToBase") then
+				orca.ReturnToBase()
+			end
+		end
+	end
+end
+
 local function AllOutAttack(base, target)
 	if MissionFinished then return end
 	local team = {}
@@ -505,16 +567,11 @@ local function AllOutAttack(base, target)
 	base.defenders = {}
 	base.reserve = {}
 	base.produced = {}
-	if #team == 0 then return end
-	AddAssault(base, team)
-	SendTeam(team, base.player, { target or base.rally }, true)
-	for _, orca in ipairs(base.player.GetActorsByType("orca")) do
-		if IsLive(orca) and orca.IsInWorld then
-			retreatingOrcas[orca] = nil
-			if orca.HasProperty("Stance") then orca.Stance = "AttackAnything" end
-			IdleHunt(orca)
-		end
+	if #team > 0 then
+		AddAssault(base, team)
+		SendTeam(team, base.player, { target or base.rally }, true)
 	end
+	DefendWithOrcas(base.player, target or base.rally, true)
 end
 
 local function StartBaseDefense(base, target)
@@ -524,35 +581,58 @@ local function StartBaseDefense(base, target)
 	AllOutAttack(base, target)
 end
 
--- A harvester that is only damaged pulls a few nearby defenders instead of
--- committing the whole base. They return home after the attacker is gone.
+-- A hit on a harvester pulls nearby defenders. Hard uses the broad nod13b
+-- reaction; Easy and Normal keep the old limited pull with a return timer.
 local function PullHarvesterDefenders(base, harv, attacker, damage)
 	if MissionFinished or base == nil or damage == nil or damage <= 0 then return end
 	if not IsLive(attacker) or not attacker.HasProperty("Location") then return end
-	if base.harvesterDefenseUntil ~= nil and DateTime.GameTime < base.harvesterDefenseUntil then return end
-	base.harvesterDefenseUntil = DateTime.GameTime + DateTime.Seconds(HarvesterDefenseLockSeconds)
-	local limit = math.min(3, DefenderReserve[difficulty])
-	local count = 0
-	for _, unit in ipairs(base.player.GetGroundAttackers()) do
-		if count >= limit then break end
-		if IsLive(unit) and unit.IsInWorld and unit.HasProperty("AttackMove")
-			and IsNorthernRegion(Region(unit.Location)) and SameLand(unit.Location, attacker.Location)
-			and (IsReserve(base, unit) or IsDefender(base, unit)) then
-			local home = unit.Location
-			if unit.HasProperty("Stop") then unit.Stop() end
-			unit.AttackMove(attacker.Location, 2)
-			Trigger.AfterDelay(DateTime.Seconds(12), function()
-				if IsLive(unit) and unit.IsInWorld and unit.HasProperty("Move") then unit.Move(home) end
-			end)
-			count = count + 1
+	if difficulty ~= "hard" then
+		if base.harvesterDefenseUntil ~= nil and DateTime.GameTime < base.harvesterDefenseUntil then return end
+		base.harvesterDefenseUntil = DateTime.GameTime + DateTime.Seconds(HarvesterDefenseLockSeconds)
+		local limit = math.min(3, DefenderReserve[difficulty])
+		local count = 0
+		for _, unit in ipairs(base.player.GetGroundAttackers()) do
+			if count >= limit then break end
+			if IsLive(unit) and unit.IsInWorld and unit.HasProperty("AttackMove")
+				and IsNorthernRegion(Region(unit.Location)) and SameLand(unit.Location, attacker.Location)
+				and (IsReserve(base, unit) or IsDefender(base, unit)) then
+				local home = unit.Location
+				if unit.HasProperty("Stop") then unit.Stop() end
+				unit.AttackMove(attacker.Location, 2)
+				Trigger.AfterDelay(DateTime.Seconds(12), function()
+					if IsLive(unit) and unit.IsInWorld and unit.HasProperty("Move") then unit.Move(home) end
+				end)
+				count = count + 1
+			end
+		end
+		DefendWithOrcas(base.player, attacker)
+		return
+	end
+
+	-- Hard: every GDI ground unit within ten cells on the same landmass
+	-- reacts, without a unit limit or return timer.
+	for i = #harvesterResponses, 1, -1 do
+		local response = harvesterResponses[i]
+		if DateTime.GameTime >= response.expires then
+			table.remove(harvesterResponses, i)
+		elseif response.owner == base.player and response.attacker == attacker then
+			return
 		end
 	end
-	for _, orca in ipairs(base.player.GetActorsByType("orca")) do
-		if IsLive(orca) and orca.IsInWorld and not retreatingOrcas[orca] then
-			orca.Stop()
-			orca.AttackMove(attacker.Location)
-			orca.ReturnToBase()
+	table.insert(harvesterResponses, { owner = base.player, attacker = attacker, expires = DateTime.GameTime + DateTime.Seconds(2) })
+	for _, unit in ipairs(base.player.GetGroundAttackers()) do
+		if IsLive(unit) and unit.IsInWorld and unit.HasProperty("AttackMove")
+			and SameLand(unit.Location, attacker.Location) then
+			local dx, dy = unit.Location.X - harv.Location.X, unit.Location.Y - harv.Location.Y
+			if dx * dx + dy * dy <= 100 then
+				if unit.HasProperty("Stop") then unit.Stop() end
+				unit.AttackMove(attacker.Location, 2)
+			end
 		end
+	end
+	if DateTime.GameTime >= (base.harvesterDefenseUntil or 0) then
+		base.harvesterDefenseUntil = DateTime.GameTime + DateTime.Seconds(HarvesterDefenseLockSeconds)
+		DefendWithOrcas(base.player, attacker)
 	end
 end
 
@@ -581,10 +661,24 @@ local function DefendAgainst(actor, attacker, damage)
 	if not IsLive(attacker) or attacker.Owner ~= Nod or not attacker.IsInWorld
 		or not attacker.HasProperty("Location") then return end
 	local base = BaseForPlayer(owner)
-	if base ~= nil and actor.HasProperty("StartBuildingRepairs") and IsLocal(base, actor)
-		and BaseDefenseBuildings[actor.Type] then
-		StartBaseDefense(base, attacker)
-		if owner == GDIWest then RequestEastRelief(attacker) end
+	if base ~= nil and actor.HasProperty("StartBuildingRepairs") and IsLocal(base, actor) then
+		if difficulty == "hard" then
+			-- Hard only: any repairable building is a base alarm. Release two
+			-- reserves and the Orcas instead of committing the whole garrison.
+			local wasDefending = base.defending
+			base.defending = true
+			base.defenseUntil = math.max(base.defenseUntil, DateTime.GameTime + DateTime.Seconds(BaseDefenseAlarmSeconds))
+			if owner == GDIWest and BaseDefenseBuildings[actor.Type] then RequestEastRelief(attacker) end
+			if not wasDefending then DefendWithOrcas(owner, attacker, true) end
+			if DateTime.GameTime >= (base.reserveRelease or 0) then
+				base.reserveRelease = DateTime.GameTime + DateTime.Seconds(ReserveReleaseCooldownSeconds)
+				local team = ReleaseReserve(base, 2)
+				if #team > 0 then SendTeam(team, base.player, { { Location = attacker.Location } }, true) end
+			end
+		elseif BaseDefenseBuildings[actor.Type] then
+			StartBaseDefense(base, attacker)
+			if owner == GDIWest then RequestEastRelief(attacker) end
+		end
 	end
 	if base ~= nil and IsLocal(base, actor) then StartNorthernOffensive() end
 	for i = #defenseResponses, 1, -1 do
@@ -597,13 +691,17 @@ local function DefendAgainst(actor, attacker, damage)
 	end
 	table.insert(defenseResponses, { owner = owner, attacker = attacker, expires = DateTime.GameTime + DateTime.Seconds(2) })
 	local slots = base and AssaultSlots(base) or 0
+	local radius = 12
+	if difficulty == "hard" then
+		radius = actor.HasProperty("StartBuildingRepairs") and 18 or 10
+	end
 	for _, unit in ipairs(owner.GetGroundAttackers()) do
 		if IsLive(unit) and unit.IsInWorld and unit.HasProperty("AttackMove")
 			and SameLand(unit.Location, attacker.Location) then
 			local dx, dy = unit.Location.X - actor.Location.X, unit.Location.Y - actor.Location.Y
 			local northernUnit = base ~= nil and IsNorthernRegion(Region(unit.Location))
 			local alreadyResponding = northernUnit and (IsAssaultUnit(base, unit) or IsDefender(base, unit))
-			if dx * dx + dy * dy <= 144 and (not northernUnit or alreadyResponding or slots > 0) then
+			if dx * dx + dy * dy <= radius * radius and (not northernUnit or alreadyResponding or slots > 0) then
 				if northernUnit and not alreadyResponding then
 					table.insert(base.defenders, unit)
 					slots = slots - 1
@@ -704,7 +802,7 @@ local function AddStartingHarvester(base)
 end
 
 local function AddExtraHarvester(base)
-	if #base.player.GetActorsByType("harv") >= 2 then return end
+	if HarvesterCount(base) >= HarvesterTarget[difficulty] then return end
 	local proc = LocalBuilding(base, "proc")
 	if proc == nil then return end
 	local cell = FindUnitSpot(proc.Location)
@@ -830,6 +928,11 @@ IonCannonStrike = function()
 	if power == "Low" or power == "Critical" then
 		Trigger.AfterDelay(DateTime.Seconds(60), IonCannonStrike)
 		return
+	end
+	if not ionAnnounced then
+		ionAnnounced = true
+		Media.PlaySpeechNotification(Nod, "IonCannonCharging")
+		Media.DisplayMessageToPlayer(Nod, UserInterface.GetFluentMessage("ion-cannon-online"))
 	end
 	local target = FindIonCannonTarget(eye)
 	if target == nil then
@@ -1019,6 +1122,7 @@ local function FinishBuilding(base, entry, yard, cost, attempts, emergencyRefine
 		or not player.HasPrerequisites(prerequisites[entry[1]]) then
 		player.Cash = player.Cash + cost
 		base.rebuilding = false
+		if emergencyRefinery then base.harvesterBuilding = false end
 		return
 	end
 	if not SiteFree(entry, nil, player) then
@@ -1029,6 +1133,7 @@ local function FinishBuilding(base, entry, yard, cost, attempts, emergencyRefine
 		else
 			player.Cash = player.Cash + cost
 			base.rebuilding = false
+			if emergencyRefinery then base.harvesterBuilding = false end
 		end
 		return
 	end
@@ -1040,9 +1145,11 @@ local function FinishBuilding(base, entry, yard, cost, attempts, emergencyRefine
 	base.rebuilding = false
 	if emergencyRefinery then
 		Trigger.AfterDelay(1, function()
+			base.harvesterBuilding = false
 			for _, unit in ipairs(player.GetActorsByType("harv")) do
 				if IsLive(unit) and unit.Owner == player and unit.IsInWorld then
 					Guard(unit)
+					TrackHarvester(base, unit)
 					if unit.HasProperty("FindResources") then unit.FindResources() end
 				end
 			end
@@ -1078,7 +1185,16 @@ local function Rebuild(base)
 			if BuildingAt(entry) ~= nil or not SiteFree(entry, nil, nil) then
 				entry = FindNearbySite(base, "proc", yard.Location, nil)
 			end
-			if entry ~= nil then StartBuilding(base, entry, yard, true) end
+			if entry ~= nil then
+				-- A paid replacement may already be queued. In that case the
+				-- emergency refinery must not spawn a second, free harvester.
+				local freeActor = not base.harvesterBuilding
+				if freeActor then
+					base.harvesterBuilding = true
+					Trigger.AfterDelay(DateTime.Seconds(120), function() base.harvesterBuilding = false end)
+				end
+				StartBuilding(base, entry, yard, freeActor)
+			end
 		end
 		return
 	end
@@ -1162,7 +1278,7 @@ local function OrcaWatch()
 					retreatingOrcas[orca] = nil
 					if base.defending then
 						if orca.HasProperty("Stance") then orca.Stance = "AttackAnything" end
-						IdleHunt(orca)
+						StartOrcaHunt(orca)
 					end
 				end
 			end
@@ -1174,10 +1290,10 @@ end
 local function ProduceOrca(base)
 	if MissionFinished or base.orcaBusy ~= nil then return end
 	local pad = LocalBuilding(base, "hpad")
-	local harv = Owned(base.player, "harv")
-	if pad == nil or harv == nil or #base.player.GetActorsByType("orca") >= MaxOrcas[difficulty] then return end
+	local harvReserve = HarvesterCount(base) == 0 and (Actor.Cost("harv") + HarvesterReserve) or 0
+	if pad == nil or #base.player.GetActorsByType("orca") >= MaxOrcas[difficulty] then return end
 	if not LocalTech(base, "orca") or not base.player.HasPrerequisites(prerequisites.orca)
-		or GDIFunds(base.player) < Actor.Cost("orca") + 500 then return end
+		or GDIFunds(base.player) < Actor.Cost("orca") + 500 + harvReserve then return end
 
 	local stamp = DateTime.GameTime
 	base.orcaBusy = stamp
@@ -1193,7 +1309,7 @@ local function ProduceOrca(base)
 				end)
 				if base.defending then
 					if orca.HasProperty("Stance") then orca.Stance = "AttackAnything" end
-					IdleHunt(orca)
+					StartOrcaHunt(orca)
 				end
 			end
 		end
@@ -1245,7 +1361,21 @@ end
 RebuildHarvester = function(base, killer)
 	if MissionFinished or base == nil then return end
 	local player = base.player
-	if Owned(player, "harv") ~= nil or base.harvesterBuilding then return end
+	if HarvesterCount(base) > 0 or base.harvesterBuilding then return end
+
+	-- Without a refinery, Rebuild starts the paid emergency refinery, which
+	-- brings its own free harvester. Do not queue a paid one in parallel.
+	-- If even that recovery cannot be started, fall through to the sell and
+	-- all-out fallback instead of leaving the base permanently passive.
+	if LocalBuilding(base, "proc") == nil then
+		local canRebuildProc = GDIFunds(player) >= Actor.Cost("proc")
+			and LocalTech(base, "proc") and player.HasPrerequisites(prerequisites.proc)
+		if not canRebuildProc then
+			if SellForEconomy(base) then return end
+			if difficulty ~= "easy" then StartBaseDefense(base, killer) end
+		end
+		return
+	end
 
 	local factory = LocalBuilding(base, "weap")
 	if factory ~= nil and LocalTech(base, "harv") and player.HasPrerequisites({ "proc" })
@@ -1276,10 +1406,12 @@ RebuildHarvester = function(base, killer)
 		end
 	end
 
-	if SellForEconomy(base) then return end
+	if GDIFunds(player) < Actor.Cost("harv") then
+		if SellForEconomy(base) then return end
 
-	-- Nothing left to recover with: commit the base, but not on Easy.
-	if difficulty ~= "easy" then StartBaseDefense(base, killer) end
+		-- Nothing left to recover with: commit the base, but not on Easy.
+		if difficulty ~= "easy" then StartBaseDefense(base, killer) end
+	end
 end
 
 local infantry = { "e3", "e1", "e1", "e1" }
@@ -1315,13 +1447,13 @@ local function PaidAirlifts()
 	Trigger.AfterDelay(DateTime.Seconds(({ easy = 450, normal = 330, hard = 240 })[difficulty]), PaidAirlifts)
 end
 
-local function CombatOrderPending(base)
-	local pending = base.combatPending
+local function CombatOrderPending(base, factory)
+	if base.combatPending == nil then return false end
+	local pending = base.combatPending[factory]
 	if pending == nil then return false end
-	local factory = pending.factory
 	if not IsLive(factory) or factory.Owner ~= base.player or not factory.IsInWorld
 		or not factory.HasProperty("IsProducing") then
-		base.combatPending = nil
+		base.combatPending[factory] = nil
 		return false
 	end
 	if factory.IsProducing(pending.kind) then
@@ -1330,7 +1462,7 @@ local function CombatOrderPending(base)
 		-- The queue can empty before its product is added at frame end.
 		pending.emptySince = DateTime.GameTime
 	elseif DateTime.GameTime > pending.emptySince then
-		base.combatPending = nil
+		base.combatPending[factory] = nil
 		return false
 	end
 	return true
@@ -1339,13 +1471,9 @@ end
 local function Produce(base)
 	local player = base.player
 	local factory = LocalBuilding(base, "weap")
-	local harvester = Owned(player, "harv")
-	if harvester == nil then
-		if factory ~= nil and LocalTech(base, "harv") and player.HasPrerequisites({ "proc" }) then
-			Queue(factory, "harv", player)
-		end
-		return
-	end
+	-- RebuildHarvester owns the replacement. Combat production keeps running;
+	-- only enough money for an outstanding harvester is held back.
+	local harvReserve = HarvesterCount(base) == 0 and (Actor.Cost("harv") + HarvesterReserve) or 0
 	if LocalBuilding(base, "fact") == nil then
 		local mcv = LocalBuilding(base, "mcv")
 		if base.mcv == nil and mcv ~= nil then
@@ -1356,10 +1484,6 @@ local function Produce(base)
 		end
 		return
 	end
-	if CombatOrderPending(base) then return end
-	local pyle = LocalBuilding(base, "pyle")
-	if (pyle ~= nil and pyle.HasProperty("IsProducing") and pyle.IsProducing("e1"))
-		or (factory ~= nil and factory.HasProperty("IsProducing") and factory.IsProducing("jeep")) then return end
 
 	local total, infantryCount, vehicleCount = ProducedCounts(base)
 	local htnkMissing = base.player == GDI and armorEscalated and LocalTech(base, "htnk")
@@ -1372,13 +1496,15 @@ local function Produce(base)
 	local specs = base.nextProduction == "vehicle"
 		and { { "weap", vehicles, vehicleCount }, { "pyle", infantry, infantryCount } }
 		or { { "pyle", infantry, infantryCount }, { "weap", vehicles, vehicleCount } }
+	base.combatPending = base.combatPending or {}
 	for _, spec in ipairs(specs) do
 		local producer = LocalBuilding(base, spec[1])
 		-- The east base must still get its first Mammoth even when the normal
 		-- vehicle category is already full. Once it has one, the normal cap
 		-- applies again.
 		local htnkWanted = spec[1] == "weap" and htnkMissing
-		if producer ~= nil and (spec[3] < categoryLimit or htnkWanted) then
+		if producer ~= nil and (spec[3] < categoryLimit or htnkWanted)
+			and not CombatOrderPending(base, producer) then
 			if producer.HasProperty("RallyPoint") then producer.RallyPoint = base.rally.Location end
 			if htnkWanted then
 				for i = 1, #spec[2] do
@@ -1397,13 +1523,13 @@ local function Produce(base)
 				table.insert(spec[2], kind)
 				-- Do not spend the Mammoth savings on another cheap vehicle:
 				-- wait until the east base can afford its first HTNK.
-				if kind == "htnk" and GDIFunds(player) < Actor.Cost(kind) + 500 then break end
+				if kind == "htnk" and GDIFunds(player) < Actor.Cost(kind) + 500 + harvReserve then break end
 				if LocalTech(base, kind) and player.HasPrerequisites(unitPrerequisites[kind])
-					and GDIFunds(player) >= Actor.Cost(kind) + 500
+					and GDIFunds(player) >= Actor.Cost(kind) + 500 + harvReserve
 					and Queue(producer, kind, player) and producer.IsProducing(kind) then
-					base.combatPending = { factory = producer, kind = kind }
+					base.combatPending[producer] = { kind = kind }
 					base.nextProduction = spec[1] == "pyle" and "vehicle" or "infantry"
-					return
+					break
 				end
 			end
 		end
@@ -1414,15 +1540,17 @@ local function OnProduced(factory, unit, productionType)
 	if MissionFinished or not IsLive(factory) or not IsLive(unit) then return end
 	for _, base in ipairs(bases) do
 		if factory.Owner == base.player and unit.Owner == base.player and IsLocal(base, factory) then
-			if base.combatPending ~= nil and base.combatPending.factory == factory
-				and base.combatPending.kind == unit.Type then base.combatPending = nil end
-			if factory.Type == "weap" and productionType == "Vehicle.GDI" then
-				if unit.Type == "harv" then
-					base.harvesterBuilding = false
-					Guard(unit)
-					TrackHarvester(base, unit)
-					if unit.HasProperty("FindResources") then unit.FindResources() end
-				elseif unit.Type == "mcv" and base.mcv == nil then
+			if base.combatPending ~= nil and base.combatPending[factory] ~= nil
+				and base.combatPending[factory].kind == unit.Type then
+				base.combatPending[factory] = nil
+			end
+			if unit.Type == "harv" then
+				base.harvesterBuilding = false
+				Guard(unit)
+				TrackHarvester(base, unit)
+				if unit.HasProperty("FindResources") then unit.FindResources() end
+			elseif factory.Type == "weap" and productionType == "Vehicle.GDI" then
+				if unit.Type == "mcv" and base.mcv == nil then
 					base.mcv = unit
 					WatchMCV(base, unit, 0)
 				elseif unit.HasProperty("AttackMove") then
@@ -1477,9 +1605,11 @@ SetupAI = function()
 	for _, base in ipairs(bases) do
 		base.defending = false
 		base.defenseUntil = 0
+		base.reserveRelease = 0
 		base.harvesterBuilding = false
 		base.harvesterDefenseUntil = 0
 		base.orcaBusy = nil
+		base.combatPending = {}
 	end
 	BuildLandRegions()
 	for _, base in ipairs(bases) do
@@ -1551,8 +1681,6 @@ SetupAI = function()
 	Trigger.AfterDelay(DateTime.Seconds(({ easy = 450, normal = 330, hard = 240 })[difficulty]), PaidAirlifts)
 	Trigger.AfterDelay(DateTime.Seconds(AirstrikeFirstDelay[difficulty]), Airstrike)
 	Trigger.AfterDelay(DateTime.Seconds(AirstrikeFirstDelay[difficulty] + 60), IonCannonStrike)
-	Media.PlaySpeechNotification(Nod, "IonCannonCharging")
-	Media.DisplayMessageToPlayer(Nod, UserInterface.GetFluentMessage("ion-cannon-online"))
 	CheckGDIEconomy()
 	SouthDefense()
 	OrcaWatch()

@@ -17,6 +17,7 @@ MissionFinished = false
 OutcomeCheckPending = false
 AirstrikeStopped = false
 IonCannonStopped = false
+WestReinforcementsStopped = false
 
 -- Original times, converted from tenths of a minute: the MCV and two Light
 -- Tanks arrive at 14.8 minutes, the transport helicopter at 19.3 minutes.
@@ -56,7 +57,7 @@ HouseEliminated = function(player)
 		end
 	end
 
-	for _, actorType in ipairs({ "tran", "tran.in" }) do
+	for _, actorType in ipairs({ "tran", "tran.capture", "tran.in" }) do
 		for _, transport in ipairs(player.GetActorsByType(actorType)) do
 			if not transport.IsDead and transport.IsInWorld and transport.HasProperty("Passengers") then
 				for _, passenger in ipairs(transport.Passengers) do
@@ -83,6 +84,15 @@ local function StopIonCannon()
 	IonCannonStopped = true
 	Media.DisplayMessageToPlayer(Nod, UserInterface.GetFluentMessage("ion-cannon-offline"))
 	Nod.MarkCompletedObjective(StopIonCannonObjective)
+end
+
+-- The western base calls in its relief force through its Communications
+-- Center. Destroying or capturing it permanently stops those reinforcements.
+function StopWestReinforcements()
+	if WestReinforcementsStopped then return end
+	WestReinforcementsStopped = true
+	Media.DisplayMessageToPlayer(Nod, UserInterface.GetFluentMessage("west-reinforcements-stopped"))
+	Nod.MarkCompletedObjective(StopWestReinforcementsObjective)
 end
 
 local function SendSouthernMCV()
@@ -126,6 +136,7 @@ WorldLoaded = function()
 	EliminateGDI = AddPrimaryObjective(Nod, "eliminate-gdi-forces")
 	BuildTemple = AddSecondaryObjective(Nod, "build-temple")
 	StopAirstrikesObjective = AddSecondaryObjective(Nod, "destroy-gdi-communications-center")
+	StopWestReinforcementsObjective = AddSecondaryObjective(Nod, "destroy-gdi-west-communications-center")
 	StopIonCannonObjective = AddSecondaryObjective(Nod, "destroy-gdi-advanced-communications-center")
 	Nod.Cash = Nod.Cash + StartingCashBonus[Difficulty or "normal"]
 
