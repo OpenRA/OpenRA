@@ -52,7 +52,7 @@ local FirstLanding = { easy = 706, normal = 588, hard = 500 }
 local AirstrikeFirstDelay = { easy = 1426, normal = 1188, hard = 1010 }
 local AirstrikeInterval = { easy = 600, normal = 480, hard = 420 }
 local IonCannonFirstDelay = { easy = 2400, normal = 1920, hard = 1500 }
-local IonCannonInterval = { easy = 900, normal = 720, hard = 600 }
+local IonCannonInterval = { easy = 600, normal = 480, hard = 360 }
 local AirliftFirstDelay = { easy = 1786, normal = 1488, hard = 1265 }
 local AirliftInterval = { easy = 480, normal = 360, hard = 300 }
 local AutoWaveInterval = { easy = 240, normal = 180, hard = 120 }
