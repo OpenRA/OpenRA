@@ -381,6 +381,8 @@ namespace OpenRA
 
 	public class Settings
 	{
+		public const int MaxPlayerNameLength = 16;
+
 		readonly string settingsFile;
 
 		public readonly PlayerSettings Player;
@@ -531,8 +533,8 @@ namespace OpenRA
 				clean = new PlayerSettings().Name;
 
 			// avoid UI glitches
-			if (clean.Length > 16)
-				clean = clean[..16];
+			if (clean.Length > MaxPlayerNameLength)
+				clean = clean[..MaxPlayerNameLength];
 
 			return clean;
 		}
