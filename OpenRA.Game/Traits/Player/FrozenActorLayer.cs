@@ -342,7 +342,7 @@ namespace OpenRA.Traits
 
 		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
-			return world.ScreenMap.RenderableFrozenActorsInBox(owner, wr.Viewport.TopLeft, wr.Viewport.BottomRight)
+			return world.ScreenMap.RenderableFrozenActorsInBox(owner, wr.Viewport.Rect)
 				.Where(f => f.Visible)
 				.SelectMany(ff => ff.Render());
 		}

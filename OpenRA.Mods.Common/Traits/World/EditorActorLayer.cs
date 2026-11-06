@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
-			foreach (var p in PreviewsInScreenBox(wr.Viewport.TopLeft, wr.Viewport.BottomRight))
+			foreach (var p in PreviewsInScreenBox(wr.Viewport.Rect))
 				foreach (var r in p.Render())
 					yield return r;
 		}
@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IRenderable> RenderAnnotations(Actor self, WorldRenderer wr)
 		{
-			return PreviewsInScreenBox(wr.Viewport.TopLeft, wr.Viewport.BottomRight)
+			return PreviewsInScreenBox(wr.Viewport.Rect)
 				.SelectMany(p => p.RenderAnnotations());
 		}
 
