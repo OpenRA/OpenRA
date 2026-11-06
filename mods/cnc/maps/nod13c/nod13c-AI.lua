@@ -32,15 +32,17 @@ local retreatingOrcas = {}
 local orcaBase = {}
 local orcaHandled = {}
 local defenseResponses = {}
-local buildingInProgress = false
 local RebuildHarvester
 local Queue
 local RequestRelief
 
-local MaxProducedUnits = { easy = 6, normal = 8, hard = 11 }
-local DefenderReserve = { easy = 2, normal = 3, hard = 5 }
-local StartingCash = { easy = 8000, normal = 10000, hard = 12000 }
-local ReliefSize = { easy = 2, normal = 3, hard = 5 }
+-- Kept in line with nod13b: each base builds and rebuilds on its own. GDI
+-- starts without cash and must fund everything from its harvesters, so the
+-- engineer/commando capture route is not immediately buried under produced
+-- units (original SCB13EC: [GoodGuy] Credits=50).
+local MaxProducedUnits = { easy = 5, normal = 7, hard = 9 }
+local DefenderReserve = { easy = 2, normal = 3, hard = 4 }
+local ReliefSize = { easy = 2, normal = 3, hard = 4 }
 local ReliefCooldown = { easy = 150, normal = 110, hard = 80 }
 local BaseReliefBuildings = { fact = true, proc = true, weap = true, pyle = true,
 	hq = true, eye = true, nuke = true, nuk2 = true, hpad = true, atwr = true, gtwr = true }
@@ -139,11 +141,58 @@ function IsStartingLand(cell)
 	return SameLand(StartCell, cell) or SameLand(ChurchIslandCell, cell)
 end
 
+-- The Communications Center outpost (HQ 22,26) is a small static guard
+-- position, not a fourth production base. Keep it out of the global GDI
+-- mutual-help/relief/Orca machinery so attacking its towers does not summon
+-- the whole map; its own towers and nearby units still defend locally.
+local CentralOutpostCell = CPos.New(22, 26)
+local CentralOutpostRadius = 14
+
+local function IsCentralOutpostActor(actor)
+	if not actor.HasProperty("Location") then return false end
+	local dx = actor.Location.X - CentralOutpostCell.X
+	local dy = actor.Location.Y - CentralOutpostCell.Y
+	return dx * dx + dy * dy <= CentralOutpostRadius * CentralOutpostRadius
+end
+
 local function ActorRegion(actor)
 	local center = CPos.New(math.floor(actor.CenterPosition.X / 1024), math.floor(actor.CenterPosition.Y / 1024))
 	local region = Region(center)
 	if region == 0 then region = Region(actor.Location) end
 	return region
+end
+
+-- GDI waves only start once Nod has a real mainland foothold. The starting
+-- peninsula and the church island do not count; four completed Nod
+-- buildings on the big island unlock patrols, APC counter-attacks, the
+-- scripted atk waves and the Autocreate waves.
+local WaveBuildingThreshold = 4
+
+local function MainlandBuildingCount()
+	local startRegion, churchRegion = Region(StartCell), Region(ChurchIslandCell)
+	local count = 0
+	for _, actor in ipairs(Nod.GetActors()) do
+		if IsLive(actor) and actor.IsInWorld and actor.HasProperty("StartBuildingRepairs") then
+			local region = ActorRegion(actor)
+			if region ~= 0 and region ~= startRegion and region ~= churchRegion then
+				count = count + 1
+			end
+		end
+	end
+	return count
+end
+
+local function WavesUnlocked()
+	return MainlandBuildingCount() >= WaveBuildingThreshold
+end
+
+local function RunWhenUnlocked(fn)
+	if MissionFinished then return end
+	if WavesUnlocked() then
+		fn()
+		return
+	end
+	Trigger.AfterDelay(DateTime.Seconds(30), function() RunWhenUnlocked(fn) end)
 end
 
 local function TargetOnLand(origin, target)
@@ -321,19 +370,47 @@ local function OrderAttack(unit)
 	end
 end
 
-local function WatchAttackers(team, owner)
+local function ClosestBuilding(unit)
+	local target, distance
+	for _, actor in ipairs(Nod.GetActors()) do
+		if IsLive(actor) and actor.IsInWorld and actor.HasProperty("Location")
+			and actor.HasProperty("StartBuildingRepairs")
+			and TargetOnLand(unit.Location, actor) then
+			local dx, dy = unit.Location.X - actor.Location.X, unit.Location.Y - actor.Location.Y
+			local d = dx * dx + dy * dy
+			if distance == nil or d < distance then
+				target, distance = actor, d
+			end
+		end
+	end
+	return target
+end
+
+-- Original atk1..atk7 and apc2 use "Attack Base". Prefer Nod buildings and
+-- only fall back to the nearest Nod unit when no building is reachable.
+local function OrderAttackBase(unit)
+	if not unit.HasProperty("AttackMove") then return end
+	local target = ClosestBuilding(unit)
+	if target ~= nil then unit.AttackMove(target.Location, 2) else OrderAttack(unit) end
+end
+
+local function WatchAttackers(team, owner, baseAttack)
 	if MissionFinished then return end
 	local alive = false
 	for _, unit in ipairs(team) do
 		if IsLive(unit) and unit.Owner == owner then
 			alive = true
-			if unit.IsInWorld and unit.IsIdle then OrderAttack(unit) end
+			if unit.IsInWorld and unit.IsIdle then
+				if baseAttack then OrderAttackBase(unit) else OrderAttack(unit) end
+			end
 		end
 	end
-	if alive then Trigger.AfterDelay(DateTime.Seconds(10), function() WatchAttackers(team, owner) end) end
+	if alive then
+		Trigger.AfterDelay(DateTime.Seconds(10), function() WatchAttackers(team, owner, baseAttack) end)
+	end
 end
 
-local function SendTeam(team, owner, route, attack)
+local function SendTeam(team, owner, route, attack, baseAttack)
 	if MissionFinished then return end
 	for _, unit in ipairs(team) do
 		if IsLive(unit) and unit.Owner == owner and unit.IsInWorld then
@@ -344,10 +421,12 @@ local function SendTeam(team, owner, route, attack)
 					elseif unit.HasProperty("Move") then unit.Move(waypoint.Location) end
 				end
 			end
-			if attack and #route == 0 then OrderAttack(unit) end
+			if attack and #route == 0 then
+				if baseAttack then OrderAttackBase(unit) else OrderAttack(unit) end
+			end
 		end
 	end
-	if attack and #team > 0 then WatchAttackers(team, owner) end
+	if attack and #team > 0 then WatchAttackers(team, owner, baseAttack) end
 end
 
 local function TakeForAttack(base, limit)
@@ -453,6 +532,9 @@ end
 local function DefendAgainst(actor, attacker, damage)
 	if MissionFinished or not IsLive(actor) or not actor.IsInWorld or not actor.HasProperty("Location")
 		or damage == nil or damage <= 0 then return end
+	-- The small Communications Center outpost defends itself with its own
+	-- towers and garrison; it must not pull in the other bases or Orcas.
+	if IsCentralOutpostActor(actor) then return end
 	if not IsLive(attacker) or attacker.Owner ~= Nod or not attacker.HasProperty("Location") then return end
 	if actor.HasProperty("StartBuildingRepairs") and actor.Health < actor.MaxHealth * 0.75 then
 		actor.StartBuildingRepairs()
@@ -500,6 +582,7 @@ local function DefendAgainst(actor, attacker, damage)
 	for _, player in ipairs(gdiPlayers) do
 		for _, unit in ipairs(player.GetGroundAttackers()) do
 			if IsLive(unit) and unit.IsInWorld and unit.HasProperty("AttackMove") and unit ~= actor
+				and not IsCentralOutpostActor(unit)
 				and SameLand(unit.Location, attacker.Location) then
 				local dx, dy = unit.Location.X - actor.Location.X, unit.Location.Y - actor.Location.Y
 				if dx * dx + dy * dy <= radius * radius then
@@ -705,9 +788,8 @@ local northNodes = {
 	{ "atwr", 38, 14 }, { "atwr", 42, 17 }, { "atwr", 52, 15 },
 	{ "gtwr", 39, 14 }, { "gtwr", 41, 17 }, { "gtwr", 45, 7 },
 	{ "gtwr", 48, 12 }, { "nuke", 53, 18 },
-	-- Central outpost, kept in GDI's plan as a forward strongpoint.
-	{ "hq", 22, 26 }, { "nuk2", 20, 25 }, { "silo", 18, 26 },
-	{ "silo", 18, 28 }, { "gtwr", 20, 24 }, { "atwr", 24, 27 },
+	-- The Communications Center (22,26) is a static scripted outpost, not
+	-- part of the north base's rebuild plan.
 }
 local southNodes = {
 	{ "fact", 60, 60 }, { "nuk2", 61, 57 }, { "atwr", 60, 59 },
@@ -722,8 +804,8 @@ local prerequisites = {
 	fix = { "proc" }, fact = { "proc" },
 }
 
-local function StartBuilding(entry, yard)
-	if buildingInProgress then return false end
+local function StartBuilding(base, entry, yard)
+	if base.rebuilding then return false end
 	local player = yard.Owner
 	local kind = entry[1]
 	local cost = Actor.Cost(kind)
@@ -732,10 +814,10 @@ local function StartBuilding(entry, yard)
 	if player.PowerState == "Low" or player.PowerState == "Critical" then
 		buildTime = math.ceil(buildTime * 1.5)
 	end
-	buildingInProgress = true
+	base.rebuilding = true
 	local spentResources = SpendGDIFunds(player, cost)
 	Trigger.AfterDelay(buildTime, function()
-		buildingInProgress = false
+		base.rebuilding = false
 		if MissionFinished then return end
 		if not IsLive(yard) or yard.Owner ~= player or not yard.IsInWorld
 			or BuildingAt(entry) ~= nil or not SiteFree(entry, nil, player) then
@@ -753,7 +835,7 @@ end
 -- prerequisite chain, so rebuild the power plant, refinery and barracks
 -- without their tech gates first.
 local function Bootstrap(base)
-	if buildingInProgress then return false end
+	if base.rebuilding then return false end
 	local yard = LocalBuilding(base, "fact")
 	if yard == nil then return false end
 
@@ -761,7 +843,7 @@ local function Bootstrap(base)
 		for _, entry in ipairs(base.nodes) do
 			if entry[1] == kind and BuildingAt(entry) == nil
 				and GDIFunds(base.player) >= Actor.Cost(kind) and SiteFree(entry, nil, base.player) then
-				return StartBuilding(entry, yard)
+				return StartBuilding(base, entry, yard)
 			end
 		end
 		return false
@@ -774,11 +856,25 @@ local function Bootstrap(base)
 end
 
 local function Rebuild(base)
-	if buildingInProgress then return end
+	if base.rebuilding then return end
 	local yard = LocalBuilding(base, "fact")
 	if yard == nil then return end
 	if Bootstrap(base) then return end
 	if not HasLiveHarvester(base) then return end
+
+	-- Low power pauses radar and support powers. Rebuild a local power plant
+	-- before spending on anything else, as nod13b does.
+	local power = base.player.PowerState
+	if (power == "Low" or power == "Critical")
+		and GDIFunds(base.player) >= Actor.Cost("nuk2") + 800
+		and LocalTech(base, "nuk2") and base.player.HasPrerequisites(prerequisites.nuk2) then
+		local entry = FindNearbySite(base, "nuk2", yard.Location, nil)
+		if entry ~= nil then
+			StartBuilding(base, entry, yard)
+			return
+		end
+	end
+
 	-- The south-western base relies on the EYE instead of an HQ. If both are
 	-- gone, build a paid HQ near the yard so the tech chain can recover.
 	if LocalBuilding(base, "hq") == nil and LocalBuilding(base, "eye") == nil
@@ -786,7 +882,7 @@ local function Rebuild(base)
 		and base.player.HasPrerequisites(prerequisites.hq) then
 		local entry = FindNearbySite(base, "hq", yard.Location, nil)
 		if entry ~= nil then
-			StartBuilding(entry, yard)
+			StartBuilding(base, entry, yard)
 			return
 		end
 	end
@@ -799,7 +895,7 @@ local function Rebuild(base)
 			local required = prerequisites[entry[1]] or {}
 			if GDIFunds(base.player) >= cost + reserve and base.player.HasPrerequisites(required)
 				and SiteFree(entry, nil, base.player) then
-				if StartBuilding(entry, yard) then return end
+				if StartBuilding(base, entry, yard) then return end
 			end
 		end
 	end
@@ -953,12 +1049,12 @@ local function OnProduced(factory, unit, productionType)
 end
 
 local function EnsureHelipad(base)
-	if MissionFinished or LocalBuilding(base, "hpad") ~= nil then return end
+	if MissionFinished or base.rebuilding or LocalBuilding(base, "hpad") ~= nil then return end
 	local yard = LocalBuilding(base, "fact")
 	if yard == nil or GDIFunds(base.player) < Actor.Cost("hpad") + 1500 then return end
 	if not LocalTech(base, "hpad") or not base.player.HasPrerequisites(prerequisites.hpad) then return end
 	local entry = FindNearbySite(base, "hpad", yard.Location, nil)
-	if entry ~= nil then StartBuilding(entry, yard) end
+	if entry ~= nil then StartBuilding(base, entry, yard) end
 end
 
 local function ProduceOrca(base)
@@ -1007,7 +1103,8 @@ local function IdleDefense()
 	for _, player in ipairs(gdiPlayers) do
 		for _, unit in ipairs(player.GetGroundAttackers()) do
 			if IsLive(unit) and unit.IsInWorld and unit.IsIdle and unit.HasProperty("AttackMove")
-				and unit.HasProperty("Stance") and unit.Stance == "Defend" then
+				and unit.HasProperty("Stance") and unit.Stance == "Defend"
+				and not IsCentralOutpostActor(unit) then
 				local target = ClosestEnemy(unit, 16)
 				if target ~= nil then unit.AttackMove(target.Location, 2) end
 			end
@@ -1052,26 +1149,44 @@ local function ScriptedWave(index)
 	local owner = AnyGDIPlayer()
 	if owner == nil then return end
 	local team = SpawnGroupNear(waypoint3, waveUnits[index], owner)
-	SendTeam(team, owner, { waypoint4 }, true)
+	SendTeam(team, owner, { waypoint4 }, true, true)
 end
 
+-- atk1..atk7 keep their original spacing, but the whole sequence waits
+-- until Nod has four buildings on the mainland.
+local function StartWaveSequence(index)
+	if MissionFinished then return end
+	if not WavesUnlocked() then
+		Trigger.AfterDelay(DateTime.Seconds(30), function() StartWaveSequence(index) end)
+		return
+	end
+	ScriptedWave(index)
+	if index < #waveOffsets then
+		local gap = waveOffsets[index + 1] - waveOffsets[index]
+		Trigger.AfterDelay(DateTime.Seconds(gap), function() StartWaveSequence(index + 1) end)
+	end
+end
+
+-- Autocreate waves also wait for the four-building mainland foothold.
 local function AutoWave()
 	if MissionFinished then return end
-	local sent = false
-	for _, base in ipairs(bases) do
-		if not HouseEliminated(base.player) then
-			local team = TakeForAttack(base, 3)
-			if #team > 0 then
-				SendTeam(team, base.player, {}, true)
-				sent = true
+	if WavesUnlocked() then
+		local sent = false
+		for _, base in ipairs(bases) do
+			if not HouseEliminated(base.player) then
+				local team = TakeForAttack(base, 3)
+				if #team > 0 then
+					SendTeam(team, base.player, {}, true)
+					sent = true
+				end
 			end
 		end
-	end
-	if not sent then
-		local owner = AnyGDIPlayer()
-		if owner ~= nil then
-			local team = SpawnGroupNear(waypoint3, { "jeep", "e1", "e1" }, owner)
-			if #team > 0 then SendTeam(team, owner, {}, true) end
+		if not sent then
+			local owner = AnyGDIPlayer()
+			if owner ~= nil then
+				local team = SpawnGroupNear(waypoint3, { "jeep", "e1", "e1" }, owner)
+				if #team > 0 then SendTeam(team, owner, {}, true) end
+			end
 		end
 	end
 	Trigger.AfterDelay(DateTime.Seconds(AutoWaveInterval[difficulty]), AutoWave)
@@ -1181,9 +1296,8 @@ SetupAI = function()
 	GDIWest = GDIWest or Player.GetPlayer("GDIWest")
 	GDISouth = GDISouth or Player.GetPlayer("GDISouth")
 	gdiPlayers = { GDIWest, GDI, GDISouth }
-	local cash = math.floor(StartingCash[difficulty] / 2)
-	GDI.Cash = cash
-	GDIWest.Cash = cash
+	GDI.Cash = 0
+	GDIWest.Cash = 0
 	GDISouth.Cash = 0
 	BuildLandRegions()
 
@@ -1200,6 +1314,7 @@ SetupAI = function()
 		base.defenseUntil = 0
 		base.reserveRelease = 0
 		base.combatPending = nil
+		base.rebuilding = false
 		base.orcaBusy = nil
 		base.harvester = nil
 		base.harvesterBuilding = false
@@ -1237,10 +1352,16 @@ SetupAI = function()
 							break
 						end
 					end
+					-- Original SCB13EC: the two E3 at (4,9) on the starting
+					-- peninsula are Area Guard, not Hunt. Keep them on Defend
+					-- so they only react when Nod comes close.
+					local areaGuard = actor.Type == "e3"
+						and actor.Location.X == 4 and actor.Location.Y == 9
+					local centralOutpostGuard = IsCentralOutpostActor(actor)
 					if actor.HasProperty("Stance") then
-						actor.Stance = localToBase and "Defend" or "AttackAnything"
+						actor.Stance = (localToBase or areaGuard or centralOutpostGuard) and "Defend" or "AttackAnything"
 					end
-					if not localToBase then IdleHunt(actor) end
+					if not localToBase and not areaGuard and not centralOutpostGuard then IdleHunt(actor) end
 				end
 			end
 		end
@@ -1249,7 +1370,8 @@ SetupAI = function()
 	-- Key building losses are serious enough to call the other bases for help.
 	for _, base in ipairs(bases) do
 		for _, actor in ipairs(base.player.GetActors()) do
-			if IsLive(actor) and actor.IsInWorld and BaseReliefBuildings[actor.Type] then
+			if IsLive(actor) and actor.IsInWorld and BaseReliefBuildings[actor.Type]
+				and not IsCentralOutpostActor(actor) then
 				Trigger.OnKilled(actor, function() RequestRelief(base) end)
 				Trigger.OnCapture(actor, function(_, _, _, newOwner)
 					if not IsGDIPlayer(newOwner) then RequestRelief(base) end
@@ -1260,59 +1382,67 @@ SetupAI = function()
 
 	Trigger.OnAnyProduction(OnProduced)
 
-	for i, offset in ipairs(waveOffsets) do
-		Trigger.AfterDelay(DateTime.Seconds(WaveStart[difficulty] + offset), function() ScriptedWave(i) end)
-	end
+	Trigger.AfterDelay(DateTime.Seconds(WaveStart[difficulty]), function() StartWaveSequence(1) end)
 
 	-- trup: three GDI infantry patrol the western approach.
 	Trigger.AfterDelay(DateTime.Seconds(60), function()
-		for _, unit in ipairs(SpawnGroupNear(waypoint18, { "e1", "e2", "e3" }, GDIWest)) do
-			if unit.HasProperty("Patrol") and SameLand(unit.Location, waypoint19.Location) then
-				if unit.HasProperty("Stance") then unit.Stance = "Defend" end
-				unit.Patrol({ waypoint19.Location, waypoint18.Location }, true, DateTime.Seconds(12))
-			else
-				SendTeam({ unit }, unit.Owner, {}, true)
+		RunWhenUnlocked(function()
+			for _, unit in ipairs(SpawnGroupNear(waypoint18, { "e1", "e2", "e3" }, GDIWest)) do
+				if unit.HasProperty("Patrol") and SameLand(unit.Location, waypoint19.Location) then
+					if unit.HasProperty("Stance") then unit.Stance = "Defend" end
+					unit.Patrol({ waypoint19.Location, waypoint18.Location }, true, DateTime.Seconds(12))
+				else
+					SendTeam({ unit }, unit.Owner, {}, true)
+				end
 			end
-		end
+		end)
 	end)
 
 	-- pat1: a Medium Tank patrols the western pass.
 	Trigger.AfterDelay(DateTime.Seconds(90), function()
-		for _, unit in ipairs(SpawnGroupNear(waypoint2, { "mtnk" }, GDIWest)) do
-			if unit.HasProperty("Patrol") then
-				if unit.HasProperty("Stance") then unit.Stance = "Defend" end
-				unit.Patrol({ waypoint3.Location, waypoint4.Location, waypoint2.Location },
-					true, DateTime.Seconds(15))
+		RunWhenUnlocked(function()
+			for _, unit in ipairs(SpawnGroupNear(waypoint2, { "mtnk" }, GDIWest)) do
+				if unit.HasProperty("Patrol") then
+					if unit.HasProperty("Stance") then unit.Stance = "Defend" end
+					unit.Patrol({ waypoint3.Location, waypoint4.Location, waypoint2.Location },
+						true, DateTime.Seconds(15))
+				end
 			end
-		end
+		end)
 	end)
 
 	-- pat2: two Medium Tanks patrol the eastern and southern roads.
 	Trigger.AfterDelay(DateTime.Seconds(120), function()
-		for _, unit in ipairs(SpawnGroupNear(waypoint7, { "mtnk", "mtnk" }, GDI)) do
-			if unit.HasProperty("Patrol") then
-				if unit.HasProperty("Stance") then unit.Stance = "Defend" end
-				unit.Patrol({ waypoint2.Location, waypoint5.Location, waypoint6.Location,
-					waypoint7.Location, waypoint8.Location, waypoint9.Location },
-					true, DateTime.Seconds(18))
+		RunWhenUnlocked(function()
+			for _, unit in ipairs(SpawnGroupNear(waypoint7, { "mtnk", "mtnk" }, GDI)) do
+				if unit.HasProperty("Patrol") then
+					if unit.HasProperty("Stance") then unit.Stance = "Defend" end
+					unit.Patrol({ waypoint2.Location, waypoint5.Location, waypoint6.Location,
+						waypoint7.Location, waypoint8.Location, waypoint9.Location },
+						true, DateTime.Seconds(18))
+				end
 			end
-		end
+		end)
 	end)
 
 	-- apc1: Nod entering the western pass draws an APC counter-attack.
 	Trigger.OnEnteredFootprint(Apc1Cells, function(actor, id)
 		if actor.Owner ~= Nod then return end
 		Trigger.RemoveFootprintTrigger(id)
-		local team = SpawnGroupNear(waypoint4, { "e2", "e2", "e2", "e3", "e3", "apc" }, GDIWest)
-		SendTeam(team, GDIWest, {}, true)
+		RunWhenUnlocked(function()
+			local team = SpawnGroupNear(waypoint4, { "e2", "e2", "e2", "e3", "e3", "apc" }, GDIWest)
+			SendTeam(team, GDIWest, {}, true)
+		end)
 	end)
 
 	-- apc2: Nod approaching the northern base draws a second APC group.
 	Trigger.OnEnteredFootprint(Apc2Cells, function(actor, id)
 		if actor.Owner ~= Nod then return end
 		Trigger.RemoveFootprintTrigger(id)
-		local team = SpawnGroupNear(waypoint23, { "e3", "e3", "e3", "e6", "e6", "apc" }, GDI)
-		SendTeam(team, GDI, {}, true)
+		RunWhenUnlocked(function()
+			local team = SpawnGroupNear(waypoint23, { "e3", "e3", "e3", "e6", "e6", "apc" }, GDI)
+			SendTeam(team, GDI, {}, true, true)
+		end)
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(AirstrikeFirstDelay[difficulty]), Airstrike)

@@ -674,9 +674,6 @@ Actors:
 	Actor201: v29
 		Location: 5,1
 		Owner: Neutral
-	Actor202: gtwr
-		Location: 15,27
-		Owner: GDI
 	GDIHQ: hq
 		Location: 22,26
 		Owner: GDI
@@ -802,12 +799,6 @@ Actors:
 		Owner: GDI
 	Actor244: silo
 		Location: 18,26
-		Owner: GDI
-	Actor245: gtwr
-		Location: 20,24
-		Owner: GDI
-	Actor246: atwr
-		Location: 24,27
 		Owner: GDI
 	Actor247: atwr
 		Location: 12,51
