@@ -812,9 +812,6 @@ Actors:
 	Actor250: nuk2
 		Location: 61,57
 		Owner: GDISouth
-	Actor251: atwr
-		Location: 60,59
-		Owner: GDISouth
 	Actor252: v20
 		Location: 59,54
 		Owner: Neutral

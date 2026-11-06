@@ -168,6 +168,21 @@ end
 -- scripted atk waves and the Autocreate waves.
 local WaveBuildingThreshold = 4
 
+-- The waves come from the north-eastern GDI base and are tied to its
+-- Communications Center (GDINorthHQ, 31,7). Destroying or capturing that
+-- building stops future waves; already-spawned teams keep fighting.
+local WaveSpawnCell = CPos.New(60, 4)
+local WaveSpawn = { Location = WaveSpawnCell }
+
+local function WaveSourceAlive()
+	return IsLive(GDINorthHQ) and GDINorthHQ.IsInWorld and IsGDIPlayer(GDINorthHQ.Owner)
+end
+
+local function WaveOwner()
+	if WaveSourceAlive() then return GDI end
+	return nil
+end
+
 local function MainlandBuildingCount()
 	local startRegion, churchRegion = Region(StartCell), Region(ChurchIslandCell)
 	local count = 0
@@ -187,7 +202,7 @@ local function WavesUnlocked()
 end
 
 local function RunWhenUnlocked(fn)
-	if MissionFinished then return end
+	if MissionFinished or not WaveSourceAlive() then return end
 	if WavesUnlocked() then
 		fn()
 		return
@@ -535,6 +550,9 @@ local function DefendAgainst(actor, attacker, damage)
 	-- The small Communications Center outpost defends itself with its own
 	-- towers and garrison; it must not pull in the other bases or Orcas.
 	if IsCentralOutpostActor(actor) then return end
+	-- Same for the south-eastern outpost: it is a small capture target, not
+	-- a full base. Its own garrison still fights locally.
+	if actor.Owner == GDISouth then return end
 	if not IsLive(attacker) or attacker.Owner ~= Nod or not attacker.HasProperty("Location") then return end
 	if actor.HasProperty("StartBuildingRepairs") and actor.Health < actor.MaxHealth * 0.75 then
 		actor.StartBuildingRepairs()
@@ -792,7 +810,7 @@ local northNodes = {
 	-- part of the north base's rebuild plan.
 }
 local southNodes = {
-	{ "fact", 60, 60 }, { "nuk2", 61, 57 }, { "atwr", 60, 59 },
+	{ "fact", 60, 60 }, { "nuk2", 61, 57 },
 }
 
 local prerequisites = {
@@ -1146,16 +1164,17 @@ end
 
 local function ScriptedWave(index)
 	if MissionFinished then return end
-	local owner = AnyGDIPlayer()
+	local owner = WaveOwner()
 	if owner == nil then return end
-	local team = SpawnGroupNear(waypoint3, waveUnits[index], owner)
+	local team = SpawnGroupNear(WaveSpawn, waveUnits[index], owner)
 	SendTeam(team, owner, { waypoint4 }, true, true)
 end
 
 -- atk1..atk7 keep their original spacing, but the whole sequence waits
--- until Nod has four buildings on the mainland.
+-- until Nod has four buildings on the mainland and the northern base's
+-- Communications Center is still in GDI hands.
 local function StartWaveSequence(index)
-	if MissionFinished then return end
+	if MissionFinished or not WaveSourceAlive() then return end
 	if not WavesUnlocked() then
 		Trigger.AfterDelay(DateTime.Seconds(30), function() StartWaveSequence(index) end)
 		return
@@ -1167,24 +1186,26 @@ local function StartWaveSequence(index)
 	end
 end
 
--- Autocreate waves also wait for the four-building mainland foothold.
+-- Autocreate waves come from the northern base only and also wait for the
+-- four-building mainland foothold.
 local function AutoWave()
-	if MissionFinished then return end
+	if MissionFinished or not WaveSourceAlive() then return end
 	if WavesUnlocked() then
 		local sent = false
 		for _, base in ipairs(bases) do
-			if not HouseEliminated(base.player) then
+			if base.player == GDI and not HouseEliminated(base.player) then
 				local team = TakeForAttack(base, 3)
 				if #team > 0 then
 					SendTeam(team, base.player, {}, true)
 					sent = true
 				end
+				break
 			end
 		end
 		if not sent then
-			local owner = AnyGDIPlayer()
+			local owner = WaveOwner()
 			if owner ~= nil then
-				local team = SpawnGroupNear(waypoint3, { "jeep", "e1", "e1" }, owner)
+				local team = SpawnGroupNear(WaveSpawn, { "jeep", "e1", "e1" }, owner)
 				if #team > 0 then SendTeam(team, owner, {}, true) end
 			end
 		end
@@ -1371,7 +1392,7 @@ SetupAI = function()
 	for _, base in ipairs(bases) do
 		for _, actor in ipairs(base.player.GetActors()) do
 			if IsLive(actor) and actor.IsInWorld and BaseReliefBuildings[actor.Type]
-				and not IsCentralOutpostActor(actor) then
+				and not IsCentralOutpostActor(actor) and base.player ~= GDISouth then
 				Trigger.OnKilled(actor, function() RequestRelief(base) end)
 				Trigger.OnCapture(actor, function(_, _, _, newOwner)
 					if not IsGDIPlayer(newOwner) then RequestRelief(base) end
@@ -1387,7 +1408,7 @@ SetupAI = function()
 	-- trup: three GDI infantry patrol the western approach.
 	Trigger.AfterDelay(DateTime.Seconds(60), function()
 		RunWhenUnlocked(function()
-			for _, unit in ipairs(SpawnGroupNear(waypoint18, { "e1", "e2", "e3" }, GDIWest)) do
+			for _, unit in ipairs(SpawnGroupNear(WaveSpawn, { "e1", "e2", "e3" }, GDI)) do
 				if unit.HasProperty("Patrol") and SameLand(unit.Location, waypoint19.Location) then
 					if unit.HasProperty("Stance") then unit.Stance = "Defend" end
 					unit.Patrol({ waypoint19.Location, waypoint18.Location }, true, DateTime.Seconds(12))
@@ -1401,7 +1422,7 @@ SetupAI = function()
 	-- pat1: a Medium Tank patrols the western pass.
 	Trigger.AfterDelay(DateTime.Seconds(90), function()
 		RunWhenUnlocked(function()
-			for _, unit in ipairs(SpawnGroupNear(waypoint2, { "mtnk" }, GDIWest)) do
+			for _, unit in ipairs(SpawnGroupNear(WaveSpawn, { "mtnk" }, GDI)) do
 				if unit.HasProperty("Patrol") then
 					if unit.HasProperty("Stance") then unit.Stance = "Defend" end
 					unit.Patrol({ waypoint3.Location, waypoint4.Location, waypoint2.Location },
@@ -1414,7 +1435,7 @@ SetupAI = function()
 	-- pat2: two Medium Tanks patrol the eastern and southern roads.
 	Trigger.AfterDelay(DateTime.Seconds(120), function()
 		RunWhenUnlocked(function()
-			for _, unit in ipairs(SpawnGroupNear(waypoint7, { "mtnk", "mtnk" }, GDI)) do
+			for _, unit in ipairs(SpawnGroupNear(WaveSpawn, { "mtnk", "mtnk" }, GDI)) do
 				if unit.HasProperty("Patrol") then
 					if unit.HasProperty("Stance") then unit.Stance = "Defend" end
 					unit.Patrol({ waypoint2.Location, waypoint5.Location, waypoint6.Location,
@@ -1430,8 +1451,8 @@ SetupAI = function()
 		if actor.Owner ~= Nod then return end
 		Trigger.RemoveFootprintTrigger(id)
 		RunWhenUnlocked(function()
-			local team = SpawnGroupNear(waypoint4, { "e2", "e2", "e2", "e3", "e3", "apc" }, GDIWest)
-			SendTeam(team, GDIWest, {}, true)
+			local team = SpawnGroupNear(WaveSpawn, { "e2", "e2", "e2", "e3", "e3", "apc" }, GDI)
+			SendTeam(team, GDI, { waypoint4 }, true)
 		end)
 	end)
 
@@ -1440,7 +1461,7 @@ SetupAI = function()
 		if actor.Owner ~= Nod then return end
 		Trigger.RemoveFootprintTrigger(id)
 		RunWhenUnlocked(function()
-			local team = SpawnGroupNear(waypoint23, { "e3", "e3", "e3", "e6", "e6", "apc" }, GDI)
+			local team = SpawnGroupNear(WaveSpawn, { "e3", "e3", "e3", "e6", "e6", "apc" }, GDI)
 			SendTeam(team, GDI, {}, true, true)
 		end)
 	end)
