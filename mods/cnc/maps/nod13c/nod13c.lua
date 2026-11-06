@@ -14,8 +14,12 @@
 -- construction yard is meant to be captured. A second MCV arrives in the
 -- west at 20 minutes. The original `yyyy` trigger gives an early MCV when
 -- the central GDI outpost HQ is destroyed; `dely` disables that fallback
--- when Nod reaches the western landing area. The scripted airstrikes repeat forever
--- because the original `delx` trigger is not attached to any building.
+-- when Nod reaches the western landing area.
+--
+-- Airstrikes are tied to the northern base's Communications Center
+-- (GDINorthHQ): destroying or capturing it stops them permanently. The
+-- south-western EYE controls both the Ion Cannon and the western relief
+-- force; destroying or capturing it stops both.
 StartingCashBonus = { easy = 2000, normal = 1000, hard = 0 }
 MissionFinished = false
 OutcomeCheckPending = false
@@ -24,6 +28,9 @@ MCVFallbackEnabled = true
 MCVInFlight = false
 MCVResends = 0
 MaxMCVResends = 2
+AirstrikeStopped = false
+IonCannonStopped = false
+WestReinforcementsStopped = false
 
 -- Original times, converted from tenths of a minute: the empty GDI
 -- transport lands at 0.1 minutes (6 s), the Nod commando and its transport
@@ -144,6 +151,25 @@ local function SendNodCommando()
 	Media.DisplayMessageToPlayer(Nod, UserInterface.GetFluentMessage("commando-arrived"))
 end
 
+-- delx: the northern base's Communications Center feeds the A10 strikes.
+-- Destroying or capturing it stops them for the rest of the mission.
+function StopAirstrikes()
+	if AirstrikeStopped then return end
+	AirstrikeStopped = true
+	Media.DisplayMessageToPlayer(Nod, UserInterface.GetFluentMessage("airstrikes-stopped"))
+	Nod.MarkCompletedObjective(StopAirstrikesObjective)
+end
+
+-- delz + west relief relay: the south-western EYE controls both the Ion
+-- Cannon and the western base's relief force. Losing it stops both for good.
+function StopEyePowers()
+	if IonCannonStopped and WestReinforcementsStopped then return end
+	IonCannonStopped = true
+	WestReinforcementsStopped = true
+	Media.DisplayMessageToPlayer(Nod, UserInterface.GetFluentMessage("ion-cannon-offline"))
+	Nod.MarkCompletedObjective(StopEyeObjective)
+end
+
 WorldLoaded = function()
 	Nod = Player.GetPlayer("Nod")
 	GDI = Player.GetPlayer("GDI")
@@ -155,6 +181,8 @@ WorldLoaded = function()
 	EliminateGDI = AddPrimaryObjective(Nod, "eliminate-gdi-forces")
 	ProtectMCV = AddSecondaryObjective(Nod, "protect-the-mcv")
 	BuildTemple = AddSecondaryObjective(Nod, "build-temple")
+	StopAirstrikesObjective = AddSecondaryObjective(Nod, "destroy-gdi-communications-center")
+	StopEyeObjective = AddSecondaryObjective(Nod, "destroy-gdi-advanced-communications-center")
 	Nod.Cash = Nod.Cash + StartingCashBonus[Difficulty or "normal"]
 
 	-- lse2: the starting MCV is the only construction vehicle. Losing it
@@ -192,6 +220,24 @@ WorldLoaded = function()
 		MCVFallbackEnabled = false
 		Trigger.RemoveFootprintTrigger(id)
 	end)
+
+	-- delx: the northern base's Communications Center is the airstrike
+	-- source. Destroying or capturing it stops the A10 strikes for good.
+	if IsLive(GDINorthHQ) then
+		Trigger.OnKilled(GDINorthHQ, StopAirstrikes)
+		Trigger.OnCapture(GDINorthHQ, function(_, _, oldOwner, newOwner)
+			if IsGDIPlayer(oldOwner) and not IsGDIPlayer(newOwner) then StopAirstrikes() end
+		end)
+	end
+
+	-- delz + relief relay: the south-western EYE controls the Ion Cannon and
+	-- the western relief force. Destroying or capturing it stops both.
+	if IsLive(GDIEYE) then
+		Trigger.OnKilled(GDIEYE, StopEyePowers)
+		Trigger.OnCapture(GDIEYE, function(_, _, oldOwner, newOwner)
+			if IsGDIPlayer(oldOwner) and not IsGDIPlayer(newOwner) then StopEyePowers() end
+		end)
+	end
 
 	-- The original church spawns a money crate when demolished. The crate
 	-- itself is created by the CHURCH SpawnActorOnDeath rules.

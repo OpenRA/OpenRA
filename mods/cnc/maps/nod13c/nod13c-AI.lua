@@ -10,21 +10,25 @@
 -- SCB13EC: GDI owns three bases. The original mission has one GDI house; the
 -- port splits it into GDI (northern base and central outpost), GDIWest
 -- (south-western base with the EYE and helipads) and GDISouth (the small
--- south-eastern construction-yard outpost). All three are allied and send
--- each other relief when a key building is lost. Nod starts on the northern
--- peninsula and has to reach the mainland with a captured transport or the
--- second MCV that arrives in the west. The scripted airstrikes repeat forever
--- in the original because their stop trigger is not attached; this port keeps
--- them running as long as any GDI HQ survives.
+-- south-eastern construction-yard outpost). GDI and GDIWest send each other
+-- relief when a key building is lost; GDISouth stays isolated. Nod starts on
+-- the northern peninsula and has to reach the mainland with a captured
+-- transport or the second MCV that arrives in the west. The scripted
+-- airstrikes are stopped by destroying or capturing the northern base's
+-- Communications Center. The south-western base's Advanced Communications
+-- Center (EYE) controls the Ion Cannon and the western relief force;
+-- destroying or capturing it stops both.
 --
 -- Design note: the broad base alarm (any repairable building hit) and the
--- broad harvester defense (all nearby ground units react) are deliberate.
+-- broad harvester defense (all nearby combat units react) are deliberate.
 -- They are the preferred behaviour of the nod13b backport; see
 -- HANDOFF-NOD13B.md and HANDOFF-NOD13C.md.
 
 local difficulty
 local land = {}
 local bases = {}
+AllOutAttackStarted = false
+BaseAlarmStarted = false
 local gdiPlayers = {}
 local guarded = {}
 local trackedHarvesters = {}
@@ -36,16 +40,17 @@ local RebuildHarvester
 local Queue
 local RequestRelief
 
--- Kept in line with nod13b: each base builds and rebuilds on its own. GDI
--- starts without cash and must fund everything from its harvesters, so the
--- engineer/commando capture route is not immediately buried under produced
--- units (original SCB13EC: [GoodGuy] Credits=50).
+-- Each base builds and rebuilds on its own. GDI receives the port's normal
+-- starting funds, split between GDI and GDIWest; GDISouth stays at zero.
 local MaxProducedUnits = { easy = 5, normal = 7, hard = 9 }
 local DefenderReserve = { easy = 2, normal = 3, hard = 4 }
+local StartingCash = { easy = 8000, normal = 10000, hard = 12000 }
 local ReliefSize = { easy = 2, normal = 3, hard = 4 }
 local ReliefCooldown = { easy = 150, normal = 110, hard = 80 }
 local BaseReliefBuildings = { fact = true, proc = true, weap = true, pyle = true,
 	hq = true, eye = true, nuke = true, nuk2 = true, hpad = true, atwr = true, gtwr = true }
+local BaseDefenseBuildings = { fact = true, proc = true, weap = true, pyle = true, hq = true, eye = true }
+local BaseDefenseAlarmSeconds = 45
 -- Original SCB13EC trigger times (tenths of a minute, multiplied by six):
 -- atk1-atk7 at 26.0-40.0 min, A10 strikes every 8 min from 8 min.
 local WaveStart = { easy = 1872, normal = 1560, hard = 1326 }
@@ -53,7 +58,10 @@ local AirstrikeFirstDelay = { easy = 576, normal = 480, hard = 408 }
 local AirstrikeInterval = { easy = 576, normal = 480, hard = 408 }
 local AutoWaveInterval = { easy = 240, normal = 180, hard = 120 }
 local AutoWaveStart = { easy = 1800, normal = 1500, hard = 1275 }
-local MaxOrcas = { easy = 1, normal = 1, hard = 2 }
+-- Ion Cannon timings match nod13b: first strike at 40/32/25 minutes
+-- (easy/normal/hard), then every 10/8/6 minutes.
+local IonCannonFirstDelay = { easy = 2400, normal = 1920, hard = 1500 }
+local IonCannonInterval = { easy = 600, normal = 480, hard = 360 }
 
 local passable = { Clear = true, Rough = true, Road = true, Bridge = true,
 	Tiberium = true, BlueTiberium = true, Beach = true }
@@ -74,12 +82,6 @@ local function AnyGDIPlayer()
 		if p ~= nil and not HouseEliminated(p) then return p end
 	end
 	return nil
-end
-
-local function GDIOrcaCount()
-	local count = 0
-	for _, p in ipairs(gdiPlayers) do count = count + #p.GetActorsByType("orca") end
-	return count
 end
 
 local function CellKey(x, y)
@@ -472,7 +474,7 @@ end
 
 local function JoinGarrison(base, unit)
 	if not IsLive(unit) or unit.Owner ~= base.player then return end
-	if base.defending then
+	if base.allOut or base.defending then
 		RemoveProduced(base, { unit })
 		SendTeam({ unit }, base.player, {}, true)
 		return
@@ -482,21 +484,29 @@ local function JoinGarrison(base, unit)
 	if unit.HasProperty("Stance") then unit.Stance = "Defend" end
 end
 
-local function FindUnitSpot(anchor)
-	for radius = 0, 12 do
+local function FindUnitSpot(anchor, used, maxRadius)
+	maxRadius = maxRadius or 12
+	for radius = 0, maxRadius do
 		for dx = -radius, radius do
 			for dy = -radius, radius do
 				if math.abs(dx) == radius or math.abs(dy) == radius then
 					local cell = CPos.New(anchor.X + dx, anchor.Y + dy)
+					local key = cell.X * 1000 + cell.Y
 					if cell.X >= 3 and cell.X <= 62 and cell.Y >= 1 and cell.Y <= 62
-						and SameLand(anchor, cell) then
+						and SameLand(anchor, cell) and (used == nil or not used[key]) then
 						local terrain = Map.TerrainType(cell)
-						if terrain == "Clear" or terrain == "Road" or terrain == "Beach" then
-							local blockers = Map.ActorsInCircle(Map.CenterOfCell(cell), WDist.New(1024), function(actor)
+						if passable[terrain] then
+							-- Two cells catch building footprints as well as trees and
+							-- rocks, so a rebuilt harvester is not placed inside its
+							-- own refinery.
+							local blockers = Map.ActorsInCircle(Map.CenterOfCell(cell), WDist.New(2048), function(actor)
 								return IsLive(actor) and actor.HasProperty("Location")
 									and (actor.HasProperty("Health") or IsTerrainObstacle(actor))
 							end)
-							if #blockers == 0 then return cell end
+							if #blockers == 0 then
+								if used ~= nil then used[key] = true end
+								return cell
+							end
 						end
 					end
 				end
@@ -513,7 +523,9 @@ RequestRelief = function(base)
 	if DateTime.GameTime < (base.reliefCooldown or 0) then return end
 	base.reliefCooldown = DateTime.GameTime + DateTime.Seconds(ReliefCooldown[difficulty])
 	for _, helper in ipairs(bases) do
-		if helper ~= base and not HouseEliminated(helper.player) then
+		if helper ~= base and not HouseEliminated(helper.player)
+			and helper.canRelieve ~= false
+			and not (helper.player == GDIWest and WestReinforcementsStopped) then
 			local available = #helper.reserve + #helper.produced
 			local keep = math.min(DefenderReserve[difficulty], available)
 			local takeLimit = math.min(ReliefSize[difficulty], math.max(0, available - keep))
@@ -529,6 +541,8 @@ RequestRelief = function(base)
 			for _, unit in ipairs(helper.player.GetGroundAttackers()) do
 				if #team >= ReliefSize[difficulty] then break end
 				if not taken[unit] and not tracked[unit] and IsLive(unit) and unit.IsInWorld
+					and unit.Type ~= "harv"
+					and not IsCentralOutpostActor(unit)
 					and unit.HasProperty("Stance") and unit.Stance == "Defend" and IsLocal(helper, unit)
 					and SameLand(unit.Location, CPos.New(base.yard[1], base.yard[2])) then
 					table.insert(team, unit)
@@ -542,6 +556,55 @@ RequestRelief = function(base)
 			end
 		end
 	end
+end
+
+-- Easy/Normal: a hit on a key building commits the attacked base. Every
+-- ground unit (except harvesters/MCVs and the isolated central outpost) and
+-- every ready Orca attacks, and newly produced combat units join in.
+-- Hard keeps the broad but limited nod13b alarm instead.
+local function AllOutAttack(base, target)
+	if MissionFinished then return end
+	local anchor = CPos.New(base.yard[1], base.yard[2])
+	local team = {}
+	for _, unit in ipairs(base.player.GetGroundAttackers()) do
+		if IsLive(unit) and unit.IsInWorld and unit.Type ~= "harv" and unit.Type ~= "mcv"
+			and not IsCentralOutpostActor(unit) and SameLand(unit.Location, anchor) then
+			table.insert(team, unit)
+		end
+	end
+	base.reserve = {}
+	base.produced = {}
+	base.allOut = true
+	AllOutAttackStarted = true
+
+	local route = {}
+	if target ~= nil and IsLive(target) and target.HasProperty("Location")
+		and SameLand(anchor, target.Location) then
+		route = { { Location = target.Location } }
+	end
+
+	for _, orca in ipairs(base.player.GetActorsByType("orca")) do
+		if IsLive(orca) and orca.IsInWorld and not retreatingOrcas[orca] then
+			if orca.HasProperty("Stance") then orca.Stance = "AttackAnything" end
+			if orca.HasProperty("Stop") then orca.Stop() end
+			if orca.HasProperty("AttackMove") and #route > 0 then
+				orca.AttackMove(target.Location, 2)
+			else
+				IdleHunt(orca)
+			end
+		end
+	end
+
+	if #team > 0 then
+		SendTeam(team, base.player, route, true, #route == 0)
+	end
+end
+
+local function StartBaseDefense(base, target)
+	if MissionFinished or base == nil or base.allOut then return end
+	base.defending = true
+	base.defenseUntil = DateTime.GameTime + DateTime.Seconds(BaseDefenseAlarmSeconds)
+	AllOutAttack(base, target)
 end
 
 local function DefendAgainst(actor, attacker, damage)
@@ -560,21 +623,26 @@ local function DefendAgainst(actor, attacker, damage)
 
 	local base = BaseForPlayer(actor.Owner)
 	if base ~= nil and not IsLocal(base, actor) then base = nil end
-	if base ~= nil then
-		base.defending = true
-		base.defenseUntil = math.max(base.defenseUntil, DateTime.GameTime + DateTime.Seconds(45))
-	end
 
-	-- A hit on a base building puts the reserved Orcas into the fight.
 	if base ~= nil and actor.HasProperty("StartBuildingRepairs") then
-		for _, player in ipairs(gdiPlayers) do
-			for _, orca in ipairs(player.GetActorsByType("orca")) do
-				if IsLive(orca) and orca.IsInWorld and orca.HasProperty("Stance")
-					and orca.Stance ~= "AttackAnything" then
-					orca.Stance = "AttackAnything"
-					IdleHunt(orca)
+		if difficulty == "hard" then
+			-- Broad nod13b alarm on Hard: every repairable building releases
+			-- the Orcas and two reserve units instead of committing the base.
+			BaseAlarmStarted = true
+			base.defending = true
+			base.defenseUntil = math.max(base.defenseUntil, DateTime.GameTime + DateTime.Seconds(BaseDefenseAlarmSeconds))
+			for _, player in ipairs(gdiPlayers) do
+				for _, orca in ipairs(player.GetActorsByType("orca")) do
+					if IsLive(orca) and orca.IsInWorld and orca.HasProperty("Stance")
+						and orca.Stance ~= "AttackAnything" then
+						orca.Stance = "AttackAnything"
+						IdleHunt(orca)
+					end
 				end
 			end
+		elseif BaseDefenseBuildings[actor.Type] then
+			-- Easy/Normal: the attacked base commits everything.
+			StartBaseDefense(base, attacker)
 		end
 	end
 
@@ -588,8 +656,8 @@ local function DefendAgainst(actor, attacker, damage)
 	end
 	table.insert(defenseResponses, { attacker = attacker, expires = DateTime.GameTime + DateTime.Seconds(2) })
 
-	-- A hit on a base building commits part of that base's reserve.
-	if base ~= nil and actor.HasProperty("StartBuildingRepairs")
+	-- A hit on a base building commits part of that base's reserve on Hard.
+	if difficulty == "hard" and base ~= nil and actor.HasProperty("StartBuildingRepairs")
 		and DateTime.GameTime >= (base.reserveRelease or 0) then
 		base.reserveRelease = DateTime.GameTime + DateTime.Seconds(30)
 		local team = TakeForAttack(base, 2)
@@ -600,7 +668,8 @@ local function DefendAgainst(actor, attacker, damage)
 	for _, player in ipairs(gdiPlayers) do
 		for _, unit in ipairs(player.GetGroundAttackers()) do
 			if IsLive(unit) and unit.IsInWorld and unit.HasProperty("AttackMove") and unit ~= actor
-				and not IsCentralOutpostActor(unit)
+				and unit.Type ~= "harv"
+				and not IsCentralOutpostActor(unit) and unit.Owner ~= GDISouth
 				and SameLand(unit.Location, attacker.Location) then
 				local dx, dy = unit.Location.X - actor.Location.X, unit.Location.Y - actor.Location.Y
 				if dx * dx + dy * dy <= radius * radius then
@@ -678,10 +747,10 @@ local function TrackHarvester(base, harv)
 	if harv == nil or base == nil or trackedHarvesters[harv] then return end
 	trackedHarvesters[harv] = true
 	base.harvester = harv
-	Trigger.OnKilled(harv, function()
+	Trigger.OnKilled(harv, function(_, killer)
 		if base.harvester == harv then base.harvester = nil end
 		Trigger.AfterDelay(1, function()
-			RebuildHarvester(base)
+			RebuildHarvester(base, killer)
 			RequestRelief(base)
 		end)
 	end)
@@ -907,7 +976,9 @@ local function Rebuild(base)
 	for _ = 1, #base.nodes do
 		base.nodeIndex = (base.nodeIndex or 1) % #base.nodes + 1
 		local entry = base.nodes[base.nodeIndex]
-		if BuildingAt(entry) == nil then
+		-- The EYE is not rebuilt: destroying or capturing it permanently stops
+		-- the Ion Cannon and the western relief relay.
+		if entry[1] ~= "eye" and BuildingAt(entry) == nil then
 			local cost = Actor.Cost(entry[1])
 			local reserve = (entry[1] == "proc" or entry[1] == "weap" or entry[1] == "pyle") and 1200 or 2200
 			local required = prerequisites[entry[1]] or {}
@@ -919,7 +990,31 @@ local function Rebuild(base)
 	end
 end
 
-function RebuildHarvester(base)
+-- Taken unchanged from the tested nod13a economy fallback. A sale is a
+-- self-destruction (no Nod killer), so it cannot trigger the all-out itself.
+local EconomySellCooldownSeconds = 20
+local EconomySellOrder = { "gtwr", "atwr", "pyle" }
+
+local function SellForEconomy(base)
+	if base.lastSell ~= nil and DateTime.GameTime - base.lastSell < DateTime.Seconds(EconomySellCooldownSeconds) then
+		return true
+	end
+	for _, kind in ipairs(EconomySellOrder) do
+		local building = LocalBuilding(base, kind)
+		if building ~= nil and building.HasProperty("Sell") then
+			base.lastSell = DateTime.GameTime
+			building.Sell()
+			return true
+		end
+	end
+	return false
+end
+
+-- A lost harvester is an economy problem. Rebuild it at the weapons factory,
+-- or next to the refinery if the factory is gone. Only if the base cannot
+-- recover (no refinery/factory route and no money, and nothing to sell) does
+-- it commit everything on Normal/Hard (Easy never does this).
+function RebuildHarvester(base, killer)
 	if MissionFinished or base == nil or base.harvesterBuilding then return end
 	if HasLiveHarvester(base) or DateTime.GameTime < (base.harvesterCooldown or 0) then return end
 	local factory = LocalBuilding(base, "weap")
@@ -945,7 +1040,18 @@ function RebuildHarvester(base)
 				if harv.HasProperty("FindResources") then harv.FindResources() end
 			end
 			base.harvesterCooldown = DateTime.GameTime + DateTime.Seconds(120)
+			return
 		end
+	end
+
+	-- No replacement possible: sell a non-key building for cash, or commit
+	-- the base (not on Easy).
+	-- The south-eastern outpost never had an economy (no refinery/factory), so
+	-- it must not sell its way into an all-out at mission start.
+	if base.player == GDISouth then return end
+	if GDIFunds(base.player) < Actor.Cost("harv") then
+		if SellForEconomy(base) then return end
+		if difficulty ~= "easy" then StartBaseDefense(base, killer) end
 	end
 end
 
@@ -960,6 +1066,7 @@ end
 local westInfantry = { "e1", "e2", "e3", "e1" }
 local northInfantry = { "e3", "e1", "e1", "e1" }
 local westVehicles = { "mtnk", "jeep", "jeep" }
+local hardWestVehicles = { "htnk", "mtnk", "msam", "jeep" }
 local northVehicles = { "htnk", "mtnk", "msam", "jeep" }
 local unitPrerequisites = {
 	e1 = { "barracks" }, e3 = { "barracks" }, e2 = { "anyhq", "~techlevel.medium" },
@@ -1016,7 +1123,7 @@ local function Produce(base)
 	local total, infantryCount, vehicleCount = ProducedCounts(base)
 	if total >= MaxProducedUnits[difficulty] then return end
 	local categoryLimit = math.max(4, math.floor(MaxProducedUnits[difficulty] / 2))
-	local vehicles = base.vehicles or northVehicles
+	local vehicles = (difficulty == "hard" and base.hardVehicles) or base.vehicles or northVehicles
 	local infantryTypes = base.infantry or northInfantry
 	local specs = base.nextProduction == "vehicle"
 		and { { "weap", vehicles, vehicleCount }, { "pyle", infantryTypes, infantryCount } }
@@ -1075,10 +1182,23 @@ local function EnsureHelipad(base)
 	if entry ~= nil then StartBuilding(base, entry, yard) end
 end
 
+-- Every helipad of a base keeps one Orca. The western base has three pads,
+-- so it can maintain three Orcas instead of sharing a global cap. Counting
+-- per player/base also removes the global-cap race between bases.
+local function LocalBuildingCount(base, kind)
+	local count = 0
+	for _, actor in ipairs(base.player.GetActorsByType(kind)) do
+		if IsLive(actor) and actor.IsInWorld and IsLocal(base, actor) then count = count + 1 end
+	end
+	return count
+end
+
 local function ProduceOrca(base)
 	if MissionFinished or base.orcaBusy ~= nil then return end
 	local pad = LocalBuilding(base, "hpad")
-	if pad == nil or GDIOrcaCount() >= MaxOrcas[difficulty] then return end
+	local pads = LocalBuildingCount(base, "hpad")
+	if pad == nil or pads == 0 then return end
+	if #base.player.GetActorsByType("orca") >= pads then return end
 	if not LocalTech(base, "orca") or not base.player.HasPrerequisites(prerequisites.orca)
 		or GDIFunds(base.player) < Actor.Cost("orca") + 800 then return end
 
@@ -1109,6 +1229,12 @@ local function CheckGDIEconomy()
 		EnsureHelipad(base)
 		ProduceOrca(base)
 		RebuildHarvester(base)
+		-- A harvester that was interrupted by combat, relief or a lost refinery
+		-- can end up idle next to the refinery. Re-task it periodically.
+		local harv = base.harvester
+		if IsLive(harv) and harv.IsInWorld and harv.IsIdle and harv.HasProperty("FindResources") then
+			harv.FindResources()
+		end
 		Rebuild(base)
 	end
 	Trigger.AfterDelay(DateTime.Seconds(10), CheckGDIEconomy)
@@ -1121,6 +1247,7 @@ local function IdleDefense()
 	for _, player in ipairs(gdiPlayers) do
 		for _, unit in ipairs(player.GetGroundAttackers()) do
 			if IsLive(unit) and unit.IsInWorld and unit.IsIdle and unit.HasProperty("AttackMove")
+				and unit.Type ~= "harv"
 				and unit.HasProperty("Stance") and unit.Stance == "Defend"
 				and not IsCentralOutpostActor(unit) then
 				local target = ClosestEnemy(unit, 16)
@@ -1145,18 +1272,33 @@ local waveUnits = {
 }
 local waveOffsets = { 0, 120, 240, 420, 540, 600, 840 }
 
+-- Spawn groups get distinct cells and never fall back to the raw anchor:
+-- the north-east corner can be partly Rough or blocked, which previously
+-- stacked a whole wave on one cell until it was attacked.
+local function SpawnCellNear(anchor, used)
+	local cell = FindUnitSpot(anchor, used, 24)
+	if cell ~= nil then return cell end
+	for _, offset in ipairs({ { -4, 6 }, { -7, 8 }, { -10, 6 }, { 0, 16 }, { -6, 14 } }) do
+		cell = FindUnitSpot(CPos.New(anchor.X + offset[1], anchor.Y + offset[2]), used, 12)
+		if cell ~= nil and SameLand(anchor, cell) then return cell end
+	end
+	return nil
+end
+
 local function SpawnGroupNear(waypoint, kinds, owner)
 	owner = owner or AnyGDIPlayer()
 	if owner == nil then return {} end
 	local team = {}
+	local used = {}
 	for _, kind in ipairs(kinds) do
-		local cell = FindUnitSpot(waypoint.Location)
-		if cell == nil then cell = waypoint.Location end
-		local unit = Actor.Create(kind, true, { Owner = owner, Location = cell })
-		if IsLive(unit) then
-			Guard(unit)
-			if unit.HasProperty("Stance") then unit.Stance = "AttackAnything" end
-			table.insert(team, unit)
+		local cell = SpawnCellNear(waypoint.Location, used)
+		if cell ~= nil then
+			local unit = Actor.Create(kind, true, { Owner = owner, Location = cell })
+			if IsLive(unit) then
+				Guard(unit)
+				if unit.HasProperty("Stance") then unit.Stance = "AttackAnything" end
+				table.insert(team, unit)
+			end
 		end
 	end
 	return team
@@ -1213,14 +1355,26 @@ local function AutoWave()
 	Trigger.AfterDelay(DateTime.Seconds(AutoWaveInterval[difficulty]), AutoWave)
 end
 
-local function RandomNodTarget()
+local function RandomNodTarget(minDistanceFromEye)
+	local eye = nil
+	if minDistanceFromEye ~= nil then
+		if not IsLive(GDIEYE) then return nil end
+		eye = GDIEYE
+	end
+
 	local targets = {}
 	for _, actor in ipairs(Nod.GetGroundAttackers()) do
 		if IsLive(actor) and actor.IsInWorld and actor.HasProperty("Location") then
-			table.insert(targets, actor)
+			local valid = true
+			if eye ~= nil then
+				local dx = actor.Location.X - eye.Location.X
+				local dy = actor.Location.Y - eye.Location.Y
+				valid = dx * dx + dy * dy > minDistanceFromEye * minDistanceFromEye
+			end
+			if valid then table.insert(targets, actor) end
 		end
 	end
-	if #targets == 0 then
+	if #targets == 0 and minDistanceFromEye == nil then
 		for _, actor in ipairs(Nod.GetActors()) do
 			if IsLive(actor) and actor.IsInWorld and actor.HasProperty("Health")
 				and actor.HasProperty("Location") and not actor.HasProperty("Land") then
@@ -1232,27 +1386,42 @@ local function RandomNodTarget()
 	return nil
 end
 
-local function FindAirstrikeHQ()
-	for _, player in ipairs(gdiPlayers) do
-		for _, hq in ipairs(player.GetActorsByType("hq")) do
-			if IsLive(hq) and hq.IsInWorld and hq.HasProperty("TargetAirstrike") then return hq end
-		end
-	end
-	return nil
-end
-
--- xxxx: the original airstrike trigger is not attached to a building, so the
--- strikes never stop. They continue as long as any GDI HQ survives.
+-- xxxx: the airstrike trigger is tied to the northern base's Communications
+-- Center (GDINorthHQ). Destroying or capturing it stops the strikes
+-- permanently through StopAirstrikes() in the mission script.
 local function Airstrike()
-	if MissionFinished then return end
-	local hq = FindAirstrikeHQ()
-	if hq == nil then
+	if MissionFinished or AirstrikeStopped then return end
+	if not IsLive(GDINorthHQ) or not IsGDIPlayer(GDINorthHQ.Owner)
+		or not GDINorthHQ.HasProperty("TargetAirstrike") then
 		Trigger.AfterDelay(DateTime.Seconds(60), Airstrike)
 		return
 	end
-	local target = RandomNodTarget()
-	if target ~= nil then hq.TargetAirstrike(target.CenterPosition) end
+	local target = RandomNodTarget(nil)
+	if target ~= nil then GDINorthHQ.TargetAirstrike(target.CenterPosition) end
 	Trigger.AfterDelay(DateTime.Seconds(AirstrikeInterval[difficulty]), Airstrike)
+end
+
+-- zzzz/timed Ion Cannon: nod13b timings. The EYE is the source; destroying
+-- or capturing it stops the cannon permanently through StopEyePowers().
+local function IonCannonStrike()
+	if MissionFinished or IonCannonStopped then return end
+	if not IsLive(GDIEYE) or not IsGDIPlayer(GDIEYE.Owner)
+		or not GDIEYE.HasProperty("ActivateIonCannon") then
+		Trigger.AfterDelay(DateTime.Seconds(30), IonCannonStrike)
+		return
+	end
+	local power = GDIEYE.Owner.PowerState
+	if power == "Low" or power == "Critical" then
+		Trigger.AfterDelay(DateTime.Seconds(60), IonCannonStrike)
+		return
+	end
+	local target = RandomNodTarget(10)
+	if target == nil then
+		Trigger.AfterDelay(DateTime.Seconds(15), IonCannonStrike)
+		return
+	end
+	GDIEYE.ActivateIonCannon(target.Location)
+	Trigger.AfterDelay(DateTime.Seconds(IonCannonInterval[difficulty]), IonCannonStrike)
 end
 
 -- apc1: Nod enters the western pass. GDI reacts with APCs from the
@@ -1317,18 +1486,21 @@ SetupAI = function()
 	GDIWest = GDIWest or Player.GetPlayer("GDIWest")
 	GDISouth = GDISouth or Player.GetPlayer("GDISouth")
 	gdiPlayers = { GDIWest, GDI, GDISouth }
-	GDI.Cash = 0
-	GDIWest.Cash = 0
+	local cash = math.floor(StartingCash[difficulty] / 2)
+	GDI.Cash = cash
+	GDIWest.Cash = cash
 	GDISouth.Cash = 0
 	BuildLandRegions()
 
 	bases = {
 		{ player = GDIWest, yard = { 22, 54 }, nodes = westNodes, reserve = {}, produced = {},
-			infantry = westInfantry, vehicles = westVehicles, nextProduction = "infantry" },
+			infantry = westInfantry, vehicles = westVehicles, hardVehicles = hardWestVehicles,
+			nextProduction = "infantry" },
 		{ player = GDI, yard = { 43, 13 }, nodes = northNodes, reserve = {}, produced = {},
 			infantry = northInfantry, vehicles = northVehicles, nextProduction = "infantry" },
 		{ player = GDISouth, yard = { 60, 60 }, nodes = southNodes, reserve = {}, produced = {},
-			infantry = northInfantry, vehicles = { "mtnk", "jeep" }, nextProduction = "infantry" },
+			infantry = northInfantry, vehicles = { "mtnk", "jeep" }, canRelieve = false,
+			nextProduction = "infantry" },
 	}
 	for _, base in ipairs(bases) do
 		base.defending = false
@@ -1363,7 +1535,7 @@ SetupAI = function()
 					Guard(actor)
 				elseif actor.Type == "orca" then
 					GuardOrca(BaseForPlayer(actor.Owner), actor)
-				elseif actor.HasProperty("AttackMove") then
+				elseif actor.Type ~= "harv" and actor.HasProperty("AttackMove") then
 					Guard(actor)
 					local localToBase = false
 					for _, base in ipairs(bases) do
@@ -1393,9 +1565,23 @@ SetupAI = function()
 		for _, actor in ipairs(base.player.GetActors()) do
 			if IsLive(actor) and actor.IsInWorld and BaseReliefBuildings[actor.Type]
 				and not IsCentralOutpostActor(actor) and base.player ~= GDISouth then
-				Trigger.OnKilled(actor, function() RequestRelief(base) end)
+				Trigger.OnKilled(actor, function(_, killer)
+					RequestRelief(base)
+					-- Easy/Normal also commit the base if a key building is
+					-- destroyed in one Nod hit before the damage alarm could fire.
+					-- Ignore self-destruction/selling (no Nod killer).
+					if difficulty ~= "hard" and BaseDefenseBuildings[actor.Type]
+						and killer ~= nil and IsLive(killer) and killer.Owner == Nod then
+						StartBaseDefense(base, killer)
+					end
+				end)
 				Trigger.OnCapture(actor, function(_, _, _, newOwner)
-					if not IsGDIPlayer(newOwner) then RequestRelief(base) end
+					if not IsGDIPlayer(newOwner) then
+						RequestRelief(base)
+						if difficulty ~= "hard" and BaseDefenseBuildings[actor.Type] then
+							StartBaseDefense(base, nil)
+						end
+					end
 				end)
 			end
 		end
@@ -1467,6 +1653,12 @@ SetupAI = function()
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(AirstrikeFirstDelay[difficulty]), Airstrike)
+	Trigger.AfterDelay(DateTime.Seconds(IonCannonFirstDelay[difficulty] - 60), function()
+		if IonCannonStopped or not IsLive(GDIEYE) or not IsGDIPlayer(GDIEYE.Owner) then return end
+		Media.PlaySpeechNotification(Nod, "IonCannonCharging")
+		Media.DisplayMessageToPlayer(Nod, UserInterface.GetFluentMessage("ion-cannon-online"))
+	end)
+	Trigger.AfterDelay(DateTime.Seconds(IonCannonFirstDelay[difficulty]), IonCannonStrike)
 	Trigger.AfterDelay(DateTime.Seconds(AutoWaveStart[difficulty]), AutoWave)
 	CheckGDIEconomy()
 	IdleDefense()

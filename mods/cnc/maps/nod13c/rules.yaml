@@ -45,13 +45,16 @@ GTWR:
 ATWR:
 	AnnounceOnSeen:
 
+# The EYE in the south-western base is the Ion Cannon source and the western
+# relief relay; the mission script stops both when it is destroyed or
+# captured.
 HQ:
 	# GDI keeps Mammoth Tank access in the northern base even after the EYE
 	# in the south-western base has been destroyed.
 	ProvidesPrerequisite@eye:
 		Prerequisite: eye
-	# The original air1 team is a pair of A10s. The airstrike trigger is not
-	# attached to a building in SCB13EC, so the strikes repeat forever.
+	# The original air1 team is a pair of A10s. The mission script now ties
+	# the recurring strike to the northern base's Communications Center.
 	AirstrikePower:
 		Prerequisites: gdi
 		SquadSize: 2
