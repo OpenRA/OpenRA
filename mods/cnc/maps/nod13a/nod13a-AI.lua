@@ -44,9 +44,9 @@ local airliftBaseIndex = 1
 local armorEscalated = false
 local NorthernAttacks
 local IonCannonStrike
-local AirstrikeFirstDelay = { easy = 780, normal = 600, hard = 480 }
+local AirstrikeFirstDelay = { easy = 900, normal = 720, hard = 600 }
 local AirstrikeInterval = { easy = 900, normal = 720, hard = 600 }
-local IonCannonInterval = { easy = 360, normal = 300, hard = 240 }
+local IonCannonInterval = { easy = 600, normal = 480, hard = 360 }
 
 -- Unit economy and garrisons. The original port only scaled the scripted
 -- attack timers; the north bases themselves were equally empty on every
@@ -67,6 +67,7 @@ local StartGarrison = {
 local ExtraHarvestersOnHard = 1
 local HarvesterTarget = { easy = 1, normal = 1, hard = 2 }
 local HarvesterReserve = 500
+local HarvesterGraceSeconds = 60
 local BaseDefenseAlarmSeconds = 45
 local HarvesterDefenseLockSeconds = 10
 local ReserveReleaseCooldownSeconds = 30
@@ -641,6 +642,7 @@ local trackedHarvesters = {}
 local function TrackHarvester(base, harv)
 	if harv == nil or trackedHarvesters[harv] then return end
 	trackedHarvesters[harv] = true
+	base.noHarvesterSince = nil
 	Trigger.OnDamaged(harv, function(actor, attacker, damage)
 		PullHarvesterDefenders(base, actor, attacker, damage)
 	end)
@@ -750,21 +752,29 @@ local function JoinGarrison(base, unit)
 	if unit.HasProperty("Stance") then unit.Stance = "Defend" end
 end
 
-local function FindUnitSpot(anchor)
-	for radius = 0, 12 do
+-- Unit placement: passable terrain only (Rough/Tiberium included), an optional
+-- `used` table so one group never reuses a cell, and a two-cell blocker radius
+-- so building footprints and trees are respected.
+local function FindUnitSpot(anchor, used, maxRadius)
+	maxRadius = maxRadius or 12
+	for radius = 0, maxRadius do
 		for dx = -radius, radius do
 			for dy = -radius, radius do
 				if math.abs(dx) == radius or math.abs(dy) == radius then
 					local cell = CPos.New(anchor.X + dx, anchor.Y + dy)
+					local key = cell.X * 1000 + cell.Y
 					if cell.X >= 2 and cell.X <= 61 and cell.Y >= 2 and cell.Y <= 61
-						and SameLand(anchor, cell) then
+						and SameLand(anchor, cell) and (used == nil or not used[key]) then
 						local terrain = Map.TerrainType(cell)
-						if terrain == "Clear" or terrain == "Road" or terrain == "Beach" then
-							local blockers = Map.ActorsInCircle(Map.CenterOfCell(cell), WDist.New(1024), function(actor)
+						if passable[terrain] then
+							local blockers = Map.ActorsInCircle(Map.CenterOfCell(cell), WDist.New(2048), function(actor)
 								return IsLive(actor) and actor.HasProperty("Location")
 									and (actor.HasProperty("Health") or IsTerrainObstacle(actor))
 							end)
-							if #blockers == 0 then return cell end
+							if #blockers == 0 then
+								if used ~= nil then used[key] = true end
+								return cell
+							end
 						end
 					end
 				end
@@ -776,13 +786,15 @@ end
 
 local function SpawnGarrison(base, kinds)
 	local anchor = CPos.New(base.yard[2] + 3, base.yard[3] + 2)
+	local used = {}
 	for _, kind in ipairs(kinds or {}) do
-		local cell = FindUnitSpot(anchor)
-		if cell == nil then return end
-		local unit = Actor.Create(kind, true, { Owner = base.player, Location = cell })
-		if IsLive(unit) then
-			Guard(unit)
-			JoinGarrison(base, unit)
+		local cell = FindUnitSpot(anchor, used, 24)
+		if cell ~= nil then
+			local unit = Actor.Create(kind, true, { Owner = base.player, Location = cell })
+			if IsLive(unit) then
+				Guard(unit)
+				JoinGarrison(base, unit)
+			end
 		end
 	end
 end
@@ -916,6 +928,20 @@ local function Airstrike()
 	Trigger.AfterDelay(DateTime.Seconds(AirstrikeInterval[difficulty]), Airstrike)
 end
 
+-- The warning is shown 60 s before the first strike. If the EYE was not
+-- available at the scheduled warning, IonCannonStrike shows it and waits
+-- another 60 s, so the player always gets the full warning window.
+local function AnnounceIonCannon()
+	if ionAnnounced or MissionFinished then return false end
+	local base = BaseForPlayer(GDIWest)
+	local eye = base ~= nil and LocalBuilding(base, "eye") or nil
+	if eye == nil or not eye.HasProperty("ActivateIonCannon") then return false end
+	ionAnnounced = true
+	Media.PlaySpeechNotification(Nod, "IonCannonCharging")
+	Media.DisplayMessageToPlayer(Nod, UserInterface.GetFluentMessage("ion-cannon-online"))
+	return true
+end
+
 IonCannonStrike = function()
 	if MissionFinished then return end
 	local base = BaseForPlayer(GDIWest)
@@ -930,9 +956,9 @@ IonCannonStrike = function()
 		return
 	end
 	if not ionAnnounced then
-		ionAnnounced = true
-		Media.PlaySpeechNotification(Nod, "IonCannonCharging")
-		Media.DisplayMessageToPlayer(Nod, UserInterface.GetFluentMessage("ion-cannon-online"))
+		AnnounceIonCannon()
+		Trigger.AfterDelay(DateTime.Seconds(60), IonCannonStrike)
+		return
 	end
 	local target = FindIonCannonTarget(eye)
 	if target == nil then
@@ -1346,9 +1372,8 @@ local function SellForEconomy(base)
 		if building ~= nil and building.HasProperty("Sell") then
 			base.lastSell = DateTime.GameTime
 			building.Sell()
-			-- The west base had to sell a building for a harvester: that is a
-			-- clear sign that the east base should send help.
-			if base.player == GDIWest then RequestEastRelief(nil) end
+			-- Economy is local to the base: a west harvester loss must not
+			-- summon the east base. Only real attacks/key-building losses do.
 			return true
 		end
 	end
@@ -1361,16 +1386,22 @@ end
 RebuildHarvester = function(base, killer)
 	if MissionFinished or base == nil then return end
 	local player = base.player
-	if HarvesterCount(base) > 0 or base.harvesterBuilding then return end
+	if HarvesterCount(base) > 0 then
+		base.noHarvesterSince = nil
+		return
+	end
+	if base.harvesterBuilding then return end
+	if base.noHarvesterSince == nil then base.noHarvesterSince = DateTime.GameTime end
 
 	-- Without a refinery, Rebuild starts the paid emergency refinery, which
 	-- brings its own free harvester. Do not queue a paid one in parallel.
-	-- If even that recovery cannot be started, fall through to the sell and
-	-- all-out fallback instead of leaving the base permanently passive.
+	-- Only after a grace period without any harvester does the base sell or
+	-- commit, so a single harvester kill does not trigger an immediate all-out.
 	if LocalBuilding(base, "proc") == nil then
 		local canRebuildProc = GDIFunds(player) >= Actor.Cost("proc")
 			and LocalTech(base, "proc") and player.HasPrerequisites(prerequisites.proc)
 		if not canRebuildProc then
+			if DateTime.GameTime - base.noHarvesterSince < DateTime.Seconds(HarvesterGraceSeconds) then return end
 			if SellForEconomy(base) then return end
 			if difficulty ~= "easy" then StartBaseDefense(base, killer) end
 		end
@@ -1407,6 +1438,7 @@ RebuildHarvester = function(base, killer)
 	end
 
 	if GDIFunds(player) < Actor.Cost("harv") then
+		if DateTime.GameTime - base.noHarvesterSince < DateTime.Seconds(HarvesterGraceSeconds) then return end
 		if SellForEconomy(base) then return end
 
 		-- Nothing left to recover with: commit the base, but not on Easy.
@@ -1636,11 +1668,25 @@ SetupAI = function()
 			end
 		end
 	end
-	-- If the west base loses a key building outright, the east base sends
-	-- relief even when no damage event was seen first.
-	for _, actor in ipairs(GDIWest.GetActors()) do
-		if IsLive(actor) and BaseDefenseBuildings[actor.Type] then
-			Trigger.OnKilled(actor, function() RequestEastRelief(nil) end)
+	-- Key buildings lost to Nod also commit the base on Easy/Normal (one-shot
+	-- kill or capture), matching nod13b/nod13c. The west base additionally
+	-- calls the east for relief.
+	for _, base in ipairs(bases) do
+		for _, actor in ipairs(base.player.GetActors()) do
+			if IsLive(actor) and actor.IsInWorld and BaseDefenseBuildings[actor.Type] then
+				Trigger.OnKilled(actor, function(_, killer)
+					if base.player == GDIWest then RequestEastRelief(nil) end
+					if difficulty ~= "hard" and killer ~= nil and IsLive(killer) and killer.Owner == Nod then
+						StartBaseDefense(base, killer)
+					end
+				end)
+				Trigger.OnCapture(actor, function(_, _, _, newOwner)
+					if newOwner == Nod then
+						if base.player == GDIWest then RequestEastRelief(nil) end
+						if difficulty ~= "hard" then StartBaseDefense(base, nil) end
+					end
+				end)
+			end
 		end
 	end
 	for _, tower in ipairs({ Actor219, Actor220 }) do
@@ -1680,6 +1726,7 @@ SetupAI = function()
 	end)
 	Trigger.AfterDelay(DateTime.Seconds(({ easy = 450, normal = 330, hard = 240 })[difficulty]), PaidAirlifts)
 	Trigger.AfterDelay(DateTime.Seconds(AirstrikeFirstDelay[difficulty]), Airstrike)
+	Trigger.AfterDelay(DateTime.Seconds(AirstrikeFirstDelay[difficulty]), AnnounceIonCannon)
 	Trigger.AfterDelay(DateTime.Seconds(AirstrikeFirstDelay[difficulty] + 60), IonCannonStrike)
 	CheckGDIEconomy()
 	SouthDefense()
