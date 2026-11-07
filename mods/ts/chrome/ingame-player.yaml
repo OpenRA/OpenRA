@@ -37,7 +37,7 @@ Container@PLAYER_WIDGETS:
 			Logic: AddFactionSuffixLogic
 			X: 5
 			Y: WINDOW_HEIGHT - HEIGHT - 5
-			Width: 449
+			Width: 484
 			Height: 51
 			ImageCollection: sidebar
 			ImageName: background-commandbar
@@ -47,7 +47,7 @@ Container@PLAYER_WIDGETS:
 				HighlightOnButtonPress: True
 			X: 19
 			Y: WINDOW_HEIGHT - HEIGHT - 20
-			Width: 275
+			Width: 310
 			Height: 26
 			Children:
 				LogicKeyListener@MODIFIER_OVERRIDES:
@@ -198,9 +198,28 @@ Container@PLAYER_WIDGETS:
 							Y: 3
 							ImageCollection: command-icons
 							ImageName: queue-orders
+				Button@FORMATION_MOVE:
+					X: 280
+					Width: 35
+					Height: 32
+					VisualHeight: 0
+					Background:
+					Key: FormationMove
+					DisableKeySound: true
+					TooltipText: button-command-bar-formation-move.tooltip
+					TooltipDesc: button-command-bar-formation-move.tooltipdesc
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Children:
+						Image@ICON:
+							Logic: AddFactionSuffixLogic
+							X: 5
+							Y: 3
+							ImageCollection: command-icons
+							ImageName: formation-move
 		Container@STANCE_BAR:
 			Logic: StanceSelectorLogic
-			X: 306
+			X: 341
 			Y: WINDOW_HEIGHT - HEIGHT - 20
 			Width: 138
 			Height: 26
