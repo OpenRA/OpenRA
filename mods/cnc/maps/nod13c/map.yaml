@@ -1144,6 +1144,12 @@ Actors:
 	GDIChinookEntry: waypoint
 		Location: 5,1
 		Owner: Neutral
+	TibTree1: SPLIT2
+		Location: 61,1
+		Owner: Neutral
+	TibTree2: SPLIT3
+		Location: 50,3
+		Owner: Neutral
 
 Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|rules/campaign-palettes.yaml, rules.yaml
 

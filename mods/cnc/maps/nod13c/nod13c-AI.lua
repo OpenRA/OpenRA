@@ -62,6 +62,7 @@ local AutoWaveStart = { easy = 1800, normal = 1500, hard = 1275 }
 -- (easy/normal/hard), then every 10/8/6 minutes.
 local IonCannonFirstDelay = { easy = 2400, normal = 1920, hard = 1500 }
 local IonCannonInterval = { easy = 600, normal = 480, hard = 360 }
+local HarvesterGraceSeconds = 60
 
 local passable = { Clear = true, Rough = true, Road = true, Bridge = true,
 	Tiberium = true, BlueTiberium = true, Beach = true }
@@ -173,7 +174,7 @@ local WaveBuildingThreshold = 4
 -- The waves come from the north-eastern GDI base and are tied to its
 -- Communications Center (GDINorthHQ, 31,7). Destroying or capturing that
 -- building stops future waves; already-spawned teams keep fighting.
-local WaveSpawnCell = CPos.New(60, 4)
+local WaveSpawnCell = CPos.New(62, 5)
 local WaveSpawn = { Location = WaveSpawnCell }
 
 local function WaveSourceAlive()
@@ -224,7 +225,7 @@ end
 
 local function IsTerrainObstacle(actor)
 	return actor.Type == "brik" or actor.Type == "cycl" or actor.Type:match("^rock%d") ~= nil
-		or actor.Type:match("^t%d%d") ~= nil or actor.Type:match("^split") ~= nil
+		or actor.Type:match("^t%d%d") ~= nil or actor.Type:lower():match("^split") ~= nil
 		or actor.Type:match("%.husk$") ~= nil
 end
 
@@ -747,11 +748,11 @@ local function TrackHarvester(base, harv)
 	if harv == nil or base == nil or trackedHarvesters[harv] then return end
 	trackedHarvesters[harv] = true
 	base.harvester = harv
+	base.noHarvesterSince = nil
 	Trigger.OnKilled(harv, function(_, killer)
 		if base.harvester == harv then base.harvester = nil end
 		Trigger.AfterDelay(1, function()
 			RebuildHarvester(base, killer)
-			RequestRelief(base)
 		end)
 	end)
 end
@@ -1015,8 +1016,13 @@ end
 -- recover (no refinery/factory route and no money, and nothing to sell) does
 -- it commit everything on Normal/Hard (Easy never does this).
 function RebuildHarvester(base, killer)
-	if MissionFinished or base == nil or base.harvesterBuilding then return end
-	if HasLiveHarvester(base) or DateTime.GameTime < (base.harvesterCooldown or 0) then return end
+	if MissionFinished or base == nil then return end
+	if HasLiveHarvester(base) then
+		base.noHarvesterSince = nil
+		return
+	end
+	if base.harvesterBuilding or DateTime.GameTime < (base.harvesterCooldown or 0) then return end
+	if base.noHarvesterSince == nil then base.noHarvesterSince = DateTime.GameTime end
 	local factory = LocalBuilding(base, "weap")
 	if factory ~= nil and LocalTech(base, "harv") and base.player.HasPrerequisites({ "proc" })
 		and GDIFunds(base.player) >= Actor.Cost("harv") then
@@ -1050,6 +1056,9 @@ function RebuildHarvester(base, killer)
 	-- it must not sell its way into an all-out at mission start.
 	if base.player == GDISouth then return end
 	if GDIFunds(base.player) < Actor.Cost("harv") then
+		-- Give the base a full minute to recover (or for the other harvester
+		-- to earn) before selling a building or committing everything.
+		if DateTime.GameTime - base.noHarvesterSince < DateTime.Seconds(HarvesterGraceSeconds) then return end
 		if SellForEconomy(base) then return end
 		if difficulty ~= "easy" then StartBaseDefense(base, killer) end
 	end
@@ -1229,12 +1238,6 @@ local function CheckGDIEconomy()
 		EnsureHelipad(base)
 		ProduceOrca(base)
 		RebuildHarvester(base)
-		-- A harvester that was interrupted by combat, relief or a lost refinery
-		-- can end up idle next to the refinery. Re-task it periodically.
-		local harv = base.harvester
-		if IsLive(harv) and harv.IsInWorld and harv.IsIdle and harv.HasProperty("FindResources") then
-			harv.FindResources()
-		end
 		Rebuild(base)
 	end
 	Trigger.AfterDelay(DateTime.Seconds(10), CheckGDIEconomy)
@@ -1309,7 +1312,7 @@ local function ScriptedWave(index)
 	local owner = WaveOwner()
 	if owner == nil then return end
 	local team = SpawnGroupNear(WaveSpawn, waveUnits[index], owner)
-	SendTeam(team, owner, { waypoint4 }, true, true)
+	SendTeam(team, owner, { waypoint23, waypoint4 }, true, true)
 end
 
 -- atk1..atk7 keep their original spacing, but the whole sequence waits
@@ -1348,7 +1351,7 @@ local function AutoWave()
 			local owner = WaveOwner()
 			if owner ~= nil then
 				local team = SpawnGroupNear(WaveSpawn, { "jeep", "e1", "e1" }, owner)
-				if #team > 0 then SendTeam(team, owner, {}, true) end
+				if #team > 0 then SendTeam(team, owner, { waypoint23, waypoint4 }, true) end
 			end
 		end
 	end
@@ -1597,7 +1600,7 @@ SetupAI = function()
 			for _, unit in ipairs(SpawnGroupNear(WaveSpawn, { "e1", "e2", "e3" }, GDI)) do
 				if unit.HasProperty("Patrol") and SameLand(unit.Location, waypoint19.Location) then
 					if unit.HasProperty("Stance") then unit.Stance = "Defend" end
-					unit.Patrol({ waypoint19.Location, waypoint18.Location }, true, DateTime.Seconds(12))
+					unit.Patrol({ waypoint23.Location, waypoint19.Location, waypoint18.Location }, true, DateTime.Seconds(12))
 				else
 					SendTeam({ unit }, unit.Owner, {}, true)
 				end
@@ -1611,7 +1614,7 @@ SetupAI = function()
 			for _, unit in ipairs(SpawnGroupNear(WaveSpawn, { "mtnk" }, GDI)) do
 				if unit.HasProperty("Patrol") then
 					if unit.HasProperty("Stance") then unit.Stance = "Defend" end
-					unit.Patrol({ waypoint3.Location, waypoint4.Location, waypoint2.Location },
+					unit.Patrol({ waypoint23.Location, waypoint3.Location, waypoint4.Location, waypoint2.Location },
 						true, DateTime.Seconds(15))
 				end
 			end
@@ -1624,8 +1627,8 @@ SetupAI = function()
 			for _, unit in ipairs(SpawnGroupNear(WaveSpawn, { "mtnk", "mtnk" }, GDI)) do
 				if unit.HasProperty("Patrol") then
 					if unit.HasProperty("Stance") then unit.Stance = "Defend" end
-					unit.Patrol({ waypoint2.Location, waypoint5.Location, waypoint6.Location,
-						waypoint7.Location, waypoint8.Location, waypoint9.Location },
+					unit.Patrol({ waypoint23.Location, waypoint2.Location, waypoint5.Location,
+						waypoint6.Location, waypoint7.Location, waypoint8.Location, waypoint9.Location },
 						true, DateTime.Seconds(18))
 				end
 			end
@@ -1638,7 +1641,7 @@ SetupAI = function()
 		Trigger.RemoveFootprintTrigger(id)
 		RunWhenUnlocked(function()
 			local team = SpawnGroupNear(WaveSpawn, { "e2", "e2", "e2", "e3", "e3", "apc" }, GDI)
-			SendTeam(team, GDI, { waypoint4 }, true)
+			SendTeam(team, GDI, { waypoint23, waypoint4 }, true)
 		end)
 	end)
 

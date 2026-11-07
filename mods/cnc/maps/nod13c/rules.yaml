@@ -129,3 +129,40 @@ TRAN.IN:
 	RejectsOrders:
 	-Selectable:
 	Interactable:
+
+# Civilian buildings disappear when destroyed, like the church; no rubble
+# husks remain (user request 2026-11-07). These are the types used on SCB13EC.
+V20:
+	-SpawnActorOnDeath:
+V21:
+	-SpawnActorOnDeath:
+V22:
+	-SpawnActorOnDeath:
+V23:
+	-SpawnActorOnDeath:
+V24:
+	-SpawnActorOnDeath:
+V25:
+	-SpawnActorOnDeath:
+V26:
+	-SpawnActorOnDeath:
+V27:
+	-SpawnActorOnDeath:
+V28:
+	-SpawnActorOnDeath:
+V29:
+	-SpawnActorOnDeath:
+V30:
+	-SpawnActorOnDeath:
+V31:
+	-SpawnActorOnDeath:
+V32:
+	-SpawnActorOnDeath:
+V33:
+	-SpawnActorOnDeath:
+V34:
+	-SpawnActorOnDeath:
+V35:
+	-SpawnActorOnDeath:
+V36:
+	-SpawnActorOnDeath:
