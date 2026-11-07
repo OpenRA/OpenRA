@@ -24,6 +24,8 @@
 local difficulty
 local land = {}
 local bases = {}
+AllOutAttackStarted = false
+BaseAlarmStarted = false
 local gdiPlayers = {}
 local guarded = {}
 local trackedHarvesters = {}
@@ -44,6 +46,8 @@ local ReliefSize = { easy = 2, normal = 3, hard = 4 }
 local ReliefCooldown = { easy = 150, normal = 110, hard = 80 }
 local BaseReliefBuildings = { fact = true, proc = true, weap = true, pyle = true,
 	hq = true, eye = true, nuke = true, nuk2 = true, hpad = true, atwr = true, gtwr = true }
+local BaseDefenseBuildings = { fact = true, proc = true, weap = true, pyle = true, hq = true, eye = true }
+local BaseDefenseAlarmSeconds = 45
 -- Original SCB13EB trigger times (tenths of a minute, multiplied by six):
 -- attacks at 19.8-29.8 min, first airstrike at 19.8, Ion Cannon at 39.8.
 -- The port deliberately shortens the first Ion Cannon to 40/32/25 min.
@@ -366,7 +370,7 @@ end
 
 local function JoinGarrison(base, unit)
 	if not IsLive(unit) or unit.Owner ~= base.player then return end
-	if base.defending then
+	if base.allOut or base.defending then
 		RemoveProduced(base, { unit })
 		SendTeam({ unit }, base.player, {}, true)
 		return
@@ -376,21 +380,29 @@ local function JoinGarrison(base, unit)
 	if unit.HasProperty("Stance") then unit.Stance = "Defend" end
 end
 
-local function FindUnitSpot(anchor)
-	for radius = 0, 12 do
+-- Unit placement: passable terrain only (Rough/Tiberium included), an optional
+-- `used` table so one group never reuses a cell, and a two-cell blocker radius
+-- so building footprints and trees are respected.
+local function FindUnitSpot(anchor, used, maxRadius)
+	maxRadius = maxRadius or 12
+	for radius = 0, maxRadius do
 		for dx = -radius, radius do
 			for dy = -radius, radius do
 				if math.abs(dx) == radius or math.abs(dy) == radius then
 					local cell = CPos.New(anchor.X + dx, anchor.Y + dy)
+					local key = cell.X * 1000 + cell.Y
 					if cell.X >= 2 and cell.X <= 61 and cell.Y >= 1 and cell.Y <= 60
-						and SameLand(anchor, cell) then
+						and SameLand(anchor, cell) and (used == nil or not used[key]) then
 						local terrain = Map.TerrainType(cell)
-						if terrain == "Clear" or terrain == "Road" or terrain == "Beach" then
-							local blockers = Map.ActorsInCircle(Map.CenterOfCell(cell), WDist.New(1024), function(actor)
+						if passable[terrain] then
+							local blockers = Map.ActorsInCircle(Map.CenterOfCell(cell), WDist.New(2048), function(actor)
 								return IsLive(actor) and actor.HasProperty("Location")
 									and (actor.HasProperty("Health") or IsTerrainObstacle(actor))
 							end)
-							if #blockers == 0 then return cell end
+							if #blockers == 0 then
+								if used ~= nil then used[key] = true end
+								return cell
+							end
 						end
 					end
 				end
@@ -423,7 +435,10 @@ local function FindReliefCell(anchor, used)
 								return IsLive(actor) and actor.HasProperty("Location")
 									and (actor.HasProperty("Health") or IsTerrainObstacle(actor))
 							end)
-							if #blockers == 0 then return cell end
+							if #blockers == 0 then
+								used[cell.X * 1000 + cell.Y] = true
+								return cell
+							end
 						end
 					end
 				end
@@ -479,6 +494,7 @@ RequestRelief = function(base)
 			for _, unit in ipairs(helper.player.GetGroundAttackers()) do
 				if #team >= ReliefSize[difficulty] then break end
 				if not taken[unit] and not tracked[unit] and IsLive(unit) and unit.IsInWorld
+					and unit.Type ~= "harv"
 					and unit.HasProperty("Stance") and unit.Stance == "Defend" and IsLocal(helper, unit)
 					and SameLand(unit.Location, CPos.New(base.yard[1], base.yard[2])) then
 					table.insert(team, unit)
@@ -498,6 +514,72 @@ RequestRelief = function(base)
 	end
 end
 
+-- Taken unchanged from the tested nod13a/nod13c economy fallback. A sale is a
+-- self-destruction without a Nod killer, so it cannot trigger an all-out.
+local EconomySellCooldownSeconds = 20
+local EconomySellOrder = { "gtwr", "atwr", "pyle" }
+
+local function SellForEconomy(base)
+	if base.lastSell ~= nil and DateTime.GameTime - base.lastSell < DateTime.Seconds(EconomySellCooldownSeconds) then
+		return true
+	end
+	for _, kind in ipairs(EconomySellOrder) do
+		local building = LocalBuilding(base, kind)
+		if building ~= nil and building.HasProperty("Sell") then
+			base.lastSell = DateTime.GameTime
+			building.Sell()
+			return true
+		end
+	end
+	return false
+end
+
+-- All-out: the base's ground units (no harvesters/MCVs, same land as the
+-- base) attack the given target or the Nod base, every ready Orca joins, and
+-- newly produced units keep joining through base.allOut.
+local function AllOutAttack(base, target)
+	if MissionFinished then return end
+	local anchor = CPos.New(base.yard[1], base.yard[2])
+	local team = {}
+	for _, unit in ipairs(base.player.GetGroundAttackers()) do
+		if IsLive(unit) and unit.IsInWorld and unit.Type ~= "harv" and unit.Type ~= "mcv"
+			and SameLand(unit.Location, anchor) then
+			table.insert(team, unit)
+		end
+	end
+	base.reserve = {}
+	base.produced = {}
+	base.allOut = true
+	AllOutAttackStarted = true
+
+	local route = {}
+	if target ~= nil and IsLive(target) and target.HasProperty("Location")
+		and SameLand(anchor, target.Location) then
+		route = { { Location = target.Location } }
+	end
+
+	for _, orca in ipairs(base.player.GetActorsByType("orca")) do
+		if IsLive(orca) and orca.IsInWorld and not retreatingOrcas[orca] then
+			if orca.HasProperty("Stance") then orca.Stance = "AttackAnything" end
+			if orca.HasProperty("Stop") then orca.Stop() end
+			if orca.HasProperty("AttackMove") and #route > 0 then
+				orca.AttackMove(target.Location, 2)
+			else
+				IdleHunt(orca)
+			end
+		end
+	end
+
+	if #team > 0 then SendTeam(team, base.player, route, true) end
+end
+
+local function StartBaseDefense(base, target)
+	if MissionFinished or base == nil or base.allOut then return end
+	base.defending = true
+	base.defenseUntil = DateTime.GameTime + DateTime.Seconds(BaseDefenseAlarmSeconds)
+	AllOutAttack(base, target)
+end
+
 local function DefendAgainst(actor, attacker, damage)
 	if MissionFinished or not IsLive(actor) or not actor.IsInWorld or not actor.HasProperty("Location")
 		or damage == nil or damage <= 0 then return end
@@ -508,21 +590,33 @@ local function DefendAgainst(actor, attacker, damage)
 
 	local base = BaseForPlayer(actor.Owner)
 	if base ~= nil and not IsLocal(base, actor) then base = nil end
+	-- Any damage near the base (unit, harvester or building) keeps it on the
+	-- 45 s defending alert so newly produced units join the fight. The all-out
+	-- and Orca releases below are reserved for building hits.
 	if base ~= nil then
 		base.defending = true
-		base.defenseUntil = math.max(base.defenseUntil, DateTime.GameTime + DateTime.Seconds(45))
+		base.defenseUntil = math.max(base.defenseUntil, DateTime.GameTime + DateTime.Seconds(BaseDefenseAlarmSeconds))
 	end
 
-	-- A hit on a base building puts the reserved Orcas into the fight.
 	if base ~= nil and actor.HasProperty("StartBuildingRepairs") then
-		for _, player in ipairs(gdiPlayers) do
-			for _, orca in ipairs(player.GetActorsByType("orca")) do
-				if IsLive(orca) and orca.IsInWorld and orca.HasProperty("Stance")
-					and orca.Stance ~= "AttackAnything" then
-					orca.Stance = "AttackAnything"
-					IdleHunt(orca)
+		if difficulty == "hard" then
+			-- Broad nod13b alarm on Hard: every repairable building releases the
+			-- Orcas and two reserve units instead of committing the base.
+			BaseAlarmStarted = true
+			base.defending = true
+			base.defenseUntil = math.max(base.defenseUntil, DateTime.GameTime + DateTime.Seconds(BaseDefenseAlarmSeconds))
+			for _, player in ipairs(gdiPlayers) do
+				for _, orca in ipairs(player.GetActorsByType("orca")) do
+					if IsLive(orca) and orca.IsInWorld and orca.HasProperty("Stance")
+						and orca.Stance ~= "AttackAnything" then
+						orca.Stance = "AttackAnything"
+						IdleHunt(orca)
+					end
 				end
 			end
+		elseif BaseDefenseBuildings[actor.Type] then
+			-- Easy/Normal: a hit on a key building commits the attacked base.
+			StartBaseDefense(base, attacker)
 		end
 	end
 
@@ -536,8 +630,9 @@ local function DefendAgainst(actor, attacker, damage)
 	end
 	table.insert(defenseResponses, { attacker = attacker, expires = DateTime.GameTime + DateTime.Seconds(2) })
 
-	-- A hit on a base building commits part of that base's reserve.
-	if base ~= nil and actor.HasProperty("StartBuildingRepairs")
+	-- A hit on a base building commits part of that base's reserve (Hard only;
+	-- Easy/Normal commit the whole base via StartBaseDefense above).
+	if difficulty == "hard" and base ~= nil and actor.HasProperty("StartBuildingRepairs")
 		and DateTime.GameTime >= (base.reserveRelease or 0) then
 		base.reserveRelease = DateTime.GameTime + DateTime.Seconds(30)
 		local team = TakeForAttack(base, 2)
@@ -548,6 +643,7 @@ local function DefendAgainst(actor, attacker, damage)
 	for _, player in ipairs(gdiPlayers) do
 		for _, unit in ipairs(player.GetGroundAttackers()) do
 			if IsLive(unit) and unit.IsInWorld and unit.HasProperty("AttackMove") and unit ~= actor
+				and unit.Type ~= "harv"
 				and SameLand(unit.Location, attacker.Location) then
 				local dx, dy = unit.Location.X - actor.Location.X, unit.Location.Y - actor.Location.Y
 				if dx * dx + dy * dy <= radius * radius then
@@ -625,10 +721,10 @@ local function TrackHarvester(base, harv)
 	if harv == nil or base == nil or trackedHarvesters[harv] then return end
 	trackedHarvesters[harv] = true
 	base.harvester = harv
-	Trigger.OnKilled(harv, function()
+	Trigger.OnKilled(harv, function(_, killer)
 		if base.harvester == harv then base.harvester = nil end
 		Trigger.AfterDelay(1, function()
-			RebuildHarvester(base)
+			RebuildHarvester(base, killer)
 			RequestRelief(base)
 		end)
 	end)
@@ -844,9 +940,27 @@ local function Rebuild(base)
 	end
 end
 
-function RebuildHarvester(base)
+function RebuildHarvester(base, killer)
 	if MissionFinished or base == nil or base.harvesterBuilding then return end
 	if HasLiveHarvester(base) or DateTime.GameTime < (base.harvesterCooldown or 0) then return end
+
+	-- Without a refinery there is no harvester route and no income. Bootstrap
+	-- restores a flattened base (power plant, then refinery) while the
+	-- construction yard stands and the chain is affordable; otherwise the
+	-- economy is dead and the base sells or commits (not on Easy).
+	if LocalBuilding(base, "proc") == nil then
+		local need = Actor.Cost("proc")
+		if LocalBuilding(base, "nuke") == nil and LocalBuilding(base, "nuk2") == nil then
+			need = need + Actor.Cost("nuk2")
+		end
+		local canRebuildProc = LocalBuilding(base, "fact") ~= nil and GDIFunds(base.player) >= need
+		if not canRebuildProc then
+			if SellForEconomy(base) then return end
+			if difficulty ~= "easy" then StartBaseDefense(base, killer) end
+		end
+		return
+	end
+
 	local factory = LocalBuilding(base, "weap")
 	if factory ~= nil and LocalTech(base, "harv") and base.player.HasPrerequisites({ "proc" })
 		and GDIFunds(base.player) >= Actor.Cost("harv") then
@@ -870,7 +984,15 @@ function RebuildHarvester(base)
 				if harv.HasProperty("FindResources") then harv.FindResources() end
 			end
 			base.harvesterCooldown = DateTime.GameTime + DateTime.Seconds(120)
+			return
 		end
+	end
+
+	-- No replacement possible: sell a non-key building for cash, or commit the
+	-- base (not on Easy).
+	if GDIFunds(base.player) < Actor.Cost("harv") then
+		if SellForEconomy(base) then return end
+		if difficulty ~= "easy" then StartBaseDefense(base, killer) end
 	end
 end
 
@@ -1059,7 +1181,7 @@ local function SouthDefense()
 	for _, player in ipairs(gdiPlayers) do
 		for _, unit in ipairs(player.GetGroundAttackers()) do
 			if IsLive(unit) and unit.IsInWorld and unit.IsIdle and unit.HasProperty("AttackMove")
-				and unit.HasProperty("Stance") and unit.Stance == "Defend" then
+				and unit.Type ~= "harv" and unit.HasProperty("Stance") and unit.Stance == "Defend" then
 				local target = ClosestEnemy(unit, 16)
 				if target ~= nil then unit.AttackMove(target.Location, 2) end
 			end
@@ -1080,18 +1202,32 @@ local waveUnits = {
 }
 local waveOffsets = { 0, 120, 240, 60, 300, 480, 600 }
 
+-- Spawn groups get distinct cells and never fall back to the raw anchor: a
+-- partly blocked corner used to stack a whole wave on one cell.
+local function SpawnCellNear(anchor, used)
+	local cell = FindUnitSpot(anchor, used, 24)
+	if cell ~= nil then return cell end
+	for _, offset in ipairs({ { -4, 6 }, { -7, 8 }, { -10, 6 }, { 0, 16 }, { -6, 14 } }) do
+		cell = FindUnitSpot(CPos.New(anchor.X + offset[1], anchor.Y + offset[2]), used, 12)
+		if cell ~= nil and SameLand(anchor, cell) then return cell end
+	end
+	return nil
+end
+
 local function SpawnGroupNear(waypoint, kinds, owner)
 	owner = owner or AnyGDIPlayer()
 	if owner == nil then return {} end
 	local team = {}
+	local used = {}
 	for _, kind in ipairs(kinds) do
-		local cell = FindUnitSpot(waypoint.Location)
-		if cell == nil then cell = waypoint.Location end
-		local unit = Actor.Create(kind, true, { Owner = owner, Location = cell })
-		if IsLive(unit) then
-			Guard(unit)
-			if unit.HasProperty("Stance") then unit.Stance = "AttackAnything" end
-			table.insert(team, unit)
+		local cell = SpawnCellNear(waypoint.Location, used)
+		if cell ~= nil then
+			local unit = Actor.Create(kind, true, { Owner = owner, Location = cell })
+			if IsLive(unit) then
+				Guard(unit)
+				if unit.HasProperty("Stance") then unit.Stance = "AttackAnything" end
+				table.insert(team, unit)
+			end
 		end
 	end
 	return team
@@ -1424,7 +1560,7 @@ SetupAI = function()
 					Guard(actor)
 				elseif actor.Type == "orca" then
 					GuardOrca(BaseForPlayer(actor.Owner), actor)
-				elseif actor.HasProperty("AttackMove") then
+				elseif actor.Type ~= "harv" and actor.HasProperty("AttackMove") then
 					Guard(actor)
 					local localToBase = false
 					for _, base in ipairs(bases) do
@@ -1447,9 +1583,22 @@ SetupAI = function()
 	for _, base in ipairs(bases) do
 		for _, actor in ipairs(base.player.GetActors()) do
 			if IsLive(actor) and actor.IsInWorld and BaseReliefBuildings[actor.Type] then
-				Trigger.OnKilled(actor, function() RequestRelief(base) end)
+				Trigger.OnKilled(actor, function(_, killer)
+					RequestRelief(base)
+					-- Easy/Normal also commit the base if a key building dies in one
+					-- Nod hit. Self-destruction or selling has no Nod killer.
+					if difficulty ~= "hard" and BaseDefenseBuildings[actor.Type]
+						and killer ~= nil and IsLive(killer) and killer.Owner == Nod then
+						StartBaseDefense(base, killer)
+					end
+				end)
 				Trigger.OnCapture(actor, function(_, _, _, newOwner)
-					if not IsGDIPlayer(newOwner) then RequestRelief(base) end
+					if not IsGDIPlayer(newOwner) then
+						RequestRelief(base)
+						if difficulty ~= "hard" and BaseDefenseBuildings[actor.Type] then
+							StartBaseDefense(base, nil)
+						end
+					end
 				end)
 			end
 		end
