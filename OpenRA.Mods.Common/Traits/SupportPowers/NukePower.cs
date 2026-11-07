@@ -51,6 +51,13 @@ namespace OpenRA.Mods.Common.Traits
 			"'False' will make the missile continue until it hits the ground and disappears (without triggering another explosion).")]
 		public readonly bool RemoveMissileOnDetonation = true;
 
+		[Desc("Can the missile be intercepted by InterceptsProjectiles traits.")]
+		public readonly bool Interceptable = false;
+
+		[WeaponReference]
+		[Desc("Weapon fired at the missile's position when intercepted (effects only).")]
+		public readonly string InterceptionWeapon = null;
+
 		[PaletteReference(nameof(IsPlayerPalette))]
 		[Desc("Palette to use for the missile weapon image.")]
 		public readonly string MissilePalette = "effect";
@@ -121,6 +128,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly ImmutableArray<WDist> CircleRanges = default;
 
 		public WeaponInfo WeaponInfo { get; private set; }
+		public WeaponInfo InterceptionWeaponInfo { get; private set; }
 
 		public override object Create(ActorInitializer init) { return new NukePower(init.Self, this); }
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
@@ -133,6 +141,15 @@ namespace OpenRA.Mods.Common.Traits
 				throw new YamlException($"Weapons Ruleset does not contain an entry '{weaponToLower}'");
 
 			WeaponInfo = weapon;
+
+			if (!string.IsNullOrEmpty(InterceptionWeapon))
+			{
+				var interceptionWeaponToLower = InterceptionWeapon.ToLowerInvariant();
+				if (!rules.Weapons.TryGetValue(interceptionWeaponToLower, out var interceptionWeapon))
+					throw new YamlException($"Weapons Ruleset does not contain an entry '{interceptionWeaponToLower}'");
+
+				InterceptionWeaponInfo = interceptionWeapon;
+			}
 
 			base.RulesetLoaded(rules, ai);
 		}
@@ -173,7 +190,8 @@ namespace OpenRA.Mods.Common.Traits
 				launchPos,
 				targetPosition, info.DetonationAltitude, info.RemoveMissileOnDetonation,
 				info.FlightVelocity, info.MissileDelay, info.FlightDelay, skipAscent,
-				info.TrailImage, info.TrailSequences, info.TrailPalette, info.TrailUsePlayerPalette, info.TrailDelay, info.TrailInterval);
+				info.TrailImage, info.TrailSequences, info.TrailPalette, info.TrailUsePlayerPalette, info.TrailDelay, info.TrailInterval,
+				info.Interceptable, info.InterceptionWeaponInfo);
 
 			self.World.AddFrameEndTask(w => w.Add(missile));
 

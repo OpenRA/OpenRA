@@ -61,6 +61,14 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IBlocksProjectilesInfo : ITraitInfoInterface { }
 
 	[RequireExplicitImplementation]
+	public interface IInterceptableProjectile
+	{
+		WPos Position { get; }
+		Player Owner { get; }
+		void Intercept(World world, Actor interceptor);
+	}
+
+	[RequireExplicitImplementation]
 	public interface INotifyOrderIssued
 	{
 		bool OrderIssued(World world, string orderString, Target target);

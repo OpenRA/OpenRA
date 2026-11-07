@@ -14,11 +14,12 @@ using System.Collections.Immutable;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Effects
 {
-	public class NukeLaunch : IProjectile, ISpatiallyPartitionable
+	public class NukeLaunch : IProjectile, ISpatiallyPartitionable, IInterceptableProjectile
 	{
 		readonly Player firedBy;
 		readonly Animation anim;
@@ -33,6 +34,8 @@ namespace OpenRA.Mods.Common.Effects
 		readonly WPos descendTarget;
 		readonly WDist detonationAltitude;
 		readonly bool removeOnDetonation;
+		readonly bool interceptable;
+		readonly WeaponInfo interceptionWeapon;
 		readonly int impactDelay;
 		readonly int turn;
 		readonly string trailImage;
@@ -50,7 +53,8 @@ namespace OpenRA.Mods.Common.Effects
 		public NukeLaunch(Player firedBy, string image, WeaponInfo weapon, string weaponPalette, string upSequence, string downSequence,
 			WPos launchPos, WPos targetPos, WDist detonationAltitude, bool removeOnDetonation, WDist velocity, int launchDelay, int impactDelay,
 			bool skipAscent,
-			string trailImage, ImmutableArray<string> trailSequences, string trailPalette, bool trailUsePlayerPalette, int trailDelay, int trailInterval)
+			string trailImage, ImmutableArray<string> trailSequences, string trailPalette, bool trailUsePlayerPalette, int trailDelay, int trailInterval,
+			bool interceptable, WeaponInfo interceptionWeapon)
 		{
 			this.firedBy = firedBy;
 			this.weapon = weapon;
@@ -77,6 +81,8 @@ namespace OpenRA.Mods.Common.Effects
 			descendTarget = targetPos;
 			this.detonationAltitude = detonationAltitude;
 			this.removeOnDetonation = removeOnDetonation;
+			this.interceptable = interceptable;
+			this.interceptionWeapon = interceptionWeapon;
 
 			if (!string.IsNullOrEmpty(image))
 				anim = new Animation(firedBy.World, image);
@@ -169,5 +175,36 @@ namespace OpenRA.Mods.Common.Effects
 		}
 
 		public float FractionComplete => ticks * 1f / impactDelay;
+
+		WPos IInterceptableProjectile.Position => pos;
+
+		Player IInterceptableProjectile.Owner => firedBy;
+
+		void IInterceptableProjectile.Intercept(World world, Actor interceptor)
+		{
+			if (!interceptable)
+				return;
+
+			world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
+
+			if (detonated)
+				return;
+
+			if (interceptionWeapon != null)
+			{
+				var target = Target.FromPos(pos);
+				var warheadArgs = new WarheadArgs
+				{
+					Weapon = interceptionWeapon,
+					Source = target.CenterPosition,
+					SourceActor = firedBy.PlayerActor,
+					WeaponTarget = target
+				};
+
+				interceptionWeapon.Impact(target, warheadArgs);
+			}
+
+			detonated = true;
+		}
 	}
 }
