@@ -19,7 +19,7 @@ jobs:
         env:
           BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
         run: |
-          wget -cq -O butler-linux-amd64.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+          wget -cq -O butler-linux-amd64.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
           unzip butler-linux-amd64.zip
           rm butler-linux-amd64.zip
           chmod +x butler
