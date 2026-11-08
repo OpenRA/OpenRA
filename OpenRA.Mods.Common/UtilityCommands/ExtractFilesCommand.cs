@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -28,15 +29,35 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			var files = args.Skip(1);
+			var failed = new List<string>();
 
 			foreach (var f in files)
 			{
-				var src = utility.ModData.DefaultFileSystem.Open(f);
-				if (src == null)
-					throw new InvalidOperationException($"File not found: {f}");
-				var data = src.ReadAllBytes();
-				File.WriteAllBytes(f, data);
-				Console.WriteLine(f + " saved.");
+				try
+				{
+					var src = utility.ModData.DefaultFileSystem.Open(f);
+					if (src == null)
+					{
+						failed.Add(f);
+						continue;
+					}
+
+					var data = src.ReadAllBytes();
+					File.WriteAllBytes(f, data);
+					Console.WriteLine(f + " saved.");
+				}
+				catch (FileNotFoundException)
+				{
+					failed.Add(f);
+				}
+			}
+
+			if (failed.Count > 0)
+			{
+				Console.Error.WriteLine($"{failed.Count} file(s) not found:");
+				foreach (var f in failed)
+					Console.Error.WriteLine($"  {f}");
+				Environment.Exit(1);
 			}
 		}
 	}
