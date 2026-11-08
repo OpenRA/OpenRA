@@ -16,7 +16,7 @@ create_symlinks()
 	SEARCH=$4
 
 	# Override bundled dependencies.
-	rm "bin/${REPLACE}"
+	rm -f "bin/${REPLACE}"
 
 	printf "Searching for %s... " "${LABEL}"
 	for DIR in ${SEARCHDIRS} ; do
