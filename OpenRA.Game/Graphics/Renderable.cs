@@ -52,6 +52,12 @@ namespace OpenRA.Graphics
 		IModifyableRenderable WithTint(in Vector3 newTint, TintModifiers newTintModifiers);
 	}
 
+	public interface IStencilGroupRenderable : IRenderable
+	{
+		byte StencilGroup { get; }
+		IRenderable WithStencilGroup(byte group);
+	}
+
 	public interface IFinalizedRenderable
 	{
 		void Render(WorldRenderer wr);

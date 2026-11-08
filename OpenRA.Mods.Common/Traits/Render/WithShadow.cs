@@ -56,12 +56,17 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			var renderables = r.ToList();
 			var height = self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length;
+
+			// Overlapping parts must not darken the same pixel twice
+			var stencilGroup = wr.NextStencilGroup();
+
 			var shadowSprites = renderables.Where(s => !s.IsDecoration && s is IModifyableRenderable)
 				.Select(ma => ((IModifyableRenderable)ma).WithTint(shadowColor, ((IModifyableRenderable)ma).TintModifiers | TintModifiers.ReplaceColor)
 					.WithAlpha(shadowAlpha)
 					.OffsetBy(info.Offset - new WVec(0, 0, height))
 					.WithZOffset(ma.ZOffset + height + info.ZOffset)
-					.AsDecoration());
+					.AsDecoration())
+				.Select(s => s is IStencilGroupRenderable sg ? sg.WithStencilGroup(stencilGroup) : s);
 
 			return shadowSprites.Concat(renderables);
 		}
