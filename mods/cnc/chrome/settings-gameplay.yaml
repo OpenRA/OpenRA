@@ -207,6 +207,25 @@ Container@GAMEPLAY_PANEL:
 									Font: Regular
 				Container@ROW:
 					Width: PARENT_WIDTH - 24
+					Height: 50
+					Children:
+						Container@MAX_REPLAY_COUNT_CONTAINER:
+							X: 10
+							Width: PARENT_WIDTH / 2 - 20
+							Children:
+								LabelForInput@MAX_REPLAY_COUNT_DROP_DOWN_LABEL:
+									Width: PARENT_WIDTH
+									Height: 20
+									Font: Regular
+									Text: label-max-replay-count
+									For: MAX_REPLAY_COUNT_DROP_DOWN
+								DropDownButton@MAX_REPLAY_COUNT_DROP_DOWN:
+									Y: 25
+									Width: PARENT_WIDTH
+									Height: 25
+									Font: Regular
+				Container@ROW:
+					Width: PARENT_WIDTH - 24
 					Height: 20
 					Children:
 						Container@HIDE_REPLAY_CHAT_CHECKBOX_CONTAINER:
