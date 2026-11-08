@@ -1,0 +1,11 @@
+hotkey-description-productiontypebuilding = Вкладка зданий
+hotkey-description-productiontypesupport = Вкладка поддержки
+hotkey-description-productiontypeinfantry = Пехота
+hotkey-description-productiontypevehicle = Техника
+hotkey-description-productiontypeaircraft = Авиация
+hotkey-description-powerdown = Режим отключения энергии
+hotkey-description-decreasedepthpreviewcontrast = Уменьшить контрастность
+hotkey-description-increasedepthpreviewcontrast = Увеличить контрастность
+hotkey-description-decreasedepthpreviewoffset = Уменьшить смещение
+hotkey-description-increasedepthpreviewoffset = Увеличить смещение
+hotkey-description-toggledepthpreview = Переключить предпросмотр

@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -55,10 +56,9 @@ namespace OpenRA
 
 		public ModData(Manifest mod, InstalledMods mods, bool useLoadScreen = false)
 		{
-			Languages = [];
-
 			// Take a local copy of the manifest
 			Manifest = new Manifest(mod.Id, mod.Package);
+			Languages = Manifest.FluentLanguages;
 			ObjectCreator = new ObjectCreator(Manifest, mods);
 			PackageLoaders = ObjectCreator.GetLoaders<IPackageLoader>(Manifest.PackageFormats, "package");
 			ModFiles = new FS(mod.Id, mods, PackageLoaders);
@@ -91,7 +91,7 @@ namespace OpenRA
 				modules.Add(module);
 			}
 
-			FluentProvider.Initialize(Manifest, DefaultFileSystem);
+			FluentProvider.Initialize(Manifest, DefaultFileSystem, Game.Settings.Game.Language);
 
 			if (useLoadScreen)
 			{
@@ -166,12 +166,12 @@ namespace OpenRA
 			ChromeMetrics.Initialize(this);
 			ChromeProvider.Initialize(this);
 			Ui.Initialize(this);
-			FluentProvider.Initialize(Manifest, fileSystem);
+			FluentProvider.Initialize(Manifest, fileSystem, Game.Settings.Game.Language);
 
 			Game.Sound.Initialize(SoundLoaders, fileSystem);
 		}
 
-		public IEnumerable<string> Languages { get; }
+		public ImmutableArray<string> Languages { get; }
 
 		public void PrepareMap(Map map)
 		{
