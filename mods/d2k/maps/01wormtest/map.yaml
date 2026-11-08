@@ -1,0 +1,92 @@
+MapFormat: 12
+
+RequiresMod: d2k
+
+Title: worm test
+
+Author: Your name here
+
+Tileset: ARRAKIS
+
+MapSize: 130,130
+
+Bounds: 1,1,128,128
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: Random
+		Enemies: Multi0, Multi1
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+
+Actors:
+	Actor0: mpspawn
+		Owner: Neutral
+		Location: 58,63
+	Actor1: combat_tank_a
+		Owner: Multi0
+		Location: 66,70
+		Stance: HoldFire
+		Facing: 384
+	Actor3: combat_tank_a
+		Owner: Multi0
+		Stance: HoldFire
+		Facing: 384
+		Location: 68,70
+	Actor5: combat_tank_a
+		Owner: Multi0
+		Stance: HoldFire
+		Facing: 384
+		Location: 70,70
+	Actor7: combat_tank_a
+		Owner: Multi0
+		Stance: HoldFire
+		Facing: 384
+		Location: 72,70
+	Actor8: combat_tank_a
+		Owner: Multi0
+		Stance: HoldFire
+		Facing: 384
+		Location: 74,70
+	Actor6: combat_tank_a
+		Owner: Multi0
+		Stance: HoldFire
+		Facing: 384
+		Location: 71,72
+	Actor4: combat_tank_a
+		Owner: Multi0
+		Stance: HoldFire
+		Facing: 384
+		Location: 69,72
+	Actor2: combat_tank_a
+		Owner: Multi0
+		Stance: HoldFire
+		Facing: 384
+		Location: 67,72
+	Actor9: wormspawner
+		Owner: Multi0
+		Location: 72,68
+	Actor10: mpspawn
+		Owner: Neutral
+		Location: 52,62
+
+Rules: Rules.yaml
