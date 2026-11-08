@@ -117,7 +117,7 @@ jobs:
   macos:
     name: macOS Disk Image
     needs: create-release
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - name: Clone Repository
         uses: actions/checkout@v7
