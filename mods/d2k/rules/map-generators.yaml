@@ -97,12 +97,14 @@
 						TerrainFeatureSize: 10240
 						SandDetailFeatureSize: 10240
 						DuneFeatureSize: 10240
-						RockRoughness: 300
+						RockRoughness: 200
+						MinimumSandRockCliffLength: 4
+						MinimumRockSmoothLength: 8
 						SandRoughness: 300
-						Rock: 300
+						Rock: 250
 						SandCliffs: 500
 						Dunes: 200
-						SandDetail: 200
+						SandDetail: 150
 				Choice@Flat:
 					Label: label-d2k-map-generator-choice-terrain-type-flat
 					Parameters:
