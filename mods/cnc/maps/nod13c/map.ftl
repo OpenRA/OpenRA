@@ -7,7 +7,6 @@ briefing =
 
 ## lua
 build-temple = Construct the Temple of Nod.
-protect-the-mcv = Protect your starting MCV. If it is destroyed, the mission fails.
 commando-arrived = Kane has sent a commando and a transport helicopter near the church.
 reinforcements-chinook = An empty GDI transport has landed to the west. Capture it with an Engineer.
 church-destroyed = The church has been destroyed. A money crate is available.

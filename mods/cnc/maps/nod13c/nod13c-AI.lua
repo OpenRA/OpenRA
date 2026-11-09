@@ -36,9 +36,24 @@ local retreatingOrcas = {}
 local orcaBase = {}
 local orcaHandled = {}
 local defenseResponses = {}
+-- Forward declarations for the economy recovery machinery. Lua resolves these
+-- locals as upvalues in functions that are defined before the economy block.
 local RebuildHarvester
 local Queue
 local RequestRelief
+local EconomyTick
+local ClaimHarvester
+local UnclaimHarvester
+local LiveHarvesterCount
+local HarvesterCount
+local AdoptFreeHarvester
+local Rebuild
+local Produce
+local EnsureHelipad
+local ProduceOrca
+local StartBuilding
+local CanRepairBuilding
+local prerequisites
 
 -- Each base builds and rebuilds on its own. GDI receives the port's normal
 -- starting funds, split between GDI and GDIWest; GDISouth stays at zero.
@@ -51,6 +66,17 @@ local BaseReliefBuildings = { fact = true, proc = true, weap = true, pyle = true
 	hq = true, eye = true, nuke = true, nuk2 = true, hpad = true, atwr = true, gtwr = true }
 local BaseDefenseBuildings = { fact = true, proc = true, weap = true, pyle = true, hq = true, eye = true }
 local BaseDefenseAlarmSeconds = 45
+-- All-out is a reaction, not a permanent state: after this long without
+-- further building damage the base stands down and units garrison again.
+local AllOutStandDownSeconds = 60
+-- Sales pause while the base is being hit; towers are defence, not funding.
+local UnderAttackSellPauseSeconds = 15
+-- After losing the construction yard, give the harvester time to earn the
+-- MCV before liquidating anything (the WEAP stays protected regardless).
+local HarvesterEarnWindowSeconds = 180
+-- If power is low again within this window after adding a plant, the next
+-- capacity step uses the bigger NUK2 instead of another small NUKE.
+local PowerOscillationSeconds = 300
 -- Original SCB13EC trigger times (tenths of a minute, multiplied by six):
 -- atk1-atk7 at 26.0-40.0 min, A10 strikes every 8 min from 8 min.
 local WaveStart = { easy = 1872, normal = 1560, hard = 1326 }
@@ -62,13 +88,22 @@ local AutoWaveStart = { easy = 1800, normal = 1500, hard = 1275 }
 -- (easy/normal/hard), then every 10/8/6 minutes.
 local IonCannonFirstDelay = { easy = 2400, normal = 1920, hard = 1500 }
 local IonCannonInterval = { easy = 600, normal = 480, hard = 360 }
-local HarvesterGraceSeconds = 60
 
 local passable = { Clear = true, Rough = true, Road = true, Bridge = true,
 	Tiberium = true, BlueTiberium = true, Beach = true }
 
 local function IsLive(actor)
 	return actor ~= nil and actor.Owner ~= nil and not actor.IsDead
+end
+
+-- Actor values are not guaranteed to have stable Lua table identity across
+-- engine callbacks. Use the stable ActorID for sets/maps. The harness (and
+-- other callers without the property) falls back to the table itself.
+function EconomyActorKey(actor)
+	if actor == nil then return nil end
+	local id = actor.ActorID
+	if id ~= nil then return id end
+	return actor
 end
 
 local function IsGDIPlayer(player)
@@ -233,6 +268,22 @@ local function GDIFunds(player)
 	return player.Cash + player.Resources
 end
 
+function EconomyResourceCapacity(player)
+	return player.ResourceCapacity or 0
+end
+
+-- Storage can be full while the harvesters keep delivering. In that state
+-- Cash + Resources stays flat, which must not be mistaken for no income.
+function EconomyIsStorageFull(player)
+	local capacity = EconomyResourceCapacity(player)
+	return capacity > 0 and (player.Resources or 0) >= capacity
+end
+
+function EconomyIsStorageNearlyFull(player)
+	local capacity = EconomyResourceCapacity(player)
+	return capacity > 0 and (player.Resources or 0) >= math.max(0, capacity - 500)
+end
+
 local function SpendGDIFunds(player, amount)
 	local resources = math.min(player.Resources, amount)
 	player.Resources = player.Resources - resources
@@ -240,17 +291,25 @@ local function SpendGDIFunds(player, amount)
 	return resources
 end
 
-local function Owned(player, kind)
-	for _, actor in ipairs(player.GetActorsByType(kind)) do
-		if IsLive(actor) and actor.Owner == player and actor.IsInWorld then return actor end
-	end
-	return nil
-end
-
 local function IsLocal(base, actor)
 	if not actor.HasProperty("Location") then return false end
 	local dx, dy = actor.Location.X - base.yard[1], actor.Location.Y - base.yard[2]
 	return dx * dx + dy * dy <= 32 * 32
+end
+
+-- All live, in-world actors of a type that belong to a base's economy.
+-- The central Communications Center outpost is deliberately excluded: the
+-- base-local radius of the northern base also covers it, but it is a static
+-- guard position, not part of the base's economy or tech chain.
+local function GetLocalActors(base, kind)
+	local out = {}
+	for _, actor in ipairs(base.player.GetActorsByType(kind)) do
+		if IsLive(actor) and actor.Owner == base.player and actor.IsInWorld
+			and IsLocal(base, actor) and not IsCentralOutpostActor(actor) then
+			out[#out + 1] = actor
+		end
+	end
+	return out
 end
 
 local function BaseAt(cell)
@@ -263,13 +322,11 @@ end
 
 local function LocalBuilding(base, kind)
 	local best, bestDistance
-	for _, actor in ipairs(base.player.GetActorsByType(kind)) do
-		if IsLive(actor) and actor.Owner == base.player and actor.IsInWorld and IsLocal(base, actor) then
-			local dx, dy = actor.Location.X - base.yard[1], actor.Location.Y - base.yard[2]
-			local distance = dx * dx + dy * dy
-			if bestDistance == nil or distance < bestDistance then
-				best, bestDistance = actor, distance
-			end
+	for _, actor in ipairs(GetLocalActors(base, kind)) do
+		local dx, dy = actor.Location.X - base.yard[1], actor.Location.Y - base.yard[2]
+		local distance = dx * dx + dy * dy
+		if bestDistance == nil or distance < bestDistance then
+			best, bestDistance = actor, distance
 		end
 	end
 	return best
@@ -302,12 +359,46 @@ local function BaseForPlayer(player)
 	return nil
 end
 
+-- Multi-base: pick the base of the actor's owner that is closest to the
+-- actor. Never fall back to the first base of the player; that silently
+-- mixes bases when a player owns more than one.
+local function BaseForActor(actor)
+	if actor == nil or not actor.HasProperty("Location") then return nil end
+	local best, bestDistance
+	for _, base in ipairs(bases) do
+		if base.player == actor.Owner then
+			local dx = actor.Location.X - base.yard[1]
+			local dy = actor.Location.Y - base.yard[2]
+			local distance = dx * dx + dy * dy
+			if best == nil or distance < bestDistance then
+				best, bestDistance = base, distance
+			end
+		end
+	end
+	return best
+end
+
+-- The base that owns the building which produced/placed an actor. Used for
+-- harvester claims (WEAP queue / direct PROC placement).
+local function BaseForOwnedBuilding(actor)
+	if actor == nil then return nil end
+	for _, base in ipairs(bases) do
+		if base.player == actor.Owner then
+			for _, candidate in ipairs(GetLocalActors(base, actor.Type)) do
+				if candidate == actor then return base end
+			end
+		end
+	end
+	return BaseForActor(actor)
+end
+
 local function BaseForHarvester(harv)
 	local best, bestDistance
 	for _, base in ipairs(bases) do
-		local proc = LocalBuilding(base, "proc")
-		local anchor = proc or LocalBuilding(base, "fact")
-		if anchor ~= nil then
+		-- Only refineries can use a harvester. Never fall back to a bare
+		-- construction yard: GDISouth has a FACT but no economy, and its
+		-- proximity stole the western base's starting harvester.
+		for _, anchor in ipairs(GetLocalActors(base, "proc")) do
 			local dx = harv.Location.X - anchor.Location.X
 			local dy = harv.Location.Y - anchor.Location.Y
 			local distance = dx * dx + dy * dy
@@ -316,11 +407,7 @@ local function BaseForHarvester(harv)
 			end
 		end
 	end
-	return best or bases[1]
-end
-
-local function HasLiveHarvester(base)
-	return IsLive(base.harvester) and base.harvester.IsInWorld and base.harvester.Owner == base.player
+	return best
 end
 
 local function PruneReserve(base)
@@ -475,11 +562,10 @@ end
 
 local function JoinGarrison(base, unit)
 	if not IsLive(unit) or unit.Owner ~= base.player then return end
-	if base.allOut or base.defending then
-		RemoveProduced(base, { unit })
-		SendTeam({ unit }, base.player, {}, true)
-		return
-	end
+	-- Never trickle newly produced units into the enemy one by one during an
+	-- all-out/alarm. The initial AllOutAttack already sent the standing army;
+	-- replacements stay home as garrison so production stops at the cap and
+	-- the base does not endlessly burn money on suicide attacks.
 	PruneReserve(base)
 	if #base.reserve < DefenderReserve[difficulty] then table.insert(base.reserve, unit) end
 	if unit.HasProperty("Stance") then unit.Stance = "Defend" end
@@ -585,7 +671,8 @@ local function AllOutAttack(base, target)
 	end
 
 	for _, orca in ipairs(base.player.GetActorsByType("orca")) do
-		if IsLive(orca) and orca.IsInWorld and not retreatingOrcas[orca] then
+		local orcaKey = EconomyActorKey(orca)
+		if IsLive(orca) and orca.IsInWorld and not retreatingOrcas[orcaKey] then
 			if orca.HasProperty("Stance") then orca.Stance = "AttackAnything" end
 			if orca.HasProperty("Stop") then orca.Stop() end
 			if orca.HasProperty("AttackMove") and #route > 0 then
@@ -618,12 +705,27 @@ local function DefendAgainst(actor, attacker, damage)
 	-- a full base. Its own garrison still fights locally.
 	if actor.Owner == GDISouth then return end
 	if not IsLive(attacker) or attacker.Owner ~= Nod or not attacker.HasProperty("Location") then return end
-	if actor.HasProperty("StartBuildingRepairs") and actor.Health < actor.MaxHealth * 0.75 then
-		actor.StartBuildingRepairs()
+
+	local base = BaseForActor(actor)
+	if base ~= nil and not IsLocal(base, actor) then base = nil end
+	-- Selling buildings while the base is being attacked leaves it
+	-- defenceless, so sales are suspended until 15 s after the last hit.
+	if base ~= nil and actor.HasProperty("StartBuildingRepairs") then
+		base.underAttackUntil = math.max(base.underAttackUntil or 0,
+			DateTime.GameTime + DateTime.Seconds(UnderAttackSellPauseSeconds))
 	end
 
-	local base = BaseForPlayer(actor.Owner)
-	if base ~= nil and not IsLocal(base, actor) then base = nil end
+	-- Repairs are gated by the economy state. In Crisis/Liquidation only the
+	-- income chain is repaired; the EYE is deliberately not (Option B).
+	if actor.HasProperty("StartBuildingRepairs") and actor.Health < actor.MaxHealth * 0.75 then
+		if base == nil or CanRepairBuilding(base, actor) then
+			actor.StartBuildingRepairs()
+		end
+	end
+	if base ~= nil and actor.HasProperty("StartBuildingRepairs")
+		and (actor.Type == "fact" or actor.Type == "proc" or actor.Type == "nuke" or actor.Type == "nuk2") then
+		base.hasCriticalDamage = true
+	end
 
 	if base ~= nil and actor.HasProperty("StartBuildingRepairs") then
 		if difficulty == "hard" then
@@ -647,15 +749,16 @@ local function DefendAgainst(actor, attacker, damage)
 		end
 	end
 
+	local attackerKey = EconomyActorKey(attacker)
 	for i = #defenseResponses, 1, -1 do
 		local response = defenseResponses[i]
 		if DateTime.GameTime >= response.expires then
 			table.remove(defenseResponses, i)
-		elseif response.attacker == attacker then
+		elseif response.attackerKey == attackerKey then
 			return
 		end
 	end
-	table.insert(defenseResponses, { attacker = attacker, expires = DateTime.GameTime + DateTime.Seconds(2) })
+	table.insert(defenseResponses, { attackerKey = attackerKey, expires = DateTime.GameTime + DateTime.Seconds(2) })
 
 	-- A hit on a base building commits part of that base's reserve on Hard.
 	if difficulty == "hard" and base ~= nil and actor.HasProperty("StartBuildingRepairs")
@@ -684,10 +787,9 @@ end
 
 local function Guard(actor)
 	if not IsLive(actor) then return end
-	for _, other in ipairs(guarded) do
-		if other == actor then return end
-	end
-	table.insert(guarded, actor)
+	local key = EconomyActorKey(actor)
+	if guarded[key] then return end
+	guarded[key] = true
 	Trigger.OnDamaged(actor, DefendAgainst)
 	if actor.HasProperty("StartBuildingRepairs") then
 		Trigger.OnCapture(actor, function(_, _, _, newOwner)
@@ -701,9 +803,10 @@ end
 -- the same pattern is used in nod13a.
 local function OrcaDamaged(base, orca, attacker, damage)
 	if MissionFinished or base == nil or damage == nil or damage <= 0 or not IsLive(orca) then return end
-	if retreatingOrcas[orca] then return end
+	local key = EconomyActorKey(orca)
+	if retreatingOrcas[key] then return end
 	if orca.Health * 4 > orca.MaxHealth or LocalBuilding(base, "hpad") == nil then return end
-	retreatingOrcas[orca] = true
+	retreatingOrcas[key] = true
 	orca.Stop()
 	orca.ReturnToBase()
 end
@@ -711,11 +814,12 @@ end
 local function GuardOrca(base, orca)
 	if not IsLive(orca) or orca.Type ~= "orca" then return end
 	Guard(orca)
-	if base ~= nil then orcaBase[orca] = base end
-	if not orcaHandled[orca] then
-		orcaHandled[orca] = true
+	local key = EconomyActorKey(orca)
+	if base ~= nil then orcaBase[key] = base end
+	if not orcaHandled[key] then
+		orcaHandled[key] = true
 		Trigger.OnDamaged(orca, function(actor, attacker, damage)
-			OrcaDamaged(orcaBase[actor] or BaseForPlayer(actor.Owner) or BaseAt(actor.Location), actor, attacker, damage)
+			OrcaDamaged(orcaBase[EconomyActorKey(actor)] or BaseForPlayer(actor.Owner) or BaseAt(actor.Location), actor, attacker, damage)
 		end)
 	end
 	if orca.HasProperty("Stance") then orca.Stance = "Defend" end
@@ -729,10 +833,11 @@ local function OrcaWatch()
 	if MissionFinished then return end
 	for _, player in ipairs(gdiPlayers) do
 		for _, orca in ipairs(player.GetActorsByType("orca")) do
-			if IsLive(orca) and retreatingOrcas[orca] then
-				local base = orcaBase[orca] or BaseForPlayer(orca.Owner) or BaseAt(orca.Location)
+			local key = EconomyActorKey(orca)
+			if IsLive(orca) and retreatingOrcas[key] then
+				local base = orcaBase[key] or BaseForPlayer(orca.Owner) or BaseAt(orca.Location)
 				if base == nil or LocalBuilding(base, "hpad") == nil or orca.Health * 10 >= orca.MaxHealth * 9 then
-					retreatingOrcas[orca] = nil
+					retreatingOrcas[key] = nil
 					if base ~= nil and base.defending then
 						if orca.HasProperty("Stance") then orca.Stance = "AttackAnything" end
 						IdleHunt(orca)
@@ -745,20 +850,26 @@ local function OrcaWatch()
 end
 
 local function TrackHarvester(base, harv)
-	if harv == nil or base == nil or trackedHarvesters[harv] then return end
-	trackedHarvesters[harv] = true
-	base.harvester = harv
-	base.noHarvesterSince = nil
+	if harv == nil or base == nil then return end
+	local key = EconomyActorKey(harv)
+	if trackedHarvesters[key] then return end
+	trackedHarvesters[key] = true
+	ClaimHarvester(base, harv)
 	Trigger.OnKilled(harv, function(_, killer)
-		if base.harvester == harv then base.harvester = nil end
-		Trigger.AfterDelay(1, function()
-			RebuildHarvester(base, killer)
-		end)
+		UnclaimHarvester(base, harv)
+		base.harvesterLost = true
+		-- The economy tick is the single decision point. Do not sell or
+		-- start an all-out directly from the kill hook.
+		if not MissionFinished then
+			Trigger.AfterDelay(1, function()
+				if not MissionFinished then EconomyTick() end
+			end)
+		end
 	end)
 end
 
 local footprint = { fact = { 3, 3 }, proc = { 3, 4 }, weap = { 3, 3 },
-	pyle = { 2, 3 }, nuk2 = { 2, 3 }, atwr = { 1, 1 }, gtwr = { 1, 1 },
+	pyle = { 2, 3 }, nuke = { 2, 3 }, nuk2 = { 2, 3 }, atwr = { 1, 1 }, gtwr = { 1, 1 },
 	silo = { 2, 1 }, hq = { 2, 3 }, eye = { 2, 3 }, hpad = { 2, 2 }, fix = { 3, 3 } }
 local emptyFootprintCells = { proc = { [0] = true, [2] = true }, hq = { [1] = true }, eye = { [1] = true } }
 
@@ -803,6 +914,11 @@ local function SiteFree(entry, ignore, owner)
 						and OccupiesFootprint(actor.Type, cx - x, cy - y) then
 						if actor.Owner == owner and actor.HasProperty("Move") and not actor.HasProperty("Land") then
 							actor.Move(CPos.New(entry[2], entry[3] + size[2] + 1))
+							-- A displaced harvester must resume harvesting; otherwise
+							-- rebuilding a building silently parks it forever.
+							if actor.HasProperty("FindResources") then
+								actor.FindResources()
+							end
 						end
 						return false
 					end
@@ -856,6 +972,1060 @@ local function WatchMCV(base, mcv, tries)
 	Trigger.AfterDelay(DateTime.Seconds(3), function() WatchMCV(base, mcv, tries + 1) end)
 end
 
+-- ===========================================================================
+-- Economy recovery (nod13c)
+--
+-- The economy is base-local and the funds are player-wide. A base is only
+-- "healthy" while a refinery and a claimed harvester exist; missing power is
+-- a strained state, not an income loss. Sales are asynchronous and never
+-- fire OnKilled. See harness/ECONOMY-RECOVERY-NOD13C.md.
+-- ===========================================================================
+local SellMode = { Normal = "normal", Emergency = "emergency", All = "all" }
+-- Declaration order matters in Lua: SellOrder must exist before
+-- LiquidatableValue/SellForEconomy are defined.
+local SellOrder = { "gtwr", "atwr", "hpad", "silo", "pyle", "weap", "hq" }
+local CustomSellValue = { proc = 400 }
+
+local EconomySellCooldownSeconds = 20
+local SettlementSeconds = 20
+local SellTimeoutSeconds = 60
+local FreeActorGraceSeconds = 10
+local DeadConfirmSeconds = 20
+local DeadAllOutGraceSeconds = 60
+local IncomeWindowSeconds = 90
+local IncomeFailureSeconds = 180
+local HealthyReserve = 500
+local RepairReserve = 500
+local SellBuffer = 0
+
+local harvesterClaims = {}
+local reservedFunds = {}
+local activeSaleBase = {}
+local economyTickScheduled = false
+
+-- Included in lua.log so a log can be matched to the code that produced it.
+-- Globals on purpose: the main chunk is at the 200-local limit.
+ECONOMY_LOG_VERSION = "v2.15"
+function EconomyErrorText(err)
+	if debug ~= nil and debug.traceback ~= nil then
+		return debug.traceback(tostring(err), 2)
+	end
+	return tostring(err)
+end
+
+-- The harness does not simulate Tiberium income. It disables the cashflow
+-- watchdog so a static stub balance is not mistaken for a stuck harvester.
+EconomyWatchdogEnabled = EconomyWatchdogEnabled ~= false
+
+local StateRank = { Dead = 0, DeadPending = 1, Liquidation = 2,
+	Crisis = 3, Strained = 4, Healthy = 5 }
+
+local function IsEconomyBase(base)
+	if base == nil or base.player == nil then return false end
+	if base.player == GDISouth then return false end
+	if HouseEliminated(base.player) then return false end
+	return true
+end
+
+local function ReservedFunds(player)
+	return reservedFunds[player] or 0
+end
+
+local function AvailableFunds(player)
+	local funds = GDIFunds(player) - ReservedFunds(player)
+	if funds < 0 then return 0 end
+	return funds
+end
+
+local function AvailableFundsForBase(base)
+	local own = base.reservedFunds or 0
+	local funds = GDIFunds(base.player) - (ReservedFunds(base.player) - own)
+	if funds < 0 then return 0 end
+	return funds
+end
+
+local function IsNear(actor, other, radius)
+	if actor == nil or other == nil or not actor.HasProperty("Location")
+		or not other.HasProperty("Location") then return false end
+	local dx = actor.Location.X - other.Location.X
+	local dy = actor.Location.Y - other.Location.Y
+	return dx * dx + dy * dy <= radius * radius
+end
+
+ClaimHarvester = function(base, harv)
+	if base == nil or harv == nil then return end
+	local key = EconomyActorKey(harv)
+	if key == nil then return end
+	local owner = harvesterClaims[key]
+	if owner ~= nil and owner ~= base then
+		return -- never steal a harvester from another base
+	end
+	harvesterClaims[key] = base
+	base.harvesters[key] = harv
+	if not IsLive(base.harvester) then base.harvester = harv end
+	base.harvesterSince = base.harvesterSince or DateTime.GameTime
+	base.noHarvesterSince = nil
+end
+
+UnclaimHarvester = function(base, harv)
+	if base == nil or harv == nil then return end
+	local key = EconomyActorKey(harv)
+	if key == nil then return end
+	if harvesterClaims[key] == base then harvesterClaims[key] = nil end
+	if base.harvesters ~= nil then base.harvesters[key] = nil end
+	if EconomyActorKey(base.harvester) == key then
+		local _, nextHarv = next(base.harvesters or {})
+		base.harvester = nextHarv
+	end
+	if next(base.harvesters or {}) == nil then
+		base.harvesterSince = nil
+	end
+end
+
+LiveHarvesterCount = function(base)
+	if base.harvesters == nil then return 0 end
+	local count, dead = 0, {}
+	for _, harv in pairs(base.harvesters) do
+		if IsLive(harv) and harv.IsInWorld and harv.Owner == base.player then
+			count = count + 1
+		else
+			table.insert(dead, harv)
+		end
+	end
+	-- Never mutate the set while pairs() is iterating it.
+	for _, harv in ipairs(dead) do UnclaimHarvester(base, harv) end
+	return count
+end
+
+HarvesterCount = function(base)
+	return LiveHarvesterCount(base) + (base.harvesterBuilding and 1 or 0)
+end
+
+function EconomyHarvesterTarget(base)
+	return math.max(1, (base.harvestersPerProc or 1)
+		* math.max(1, #GetLocalActors(base, "proc")))
+end
+
+function EconomyHasHarvesterDeficit(base)
+	return HarvesterCount(base) < EconomyHarvesterTarget(base)
+end
+
+-- Restart every claimed harvester that has no activity. Refinery rebuilds,
+-- SiteFree displacements and interrupted harvest cycles can leave a
+-- harvester idle; without this it would stand still forever and only the
+-- cashflow watchdog (which retasks a single harvester) would notice.
+local function RestartIdleHarvesters(base)
+	if base.harvesters == nil then return end
+	-- Harvesting without a refinery is pointless and would only queue
+	-- activities that immediately fail.
+	if LocalBuilding(base, "proc") == nil then return end
+	for _, harv in pairs(base.harvesters) do
+		if IsLive(harv) and harv.IsInWorld and harv.Owner == base.player
+			and harv.HasProperty("FindResources") and harv.IsIdle then
+			harv.FindResources()
+		end
+	end
+end
+
+AdoptFreeHarvester = function(base)
+	if base == nil or not IsEconomyBase(base) then return end
+	-- Clear a stale primary pointer first.
+	if not (IsLive(base.harvester) and base.harvester.IsInWorld
+		and base.harvester.Owner == base.player) then
+		base.harvester = nil
+	end
+	local procs = GetLocalActors(base, "proc")
+	local function NearAnyProc(harv)
+		if #procs == 0 then return true end
+		for _, proc in ipairs(procs) do
+			if IsNear(harv, proc, 12) then return true end
+		end
+		return false
+	end
+	-- Adopt *all* unclaimed harvesters that belong to one of this base's
+	-- refineries. A base can have more than one refinery (mission-specific),
+	-- and a free harvester may spawn at the far one.
+	for _, harv in ipairs(base.player.GetActorsByType("harv")) do
+		local key = EconomyActorKey(harv)
+		if IsLive(harv) and harv.Owner == base.player and harv.IsInWorld
+			and key ~= nil and harvesterClaims[key] == nil and NearAnyProc(harv) then
+			ClaimHarvester(base, harv)
+		end
+	end
+	if base.harvester == nil then
+		local _, nextHarv = next(base.harvesters or {})
+		base.harvester = nextHarv
+	end
+	RestartIdleHarvesters(base)
+end
+
+local function HasLocalPower(base)
+	return LocalBuilding(base, "nuke") ~= nil or LocalBuilding(base, "nuk2") ~= nil
+end
+
+local function HasStructuralIncome(base)
+	return LocalBuilding(base, "proc") ~= nil and LiveHarvesterCount(base) > 0
+end
+
+local function IsIncomeSuspect(base)
+	return base.incomeSuspectSince ~= nil and not EconomyIsStorageFull(base.player)
+end
+
+local function IsStrained(base)
+	local power = base.player.PowerState
+	return not HasLocalPower(base)
+		or power == "Low" or power == "Critical"
+		or AvailableFundsForBase(base) < HealthyReserve
+		or base.hasCriticalDamage == true
+		or IsIncomeSuspect(base)
+end
+
+-- Dynamic anypower policy. StartBuilding bypasses prerequisites, so this is
+-- an explicit AI decision, not an engine rule. The decision is cached for
+-- the duration of a recovery so a sale cannot flip it and trigger extra
+-- selling for a power plant.
+local function ResolveRecoveryPowerPolicy(base)
+	if LocalBuilding(base, "proc") ~= nil then
+		base.recoveryPowerPolicy = nil
+		return "respect-anypower"
+	end
+	if base.recoveryPowerPolicy ~= nil and (base.recovering or (base.reservedFunds or 0) > 0) then
+		return base.recoveryPowerPolicy
+	end
+	local policy = "bypass"
+	if AvailableFundsForBase(base) >= Actor.Cost("nuke") + Actor.Cost("proc") then
+		policy = "respect-anypower"
+	end
+	if base.recoveryPowerPolicy ~= policy then
+		print(("ECON base=%s t=%d action=power-policy policy=%s funds=%d")
+			:format(base.player.Name, DateTime.GameTime, policy, AvailableFundsForBase(base)))
+	end
+	base.recoveryPowerPolicy = policy
+	return policy
+end
+
+local function MCVRecoveryNeed(base)
+	if base.mcvBuilding then return 0 end
+	if LocalBuilding(base, "mcv") ~= nil then return 0 end
+	if LocalBuilding(base, "weap") ~= nil or base.rebuildingKind == "weap" then
+		return Actor.Cost("mcv")
+	end
+	return nil -- Dead
+end
+
+local function RecoveryNeed(base)
+	if LocalBuilding(base, "fact") == nil then
+		-- Without a construction yard, income comes first: if a harvester
+		-- can still be produced, that is the only need. The MCV is bought
+		-- from the money the new harvester earns, not by liquidating the
+		-- base up front.
+		local harv = HarvesterCount(base)
+		local freeWaiting = base.freeActorGraceUntil ~= nil
+			and DateTime.GameTime < base.freeActorGraceUntil
+		if LocalBuilding(base, "proc") ~= nil and LocalBuilding(base, "weap") ~= nil then
+			if freeWaiting or base.harvesterBuilding then
+				return 0 -- wait for the harvester before saving for the MCV
+			end
+			if harv == 0 then
+				return Actor.Cost("harv")
+			end
+		end
+		return MCVRecoveryNeed(base)
+	end
+
+	local need = 0
+	local hasPower = HasLocalPower(base)
+	local hasProc = LocalBuilding(base, "proc") ~= nil
+	local harv = HarvesterCount(base)
+	local powerPending = base.rebuildingKind == "nuke"
+		or base.rebuildingKind == "nuk2"
+	local procPending = base.rebuildingKind == "proc"
+
+	if not hasProc then
+		if ResolveRecoveryPowerPolicy(base) == "respect-anypower"
+			and not hasPower and not powerPending then
+			need = need + Actor.Cost("nuke")
+		end
+		if not procPending then
+			need = need + Actor.Cost("proc")
+		end
+	elseif harv == 0 and not base.harvesterBuilding
+		and not (base.freeActorGraceUntil ~= nil
+			and DateTime.GameTime < base.freeActorGraceUntil) then
+		-- Harvesters are only ever produced by the weapons factory, so a
+		-- missing factory is part of the replacement cost.
+		if LocalBuilding(base, "weap") == nil and base.rebuildingKind ~= "weap" then
+			need = need + Actor.Cost("weap")
+		end
+		need = need + Actor.Cost("harv")
+	end
+	return need
+end
+
+local function TryReserveRecovery(base, need)
+	local already = base.reservedFunds or 0
+	if already >= need then
+		base.recovering = true
+		return true
+	end
+	local extra = need - already
+	if AvailableFunds(base.player) < extra then return false end
+	base.reservedFunds = already + extra
+	reservedFunds[base.player] = (reservedFunds[base.player] or 0) + extra
+	base.recovering = true
+	return true
+end
+
+local function ConsumeRecoveryReservation(base, amount)
+	local have = base.reservedFunds or 0
+	local used = math.min(have, amount)
+	base.reservedFunds = have - used
+	reservedFunds[base.player] = math.max(0, (reservedFunds[base.player] or 0) - used)
+	return used
+end
+
+local function ReleaseRecoveryReservation(base, amount)
+	local have = base.reservedFunds or 0
+	local released = math.min(have, amount)
+	base.reservedFunds = have - released
+	reservedFunds[base.player] = math.max(0, (reservedFunds[base.player] or 0) - released)
+	if base.reservedFunds == 0
+		and not base.rebuilding and not base.harvesterBuilding then
+		base.recovering = false
+	end
+end
+
+local function ReconcileRecoveryReservation(base)
+	-- Never release while a build or a queued harvester is in flight.
+	if base.rebuilding or base.harvesterBuilding then return end
+	local want = RecoveryNeed(base) or 0
+	local have = base.reservedFunds or 0
+	if have > want then
+		ReleaseRecoveryReservation(base, have - want)
+	elseif want == 0 then
+		ReleaseRecoveryReservation(base, have)
+		base.recovering = false
+	end
+end
+
+local function EstimateRefund(actor)
+	if actor == nil or not IsLive(actor) then return 0 end
+	local sellValue = CustomSellValue[actor.Type] or Actor.Cost(actor.Type)
+	local maxHealth = actor.MaxHealth or 100
+	local health = actor.Health or maxHealth
+	return math.floor(sellValue * 0.5 * health / maxHealth)
+end
+
+local function IsSellCandidate(base, actor, mode)
+	if actor == nil or not IsLive(actor) or not actor.IsInWorld then return false end
+	if actor.Owner ~= base.player or not actor.HasProperty("Location") then return false end
+	if not IsLocal(base, actor) or IsCentralOutpostActor(actor) then return false end
+	local kind = actor.Type
+	if kind == "fact" or kind == "proc" or kind == "nuke" or kind == "nuk2"
+		or kind == "eye" then return false end
+	if base.selling ~= nil and base.selling[actor] ~= nil then return false end
+	if not actor.HasProperty("Sell") then return false end
+	-- A silo with stored resources may never be sold: removing its storage
+	-- capacity clips player.Resources. Silos are only sold when empty.
+	if kind == "silo" and (base.player.Resources or 0) > 0 then return false end
+	if kind == "hq" and mode ~= SellMode.All then return false end
+	-- The weapons factory is the only place a harvester can be produced.
+	-- Without a construction yard it is also the only place an MCV can be
+	-- produced, so it must never be sold while there is no FACT. With a
+	-- yard it may be sold to raise funds once a harvester is alive and no
+	-- replacement is in production.
+	if kind == "weap" then
+		if LocalBuilding(base, "fact") == nil then return false end
+		if LocalBuilding(base, "proc") ~= nil
+			and (LiveHarvesterCount(base) == 0 or base.harvesterBuilding) then
+			return false
+		end
+	end
+	return true
+end
+
+local function LiquidatableValue(base, mode)
+	local total = 0
+	for _, kind in ipairs(SellOrder) do
+		for _, actor in ipairs(GetLocalActors(base, kind)) do
+			if IsSellCandidate(base, actor, mode) then
+				total = total + EstimateRefund(actor)
+			end
+		end
+	end
+	return total
+end
+
+local function TryStartSalePlan(base)
+	local active = activeSaleBase[base.player]
+	if active ~= nil and active ~= base then return false end
+	activeSaleBase[base.player] = base
+	return true
+end
+
+local function SellForEconomy(base, need, mode)
+	if base == nil or base.rebuilding then return false end
+	-- Do not strip a base while it is under attack or actively defending:
+	-- the towers are its defence, not a funding source in combat.
+	if base.defending then return false end
+	if base.underAttackUntil ~= nil and DateTime.GameTime < base.underAttackUntil then
+		return false
+	end
+	-- Without a construction yard the harvester should earn the MCV first.
+	-- The window starts when the yard is lost, not when the harvester was
+	-- claimed, so an old harvester also gets the chance to pay for the MCV.
+	if LocalBuilding(base, "fact") == nil and LiveHarvesterCount(base) > 0
+		and base.factLostAt ~= nil
+		and DateTime.GameTime - base.factLostAt < DateTime.Seconds(HarvesterEarnWindowSeconds) then
+		return false
+	end
+	-- A working income stream is the intended funding source for the MCV.
+	-- Do not strip the base (towers, helipad, factory) while the harvester
+	-- is actually earning. Only a stuck harvester may trigger sales, and
+	-- even then the weapons factory stays protected.
+	if LocalBuilding(base, "fact") == nil and HasStructuralIncome(base)
+		and not IsIncomeSuspect(base) then
+		return false
+	end
+	-- Selling for a harvester/MCV cannot help while its factory is missing,
+	-- still being built, or busy with another item. This was how the west
+	-- base stripped its helipads while waiting for a jammed weapons factory.
+	local factory = LocalBuilding(base, "weap")
+	local factoryUnavailable = base.rebuildingKind == "weap" or factory == nil
+		or (factory.HasProperty("IsProducing") and factory.IsProducing("harv"))
+	local harvesterNeed = need > 0 and need <= Actor.Cost("harv")
+		and LiveHarvesterCount(base) == 0 and not base.harvesterBuilding
+	local mcvNeed = need > 0 and need <= Actor.Cost("mcv")
+		and LocalBuilding(base, "mcv") == nil and not base.mcvBuilding
+	if (harvesterNeed or mcvNeed) and factoryUnavailable then
+		if base.lastSaleBlockLog == nil
+			or DateTime.GameTime - base.lastSaleBlockLog >= DateTime.Seconds(60) then
+			base.lastSaleBlockLog = DateTime.GameTime
+			print(("ECON base=%s t=%d action=sell-blocked reason=weap-unavailable need=%d funds=%d")
+				:format(base.player.Name, DateTime.GameTime, need, AvailableFundsForBase(base)))
+		end
+		return false
+	end
+	mode = mode or SellMode.Emergency
+	if mode == SellMode.Normal and base.lastSell ~= nil
+		and DateTime.GameTime - base.lastSell < DateTime.Seconds(EconomySellCooldownSeconds) then
+		return true
+	end
+	if not TryStartSalePlan(base) then return false end
+	if base.selling == nil then base.selling = {} end
+
+	local funds = AvailableFundsForBase(base)
+	if funds >= need then return false end
+	local started = false
+	local sellCount = 0
+	local now = DateTime.GameTime
+	for _, kind in ipairs(SellOrder) do
+		if funds >= need + SellBuffer then break end
+		for _, actor in ipairs(GetLocalActors(base, kind)) do
+			if funds >= need + SellBuffer then break end
+			if IsSellCandidate(base, actor, mode) then
+				local expected = EstimateRefund(actor)
+				base.selling[actor] = { started = now, expected = expected, kind = kind }
+				funds = funds + expected
+				actor.Sell()
+				started = true
+				sellCount = sellCount + 1
+			end
+		end
+	end
+
+	if started then
+		base.lastSell = now
+		base.settleUntil = now + DateTime.Seconds(SettlementSeconds)
+		base.settling = true
+		print(("ECON base=%s t=%d action=sell mode=%s need=%d funds=%d sells=%d")
+			:format(base.player.Name, now, mode, need, funds, sellCount))
+		return true
+	end
+	return next(base.selling) ~= nil
+end
+
+local function HasRecoverySurplus(base)
+	return AvailableFundsForBase(base) >= (RecoveryNeed(base) or 0) + HealthyReserve
+end
+
+-- Power plant choice. A missing refinery needs the cheap NUKE to keep the
+-- NUKE+PROC chain at 2000. For capacity (refinery exists), the first build is
+-- a NUKE; if power is still low afterwards, the bigger NUK2 is cheaper per
+-- point of power (800/200 vs 500/100).
+function EconomyPowerBuildKind(base)
+	if LocalBuilding(base, "proc") == nil then return "nuke" end
+	local recent = base.lastPowerKind ~= nil and base.lastPowerAt ~= nil
+		and DateTime.GameTime - base.lastPowerAt <= DateTime.Seconds(PowerOscillationSeconds)
+	if recent and base.player.HasPrerequisites(prerequisites.nuk2)
+		and AvailableFundsForBase(base) >= Actor.Cost("nuk2") then
+		return "nuk2"
+	end
+	return "nuke"
+end
+
+function EconomyTryBuildPowerKind(base, kind, yard)
+	local cost = Actor.Cost(kind)
+	if AvailableFundsForBase(base) < cost then return false end
+	for _, entry in ipairs(base.nodes or {}) do
+		if entry[1] == kind and BuildingAt(entry) == nil and SiteFree(entry, nil, base.player) then
+			return StartBuilding(base, entry, yard)
+		end
+	end
+	local entry = FindNearbySite(base, kind, yard.Location, nil)
+	if entry ~= nil then return StartBuilding(base, entry, yard) end
+	return false
+end
+
+local function TryBuildPower(base)
+	if base.rebuilding or not IsEconomyBase(base) then return false end
+	local yard = LocalBuilding(base, "fact")
+	if yard == nil then return false end
+	local kind = EconomyPowerBuildKind(base)
+	if kind == "nuk2" then
+		if EconomyTryBuildPowerKind(base, "nuk2", yard) then return true end
+		kind = "nuke"
+	end
+	return EconomyTryBuildPowerKind(base, kind, yard)
+end
+
+local function TryBuildProc(base)
+	if base.rebuilding or not IsEconomyBase(base) then return false end
+	local yard = LocalBuilding(base, "fact")
+	if yard == nil then return false end
+	local cost = Actor.Cost("proc")
+	if AvailableFundsForBase(base) < cost then return false end
+	for _, entry in ipairs(base.nodes or {}) do
+		if entry[1] == "proc" and BuildingAt(entry) == nil and SiteFree(entry, nil, base.player) then
+			return StartBuilding(base, entry, yard)
+		end
+	end
+	local entry = FindNearbySite(base, "proc", yard.Location, nil)
+	if entry ~= nil then return StartBuilding(base, entry, yard) end
+	return false
+end
+
+-- When storage is nearly full, a delivered load is discarded and
+-- Cash + Resources stays flat. Adding capacity with an extra silo (not just
+-- the fixed map nodes) keeps the harvesters earning.
+function EconomyTryBuildSilo(base)
+	if base.rebuilding or not IsEconomyBase(base) then return false end
+	if not EconomyIsStorageNearlyFull(base.player) then return false end
+	local yard = LocalBuilding(base, "fact")
+	if yard == nil then return false end
+	if not base.player.HasPrerequisites(prerequisites.silo) then return false end
+	local cost = Actor.Cost("silo")
+	if AvailableFundsForBase(base) < cost + HealthyReserve then return false end
+	local entry = FindNearbySite(base, "silo", yard.Location, nil)
+	if entry ~= nil then return StartBuilding(base, entry, yard) end
+	return false
+end
+
+local function TryBuildPyle(base)
+	if base.rebuilding or not IsEconomyBase(base) then return false end
+	local yard = LocalBuilding(base, "fact")
+	if yard == nil or LocalBuilding(base, "proc") == nil then return false end
+	local cost = Actor.Cost("pyle")
+	if not HasRecoverySurplus(base) or AvailableFundsForBase(base) < cost + HealthyReserve then
+		return false
+	end
+	for _, entry in ipairs(base.nodes or {}) do
+		if entry[1] == "pyle" and BuildingAt(entry) == nil and SiteFree(entry, nil, base.player) then
+			return StartBuilding(base, entry, yard)
+		end
+	end
+	local entry = FindNearbySite(base, "pyle", yard.Location, nil)
+	if entry ~= nil then return StartBuilding(base, entry, yard) end
+	return false
+end
+
+local function TryBuildWeap(base)
+	if base.rebuilding or not IsEconomyBase(base) then return false end
+	local yard = LocalBuilding(base, "fact")
+	if yard == nil or LocalBuilding(base, "proc") == nil then return false end
+	if not base.player.HasPrerequisites(prerequisites.weap) then return false end
+	local cost = Actor.Cost("weap")
+	if AvailableFundsForBase(base) < cost then return false end
+	for _, entry in ipairs(base.nodes or {}) do
+		if entry[1] == "weap" and BuildingAt(entry) == nil and SiteFree(entry, nil, base.player) then
+			return StartBuilding(base, entry, yard)
+		end
+	end
+	local entry = FindNearbySite(base, "weap", yard.Location, nil)
+	if entry ~= nil then return StartBuilding(base, entry, yard) end
+	return false
+end
+
+local function TryMCVRecovery(base)
+	if LocalBuilding(base, "fact") ~= nil then return end
+	if base.mcvBuilding then return end
+	local mcv = LocalBuilding(base, "mcv")
+	if mcv ~= nil then
+		base.mcv = mcv
+		WatchMCV(base, mcv, 0)
+		return
+	end
+	local factory = LocalBuilding(base, "weap")
+	if factory ~= nil and AvailableFundsForBase(base) >= Actor.Cost("mcv") then
+		if Queue(factory, "mcv", base.player) then
+			base.mcvBuilding = true
+			-- Safety net if OnProduced never fires (e.g. factory lost).
+			local timeout = math.ceil(Actor.BuildTime("mcv", "Vehicle.GDI")) + 60
+			Trigger.AfterDelay(DateTime.Seconds(timeout), function()
+				if base.mcvBuilding then
+					base.mcvBuilding = false
+					Trigger.AfterDelay(1, function() if not MissionFinished then EconomyTick() end end)
+				end
+			end)
+		end
+	end
+end
+
+local function Recover(base)
+	if base == nil or not base.recovering then return end
+	if LocalBuilding(base, "fact") == nil then
+		-- No construction yard: restore income first. A harvester is cheap
+		-- and earns the MCV; only after it exists (or when there is no
+		-- refinery left to earn with) is the MCV ordered.
+		local harv = HarvesterCount(base)
+		RebuildHarvester(base, nil)
+		if harv > 0 or LocalBuilding(base, "proc") == nil then
+			TryMCVRecovery(base)
+		end
+		return
+	end
+
+	local hasPower = HasLocalPower(base)
+	local hasProc = LocalBuilding(base, "proc") ~= nil
+	local powerPending = base.rebuildingKind == "nuke"
+		or base.rebuildingKind == "nuk2"
+	local freeActorWaiting = base.freeActorGraceUntil ~= nil
+		and DateTime.GameTime < base.freeActorGraceUntil
+
+	-- 1) Missing refinery: only build a power plant first when NUKE + PROC
+	-- are both affordable (respect-anypower). Otherwise PROC first.
+	if not hasProc then
+		if ResolveRecoveryPowerPolicy(base) == "respect-anypower"
+			and not hasPower and not powerPending then
+			if TryBuildPower(base) then return end
+		end
+		TryBuildProc(base)
+		return
+	end
+
+	-- 2) Harvesters are produced only by the weapons factory and use its
+	-- normal queue/build time. If the factory is gone, rebuild it first;
+	-- never spawn a harvester next to the refinery.
+	if HarvesterCount(base) == 0 and not base.harvesterBuilding and not freeActorWaiting then
+		if LocalBuilding(base, "weap") == nil then
+			if base.rebuildingKind == "weap" then return end
+			TryBuildWeap(base)
+			return
+		end
+		RebuildHarvester(base, nil)
+		return
+	end
+
+	-- 3) Optional production building only after the income chain stands.
+	if LocalBuilding(base, "pyle") == nil and HasRecoverySurplus(base) then
+		TryBuildPyle(base)
+	end
+end
+
+CanRepairBuilding = function(base, actor)
+	local state = base.economyState
+	local kind = actor.Type
+	if state == "Dead" or state == "DeadPending" then return false end
+	local chain = kind == "fact" or kind == "proc" or kind == "nuke" or kind == "nuk2"
+	if state == "Crisis" or state == "Liquidation" then
+		if not chain then return false end
+		return AvailableFundsForBase(base) - (base.recoveryNeed or 0) >= RepairReserve
+	end
+	if state == "Strained" then
+		-- A chain repair protects income and is always allowed. Optional
+		-- repairs need the full healthy+repair reserve.
+		if chain then return true end
+		if kind == "eye" or kind == "hq" or kind == "weap" then
+			return AvailableFundsForBase(base) >= HealthyReserve + RepairReserve
+		end
+		return false
+	end
+	-- Healthy: chain repairs are always allowed; optional repairs must leave
+	-- both the recovery reserve and the repair reserve untouched.
+	if chain then return true end
+	return AvailableFundsForBase(base) >= HealthyReserve + RepairReserve
+end
+
+local function RepairDamagedBuildings(base)
+	if base.economyState == "Dead" or base.economyState == "DeadPending" then return end
+	for _, actor in ipairs(base.player.GetActors()) do
+		if IsLive(actor) and actor.IsInWorld and actor.HasProperty("StartBuildingRepairs")
+			and IsLocal(base, actor) and not IsCentralOutpostActor(actor)
+			and actor.Health < actor.MaxHealth * 0.75
+			and CanRepairBuilding(base, actor) then
+			actor.StartBuildingRepairs()
+		end
+	end
+end
+
+local function ClearDead(base)
+	base.deadSince = nil
+	base.deadAt = nil
+end
+
+local function ConfirmDead(base)
+	if base.deadSince == nil then
+		base.deadSince = DateTime.GameTime
+		return false
+	end
+	return DateTime.GameTime - base.deadSince >= DateTime.Seconds(DeadConfirmSeconds)
+end
+
+local function ClassifyEconomy(base)
+	if LocalBuilding(base, "fact") == nil then
+		local need = RecoveryNeed(base)
+		if need == nil then
+			if ConfirmDead(base) then return "Dead", nil end
+			return "DeadPending", nil
+		end
+		ClearDead(base)
+		return "Crisis", need
+	end
+
+	if HasStructuralIncome(base) then
+		ClearDead(base)
+		if IsStrained(base) then return "Strained", 0 end
+		return "Healthy", 0
+	end
+
+	local need = RecoveryNeed(base)
+	if need == 0 then
+		ClearDead(base)
+		return "Strained", 0 -- recovery building/queue is pending
+	end
+
+	local funds = AvailableFundsForBase(base)
+	if funds >= need then
+		ClearDead(base)
+		return "Crisis", need
+	end
+
+	local normal = LiquidatableValue(base, SellMode.Normal)
+	if funds + normal >= need then
+		ClearDead(base)
+		return "Crisis", need
+	end
+
+	local all = LiquidatableValue(base, SellMode.All)
+	if funds + all >= need then
+		ClearDead(base)
+		return "Liquidation", need
+	end
+
+	if ConfirmDead(base) then return "Dead", need end
+	return "DeadPending", need
+end
+
+local function SortEconomyBases()
+	local scored = {}
+	for i, base in ipairs(bases) do
+		if IsEconomyBase(base) then
+			local state, need = base.economyState, base.recoveryNeed
+			table.insert(scored, {
+				base = base,
+				rank = StateRank[state] or 9,
+				need = need or 0,
+				index = i,
+			})
+		end
+	end
+	table.sort(scored, function(a, b)
+		if a.rank ~= b.rank then return a.rank < b.rank end
+		if a.need ~= b.need then return a.need < b.need end
+		return a.index < b.index
+	end)
+	local result = {}
+	for _, entry in ipairs(scored) do table.insert(result, entry.base) end
+	return result
+end
+
+local function PruneSelling(base)
+	if base.selling == nil then base.selling = {} end
+	local now = DateTime.GameTime
+	for actor, info in pairs(base.selling) do
+		local expired = now - (info.started or now) >= DateTime.Seconds(SellTimeoutSeconds)
+		if not IsLive(actor) or not actor.IsInWorld or expired then
+			base.selling[actor] = nil
+		end
+	end
+end
+
+local function UpdateSettling(base)
+	PruneSelling(base)
+	if next(base.selling) ~= nil then
+		base.settling = true
+		return
+	end
+	if base.settleUntil ~= nil and DateTime.GameTime < base.settleUntil then
+		base.settling = true
+		return
+	end
+	base.settling = false
+	base.settleUntil = nil
+	local active = activeSaleBase[base.player]
+	if active == base then activeSaleBase[base.player] = nil end
+end
+
+local function UpdateIncomeWatchdog(base, hasIncome)
+	if not EconomyWatchdogEnabled or not hasIncome then
+		base.lastFunds = GDIFunds(base.player)
+		base.lastFundsAt = DateTime.GameTime
+		base.incomeSuspectSince = nil
+		base.incomeFailureLogged = nil
+		return
+	end
+	-- A full storage keeps Cash + Resources flat even while the harvester
+	-- delivers. That is not a stalled economy.
+	if EconomyIsStorageFull(base.player) then
+		base.lastFunds = GDIFunds(base.player)
+		base.lastFundsAt = DateTime.GameTime
+		base.incomeSuspectSince = nil
+		base.incomeFailureLogged = nil
+		return
+	end
+	-- Any AI spending in the window masks income; restart the window.
+	if base.rebuilding or base.harvesterBuilding or next(base.selling) ~= nil then
+		base.lastFunds = GDIFunds(base.player)
+		base.lastFundsAt = DateTime.GameTime
+		base.incomeSuspectSince = nil
+		base.incomeFailureLogged = nil
+		return
+	end
+	local funds = GDIFunds(base.player)
+	if base.lastFunds == nil or funds ~= base.lastFunds then
+		-- Both income and spending are activity; a spending drain must not
+		-- look like a stuck harvester.
+		base.lastFunds = funds
+		base.lastFundsAt = DateTime.GameTime
+		base.incomeSuspectSince = nil
+		base.incomeFailureLogged = nil
+	elseif base.lastFundsAt ~= nil
+		and DateTime.GameTime - base.lastFundsAt >= DateTime.Seconds(IncomeWindowSeconds) then
+		if base.incomeSuspectSince == nil then
+			base.incomeSuspectSince = DateTime.GameTime
+			RestartIdleHarvesters(base)
+			print(("ECON base=%s t=%d action=income-suspect lastFunds=%d")
+				:format(base.player.Name, DateTime.GameTime, base.lastFunds))
+		end
+	end
+	if base.incomeSuspectSince ~= nil
+		and DateTime.GameTime - base.incomeSuspectSince >= DateTime.Seconds(IncomeFailureSeconds)
+		and not base.incomeFailureLogged then
+		base.incomeFailureLogged = true
+		print(("ECON base=%s t=%d action=income-failure lastFunds=%d")
+			:format(base.player.Name, DateTime.GameTime, base.lastFunds))
+	end
+end
+
+local function UpdateEconomyFacts(base)
+	if base.selling == nil then base.selling = {} end
+	UpdateSettling(base)
+	AdoptFreeHarvester(base)
+	-- Anchor the "let the harvester earn the MCV" window to the moment the
+	-- construction yard is lost, not to the claim time of the harvester.
+	if LocalBuilding(base, "fact") == nil then
+		base.factLostAt = base.factLostAt or DateTime.GameTime
+	else
+		base.factLostAt = nil
+	end
+	-- Clear a cached critical-damage signal once the chain is healthy again,
+	-- otherwise the base would stay Strained forever after one hit.
+	if base.hasCriticalDamage then
+		local damaged = false
+		for _, kind in ipairs({ "fact", "proc", "nuke", "nuk2" }) do
+			for _, actor in ipairs(GetLocalActors(base, kind)) do
+				if actor.Health < actor.MaxHealth * 0.75 then damaged = true end
+			end
+		end
+		base.hasCriticalDamage = damaged
+	end
+	local hasIncome = HasStructuralIncome(base)
+	UpdateIncomeWatchdog(base, hasIncome)
+	if not base.rebuilding and not base.harvesterBuilding then
+		ReconcileRecoveryReservation(base)
+	end
+	local state, need = ClassifyEconomy(base)
+	base.economyState = state
+	-- Keep nil for "no recovery route"; the status log shows it explicitly.
+	base.recoveryNeed = need
+	-- Forget the last capacity plant only after power has been normal for a
+	-- whole oscillation window. Clearing it on every short Normal caused a
+	-- new small NUKE after each building that dropped power again.
+	if base.player.PowerState == "Normal" and base.lastPowerAt ~= nil
+		and DateTime.GameTime - base.lastPowerAt > DateTime.Seconds(PowerOscillationSeconds)
+		and base.rebuildingKind ~= "nuke" and base.rebuildingKind ~= "nuk2" then
+		base.lastPowerKind = nil
+		base.lastPowerAt = nil
+	end
+	-- Repairs used to be triggered only by a damage event. Nuke/support-power
+	-- damage has no Nod attacker and therefore never reached DefendAgainst,
+	-- and a denied repair at damage time was never retried. Sweep here so
+	-- damaged buildings are repaired as soon as state/funds allow.
+	RepairDamagedBuildings(base)
+	-- One compact status line per base per minute makes a stalled base
+	-- diagnosable from lua.log without spamming the log.
+	if base.lastStatusLog == nil
+		or DateTime.GameTime - base.lastStatusLog >= DateTime.Seconds(60) then
+		base.lastStatusLog = DateTime.GameTime
+		local sells = 0
+		for _ in pairs(base.selling or {}) do sells = sells + 1 end
+		local factory = LocalBuilding(base, "weap")
+		local weap = factory == nil and "missing"
+			or ((factory.HasProperty("IsProducing")
+				and factory.IsProducing("harv")) and "busy" or "idle")
+		print(("ECON status base=%s t=%d state=%s need=%s funds=%d procs=%d harv=%d harvTarget=%d silo=%d res=%d/%d weap=%s rebuilding=%s sells=%d lastPower=%s")
+			:format(base.player.Name, DateTime.GameTime, tostring(state), tostring(base.recoveryNeed),
+				AvailableFundsForBase(base), #GetLocalActors(base, "proc"), LiveHarvesterCount(base),
+				EconomyHarvesterTarget(base), #GetLocalActors(base, "silo"),
+				base.player.Resources or 0, EconomyResourceCapacity(base.player),
+				weap, tostring(base.rebuildingKind), sells, tostring(base.lastPowerKind)))
+	end
+end
+
+local function NormalEconomy(base)
+	-- Economy first: a missing harvester is useless to replace after units
+	-- and optional buildings have consumed the funds.
+	RebuildHarvester(base)
+	Rebuild(base)
+	Produce(base)
+	EnsureHelipad(base)
+	ProduceOrca(base)
+end
+
+local function StrainedEconomy(base)
+	RebuildHarvester(base)
+	Rebuild(base)
+	if HasStructuralIncome(base) and AvailableFunds(base.player) >= Actor.Cost("hpad") + 1500 then
+		EnsureHelipad(base)
+		ProduceOrca(base)
+	end
+	Produce(base)
+end
+
+local function CrisisEconomy(base, need)
+	local funds = AvailableFundsForBase(base)
+	if funds < need then
+		SellForEconomy(base, need, SellMode.Emergency)
+		return -- wait for settlement
+	end
+	if not TryReserveRecovery(base, need) then return end
+	Recover(base)
+end
+
+local function LiquidationEconomy(base, need)
+	local funds = AvailableFundsForBase(base)
+	if funds < need then
+		SellForEconomy(base, need, SellMode.All)
+		return
+	end
+	if not TryReserveRecovery(base, need) then return end
+	Recover(base)
+end
+
+local function DeadEconomy(base)
+	if base.deadAt == nil then
+		ReleaseRecoveryReservation(base, base.reservedFunds or 0)
+		base.recovering = false
+		base.deadAt = DateTime.GameTime
+		return
+	end
+	if DateTime.GameTime - base.deadAt < DateTime.Seconds(DeadAllOutGraceSeconds) then return end
+	if difficulty ~= "easy" and not base.allOut then
+		StartBaseDefense(base, nil)
+	end
+end
+
+local function ScheduleEconomyTick(delay)
+	if MissionFinished or economyTickScheduled then return end
+	economyTickScheduled = true
+	Trigger.AfterDelay(DateTime.Seconds(delay or 10), function()
+		economyTickScheduled = false
+		EconomyTick()
+	end)
+end
+
+local function RunEconomyTick()
+	for _, base in ipairs(bases) do
+		if base.defending and DateTime.GameTime >= (base.defenseUntil or 0) then
+			base.defending = false
+		end
+		-- Stand down from the all-out after the alarm and a quiet period.
+		-- Dead bases keep their commit (DeadEconomy re-triggers it).
+		if base.allOut and base.deadAt == nil then
+			local quietUntil = math.max(base.defenseUntil or 0,
+				(base.underAttackUntil or 0) + DateTime.Seconds(AllOutStandDownSeconds))
+			if DateTime.GameTime >= quietUntil then
+				base.allOut = false
+			end
+		end
+	end
+	for _, base in ipairs(bases) do
+		if IsEconomyBase(base) then
+			local ok, err = xpcall(function() UpdateEconomyFacts(base) end, EconomyErrorText)
+			if not ok then
+				print(("ECON ERROR t=%d base=%s facts: %s")
+					:format(DateTime.GameTime, base.player.Name, tostring(err)))
+			end
+		end
+	end
+	for _, base in ipairs(SortEconomyBases()) do
+		if IsEconomyBase(base) then
+			local ok, err = xpcall(function()
+				if base.rebuilding then
+					-- The building lock only forbids new buildings/sales. Unit
+					-- production continues so a long (cost-based) AI build does
+					-- not make the base look dead for 60-80 s.
+					if base.economyState == "Healthy" or base.economyState == "Strained" then
+						Produce(base)
+					end
+					return
+				end
+				if next(base.selling) ~= nil or base.settling then return end
+				local state, need = base.economyState, base.recoveryNeed
+				if state == "Healthy" then
+					NormalEconomy(base)
+				elseif state == "Strained" then
+					StrainedEconomy(base)
+				elseif state == "Crisis" then
+					CrisisEconomy(base, need)
+				elseif state == "Liquidation" then
+					LiquidationEconomy(base, need)
+				elseif state == "DeadPending" then
+					-- wait for confirmation/settlement
+				elseif state == "Dead" then
+					DeadEconomy(base)
+				end
+			end, EconomyErrorText)
+			if not ok then
+				print(("ECON ERROR t=%d base=%s action: %s")
+					:format(DateTime.GameTime, base.player.Name, tostring(err)))
+			end
+		end
+	end
+end
+
+EconomyTick = function()
+	if MissionFinished then return end
+	-- Never let a single Lua error kill the recursive economy timer. Without
+	-- this guard the base freezes forever (no repairs, no buildings, no
+	-- production) because ScheduleEconomyTick is never reached.
+	local ok, err = xpcall(RunEconomyTick, EconomyErrorText)
+	if not ok then
+		print(("ECON ERROR t=%d tick: %s"):format(DateTime.GameTime, tostring(err)))
+	end
+	ScheduleEconomyTick(10)
+end
+
 -- Original [Base] rebuild plan, split by owner. Positions are the imported
 -- TD structure positions so BuildingAt() can match the surviving footprint.
 local westNodes = {
@@ -883,16 +2053,16 @@ local southNodes = {
 	{ "fact", 60, 60 }, { "nuk2", 61, 57 },
 }
 
-local prerequisites = {
+prerequisites = {
 	proc = { "anypower" }, weap = { "proc" }, pyle = { "anypower" },
 	gtwr = { "barracks" }, atwr = { "anyhq", "~techlevel.medium" },
-	nuk2 = { "anyhq", "~techlevel.medium" }, hq = { "proc", "~techlevel.medium" },
+	nuke = { "fact" }, nuk2 = { "anyhq", "~techlevel.medium" }, hq = { "proc", "~techlevel.medium" },
 	eye = { "anyhq", "~techlevel.high" }, silo = { "proc" },
 	hpad = { "proc" }, orca = { "hpad", "anyhq", "~techlevel.medium" },
 	fix = { "proc" }, fact = { "proc" },
 }
 
-local function StartBuilding(base, entry, yard)
+StartBuilding = function(base, entry, yard)
 	if base.rebuilding then return false end
 	local player = yard.Owner
 	local kind = entry[1]
@@ -903,87 +2073,138 @@ local function StartBuilding(base, entry, yard)
 		buildTime = math.ceil(buildTime * 1.5)
 	end
 	base.rebuilding = true
+	base.rebuildingKind = kind
 	local spentResources = SpendGDIFunds(player, cost)
+	ConsumeRecoveryReservation(base, cost)
+	print(("ECON base=%s t=%d action=build-start kind=%s ticks=%d")
+		:format(player.Name, DateTime.GameTime, kind, buildTime))
 	Trigger.AfterDelay(buildTime, function()
 		base.rebuilding = false
+		base.rebuildingKind = nil
 		if MissionFinished then return end
-		if not IsLive(yard) or yard.Owner ~= player or not yard.IsInWorld
-			or BuildingAt(entry) ~= nil or not SiteFree(entry, nil, player) then
-			player.Resources = player.Resources + spentResources
-			player.Cash = player.Cash + cost - spentResources
-			return
+		local ok, err = xpcall(function()
+			if not IsLive(yard) or yard.Owner ~= player or not yard.IsInWorld
+				or BuildingAt(entry) ~= nil or not SiteFree(entry, nil, player) then
+				local reason = "blocked"
+				if not IsLive(yard) or yard.Owner ~= player or not yard.IsInWorld then
+					reason = "yard"
+				elseif BuildingAt(entry) ~= nil then
+					reason = "occupied"
+				end
+				player.Resources = player.Resources + spentResources
+				player.Cash = player.Cash + cost - spentResources
+				ReleaseRecoveryReservation(base, cost)
+				ReconcileRecoveryReservation(base)
+				print(("ECON base=%s t=%d action=build-refund kind=%s reason=%s")
+					:format(player.Name, DateTime.GameTime, kind, reason))
+				return
+			end
+			local building = Actor.Create(kind, true, { Owner = player, Location = CPos.New(entry[2], entry[3]) })
+			Guard(building)
+			if kind == "nuke" or kind == "nuk2" then
+				base.lastPowerKind = kind
+				base.lastPowerAt = DateTime.GameTime
+			end
+			if kind == "proc" then
+				-- FreeActor: HARV spawns without any production event. Wait one
+				-- economy tick before buying a second harvester.
+				base.freeActorGraceUntil = DateTime.GameTime + DateTime.Seconds(FreeActorGraceSeconds)
+				base.recoveryPowerPolicy = nil
+				Trigger.AfterDelay(DateTime.Seconds(FreeActorGraceSeconds), function()
+					AdoptFreeHarvester(base)
+				end)
+			end
+			ReconcileRecoveryReservation(base)
+			print(("ECON base=%s t=%d action=build-done kind=%s")
+				:format(player.Name, DateTime.GameTime, kind))
+		end, EconomyErrorText)
+		if not ok then
+			print(("ECON ERROR t=%d base=%s build=%s: %s")
+				:format(DateTime.GameTime, player.Name, kind, tostring(err)))
 		end
-		local building = Actor.Create(kind, true, { Owner = player, Location = CPos.New(entry[2], entry[3]) })
-		Guard(building)
 	end)
 	return true
 end
 
--- A base flattened down to its construction yard cannot satisfy any
--- prerequisite chain, so rebuild the power plant, refinery and barracks
--- without their tech gates first.
+-- Bring the production buildings back without their tech gates. Power and
+-- refinery are handled by Recover (Crisis path); this only adds the barracks
+-- after the income chain stands.
 local function Bootstrap(base)
-	if base.rebuilding then return false end
+	if not IsEconomyBase(base) or base.rebuilding then return false end
 	local yard = LocalBuilding(base, "fact")
 	if yard == nil then return false end
-
-	local function TryNode(kind)
-		for _, entry in ipairs(base.nodes) do
-			if entry[1] == kind and BuildingAt(entry) == nil
-				and GDIFunds(base.player) >= Actor.Cost(kind) and SiteFree(entry, nil, base.player) then
-				return StartBuilding(base, entry, yard)
-			end
-		end
-		return false
-	end
-
-	if Owned(base.player, "nuke") == nil and Owned(base.player, "nuk2") == nil then return TryNode("nuk2") end
-	if Owned(base.player, "proc") == nil then return TryNode("proc") end
-	if Owned(base.player, "pyle") == nil then return TryNode("pyle") end
+	if LocalBuilding(base, "proc") == nil then return false end
+	if LocalBuilding(base, "pyle") == nil then return TryBuildPyle(base) end
 	return false
 end
 
-local function Rebuild(base)
-	if base.rebuilding then return end
+Rebuild = function(base)
+	if not IsEconomyBase(base) or base.rebuilding then return end
 	local yard = LocalBuilding(base, "fact")
 	if yard == nil then return end
-	if Bootstrap(base) then return end
-	if not HasLiveHarvester(base) then return end
+	-- Missing refinery/harvester is a Crisis and handled by Recover.
+	if LocalBuilding(base, "proc") == nil then return end
+	if LocalBuilding(base, "pyle") ~= nil and HasStructuralIncome(base) == false then return end
 
-	-- Low power pauses radar and support powers. Rebuild a local power plant
-	-- before spending on anything else, as nod13b does.
+	-- The weapons factory is part of the production chain (harvester
+	-- replacement and the only vehicle source). Rebuild it in *every* state,
+	-- before optional spending, so infantry/orca production cannot starve it.
+	if LocalBuilding(base, "weap") == nil then
+		if base.rebuildingKind == "weap" then return end
+		if TryBuildWeap(base) then return end
+	end
+
+	-- Mission-specific expansion: maintain the configured number of
+	-- refineries (nod13c north base: two). Only after the existing chain
+	-- stands, and only if the base can afford the reserve.
+	local procs = #GetLocalActors(base, "proc")
+	if procs > 0 and procs < (base.desiredProcs or 1)
+		and AvailableFundsForBase(base) >= Actor.Cost("proc") + 1200 then
+		if TryBuildProc(base) then return end
+	end
+
+	if Bootstrap(base) then return end
+
+	-- Full storage is a different kind of income problem: add capacity
+	-- instead of leaving the harvesters with nowhere to unload.
+	if EconomyTryBuildSilo(base) then return end
+
+	-- Low power pauses radar, support powers and base defenses. Add capacity
+	-- even when local power plants exist: the player-wide network can still
+	-- be short (the west base starts at ~675 drain vs 600 supply).
 	local power = base.player.PowerState
 	if (power == "Low" or power == "Critical")
-		and GDIFunds(base.player) >= Actor.Cost("nuk2") + 800
-		and LocalTech(base, "nuk2") and base.player.HasPrerequisites(prerequisites.nuk2) then
-		local entry = FindNearbySite(base, "nuk2", yard.Location, nil)
-		if entry ~= nil then
-			StartBuilding(base, entry, yard)
-			return
-		end
+		and base.rebuildingKind ~= "nuke" and base.rebuildingKind ~= "nuk2"
+		and HasRecoverySurplus(base) then
+		if TryBuildPower(base) then return end
 	end
 
 	-- The south-western base relies on the EYE instead of an HQ. If both are
 	-- gone, build a paid HQ near the yard so the tech chain can recover.
-	if LocalBuilding(base, "hq") == nil and LocalBuilding(base, "eye") == nil
-		and GDIFunds(base.player) >= Actor.Cost("hq") + 1100
+	-- Optional buildings are only rebuilt in Healthy.
+	local healthy = base.economyState == "Healthy"
+	local harvesterDeficit = EconomyHasHarvesterDeficit(base)
+	if healthy and not harvesterDeficit
+		and LocalBuilding(base, "hq") == nil and LocalBuilding(base, "eye") == nil
+		and AvailableFundsForBase(base) >= Actor.Cost("hq") + 1100
 		and base.player.HasPrerequisites(prerequisites.hq) then
 		local entry = FindNearbySite(base, "hq", yard.Location, nil)
-		if entry ~= nil then
-			StartBuilding(base, entry, yard)
+		if entry ~= nil and StartBuilding(base, entry, yard) then
 			return
 		end
 	end
+	if not healthy or harvesterDeficit then return end
 	for _ = 1, #base.nodes do
 		base.nodeIndex = (base.nodeIndex or 1) % #base.nodes + 1
 		local entry = base.nodes[base.nodeIndex]
 		-- The EYE is not rebuilt: destroying or capturing it permanently stops
 		-- the Ion Cannon and the western relief relay.
-		if entry[1] ~= "eye" and BuildingAt(entry) == nil then
+		if entry[1] ~= "eye" and entry[1] ~= "proc" and entry[1] ~= "nuke"
+			and entry[1] ~= "nuk2" and BuildingAt(entry) == nil then
 			local cost = Actor.Cost(entry[1])
 			local reserve = (entry[1] == "proc" or entry[1] == "weap" or entry[1] == "pyle") and 1200 or 2200
 			local required = prerequisites[entry[1]] or {}
-			if GDIFunds(base.player) >= cost + reserve and base.player.HasPrerequisites(required)
+			if AvailableFundsForBase(base) >= cost + reserve and base.player.HasPrerequisites(required)
 				and SiteFree(entry, nil, base.player) then
 				if StartBuilding(base, entry, yard) then return end
 			end
@@ -991,76 +2212,53 @@ local function Rebuild(base)
 	end
 end
 
--- Taken unchanged from the tested nod13a economy fallback. A sale is a
--- self-destruction (no Nod killer), so it cannot trigger the all-out itself.
-local EconomySellCooldownSeconds = 20
-local EconomySellOrder = { "gtwr", "atwr", "pyle" }
-
-local function SellForEconomy(base)
-	if base.lastSell ~= nil and DateTime.GameTime - base.lastSell < DateTime.Seconds(EconomySellCooldownSeconds) then
-		return true
-	end
-	for _, kind in ipairs(EconomySellOrder) do
-		local building = LocalBuilding(base, kind)
-		if building ~= nil and building.HasProperty("Sell") then
-			base.lastSell = DateTime.GameTime
-			building.Sell()
-			return true
-		end
-	end
-	return false
-end
-
--- A lost harvester is an economy problem. Rebuild it at the weapons factory,
--- or next to the refinery if the factory is gone. Only if the base cannot
--- recover (no refinery/factory route and no money, and nothing to sell) does
--- it commit everything on Normal/Hard (Easy never does this).
-function RebuildHarvester(base, killer)
+-- Harvester replacement only. Sales, Deadtimers and all-out decisions live
+-- exclusively in EconomyTick; this function never sells and never commits.
+-- Harvesters are never spawned directly: they always go through the weapons
+-- factory production queue, with the same prerequisites, cost and build time
+-- the player has for them.
+RebuildHarvester = function(base, killer)
 	if MissionFinished or base == nil then return end
-	if HasLiveHarvester(base) then
+	if not IsEconomyBase(base) then return end
+	local target = EconomyHarvesterTarget(base)
+	local live = LiveHarvesterCount(base)
+	if live >= target then
 		base.noHarvesterSince = nil
 		return
 	end
-	if base.harvesterBuilding or DateTime.GameTime < (base.harvesterCooldown or 0) then return end
-	if base.noHarvesterSince == nil then base.noHarvesterSince = DateTime.GameTime end
+	if base.rebuilding or base.harvesterBuilding then return end
+	if base.freeActorGraceUntil ~= nil and DateTime.GameTime < base.freeActorGraceUntil then return end
+	if LocalBuilding(base, "proc") == nil then return end
 	local factory = LocalBuilding(base, "weap")
-	if factory ~= nil and LocalTech(base, "harv") and base.player.HasPrerequisites({ "proc" })
-		and GDIFunds(base.player) >= Actor.Cost("harv") then
-		base.harvesterBuilding = true
-		if Queue(factory, "harv", base.player) then
-			Trigger.AfterDelay(DateTime.Seconds(120), function() base.harvesterBuilding = false end)
-			return
-		end
-		base.harvesterBuilding = false
-	end
-	local proc = LocalBuilding(base, "proc")
-	if proc ~= nil and GDIFunds(base.player) >= Actor.Cost("harv") then
-		local cell = FindUnitSpot(proc.Location)
-		if cell ~= nil then
-			SpendGDIFunds(base.player, Actor.Cost("harv"))
-			local harv = Actor.Create("harv", true, { Owner = base.player, Location = cell })
-			if IsLive(harv) then
-				base.harvester = harv
-				Guard(harv)
-				TrackHarvester(base, harv)
-				if harv.HasProperty("FindResources") then harv.FindResources() end
-			end
-			base.harvesterCooldown = DateTime.GameTime + DateTime.Seconds(120)
-			return
-		end
-	end
+	if factory == nil then return end
+	if not LocalTech(base, "harv") or not base.player.HasPrerequisites({ "proc" }) then return end
+	local cost = Actor.Cost("harv")
+	-- Replacements beyond the first are optional; keep the recovery reserve.
+	local reserve = live >= 1 and HealthyReserve or 0
+	if AvailableFundsForBase(base) < cost + reserve then return end
 
-	-- No replacement possible: sell a non-key building for cash, or commit
-	-- the base (not on Easy).
-	-- The south-eastern outpost never had an economy (no refinery/factory), so
-	-- it must not sell its way into an all-out at mission start.
-	if base.player == GDISouth then return end
-	if GDIFunds(base.player) < Actor.Cost("harv") then
-		-- Give the base a full minute to recover (or for the other harvester
-		-- to earn) before selling a building or committing everything.
-		if DateTime.GameTime - base.noHarvesterSince < DateTime.Seconds(HarvesterGraceSeconds) then return end
-		if SellForEconomy(base) then return end
-		if difficulty ~= "easy" then StartBaseDefense(base, killer) end
+	base.harvesterBuilding = true
+	if Queue(factory, "harv", base.player) then
+		print(("ECON base=%s t=%d action=harv-queue target=%d live=%d")
+			:format(base.player.Name, DateTime.GameTime, EconomyHarvesterTarget(base), live))
+		-- Safety net only: normally OnProduced clears the flag.
+		local timeout = math.ceil(Actor.BuildTime("harv", "Vehicle.GDI")) + 60
+		Trigger.AfterDelay(DateTime.Seconds(timeout), function()
+			if base.harvesterBuilding then
+				base.harvesterBuilding = false
+				ReconcileRecoveryReservation(base)
+				Trigger.AfterDelay(1, function() if not MissionFinished then EconomyTick() end end)
+			end
+		end)
+		return
+	end
+	base.harvesterBuilding = false
+	if base.lastHarvQueueBlockLog == nil
+		or DateTime.GameTime - base.lastHarvQueueBlockLog >= DateTime.Seconds(60) then
+		base.lastHarvQueueBlockLog = DateTime.GameTime
+		print(("ECON base=%s t=%d action=harv-queue-blocked target=%d live=%d funds=%d")
+			:format(base.player.Name, DateTime.GameTime,
+				EconomyHarvesterTarget(base), live, AvailableFundsForBase(base)))
 	end
 end
 
@@ -1103,27 +2301,18 @@ local function CombatOrderPending(base)
 	return true
 end
 
-local function Produce(base)
+Produce = function(base)
 	local factory = LocalBuilding(base, "weap")
 	if LocalBuilding(base, "fact") == nil then
-		-- A lost construction yard is recovered by deploying a new MCV.
-		if base.mcv == nil then
-			local mcv = LocalBuilding(base, "mcv")
-			if mcv ~= nil then
-				base.mcv = mcv
-				WatchMCV(base, mcv, 0)
-			elseif factory ~= nil then
-				Queue(factory, "mcv", base.player)
-			end
-		end
+		-- A lost construction yard is recovered by an MCV. This branch must
+		-- stay reachable even without a refinery (mcvnofact).
+		TryMCVRecovery(base)
 		return
 	end
-	if not HasLiveHarvester(base) then
-		if factory ~= nil and LocalTech(base, "harv") and base.player.HasPrerequisites({ "proc" }) then
-			Queue(factory, "harv", base.player)
-		end
-		return
-	end
+	if not HasStructuralIncome(base) then return end
+	-- Prioritise restoring the weapons factory over new units. Infantry is
+	-- cheap enough to otherwise siphon the 2000 the factory needs.
+	if LocalBuilding(base, "weap") == nil then return end
 	if CombatOrderPending(base) then return end
 	local pyle = LocalBuilding(base, "pyle")
 	if (pyle ~= nil and pyle.HasProperty("IsProducing") and pyle.IsProducing("e1"))
@@ -1132,19 +2321,27 @@ local function Produce(base)
 	local total, infantryCount, vehicleCount = ProducedCounts(base)
 	if total >= MaxProducedUnits[difficulty] then return end
 	local categoryLimit = math.max(4, math.floor(MaxProducedUnits[difficulty] / 2))
-	local vehicles = (difficulty == "hard" and base.hardVehicles) or base.vehicles or northVehicles
+	-- Keep the weapons factory free for harvester replacement while the base
+	-- is below its target. Infantry (PYLE) may continue; vehicles wait.
+	local needHarvesters = EconomyHasHarvesterDeficit(base)
+	local vehicles = needHarvesters and {}
+		or ((difficulty == "hard" and base.hardVehicles) or base.vehicles or northVehicles)
 	local infantryTypes = base.infantry or northInfantry
 	local specs = base.nextProduction == "vehicle"
 		and { { "weap", vehicles, vehicleCount }, { "pyle", infantryTypes, infantryCount } }
 		or { { "pyle", infantryTypes, infantryCount }, { "weap", vehicles, vehicleCount } }
+	-- Strained means the economy is fragile: do not start expensive units
+	-- that would block harvester replacement or eat the recovery reserve.
+	local strained = base.economyState == "Strained"
 	for _, spec in ipairs(specs) do
 		local producer = LocalBuilding(base, spec[1])
 		if producer ~= nil and spec[3] < categoryLimit then
 			for _ = 1, #spec[2] do
 				local kind = table.remove(spec[2], 1)
 				table.insert(spec[2], kind)
-				if LocalTech(base, kind) and base.player.HasPrerequisites(unitPrerequisites[kind])
-					and GDIFunds(base.player) >= Actor.Cost(kind) + 500
+				local affordable = not strained or Actor.Cost(kind) <= 1000
+				if affordable and LocalTech(base, kind) and base.player.HasPrerequisites(unitPrerequisites[kind])
+					and AvailableFunds(base.player) >= Actor.Cost(kind) + HealthyReserve
 					and Queue(producer, kind, base.player) and producer.IsProducing(kind) then
 					base.combatPending = { factory = producer, kind = kind }
 					base.nextProduction = spec[1] == "pyle" and "vehicle" or "infantry"
@@ -1158,20 +2355,26 @@ end
 local function OnProduced(factory, unit, productionType)
 	if MissionFinished or not IsLive(factory) or not IsLive(unit)
 		or not IsGDIPlayer(factory.Owner) or unit.Owner ~= factory.Owner then return end
-	local base = BaseForPlayer(factory.Owner) or BaseAt(factory.Location)
+	local base = BaseForOwnedBuilding(factory) or BaseForActor(factory) or BaseAt(factory.Location)
 	if base == nil then return end
 	if base.combatPending ~= nil and base.combatPending.factory == factory
 		and base.combatPending.kind == unit.Type then base.combatPending = nil end
 	if unit.Type == "mcv" then
+		base.mcvBuilding = false
 		Guard(unit)
 		base.mcv = unit
 		base.mcvSite = nil
 		WatchMCV(base, unit, 0)
 	elseif unit.Type == "harv" then
 		base.harvesterBuilding = false
-		base.harvester = unit
 		Guard(unit)
+		ClaimHarvester(base, unit)
 		TrackHarvester(base, unit)
+		ConsumeRecoveryReservation(base, Actor.Cost("harv"))
+		ReconcileRecoveryReservation(base)
+		print(("ECON base=%s t=%d action=harv-produced live=%d target=%d")
+			:format(base.player.Name, DateTime.GameTime,
+				LiveHarvesterCount(base), EconomyHarvesterTarget(base)))
 		if unit.HasProperty("FindResources") then unit.FindResources() end
 	elseif unit.Type == "orca" then
 		GuardOrca(base, unit)
@@ -1182,10 +2385,13 @@ local function OnProduced(factory, unit, productionType)
 	end
 end
 
-local function EnsureHelipad(base)
+EnsureHelipad = function(base)
 	if MissionFinished or base.rebuilding or LocalBuilding(base, "hpad") ~= nil then return end
+	if not HasStructuralIncome(base) then return end
+	if LocalBuilding(base, "weap") == nil then return end
+	if EconomyHasHarvesterDeficit(base) then return end
 	local yard = LocalBuilding(base, "fact")
-	if yard == nil or GDIFunds(base.player) < Actor.Cost("hpad") + 1500 then return end
+	if yard == nil or AvailableFunds(base.player) < Actor.Cost("hpad") + 1500 then return end
 	if not LocalTech(base, "hpad") or not base.player.HasPrerequisites(prerequisites.hpad) then return end
 	local entry = FindNearbySite(base, "hpad", yard.Location, nil)
 	if entry ~= nil then StartBuilding(base, entry, yard) end
@@ -1202,14 +2408,17 @@ local function LocalBuildingCount(base, kind)
 	return count
 end
 
-local function ProduceOrca(base)
+ProduceOrca = function(base)
 	if MissionFinished or base.orcaBusy ~= nil then return end
+	if not HasStructuralIncome(base) then return end
+	if LocalBuilding(base, "weap") == nil then return end
+	if EconomyHasHarvesterDeficit(base) then return end
 	local pad = LocalBuilding(base, "hpad")
 	local pads = LocalBuildingCount(base, "hpad")
 	if pad == nil or pads == 0 then return end
 	if #base.player.GetActorsByType("orca") >= pads then return end
 	if not LocalTech(base, "orca") or not base.player.HasPrerequisites(prerequisites.orca)
-		or GDIFunds(base.player) < Actor.Cost("orca") + 800 then return end
+		or AvailableFunds(base.player) < Actor.Cost("orca") + 800 then return end
 
 	local stamp = DateTime.GameTime
 	base.orcaBusy = stamp
@@ -1234,13 +2443,8 @@ local function CheckGDIEconomy()
 	if MissionFinished then return end
 	for _, base in ipairs(bases) do
 		if base.defending and DateTime.GameTime >= base.defenseUntil then base.defending = false end
-		Produce(base)
-		EnsureHelipad(base)
-		ProduceOrca(base)
-		RebuildHarvester(base)
-		Rebuild(base)
 	end
-	Trigger.AfterDelay(DateTime.Seconds(10), CheckGDIEconomy)
+	EconomyTick()
 end
 
 -- Idle defenders engage nearby enemies instead of waiting for the first hit.
@@ -1483,6 +2687,91 @@ local function SplitGDI()
 	end
 end
 
+local function InitializeEconomyBaseFields(base)
+	base.defending = false
+	base.defenseUntil = 0
+	base.reserveRelease = 0
+	base.combatPending = nil
+	base.rebuilding = false
+	base.rebuildingKind = nil
+	base.orcaBusy = nil
+	base.harvester = nil
+	base.harvesters = {}
+	base.harvesterSince = nil
+	base.harvesterBuilding = false
+	base.reliefCooldown = 0
+	base.mcv = nil
+	base.mcvSite = nil
+	base.nodeIndex = 1
+	base.economyState = nil
+	base.recoveryNeed = 0
+	base.selling = {}
+	base.settleUntil = nil
+	base.settling = false
+	base.deadSince = nil
+	base.deadAt = nil
+	base.harvesterLost = false
+	base.freeActorGraceUntil = nil
+	base.economyScheduled = false
+	base.hasCriticalDamage = false
+	base.reservedFunds = 0
+	base.recovering = false
+	base.recoveryPowerPolicy = nil
+	base.lastFunds = nil
+	base.lastFundsAt = nil
+	base.incomeSuspectSince = nil
+	base.lastPowerKind = nil
+	base.lastPowerAt = nil
+	base.incomeFailureLogged = nil
+	base.lastHarvQueueBlockLog = nil
+	base.lastStatusLog = nil
+	base.lastSaleBlockLog = nil
+	base.allOut = false
+	base.underAttackUntil = 0
+end
+
+-- Harness hook: add a second economy base for a player to exercise the
+-- multi-base claim/reservation logic. The mission itself never calls this.
+function AddEconomyBase(player, yardX, yardY, nodes)
+	local base = { player = player, yard = { yardX, yardY }, nodes = nodes or {},
+		reserve = {}, produced = {}, infantry = northInfantry, vehicles = northVehicles,
+		nextProduction = "infantry" }
+	InitializeEconomyBaseFields(base)
+	table.insert(bases, base)
+	return base
+end
+
+-- Harness/diagnostic hook. Reports the economy facts per base for a player.
+function EconomyDebug(player)
+	local out = { bases = {} }
+	for _, base in ipairs(bases) do
+		if base.player == player then
+			local sellCount = 0
+			for _ in pairs(base.selling or {}) do sellCount = sellCount + 1 end
+			out.bases[#out.bases + 1] = {
+				state = base.economyState,
+				need = base.recoveryNeed,
+				procs = #GetLocalActors(base, "proc"),
+				silos = #GetLocalActors(base, "silo"),
+				harvesters = LiveHarvesterCount(base),
+				harvesterCount = HarvesterCount(base),
+				target = EconomyHarvesterTarget(base),
+				resources = base.player.Resources or 0,
+				capacity = EconomyResourceCapacity(base.player),
+				reserved = base.reservedFunds or 0,
+				recovering = base.recovering == true,
+				suspect = IsIncomeSuspect(base),
+				allOut = base.allOut == true,
+				selling = sellCount,
+				activeSale = activeSaleBase[player] == base,
+			}
+		end
+	end
+	out.reserved = ReservedFunds(player)
+	out.funds = GDIFunds(player)
+	return out
+end
+
 SetupAI = function()
 	difficulty = Difficulty or "normal"
 	GDI = GDI or Player.GetPlayer("GDI")
@@ -1500,26 +2789,22 @@ SetupAI = function()
 			infantry = westInfantry, vehicles = westVehicles, hardVehicles = hardWestVehicles,
 			nextProduction = "infantry" },
 		{ player = GDI, yard = { 43, 13 }, nodes = northNodes, reserve = {}, produced = {},
-			infantry = northInfantry, vehicles = northVehicles, nextProduction = "infantry" },
+			infantry = northInfantry, vehicles = northVehicles, nextProduction = "infantry",
+			-- Mission-specific (nod13c only): a richer northern base with two
+			-- refineries and two harvesters each. Disabled by default so the
+			-- generic recovery behaviour is unchanged everywhere else.
+			desiredProcs = MultiRefineryEnabled and 2 or 1,
+			harvestersPerProc = MultiRefineryEnabled and 2 or 1 },
 		{ player = GDISouth, yard = { 60, 60 }, nodes = southNodes, reserve = {}, produced = {},
 			infantry = northInfantry, vehicles = { "mtnk", "jeep" }, canRelieve = false,
 			nextProduction = "infantry" },
 	}
 	for _, base in ipairs(bases) do
-		base.defending = false
-		base.defenseUntil = 0
-		base.reserveRelease = 0
-		base.combatPending = nil
-		base.rebuilding = false
-		base.orcaBusy = nil
-		base.harvester = nil
-		base.harvesterBuilding = false
-		base.harvesterCooldown = 0
-		base.reliefCooldown = 0
-		base.mcv = nil
-		base.mcvSite = nil
-		base.nodeIndex = 1
+		InitializeEconomyBaseFields(base)
 	end
+	harvesterClaims = {}
+	reservedFunds = {}
+	activeSaleBase = {}
 	SplitGDI()
 
 	for _, player in ipairs(gdiPlayers) do
@@ -1646,11 +2931,15 @@ SetupAI = function()
 	end)
 
 	-- apc2: Nod approaching the northern base draws a second APC group.
+	-- The original group carried two engineers into an APC to capture a Nod
+	-- building. The port cannot model that transport/capture run, and
+	-- engineers in an attack-move group would just idle at the north-east
+	-- spawn, so the group is limited to combat units.
 	Trigger.OnEnteredFootprint(Apc2Cells, function(actor, id)
 		if actor.Owner ~= Nod then return end
 		Trigger.RemoveFootprintTrigger(id)
 		RunWhenUnlocked(function()
-			local team = SpawnGroupNear(WaveSpawn, { "e3", "e3", "e3", "e6", "e6", "apc" }, GDI)
+			local team = SpawnGroupNear(WaveSpawn, { "e3", "e3", "e3", "e3", "e3", "apc" }, GDI)
 			SendTeam(team, GDI, {}, true, true)
 		end)
 	end)
@@ -1663,6 +2952,9 @@ SetupAI = function()
 	end)
 	Trigger.AfterDelay(DateTime.Seconds(IonCannonFirstDelay[difficulty]), IonCannonStrike)
 	Trigger.AfterDelay(DateTime.Seconds(AutoWaveStart[difficulty]), AutoWave)
+	print(("ECON session start t=%d difficulty=%s multi=%s version=%s")
+		:format(DateTime.GameTime, tostring(difficulty),
+			MultiRefineryEnabled and "on" or "off", ECONOMY_LOG_VERSION))
 	CheckGDIEconomy()
 	IdleDefense()
 	OrcaWatch()

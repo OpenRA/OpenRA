@@ -179,19 +179,18 @@ WorldLoaded = function()
 	Camera.Position = DefaultCameraPosition.CenterPosition
 	InitObjectives(Nod)
 	EliminateGDI = AddPrimaryObjective(Nod, "eliminate-gdi-forces")
-	ProtectMCV = AddSecondaryObjective(Nod, "protect-the-mcv")
 	BuildTemple = AddSecondaryObjective(Nod, "build-temple")
 	StopAirstrikesObjective = AddSecondaryObjective(Nod, "destroy-gdi-communications-center")
 	StopEyeObjective = AddSecondaryObjective(Nod, "destroy-gdi-advanced-communications-center")
 	Nod.Cash = Nod.Cash + StartingCashBonus[Difficulty or "normal"]
 
 	-- lse2: the starting MCV is the only construction vehicle. Losing it
-	-- before it can deploy ends the mission.
+	-- before it can deploy ends the mission. This is a failure condition,
+	-- not a secondary objective.
 	if IsLive(NodStartMCV) then
 		Trigger.OnKilled(NodStartMCV, function()
 			if MissionFinished then return end
 			MissionFinished = true
-			Nod.MarkFailedObjective(ProtectMCV)
 			Nod.MarkFailedObjective(EliminateGDI)
 		end)
 	end
@@ -252,6 +251,11 @@ WorldLoaded = function()
 	Trigger.AfterDelay(DateTime.Seconds(SecondMCVDelay[Difficulty or "normal"]), SendSecondMCV)
 	Trigger.AfterDelay(DateTime.Seconds(120), EnsureMainlandAccess)
 
+	-- Mission-specific only (not part of the generic economy spec): the
+	-- northern base is meant to be the economic heart of the GDI defence and
+	-- maintains two refineries with two harvesters each.
+	MultiRefineryEnabled = MultiRefineryEnabled ~= false
+
 	SetupAI()
 end
 
@@ -281,11 +285,6 @@ Tick = function()
 		or (HouseEliminated(GDI) and HouseEliminated(GDIWest) and HouseEliminated(GDISouth))) then
 		OutcomeCheckPending = true
 		Trigger.AfterDelay(1, CheckOutcome)
-	end
-
-	if not Nod.IsObjectiveCompleted(ProtectMCV)
-		and (not IsLive(NodStartMCV) or #Nod.GetActorsByType("fact") > 0) then
-		Nod.MarkCompletedObjective(ProtectMCV)
 	end
 
 	if not Nod.IsObjectiveCompleted(BuildTemple) and #Nod.GetActorsByType("tmpl") > 0 then
