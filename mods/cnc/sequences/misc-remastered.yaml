@@ -1,0 +1,492 @@
+fb4:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\FB2.ZIP
+
+fire:
+	1:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\FIRE1.ZIP
+		RemasteredOffset: 0, -16
+	2:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\FIRE2.ZIP
+		RemasteredOffset: 0, -16
+
+burn-l:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\BURN-L.ZIP
+
+burn-m:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\BURN-M.ZIP
+
+burn-s:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\BURN-S.ZIP
+
+120mm:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\120MM.ZIP
+
+smoke_m:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\SMOKE_M.ZIP
+		RemasteredOffset: 11, -27
+	idle:
+		Length: 90 # Ignore additional frames in SMOKE_M.ZIP
+
+scorch_flames:
+	large_flame:
+		Combine:
+			0:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\FIRE1.ZIP
+				RemasteredOffset: 0, -16
+			1:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\FIRE1.ZIP
+				RemasteredOffset: 0, -16
+			2:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\FIRE1.ZIP
+				RemasteredOffset: 0, -16
+			3:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\FIRE1.ZIP
+				RemasteredOffset: 0, -16
+			4:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\FIRE2.ZIP
+				RemasteredOffset: 0, -16
+			5:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\FIRE2.ZIP
+				RemasteredOffset: 0, -16
+			6:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\FIRE2.ZIP
+				RemasteredOffset: 0, -16
+			7:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\SMOKE_M.ZIP
+				RemasteredOffset: 11, -27
+			8:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\SMOKE_M.ZIP
+				RemasteredOffset: 11, -27
+			9:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\SMOKE_M.ZIP
+				RemasteredOffset: 11, -27
+			10:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\SMOKE_M.ZIP
+				RemasteredOffset: 11, -27
+			11:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\SMOKE_M.ZIP
+				RemasteredOffset: 11, -27
+	medium_flame:
+		Combine:
+			0:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\FIRE2.ZIP
+				RemasteredOffset: 0, -16
+			1:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\FIRE2.ZIP
+				RemasteredOffset: 0, -16
+			2:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\FIRE2.ZIP
+				RemasteredOffset: 0, -16
+			3:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\FIRE2.ZIP
+				RemasteredOffset: 0, -16
+			4:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\FIRE2.ZIP
+				RemasteredOffset: 0, -16
+			5:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\SMOKE_M.ZIP
+				RemasteredOffset: 11, -27
+			6:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\SMOKE_M.ZIP
+				RemasteredOffset: 11, -27
+			7:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\SMOKE_M.ZIP
+				RemasteredOffset: 11, -27
+			8:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\SMOKE_M.ZIP
+				RemasteredOffset: 11, -27
+	small_flame:
+		Combine:
+			0:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\FIRE3.ZIP
+				RemasteredOffset: 0, -16
+			1:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\FIRE3.ZIP
+				RemasteredOffset: 0, -16
+			2:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\FIRE3.ZIP
+				RemasteredOffset: 0, -16
+			3:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\FIRE3.ZIP
+				RemasteredOffset: 0, -16
+			4:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\FIRE3.ZIP
+				RemasteredOffset: 0, -16
+			5:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\SMOKE_M.ZIP
+				RemasteredOffset: 11, -27
+			6:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\SMOKE_M.ZIP
+				RemasteredOffset: 11, -27
+			7:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\SMOKE_M.ZIP
+				RemasteredOffset: 11, -27
+		RemasteredOffset: 0, -16
+	tiny_flame:
+		Combine:
+			0:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\FIRE4.ZIP
+				RemasteredOffset: 0, -16
+			1:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\FIRE4.ZIP
+				RemasteredOffset: 0, -16
+			2:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\FIRE4.ZIP
+				RemasteredOffset: 0, -16
+			3:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\FIRE4.ZIP
+				RemasteredOffset: 0, -16
+			4:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\SMOKE_M.ZIP
+				RemasteredOffset: 11, -27
+			5:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\SMOKE_M.ZIP
+				RemasteredOffset: 11, -27
+		RemasteredOffset: 0, -16
+	smoke:
+		Combine:
+			0:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\SMOKE_M.ZIP
+				RemasteredOffset: 11, -27
+			1:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\SMOKE_M.ZIP
+				RemasteredOffset: 11, -27
+			2:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\SMOKE_M.ZIP
+				RemasteredOffset: 11, -27
+			3:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\SMOKE_M.ZIP
+				RemasteredOffset: 11, -27
+			4:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\SMOKE_M.ZIP
+				RemasteredOffset: 11, -27
+			5:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\SMOKE_M.ZIP
+				RemasteredOffset: 11, -27
+
+laserfire:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\VEH-HIT3.ZIP
+
+dragon:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\DRAGON.ZIP
+
+smokey:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\SMOKEY.ZIP
+
+bomb:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\BOMB.ZIP
+
+missile:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\MISSILE.ZIP
+
+patriot:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\MISSILE.ZIP
+
+explosion:
+	nuke_explosion:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\ATOMSFX.ZIP
+	piff:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\PIFF.ZIP
+	piffs:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\PIFFPIFF.ZIP
+	chemball:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\CHEMBALL.ZIP
+	small_napalm:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\NAPALM1.ZIP
+	med_napalm:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\NAPALM2.ZIP
+	big_napalm:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\NAPALM3.ZIP
+	small_frag:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\VEH-HIT3.ZIP
+	med_frag:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\FRAG1.ZIP
+	big_frag:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\FRAG3.ZIP
+	small_poof:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\VEH-HIT2.ZIP
+	poof:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\ART-EXP1.ZIP
+	small_building:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\VEH-HIT1.ZIP
+	building:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\FBALL1.ZIP
+	building_napalm:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\NAPALM2.ZIP
+
+rallypoint:
+	Defaults:
+		RemasteredPremultiplied: false
+	flag:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\FLAGFLY.ZIP
+		RemasteredOffset: 50, -25
+	circles:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\FPLS.ZIP
+
+beacon:
+	Defaults:
+		RemasteredPremultiplied: false
+	circles:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\FPLS.ZIP
+
+scrate:
+	idle:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\SCRATE.ZIP
+			Count: 2
+
+wcrate:
+	idle:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\WCRATE.ZIP
+			Count: 2
+
+xcratea:
+	idle:
+		RemasteredFilename: xcrate1.tga
+
+xcrateb:
+	idle:
+		RemasteredFilenamePattern: xcrate2.tga
+			Count: 2
+
+xcratec:
+	idle:
+		RemasteredFilenamePattern: xcrate3.tga
+			Count: 3
+
+xcrated:
+	idle:
+		RemasteredFilenamePattern: xcrate4.tga
+			Count: 4
+
+crate-effects:
+	airstrike:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\DEVIATOR.ZIP
+	nuke:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\MISSILE2.ZIP
+	dollar:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\DOLLAR.ZIP
+	hide-map:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\EMPULSE.ZIP
+	mine:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\MINE.ZIP
+	redskull:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\RAPID.ZIP
+
+atomic:
+	up:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\ATOMICUP.ZIP
+	down:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\ATOMICDN.ZIP
+
+ionsfx:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\IONSFX.ZIP
+		RemasteredOffset: 0, -920
+
+bomblet:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\BOMBLET.ZIP
+
+overlay:
+	Defaults:
+		RemasteredPremultiplied: false
+	build-valid:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\MISC\PLACEMENT_GOOD.TGA
+	build-invalid:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\COMMON\MISC\PLACEMENT_BAD.TGA
+			Count: 3
+	target-valid:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\MISC\PLACEMENT_GOOD.TGA
+	target-select:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\COMMON\MISC\PLACEMENT_GOOD.TGA
+			Count: 2
+	target-invalid:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\COMMON\MISC\PLACEMENT_BAD.TGA
+			Count: 3
+
+editor-overlay:
+	Defaults:
+		RemasteredPremultiplied: false
+	copy:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\MISC\PLACEMENT_GOOD.TGA
+	paste:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\COMMON\MISC\PLACEMENT_BAD.TGA
+			Count: 3
+
+moveflsh:
+	idle:
+		RemasteredFilename: moveflsh.shp
+
+resources:
+	Defaults:
+		RemasteredLength: *
+		RemasteredPremultiplied: false
+	ti1:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\TI1\TI1.TEM-{0:D4}.DDS
+			Count: 12
+	ti2:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\TI2\TI2.TEM-{0:D4}.DDS
+			Count: 12
+	ti3:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\TI3\TI3.TEM-{0:D4}.DDS
+			Count: 12
+	ti4:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\TI4\TI4.TEM-{0:D4}.DDS
+			Count: 12
+	ti5:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\TI5\TI5.TEM-{0:D4}.DDS
+			Count: 12
+	ti6:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\TI6\TI6.TEM-{0:D4}.DDS
+			Count: 12
+	ti7:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\TI7\TI7.TEM-{0:D4}.DDS
+			Count: 12
+	ti8:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\TI8\TI8-{0:D4}.DDS
+			Count: 12
+	ti9:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\TI9\TI9.TEM-{0:D4}.DDS
+			Count: 12
+	ti10:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\TI10\TI10.TEM-{0:D4}.DDS
+			Count: 12
+	ti11:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\TI11\TI11.TEM-{0:D4}.DDS
+			Count: 12
+	ti12:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\TI12\TI12.TEM-{0:D4}.DDS
+			Count: 12
+
+shroud:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\SHROUD\SHADOW-{0:D2}.DDS
+			Count: 12
+		RemasteredPremultiplied: false
+	shroud-typea: shadow
+	shroud-typeb: shadow
+		RemasteredStart: 0
+	shroud-typec: shadow
+		RemasteredStart: 0
+	shroud-typed: shadow
+		RemasteredStart: 0
+	shroud-full:
+		RemasteredFilenamePattern:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\SHROUD\SHADOW-ALL.DDS
+		RemasteredLength: 1
+	fog-typea: shadow
+		Alpha: 0.5
+	fog-typeb: shadow
+		RemasteredStart: 0
+		Alpha: 0.5
+	fog-typec: shadow
+		RemasteredStart: 0
+		Alpha: 0.5
+	fog-typed: shadow
+		RemasteredStart: 0
+		Alpha: 0.5
+	fog-full:
+		RemasteredFilenamePattern:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\SHROUD\SHADOW-ALL.DDS
+		RemasteredLength: 1
+		Alpha: 0.5
+
+# Note: The order of smudges and craters determines
+# the index that is mapped to them in maps
+scorches:
+	Defaults:
+		RemasteredScale: 0.5
+		RemasteredPremultiplied: false
+	sc1:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\SC1\SC1.TEM-0000.DDS
+		RemasteredTilesetFilenamesPattern:
+			DESERT: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\SC1.DES\SC1.DES-0000.DDS
+	sc2:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\SC2\SC2.TEM-0000.DDS
+		RemasteredTilesetFilenamesPattern:
+			DESERT: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\SC2.DES\SC2.DES-0000.DDS
+	sc3:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\SC3\SC3.TEM-0000.DDS
+		RemasteredTilesetFilenamesPattern:
+			DESERT: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\SC3.DES\SC3.DES-0000.DDS
+	sc4:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\SC4\SC4.TEM-0000.DDS
+		RemasteredTilesetFilenamesPattern:
+			DESERT: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\SC4.DES\SC4.DES-0000.DDS
+	sc5:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\SC5\SC5.TEM-0000.DDS
+		RemasteredTilesetFilenamesPattern:
+			DESERT: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\SC5.DES\SC5.DES-0000.DDS
+	sc6:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\SC6\SC6.TEM-0000.DDS
+		RemasteredTilesetFilenamesPattern:
+			DESERT: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\SC6.DES\SC6.DES-0000.DDS
+
+craters:
+	Defaults:
+		RemasteredPremultiplied: false
+	cr1:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\CR1\CR1.TEM-{0:D4}.DDS
+			Count: 5
+		RemasteredTilesetFilenamesPattern:
+			DESERT: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\CR1.DES\CR1.DES-{0:D4}.DDS
+				Count: 5
+		RemasteredScale: 0.5
+	cr2:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\CR2\CR2.TEM-{0:D4}.DDS
+			Count: 5
+		RemasteredTilesetFilenamesPattern:
+			DESERT: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\CR2.DES\CR2.DES-{0:D4}.DDS
+				Count: 5
+	cr3:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\CR3\CR3.TEM-{0:D4}.DDS
+			Count: 5
+		RemasteredTilesetFilenamesPattern:
+			DESERT: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\CR3.DES\CR3.DES-{0:D4}.DDS
+				Count: 5
+	cr4:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\CR4\CR4.TEM-{0:D4}.DDS
+			Count: 5
+		RemasteredTilesetFilenamesPattern:
+			DESERT: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\CR4.DES\CR4.DES-{0:D4}.DDS
+				Count: 5
+	cr5:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\CR5\CR5.TEM-{0:D4}.DDS
+			Count: 5
+		RemasteredTilesetFilenamesPattern:
+			DESERT: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\CR5.DES\CR5.DES-{0:D4}.DDS
+				Count: 5
+	cr6:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\CR6\CR6.TEM-{0:D4}.DDS
+			Count: 5
+		RemasteredTilesetFilenamesPattern:
+			DESERT: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\CR6.DES\CR6.DES-{0:D4}.DDS
+				Count: 5
+
+smokland:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\SMOKLAND.ZIP
+
+mpspawn:
+	idle:
+		RemasteredFilename: mpspawn.png
+
+waypoint:
+	idle:
+		RemasteredFilename: waypoint.png
+
+camera:
+	idle:
+		RemasteredFilename: camera.png

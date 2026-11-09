@@ -1,0 +1,48 @@
+GenericVoice:
+	DefaultVariant: .WAV
+	Variants:
+		nod: .V01_FR-FR.WAV, .V03_FR-FR.WAV
+		gdi: .V01_FR-FR.WAV, .V03_FR-FR.WAV
+	Prefixes:
+		nod: FR-FR\TDR_SFX_UNT_
+		gdi: FR-FR\TDR_SFX_UNT_
+
+VehicleVoice:
+	Variants:
+		nod: .V00_FR-FR.WAV, .V02_FR-FR.WAV
+		gdi: .V00_FR-FR.WAV, .V02_FR-FR.WAV
+	Prefixes:
+		nod: FR-FR\TDR_SFX_UNT_
+		gdi: FR-FR\TDR_SFX_UNT_
+
+CivilianMaleVoice:
+	Variants:
+		nod: _FR-FR.WAV
+		gdi: _FR-FR.WAV
+	Prefixes:
+		nod: FR-FR\TDR_SFX_UNT_
+		gdi: FR-FR\TDR_SFX_UNT_
+
+CivilianFemaleVoice:
+	Variants:
+		nod: _FR-FR.WAV
+		gdi: _FR-FR.WAV
+	Prefixes:
+		nod: FR-FR\TDR_SFX_UNT_
+		gdi: FR-FR\TDR_SFX_UNT_
+
+MoebiusVoice:
+	Variants:
+		nod: _FR-FR.WAV
+		gdi: _FR-FR.WAV
+	Prefixes:
+		nod: FR-FR\TDR_SFX_UNT_
+		gdi: FR-FR\TDR_SFX_UNT_
+
+CommandoVoice:
+	Variants:
+		nod: _FR-FR.WAV
+		gdi: _FR-FR.WAV
+	Prefixes:
+		nod: FR-FR\TDR_SFX_CMD_
+		gdi: FR-FR\TDR_SFX_CMD_

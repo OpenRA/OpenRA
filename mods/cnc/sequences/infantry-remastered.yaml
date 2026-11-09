@@ -1,0 +1,157 @@
+vice:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\VICE.ZIP
+	muzzle:
+		Combine:
+			0:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\CHEM-N.ZIP
+				RemasteredOffset: 5, 11
+			1:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\CHEM-NW.ZIP
+				RemasteredOffset: 43, 11
+			2:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\CHEM-W.ZIP
+				RemasteredOffset: 43, -16
+			3:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\CHEM-SW.ZIP
+				RemasteredOffset: 37, -32
+			4:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\CHEM-S.ZIP
+				RemasteredOffset: 27, -32
+			5:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\CHEM-SE.ZIP
+				RemasteredOffset: -27, -32
+			6:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\CHEM-E.ZIP
+				RemasteredOffset: -37, -16
+			7:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\CHEM-NE.ZIP
+				RemasteredOffset: -16, 11
+	die:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\CHEMBALL.ZIP
+	icon:
+		RemasteredFilename:
+
+e1:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\E1.ZIP
+	die-crushed:
+		RemasteredStart: 389
+		RemasteredLength: 1
+		RemasteredTick: 6400
+	icon:
+		RemasteredFilename:
+
+e2:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\E2.ZIP
+	die-crushed:
+		RemasteredStart: 532
+		RemasteredLength: 1
+		RemasteredTick: 6400
+	icon:
+		RemasteredFilename:
+
+e3:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\E3.ZIP
+	die-crushed:
+		RemasteredStart: 404
+		RemasteredLength: 1
+		RemasteredTick: 6400
+	icon:
+		RemasteredFilename:
+
+e4:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\E4.ZIP
+	muzzle:
+		Combine:
+			0:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\FLAME-N.ZIP
+				RemasteredOffset: 16, 32
+			1:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\FLAME-NW.ZIP
+				RemasteredOffset: 43, 37
+			2:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\FLAME-W.ZIP
+				RemasteredOffset: 43, 11
+			3:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\FLAME-SW.ZIP
+				RemasteredOffset: 37, -11
+			4:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\FLAME-S.ZIP
+				RemasteredOffset: 16, -11
+			5:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\FLAME-SE.ZIP
+				RemasteredOffset: -27, -11
+			6:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\FLAME-E.ZIP
+				RemasteredOffset: -37, 11
+			7:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\FLAME-NE.ZIP
+				RemasteredOffset: -37, 43
+	die-crushed:
+		RemasteredStart: 515
+		RemasteredLength: 1
+		RemasteredTick: 6400
+	icon:
+		RemasteredFilename:
+
+e5:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\E5.ZIP
+	muzzle:
+		Combine:
+			0:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\CHEM-N.ZIP
+				RemasteredOffset: 5, 11
+			1:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\CHEM-NW.ZIP
+				RemasteredOffset: 43, 11
+			2:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\CHEM-W.ZIP
+				RemasteredOffset: 43, -16
+			3:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\CHEM-SW.ZIP
+				RemasteredOffset: 37, -32
+			4:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\CHEM-S.ZIP
+				RemasteredOffset: 27, -32
+			5:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\CHEM-SE.ZIP
+				RemasteredOffset: -27, -32
+			6:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\CHEM-E.ZIP
+				RemasteredOffset: -37, -16
+			7:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\CHEM-NE.ZIP
+				RemasteredOffset: -16, 11
+	die-crushed:
+		RemasteredStart: 515
+		RemasteredLength: 1
+		RemasteredTick: 6400
+	icon:
+		RemasteredFilename:
+
+e6:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\E6.ZIP
+	die-crushed:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\E1.ZIP
+		RemasteredStart: 389
+		RemasteredLength: 1
+		RemasteredTick: 6400
+	icon:
+		RemasteredFilename:
+
+rmbo:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\RMBO.ZIP
+	die-crushed:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\E1.ZIP
+		RemasteredStart: 389
+		RemasteredLength: 1
+		RemasteredTick: 6400
+	icon:
+		RemasteredFilename:
