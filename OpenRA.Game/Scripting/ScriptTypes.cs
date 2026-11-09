@@ -68,6 +68,12 @@ namespace OpenRA.Scripting
 					return true;
 				}
 
+				if (t.IsAssignableFrom(typeof(float)))
+				{
+					clrObject = (float)value.ToNumber().Value;
+					return true;
+				}
+
 				// Need an explicit test for double -> int
 				// TODO: Lua 5.3 will introduce an integer type, so this will be able to go away
 				if (t.IsAssignableFrom(typeof(int)))
@@ -162,6 +168,9 @@ namespace OpenRA.Scripting
 
 				if (obj is double d)
 					return d;
+
+				if (obj is float f)
+					return f;
 
 				if (obj is int i)
 					return i;
