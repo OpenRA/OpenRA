@@ -49,8 +49,10 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Map map;
 		readonly Dictionary<int, LightSource> lightSources = [];
 		readonly SpatiallyPartitioned<LightSource> partitionedLightSources;
-		readonly Vector3 globalTint;
 		int nextLightSourceToken = 1;
+
+		public float GlobalIntensity { get; private set; }
+		public Vector3 GlobalTint { get; private set; }
 
 		public event Action<MPos> CellChanged = null;
 
@@ -58,13 +60,31 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			map = world.Map;
-			globalTint = new Vector3(info.RedTint, info.GreenTint, info.BlueTint);
+			GlobalIntensity = info.Intensity;
+			GlobalTint = new Vector3(info.RedTint, info.GreenTint, info.BlueTint);
 
 			var tileScale = map.Grid.TileScale;
 			partitionedLightSources = new SpatiallyPartitioned<LightSource>(
 				(map.MapSize.Width + 1) * tileScale,
 				(map.MapSize.Height + 1) * tileScale,
 				info.BinSize * tileScale);
+		}
+
+		/// <summary>
+		/// Changes the global lighting in the same units as TerrainLightingInfo.
+		/// HeightStep and local light sources are preserved. Callers own transition timing.
+		/// </summary>
+		public void SetGlobalLighting(float intensity, in Vector3 tint)
+		{
+			if (GlobalIntensity == intensity && GlobalTint == tint)
+				return;
+
+			GlobalIntensity = intensity;
+			GlobalTint = tint;
+
+			if (CellChanged != null)
+				foreach (var uv in map.AllCells.MapCoords)
+					CellChanged(uv);
 		}
 
 		static Rectangle Bounds(LightSource source)
@@ -106,11 +126,11 @@ namespace OpenRA.Mods.Common.Traits
 			using (new PerfSample("terrain_lighting"))
 			{
 				var uv = map.CellContaining(pos).ToMPos(map);
-				var tint = globalTint;
+				var tint = GlobalTint;
 				if (!map.Height.Contains(uv))
 					return tint;
 
-				var intensity = info.Intensity + info.HeightStep * map.Height[uv];
+				var intensity = GlobalIntensity + info.HeightStep * map.Height[uv];
 				if (lightSources.Count > 0)
 				{
 					foreach (var source in partitionedLightSources.At(new int2(pos.X, pos.Y)))
