@@ -655,6 +655,11 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<EditorActorOption> ActorOptions(ActorInfo ai, World world);
 	}
 
+	public interface IBotRequestBuildingRepair
+	{
+		void RequestBuildingRepair(IBot bot, Actor building);
+	}
+
 	public abstract class EditorActorOption
 	{
 		public readonly string Name;
