@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -56,7 +55,7 @@ namespace OpenRA
 						Name = "Creeps",
 						Faction = firstFaction,
 						NonCombatant = true,
-						Enemies = Exts.MakeArray(playerCount, i => $"Multi{i}").ToImmutableArray()
+						Enemies = Exts.MakeImmutableArray(playerCount, i => $"Multi{i}")
 					}
 				}
 			};

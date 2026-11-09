@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (optionsNode == null)
 				return ImmutableArray<MapGeneratorOption>.Empty;
 
-			var options = new List<MapGeneratorOption>();
+			var options = ImmutableArray.CreateBuilder<MapGeneratorOption>();
 			foreach (var node in optionsNode.Value.Nodes)
 			{
 				var split = node.Key.Split('@');
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 					options.Add(new MapGeneratorMultiChoiceOption(split[1], node.Value));
 			}
 
-			return options.ToImmutableArray();
+			return options.DrainToImmutable();
 		}
 
 		public static object LoadFluentReferences(MiniYaml my)

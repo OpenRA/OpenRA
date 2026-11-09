@@ -168,7 +168,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Game.Settings.Player.CustomColors = Game.Settings.Player.CustomColors
 						.Where(c => c != mixer.Color)
 						.Append(mixer.Color)
-						.Reverse().Take(paletteCustomRows * paletteCols).Reverse()
+						.Reverse()
+						.Take(paletteCustomRows * paletteCols)
+						.Reverse()
 						.ToImmutableArray();
 					Game.Settings.Save();
 

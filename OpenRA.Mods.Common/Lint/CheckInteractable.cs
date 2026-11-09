@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Lint
 
 		static bool HasInvalidBounds(ImmutableArray<WDist> bounds, Size tileSize, int tileScale)
 		{
-			if (bounds == null)
+			if (bounds.IsDefault)
 				return false;
 
 			if (bounds.Length != 2 && bounds.Length != 4)

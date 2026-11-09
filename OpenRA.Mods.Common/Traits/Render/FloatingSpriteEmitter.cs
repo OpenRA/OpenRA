@@ -118,8 +118,8 @@ namespace OpenRA.Mods.Common.Traits
 				ticks = Util.RandomInRange(self.World.LocalRandom, Info.SpawnFrequency);
 
 				var spawnFacing = (!Info.RandomFacing && facing != null) ? facing.Facing : WAngle.FromFacing(self.World.LocalRandom.Next(256));
-				self.World.AddFrameEndTask(w => w.Add(new FloatingSprite(self, Info.Image, Info.Sequences, Info.Palette, Info.IsPlayerPalette,
-					Info.Lifetime, Info.Speed, Info.Gravity, Info.TurnRate, Info.RandomRate, self.CenterPosition + offset, spawnFacing)));
+				self.World.AddFrameEndTask(w => w.Add(new FloatingSprite(self, Info.Image, Info.Sequences.AsSpan(), Info.Palette, Info.IsPlayerPalette,
+					Info.Lifetime.AsSpan(), Info.Speed, Info.Gravity, Info.TurnRate, Info.RandomRate, self.CenterPosition + offset, spawnFacing)));
 			}
 		}
 	}

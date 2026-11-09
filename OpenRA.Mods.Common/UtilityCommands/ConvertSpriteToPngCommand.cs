@@ -36,16 +36,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var modData = Game.ModData = utility.ModData;
 
 			var src = args[1];
-			var shadowIndex = Array.Empty<int>();
-			if (args.Contains("--noshadow"))
-			{
-				Array.Resize(ref shadowIndex, shadowIndex.Length + 3);
-				shadowIndex[^1] = 1;
-				shadowIndex[^2] = 3;
-				shadowIndex[^3] = 4;
-			}
+			ReadOnlySpan<int> shadowIndex = args.Contains("--noshadow") ? [4, 3, 1] : [];
 
-			var palette = new ImmutablePalette(args[2], [0], shadowIndex.ToImmutableArray());
+			var palette = new ImmutablePalette(args[2], [0], shadowIndex);
 			var palColors = new Color[Palette.Size];
 			for (var i = 0; i < Palette.Size; i++)
 				palColors[i] = palette.GetColor(i);

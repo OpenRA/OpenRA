@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Support;
@@ -594,7 +593,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			CellLayer<T> cellLayer,
 			IEnumerable<(CPos CPos, P Prop)> seeds,
 			Func<CPos, P, P?> filler,
-			ImmutableArray<CVec> spread) where P : struct
+			ReadOnlySpan<CVec> spread) where P : struct
 		{
 			var current = new List<(CPos CPos, P Prop)>();
 			var next = seeds.ToList();
@@ -624,7 +623,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			CellLayer<bool> mask,
 			CellLayer<bool> seeds,
 			Action<CPos> fillAction,
-			ImmutableArray<CVec> spread)
+			ReadOnlySpan<CVec> spread)
 		{
 			if (!AreSameShape(mask, seeds))
 				throw new ArgumentException("mask and seeds did not have same shape");

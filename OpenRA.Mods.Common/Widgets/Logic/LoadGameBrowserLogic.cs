@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -57,7 +58,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			public DateTime CreationTime;
 			public TimeSpan? Duration;
 			public string MapTitle;
-			public IReadOnlyList<string> Factions = [];
+			public ImmutableArray<string> Factions = [];
 			public bool Visible = true;
 			public ScrollItemWidget Item;
 		}
@@ -313,7 +314,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						Factions = save?.SlotClients.Values
 							.Select(sc => sc.Faction)
 							.Where(f => !string.IsNullOrEmpty(f))
-							.ToList() ?? []
+							.ToImmutableArray() ?? []
 					};
 
 					saves.Add(entry);

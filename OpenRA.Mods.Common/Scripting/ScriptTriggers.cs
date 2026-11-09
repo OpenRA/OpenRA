@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using Eluant;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -47,7 +48,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public event Action<Actor, Actor> OnProducedInternal = (a, b) => { };
 		public event Action<Actor, Actor> OnOtherProducedInternal = (a, b) => { };
 
-		readonly List<Triggerable>[] triggerables = Exts.MakeArray(Enum.GetValues<Trigger>().Length, _ => new List<Triggerable>());
+		readonly ImmutableArray<List<Triggerable>> triggerables = Exts.MakeImmutableArray(Enum.GetValues<Trigger>().Length, _ => new List<Triggerable>());
 
 		readonly struct Triggerable : IDisposable
 		{

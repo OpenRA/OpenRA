@@ -241,8 +241,8 @@ namespace OpenRA.Mods.Common.Widgets
 			MarkerLayerOverlay markerLayerOverlay)
 		{
 			this.markerLayerOverlay = markerLayerOverlay;
-			tiles = markerLayerOverlay.Tiles.ToFrozenDictionary(t => t.Key, t => t.Value.ToImmutableArray());
-			var allTilesCount = tiles.Values.Sum(x => x.Length);
+			tiles = markerLayerOverlay.Tiles.ToFrozenDictionary(x => x.Key, x => x.Value.ToImmutableArray());
+			var allTilesCount = tiles.Sum(x => x.Value.Length);
 
 			Text = FluentProvider.GetMessage(ClearedAllMarkerTiles, "count", allTilesCount);
 		}
