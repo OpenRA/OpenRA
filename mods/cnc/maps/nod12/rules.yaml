@@ -80,6 +80,12 @@ EYE:
 		ChargeInterval: 3000
 
 # The original A10 reinforcement (air1) consists of two aircraft.
-HQ:
+# GDI uses a dedicated, non-capturable proxy actor. The HQ actor itself has
+# no AirstrikePower, so a Communications Center built by Nod never grants an
+# airstrike (and capturing a GDI HQ stays standard without one).
+airstrike.proxy:
 	AirstrikePower:
 		SquadSize: 2
+
+HQ:
+	-AirstrikePower:
