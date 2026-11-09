@@ -79,20 +79,21 @@ namespace OpenRA.Mods.Common.Widgets
 			Bounds.Height = Math.Max(Bounds.Height, font.Measure(line).Y);
 		}
 
-		public override void Draw()
+		protected bool TryGetTextLayout(out string text, out SpriteFont font, out int2 position)
 		{
-			if (!Game.Renderer.Fonts.TryGetValue(Font, out var font))
+			if (!Game.Renderer.Fonts.TryGetValue(Font, out font))
 				throw new ArgumentException($"Requested font '{Font}' was not found.");
 
-			var text = GetText();
+			text = GetText();
+			position = default;
 			if (text == null)
-				return;
+				return false;
 
 			if (WordWrap)
 				text = WidgetUtils.WrapText(text, Bounds.Width, font);
 
 			var textSize = font.Measure(text);
-			var position = RenderOrigin;
+			position = RenderOrigin;
 			var offset = font.TopOffset;
 
 			if (VAlign == TextVAlign.Top)
@@ -109,6 +110,14 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (Align == TextAlign.Right)
 				position += new int2(Bounds.Width - textSize.X, 0);
+
+			return true;
+		}
+
+		public override void Draw()
+		{
+			if (!TryGetTextLayout(out var text, out var font, out var position))
+				return;
 
 			DrawInner(text, font, GetColor(), position);
 		}
