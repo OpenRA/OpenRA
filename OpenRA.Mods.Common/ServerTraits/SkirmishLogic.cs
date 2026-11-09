@@ -120,6 +120,7 @@ namespace OpenRA.Mods.Common.Server
 			{
 				var client = server.GetClient(conn);
 				SkirmishSlot.DeserializeToClient(playerNode.Value, client);
+				ValidateClientSlot(server.LobbyInfo, client);
 				client.Color = LobbyCommands.SanitizePlayerColor(server, client.Color, client.Index);
 				client.Faction = LobbyCommands.SanitizePlayerFaction(server, client.Faction, selectableFactions);
 			}
@@ -147,6 +148,8 @@ namespace OpenRA.Mods.Common.Server
 					};
 
 					SkirmishSlot.DeserializeToClient(botNode.Value, client);
+					if (!ValidateClientSlot(server.LobbyInfo, client))
+						continue;
 
 					// Validate whether color is allowed and get an alternative if it isn't
 					if (client.Slot != null && server.LobbyInfo.Slots.TryGetValue(client.Slot, out var slot) && !slot.LockColor)
@@ -161,6 +164,24 @@ namespace OpenRA.Mods.Common.Server
 				}
 			}
 
+			return true;
+		}
+
+		public static bool ValidateClientSlot(Session lobby, Session.Client client)
+		{
+			if (client.Slot == null && !client.IsBot)
+				return true;
+
+			if (client.Slot != null && lobby.Slots.TryGetValue(client.Slot, out var slot) && !slot.Closed
+				&& (!client.IsBot || slot.AllowBots)
+				&& !lobby.Clients.Any(c => c != client && c.Slot == client.Slot))
+				return true;
+
+			if (client.IsBot)
+				return false;
+
+			client.Slot = lobby.FirstEmptySlot();
+			client.SpawnPoint = 0;
 			return true;
 		}
 

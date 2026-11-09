@@ -585,7 +585,11 @@ namespace OpenRA.Mods.Common.Server
 
 						server.LobbyInfo.GlobalSettings.Map = map.Uid;
 
-						var oldSlots = server.LobbyInfo.Slots.Keys.ToArray();
+						// Snapshot occupants before reassignment changes the slot lookups.
+						var oldSlots = server.LobbyInfo.Slots.Keys.ToList();
+						var oldSlotClients = server.LobbyInfo.Clients.Where(c => c.Slot != null)
+							.OrderBy(c => oldSlots.IndexOf(c.Slot) is var index && index >= 0 ? index : int.MaxValue)
+							.ToArray();
 						server.Map = server.ModData.MapCache[server.LobbyInfo.GlobalSettings.Map];
 						server.LobbyInfo.GlobalSettings.MapStatus = server.MapStatusCache[server.Map];
 
@@ -616,12 +620,8 @@ namespace OpenRA.Mods.Common.Server
 						var botTypes = server.Map.PlayerActorInfo.TraitInfos<IBotInfo>().Select(t => t.Type);
 						var slots = server.LobbyInfo.Slots.Keys.ToArray();
 						var i = 0;
-						foreach (var os in oldSlots)
+						foreach (var c in oldSlotClients)
 						{
-							var c = server.LobbyInfo.ClientInSlot(os);
-							if (c == null)
-								continue;
-
 							c.SpawnPoint = 0;
 							c.Slot = i < slots.Length ? slots[i++] : null;
 							if (c.Slot != null)
