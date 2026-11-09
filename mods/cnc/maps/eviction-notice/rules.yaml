@@ -6,6 +6,8 @@ World:
 		Briefing: briefing
 	LuaScript:
 		Scripts: campaign.lua, utils.lua, eviction-notice.lua , eviction-notice-AI.lua
+	MusicPlaylist:
+		VictoryMusic: nod_win1
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
 		Label: dropdown-difficulty.label

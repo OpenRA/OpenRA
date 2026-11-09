@@ -6,6 +6,8 @@ World:
 		StartVideo: nodsweep.vqa
 		LossVideo: nodflees.vqa
 		WinVideo: desolat.vqa
+	MusicPlaylist:
+		VictoryMusic: nod_win1
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
 		Label: dropdown-difficulty.label
