@@ -14,7 +14,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -35,20 +34,7 @@ namespace OpenRA
 		public ActorReference(string type, MiniYaml inits)
 		{
 			Type = type;
-			initDict = Exts.Lazy(() =>
-			{
-				var dict = new TypeDictionary();
-				foreach (var i in inits.Nodes)
-				{
-					var init = LoadInit(i.Key, i.Value);
-					if (init is ISingleInstanceInit && dict.Contains(init.GetType()))
-						throw new InvalidDataException($"Duplicate initializer '{init.GetType().Name}'");
-
-					dict.Add(init);
-				}
-
-				return dict;
-			});
+			initDict = Exts.Lazy(() => ActorInitLoader.LoadInits(inits));
 		}
 
 		public ActorReference(string type, TypeDictionary inits)
@@ -56,25 +42,6 @@ namespace OpenRA
 			Type = type;
 			var initsClone = new TypeDictionary(inits);
 			initDict = Exts.Lazy(() => initsClone);
-		}
-
-		static ActorInit LoadInit(string initName, MiniYaml initYaml)
-		{
-			var initInstance = initName.Split(ActorInfo.TraitInstanceSeparator);
-			var type = Game.ModData.ObjectCreator.FindType(initInstance[0] + "Init");
-			if (type == null)
-				throw new InvalidDataException($"Unknown initializer type '{initInstance[0]}Init'");
-
-			var init = (ActorInit)RuntimeHelpers.GetUninitializedObject(type);
-			if (initInstance.Length > 1)
-				type.GetField(nameof(ActorInit.InstanceName)).SetValue(init, initInstance[1]);
-
-			var loader = type.GetMethod("Initialize", [typeof(MiniYaml)]);
-			if (loader == null)
-				throw new InvalidDataException($"{initInstance[0]}Init does not define a yaml-assignable type.");
-
-			loader.Invoke(init, [initYaml]);
-			return init;
 		}
 
 		public MiniYaml Save(Func<ActorInit, bool> initFilter = null)
