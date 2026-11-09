@@ -86,6 +86,15 @@ local function IsLive(actor)
 	return actor ~= nil and actor.Owner ~= nil and not actor.IsDead
 end
 
+-- Actor wrappers are not guaranteed to keep Lua table identity across
+-- callbacks. Use the stable ActorID when the engine exposes it, and fall back
+-- to the table on older engine DLLs.
+function EconomyActorKey(actor)
+	if actor == nil then return nil end
+	if actor.HasProperty("ActorID") then return actor.ActorID end
+	return actor
+end
+
 local function CellKey(x, y)
 	return y * 64 + x
 end
@@ -472,13 +481,6 @@ local function Recruit(player, types, anchor, limit)
 	return team
 end
 
-local function HasOtherHarvester(player, exclude)
-	for _, actor in ipairs(player.GetActorsByType("harv")) do
-		if actor ~= exclude and IsLive(actor) and actor.IsInWorld then return true end
-	end
-	return false
-end
-
 -- The two northern bases are separate players, so they do not help each
 -- other by default. When the west base is in trouble the east sends a relief
 -- force: unassigned units first, then part of its reserve, but always leaves
@@ -532,8 +534,10 @@ end
 -- the pad until the enemy is almost inside the base, and then they only engage
 -- whatever AutoTarget happens to see. Register the idle hunt only once.
 local function StartOrcaHunt(orca)
-	if not IsLive(orca) or huntingOrcas[orca] then return end
-	huntingOrcas[orca] = true
+	if not IsLive(orca) then return end
+	local key = EconomyActorKey(orca)
+	if huntingOrcas[key] then return end
+	huntingOrcas[key] = true
 	IdleHunt(orca)
 end
 
@@ -542,7 +546,8 @@ local function DefendWithOrcas(owner, target, release)
 	for _, orca in ipairs(owner.GetActorsByType("orca")) do
 		-- A damaged Orca stays in its repair retreat; pulling it out again
 		-- would make it trade its remaining health for the next hit.
-		if IsLive(orca) and orca.IsInWorld and not retreatingOrcas[orca] then
+		local orcaKey = EconomyActorKey(orca)
+		if IsLive(orca) and orca.IsInWorld and not retreatingOrcas[orcaKey] then
 			if orca.HasProperty("Stance") then orca.Stance = "AttackAnything" end
 			if orca.HasProperty("Stop") then orca.Stop() end
 			if orca.HasProperty("AttackMove") then orca.AttackMove(target.Location, 2) end
@@ -640,15 +645,16 @@ end
 local trackedHarvesters = {}
 
 local function TrackHarvester(base, harv)
-	if harv == nil or trackedHarvesters[harv] then return end
-	trackedHarvesters[harv] = true
+	if harv == nil then return end
+	local key = EconomyActorKey(harv)
+	if trackedHarvesters[key] then return end
+	trackedHarvesters[key] = true
 	base.noHarvesterSince = nil
 	Trigger.OnDamaged(harv, function(actor, attacker, damage)
 		PullHarvesterDefenders(base, actor, attacker, damage)
 	end)
 	Trigger.OnKilled(harv, function(_, killer)
 		if MissionFinished then return end
-		if HasOtherHarvester(base.player, harv) then return end
 		Trigger.AfterDelay(1, function() RebuildHarvester(base, killer) end)
 	end)
 end
@@ -799,6 +805,8 @@ local function SpawnGarrison(base, kinds)
 	end
 end
 
+-- Setup-only fallback: if the imported map has no starting harvester, place
+-- one at the refinery. Replacements after losses always use the WEAP queue.
 local function AddStartingHarvester(base)
 	if Owned(base.player, "harv") ~= nil then return end
 	local proc = LocalBuilding(base, "proc")
@@ -813,6 +821,8 @@ local function AddStartingHarvester(base)
 	end
 end
 
+-- Setup-only Hard bonus (second starting harvester). Later replacements are
+-- weapons-factory production only; this is not a loss-recovery shortcut.
 local function AddExtraHarvester(base)
 	if HarvesterCount(base) >= HarvesterTarget[difficulty] then return end
 	local proc = LocalBuilding(base, "proc")
@@ -1288,9 +1298,10 @@ end
 -- Orca returns to its helipad; once repaired it rejoins the defence.
 local function OrcaDamaged(base, orca, attacker, damage)
 	if MissionFinished or damage == nil or damage <= 0 or not IsLive(orca) then return end
-	if retreatingOrcas[orca] then return end
+	local key = EconomyActorKey(orca)
+	if retreatingOrcas[key] then return end
 	if orca.Health * 4 > orca.MaxHealth or LocalBuilding(base, "hpad") == nil then return end
-	retreatingOrcas[orca] = true
+	retreatingOrcas[key] = true
 	orca.Stop()
 	orca.ReturnToBase()
 end
@@ -1299,9 +1310,10 @@ local function OrcaWatch()
 	if MissionFinished then return end
 	for _, base in ipairs(bases) do
 		for _, orca in ipairs(base.player.GetActorsByType("orca")) do
-			if IsLive(orca) and retreatingOrcas[orca] then
+			local key = EconomyActorKey(orca)
+			if IsLive(orca) and retreatingOrcas[key] then
 				if LocalBuilding(base, "hpad") == nil or orca.Health * 10 >= orca.MaxHealth * 9 then
-					retreatingOrcas[orca] = nil
+					retreatingOrcas[key] = nil
 					if base.defending then
 						if orca.HasProperty("Stance") then orca.Stance = "AttackAnything" end
 						StartOrcaHunt(orca)
@@ -1421,21 +1433,10 @@ RebuildHarvester = function(base, killer)
 		base.harvesterBuilding = false
 	end
 
-	-- No usable weapons factory: place the replacement next to the refinery.
-	local proc = LocalBuilding(base, "proc")
-	if proc ~= nil and GDIFunds(player) >= Actor.Cost("harv") then
-		local cell = FindUnitSpot(proc.Location)
-		if cell ~= nil then
-			SpendGDIFunds(player, Actor.Cost("harv"))
-			local harv = Actor.Create("harv", true, { Owner = player, Location = cell })
-			if IsLive(harv) then
-				Guard(harv)
-				TrackHarvester(base, harv)
-				if harv.HasProperty("FindResources") then harv.FindResources() end
-			end
-			return
-		end
-	end
+	-- Harvesters are only replaced through the weapons factory. If the
+	-- factory is missing, Rebuild restores it first; do not script-spawn a
+	-- replacement next to the refinery.
+	if LocalBuilding(base, "weap") == nil then return end
 
 	if GDIFunds(player) < Actor.Cost("harv") then
 		if DateTime.GameTime - base.noHarvesterSince < DateTime.Seconds(HarvesterGraceSeconds) then return end
