@@ -168,6 +168,28 @@ namespace OpenRA.Network
 					break;
 				}
 
+				case "Whisper":
+				{
+					var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
+					if (client == null)
+						break;
+
+					// Only show the whisper to its sender and recipient.
+					if (orderManager.LocalClient != null
+						&& clientId != orderManager.LocalClient.Index
+						&& order.ExtraData != orderManager.LocalClient.Index)
+						break;
+
+					var message = order.TargetString ?? "";
+					if (message.Length > ChatMessageMaxLength)
+						message = message[..ChatMessageMaxLength];
+
+					var target = orderManager.LobbyInfo.ClientWithIndex((int)order.ExtraData);
+					var prefix = $"[Whisper] {client.Name} -> {target?.Name ?? "?"}";
+					TextNotificationsManager.AddChatLine(clientId, prefix, message, client.Color);
+					break;
+				}
+
 				case "StartGame":
 				{
 					if (Game.ModData.MapCache[orderManager.LobbyInfo.GlobalSettings.Map].Status != MapStatus.Available)
