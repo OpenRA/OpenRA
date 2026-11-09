@@ -105,6 +105,11 @@ WorldLoaded = function()
 		end)
 	end
 
+	-- GDI calls in the A10 through a dedicated proxy actor. HQ must not
+	-- provide AirstrikePower: Nod can build a Communications Center and must
+	-- never gain the airstrike, regardless of capture logic.
+	GDIAirstrikeProxy = Actor.Create("airstrike.proxy", true, { Owner = GDI })
+
 	if IsLive(GDIHQ) then
 		Trigger.OnKilled(GDIHQ, function()
 			AirstrikeStopped = true

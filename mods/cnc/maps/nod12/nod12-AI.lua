@@ -1759,21 +1759,10 @@ CheckGDIEconomy = function()
 		return
 	end
 
-	-- No weapons factory (or no refinery to hand it to): place a replacement
-	-- harvester next to the refinery and let it harvest right away.
-	if #refineries > 0 and GDIFunds() >= Actor.Cost("harv") then
-		SpendGDIFunds(Actor.Cost("harv"))
-		local proc = refineries[1]
-		local harvester = Actor.Create("harv", true,
-			{ Owner = GDI, Location = CPos.New(proc.Location.X + 2, proc.Location.Y + 2) })
-
-		Trigger.AfterDelay(DateTime.Seconds(2), function()
-			if IsLive(harvester) and GDIHarvestingStarted then
-				harvester.FindResources()
-			end
-		end)
-		return
-	end
+	-- No weapons factory: do not bypass the normal production queue with a
+	-- scripted Actor.Create("harv"). The rebuild worker restores the WEAP (or
+	-- a refinery whose FreeActor provides the harvester); wait for that path.
+	-- If it cannot be restored, the grace/sell/all-out logic below handles it.
 
 	-- Not enough money: sell something after a short grace period.
 	if DateTime.GameTime - NoHarvesterSince < DateTime.Seconds(EconomyGraceSeconds) then
@@ -1857,13 +1846,16 @@ FindGDIAirstrikeTarget = function()
 end
 
 Airstrike = function()
-	if AirstrikeStopped or GDIHQ.IsDead or GDIHQ.Owner ~= GDI or not GDIHQ.HasProperty("TargetAirstrike") then
+	if AirstrikeStopped or not IsLive(GDIHQ) or GDIHQ.Owner ~= GDI
+		or GDIAirstrikeProxy == nil or not IsLive(GDIAirstrikeProxy)
+		or GDIAirstrikeProxy.Owner ~= GDI
+		or not GDIAirstrikeProxy.HasProperty("TargetAirstrike") then
 		return
 	end
 
 	local target = FindGDIAirstrikeTarget()
 	if target then
-		GDIHQ.TargetAirstrike(target)
+		GDIAirstrikeProxy.TargetAirstrike(target)
 		Trigger.AfterDelay(DateTime.Seconds(AirstrikeInterval[Difficulty or "normal"]), Airstrike)
 	else
 		Trigger.AfterDelay(DateTime.Seconds(10), Airstrike)
