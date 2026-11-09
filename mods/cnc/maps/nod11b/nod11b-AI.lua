@@ -1354,13 +1354,32 @@ end
 -- Register the defender reaction for every harvester, including replacements
 -- built after setup and free harvesters spawned by a new refinery.
 RegisteredHarvesters = {}
+-- Fallback for engines without the ActorID script property (older DLLs):
+-- keep a list and compare with == instead of crashing on a missing property.
+RegisteredHarvesterList = {}
+
+-- Actor wrappers do not have stable Lua table identity across callbacks.
+-- Key by the stable ActorID when the running engine exposes it.
+local function RegisteredHarvesterKey(harv)
+	if harv == nil then return nil end
+	if harv.HasProperty("ActorID") then return harv.ActorID end
+	return nil
+end
 
 RegisterHarvesterDefense = function(harv)
-	if harv == nil or RegisteredHarvesters[harv] then
+	if harv == nil then
 		return
 	end
-
-	RegisteredHarvesters[harv] = true
+	local key = RegisteredHarvesterKey(harv)
+	if key ~= nil then
+		if RegisteredHarvesters[key] then return end
+		RegisteredHarvesters[key] = true
+	else
+		for _, other in ipairs(RegisteredHarvesterList) do
+			if other == harv then return end
+		end
+		table.insert(RegisteredHarvesterList, harv)
+	end
 	Trigger.OnDamaged(harv, PullDefenders)
 end
 
@@ -1637,9 +1656,9 @@ EconomySellOrder = { "silo", "gtwr", "atwr", "pyle", "hpad" }
 -- the drain (never the HQ: it is not in any sell list).
 PowerPlantType = "nuke"
 PowerPlantOutput = 100
--- SILO and PROC each store 1000 resources (structures.yaml). Do not sell the
--- last silo if doing so would destroy stored resources.
-SiloCapacity = 1000
+-- PROC stores 1000 resources, SILO stores 3000 (structures.yaml). Do not
+-- sell a silo if that would destroy stored resources.
+SiloCapacity = 3000
 EconomyGraceSeconds = 30
 EconomySellCooldownSeconds = 20
 GDIRefineryPosition = CPos.New(43, 4)
@@ -1801,7 +1820,7 @@ SellForEconomy = function()
 		local keepPad = buildingType == "hpad" and #GDI.GetActorsByType("orca") > 0
 		if #list > 0 and not keepPad then
 			local destroysResources = buildingType == "silo"
-				and GDI.Resources > GDI.ResourceCapacity - SiloCapacity
+				and GDI.Resources > math.max(0, GDI.ResourceCapacity - SiloCapacity)
 			if not destroysResources then
 				candidate = list[1]
 				break
