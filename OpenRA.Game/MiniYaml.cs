@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using OpenRA.FileSystem;
 
@@ -110,8 +111,8 @@ namespace OpenRA
 		const int SpacesPerLevel = 4;
 		static readonly Func<string, string> StringIdentity = s => s;
 		static readonly Func<MiniYaml, MiniYaml> MiniYamlIdentity = my => my;
-		static readonly Lock ConflictScratchLock = new();
-		static readonly Dictionary<string, MiniYamlNode> ConflictScratch = [];
+		static readonly Lock SharedMergeBufferLock = new();
+		static readonly WeakReference<MergeBuffer> SharedMergeBuffer = new(null);
 
 		public readonly string Value;
 		public readonly ImmutableArray<MiniYamlNode> Nodes;
@@ -405,266 +406,285 @@ namespace OpenRA
 			return FromLines(text.Split(["\r\n", "\n"], StringSplitOptions.None).Select(s => s.AsMemory()), name, discardCommentsAndWhitespace, stringPool);
 		}
 
-		public static List<MiniYamlNode> Merge(IEnumerable<IEnumerable<MiniYamlNode>> sources)
+		public static ImmutableArray<MiniYamlNode> Merge(IEnumerable<IEnumerable<MiniYamlNode>> sources)
 		{
-			var sourcesList = sources.ToList();
-			if (sourcesList.Count == 0)
-				return [];
+			// PERF: If a previous buffer hasn't yet been collected, we can reuse it to avoid allocations.
+			MergeBuffer buffer;
+			lock (SharedMergeBufferLock)
+				if (SharedMergeBuffer.TryGetTarget(out buffer))
+					SharedMergeBuffer.SetTarget(null);
+			buffer ??= MergeBuffer.New();
 
-			var tree = sourcesList
-				.Where(s => s != null)
-				.Select(s => s as IReadOnlyCollection<MiniYamlNode> ?? s.ToList())
-				.Select(MergeSelfPartial)
-				.Aggregate(MergePartial)
-				.Where(n => n.Key != null)
-				.ToDictionary(n => n.Key, n => n.Value);
+			// Perform the merge.
+			// After merging in the first pass, all top level nodes become available as inheritance targets.
+			var merged = MergeFirstPass(buffer, sources).ToImmutableArray();
+			var topLevelNodesDict = merged.ToDictionary(n => n.Key);
+			var resolved = MergeSecondPass(buffer, merged, [], null, topLevelNodesDict).ToImmutableArray();
 
-			var resolved = new Dictionary<string, MiniYaml>(tree.Count);
-			foreach (var kv in tree)
-			{
-				// Inheritance is tracked from parent->child, but not from child->parentsiblings.
-				var inherited = ImmutableDictionary<string, MiniYamlNode.SourceLocation>.Empty.Add(kv.Key, default);
-				var children = ResolveInherits(kv.Value, tree, inherited);
-				resolved.Add(kv.Key, new MiniYaml(kv.Value.Value, children));
-			}
-
-			// Resolve any top-level removals (e.g. removing whole actor blocks)
-			var nodes = new MiniYaml("", resolved.Select(kv => new MiniYamlNode(kv.Key, kv.Value)));
-			var result = ResolveInherits(nodes, tree, []);
-			return result as List<MiniYamlNode> ?? result.ToList();
-		}
-
-		static void MergeIntoResolved(MiniYamlNode overrideNode, List<MiniYamlNode> existingNodes, HashSet<string> existingNodeKeys,
-			Dictionary<string, MiniYaml> tree, ImmutableDictionary<string, MiniYamlNode.SourceLocation> inherited)
-		{
-			var existingNodeIndex = -1;
-			MiniYamlNode existingNode = null;
-			if (!existingNodeKeys.Add(overrideNode.Key))
-			{
-				existingNodeIndex = IndexOfKey(existingNodes, overrideNode.Key);
-				existingNode = existingNodes[existingNodeIndex];
-			}
-
-			var value = MergePartial(existingNode?.Value, overrideNode.Value);
-			var nodes = ResolveInherits(value, tree, inherited);
-			if (!value.Nodes.SequenceEqual(nodes))
-				value = value.WithNodes(nodes);
-
-			if (existingNode != null)
-				existingNodes[existingNodeIndex] = existingNode.WithValue(value);
-			else
-				existingNodes.Add(overrideNode.WithValue(value));
-		}
-
-		static IReadOnlyCollection<MiniYamlNode> ResolveInherits(
-			MiniYaml node, Dictionary<string, MiniYaml> tree, ImmutableDictionary<string, MiniYamlNode.SourceLocation> inherited)
-		{
-			if (node.Nodes.Length == 0)
-				return node.Nodes;
-
-			var resolved = new List<MiniYamlNode>(node.Nodes.Length);
-			var resolvedKeys = new HashSet<string>(node.Nodes.Length);
-
-			foreach (var n in node.Nodes)
-			{
-				if (n.Key == "Inherits" || n.Key.StartsWith("Inherits@", StringComparison.Ordinal))
-				{
-					if (!tree.TryGetValue(n.Value.Value, out var parent))
-						throw new YamlException(
-							$"{n.Location}: Parent type `{n.Value.Value}` not found");
-
-					try
-					{
-						inherited = inherited.Add(n.Value.Value, n.Location);
-					}
-					catch (ArgumentException)
-					{
-						throw new YamlException(
-							$"{n.Location}: Parent type `{n.Value.Value}` was already inherited by this yaml tree at {inherited[n.Value.Value]} (note: may be from a derived tree)");
-					}
-
-					foreach (var r in ResolveInherits(parent, tree, inherited))
-						MergeIntoResolved(r, resolved, resolvedKeys, tree, inherited);
-				}
-				else if (n.Key.StartsWith('-'))
-				{
-					var removed = n.Key[1..];
-					if (resolved.RemoveAll(r => r.Key == removed) == 0)
-						throw new YamlException($"{n.Location}: There are no elements with key `{removed}` to remove");
-					resolvedKeys.Remove(removed);
-				}
-				else
-					MergeIntoResolved(n, resolved, resolvedKeys, tree, inherited);
-			}
+			// Allow this buffer to be reused by other calls, until it gets collected.
+			buffer.Clear();
+			lock (SharedMergeBufferLock)
+				SharedMergeBuffer.SetTarget(buffer);
 
 			return resolved;
 		}
 
 		/// <summary>
-		/// Merges any duplicate keys that are defined within the same set of nodes.
-		/// Does not resolve inheritance or node removals.
+		/// In the first pass we remove comments and perform merges.
 		/// </summary>
-		static IReadOnlyCollection<MiniYamlNode> MergeSelfPartial(IReadOnlyCollection<MiniYamlNode> existingNodes)
+		static ReadOnlySpan<MiniYamlNode> MergeFirstPass(
+			MergeBuffer buffer,
+			IEnumerable<IEnumerable<MiniYamlNode>> sources)
 		{
-			if (existingNodes.Count == 0)
-				return existingNodes;
+			// PERF: Reuse collections as we recurse through the tree.
+			var nodes = buffer.Nodes;
+			var keys = buffer.Keys;
+			var keysLookup = buffer.KeysLookup;
+			nodes.Clear();
+			keys.Clear();
 
-			var keys = new HashSet<string>(existingNodes.Count);
-			var ret = new List<MiniYamlNode>(existingNodes.Count);
-			foreach (var n in existingNodes)
+			var sourceIndex = 0;
+			var nodeIndex = 0;
+			foreach (var source in sources)
 			{
-				if (n.Key == null)
-					continue;
-
-				if (keys.Add(n.Key))
-					ret.Add(n);
-				else
+				foreach (var node in source)
 				{
-					// Node with the same key has already been added: merge new node over the existing one
-					var originalIndex = IndexOfKey(ret, n.Key);
-					var original = ret[originalIndex];
-					ret[originalIndex] = original.WithValue(MergePartial(original.Value, n.Value));
-				}
-			}
-
-			return ret;
-		}
-
-		static IReadOnlyList<MiniYamlNode> WeakResolveRemovals(IReadOnlyList<MiniYamlNode> nodes)
-		{
-			if (nodes == null || nodes.Count == 0)
-				return nodes;
-
-			List<MiniYamlNode> ret = null;
-			for (var i = 0; i < nodes.Count; i++)
-			{
-				var node = nodes[i];
-				if (node.Key == null)
-					continue;
-
-				if (node.Key.StartsWith('-'))
-				{
-					if (ret == null)
+					if (node.Key == null)
 					{
-						ret ??= new List<MiniYamlNode>(nodes.Count);
-						ret.AddRange(nodes.Take(i));
+						// Comment node.
+						// Strip these from the source.
 					}
+					else if (node.Key[0] == '-')
+					{
+						// Removal node.
+						// We clear the key, this will prevent nodes either side of the removal being merged together.
+						// We keep the removal node to be enacted in the second pass.
+						var key = node.Key.AsSpan()[1..];
+						keysLookup.Remove(key);
 
-					// Apply the removal node - but "weakly" - don't throw if there is no prior node to remove.
-					var removed = node.Key[1..];
-					ret.RemoveAll(r => r.Key == removed);
+						nodes.Add(node);
+						nodeIndex++;
+					}
+					else if (keys.TryGetValue(node.Key, out var existingIndex))
+					{
+						// Merge nodes.
+						// Recurse and stitch together the node tree.
+						var existingNode = nodes[existingIndex.NodeIndex];
+
+						if (existingIndex.SourceIndex == sourceIndex && node.Value.Nodes.Length == 0 && existingNode.Value.Nodes.Length == 0)
+							throw new YamlException(
+								$"{nameof(MiniYaml)}.{nameof(Merge)}, duplicate values found for the following keys: " +
+								$"{node.Key}: [{existingNode.Key} (at {existingNode.Location}),{node.Key} (at {node.Location})]");
+
+						nodes[existingIndex.NodeIndex] = MergeNode(node, existingNode.Value, node.Value);
+					}
+					else
+					{
+						// New node.
+						// Append to the end, track which source it came from for duplicate tracking.
+						keys.Add(node.Key, (sourceIndex, nodeIndex));
+						nodes.Add(node);
+						nodeIndex++;
+					}
+				}
+
+				sourceIndex++;
+			}
+
+			// We want to reuse the list from the buffer, don't allow the caller to capture it.
+			return CollectionsMarshal.AsSpan(nodes);
+
+			MiniYamlNode MergeNode(
+				MiniYamlNode node,
+				MiniYaml firstSource,
+				MiniYaml secondSource)
+			{
+				var value = secondSource.Value ?? firstSource.Value;
+				var nodes = MergeFirstPass(buffer.Next(), [firstSource.Nodes, secondSource.Nodes]);
+
+				var newValue = node.Value.WithValue(value);
+				if (!nodes.SequenceEqual(node.Value.Nodes.AsSpan()))
+					newValue = newValue.WithNodes(nodes.ToImmutableArray());
+				return node.WithValue(newValue);
+			}
+		}
+
+		/// <summary>
+		/// In the second pass we resolve inheritance and removals.
+		/// </summary>
+		static ReadOnlySpan<MiniYamlNode> MergeSecondPass(
+			MergeBuffer buffer,
+			ImmutableArray<MiniYamlNode> firstSource,
+			ImmutableArray<MiniYamlNode> secondSource,
+			string parentKey,
+			Dictionary<string, MiniYamlNode> topLevelNodesDict)
+		{
+			// PERF: Reuse collections as we recurse through the tree.
+			var nodes = buffer.Nodes;
+			var keys = buffer.Keys;
+			var keysLookup = buffer.KeysLookup;
+			var inherited = buffer.Inherited;
+			nodes.Clear();
+			keys.Clear();
+			inherited.Clear();
+
+			// Inheritance is performed as a second pass, so we can inherit the fully merged node from the first pass.
+			var inheritSourceIndex = -1;
+			var sourceIndex = 0;
+			var nodeIndex = 0;
+			var source = firstSource;
+			while (true)
+			{
+				foreach (var node in source)
+				{
+					if (node.Key == "Inherits" || node.Key.StartsWith("Inherits@", StringComparison.Ordinal))
+					{
+						// Inherits node - resolve target.
+						var topLevelKey = node.Value.Value;
+						if (!topLevelNodesDict.TryGetValue(topLevelKey, out var topLevelNode))
+							throw new YamlException(
+								$"{node.Location}: Parent type `{topLevelKey}` not found");
+
+						// Can't duplicate inherits.
+						if (!inherited.TryAdd(topLevelKey, node))
+							throw new YamlException(
+								$"{node.Location}: Parent type `{topLevelKey}` was already inherited by this yaml tree at {inherited[topLevelKey].Location} (note: may be from a derived tree)");
+
+						// Can't duplicate inherits in the tree.
+						if (buffer.TopLevelInherited.TryGetValue(topLevelKey, out var tree))
+							foreach (var (treeKey, treeNode) in tree)
+								if (inherited.TryGetValue(treeKey, out var originalNode))
+									throw new YamlException(
+										$"{originalNode.Location}: Parent type `{treeKey}` was already inherited by this yaml tree at {treeNode.Location} (note: may be from a derived tree)");
+
+						// Build the inheritance tree.
+						if (parentKey != null)
+						{
+							if (buffer.TopLevelInherited.TryGetValue(parentKey, out var parentTree))
+								parentTree.Add((topLevelKey, node));
+							else
+								buffer.TopLevelInherited.Add(parentKey, [(topLevelKey, node)]);
+						}
+
+						// Recurse and stitch together the inherited node tree.
+						var inheritedNodes = MergeSecondPass(buffer.Next(), topLevelNode.Value.Nodes, [], parentKey, topLevelNodesDict);
+						foreach (var inheritedNode in inheritedNodes.ToImmutableArray())
+							ResolveNode(inheritedNode, inheritSourceIndex, ref nodeIndex);
+
+						inheritSourceIndex--;
+					}
+					else
+					{
+						ResolveNode(node, sourceIndex, ref nodeIndex);
+					}
+				}
+
+				sourceIndex++;
+				if (sourceIndex == 1)
+					source = secondSource;
+				else if (sourceIndex == 2)
+					break;
+			}
+
+			// Remove tombstone slots left empty by removal nodes.
+			nodes.RemoveAll(n => n == null);
+
+			// We want to reuse the list from the buffer, don't allow the caller to capture it.
+			return CollectionsMarshal.AsSpan(nodes);
+
+			void ResolveNode(MiniYamlNode node, int sourceIndex, ref int nodeIndex)
+			{
+				MiniYamlNode MergeNode(
+					MiniYaml firstSource,
+					MiniYaml secondSource)
+				{
+					var value = secondSource?.Value ?? firstSource.Value;
+					var nodes = MergeSecondPass(buffer.Next(), firstSource.Nodes, secondSource?.Nodes ?? [], node.Key, topLevelNodesDict);
+
+					var newValue = node.Value.WithValue(value);
+					if (!nodes.SequenceEqual(node.Value.Nodes.AsSpan()))
+						newValue = newValue.WithNodes(nodes.ToImmutableArray());
+					return node.WithValue(newValue);
+				}
+
+				if (node.Key[0] == '-')
+				{
+					// Removal node.
+					// We clear the key, this will prevent nodes either side of the removal being merged together.
+					// We tombstone the removed node - we'll remove the tombstones at the end.
+					// Tombstoning saves us having to fixup the key lookup indexes.
+					var key = node.Key.AsSpan()[1..];
+					if (!keysLookup.TryGetValue(key, out var existingIndex))
+						throw new YamlException($"{node.Location}: There are no elements with key `{key}` to remove");
+
+					keysLookup.Remove(key);
+					nodes[existingIndex.NodeIndex] = null;
+				}
+				else if (keys.TryGetValue(node.Key, out var existingIndex))
+				{
+					// Merge nodes.
+					// Recurse and stitch together the node tree.
+					var existingNode = nodes[existingIndex.NodeIndex];
+
+					if (existingIndex.SourceIndex == sourceIndex && node.Value.Nodes.Length == 0 && existingNode.Value.Nodes.Length == 0)
+						throw new YamlException(
+							$"{nameof(MiniYaml)}.{nameof(Merge)}, duplicate values found for the following keys: " +
+							$"{node.Key}: [{existingNode.Key} (at {existingNode.Location}),{node.Key} (at {node.Location})]");
+
+					nodes[existingIndex.NodeIndex] = MergeNode(existingNode.Value, node.Value);
 				}
 				else
 				{
-					ret?.Add(node);
+					// New node.
+					// Recurse and append to the end.
+					keys.Add(node.Key, (sourceIndex, nodeIndex));
+					nodes.Add(MergeNode(node.Value, null));
+					nodeIndex++;
 				}
 			}
-
-			return ret ?? nodes;
 		}
 
-		static MiniYaml MergePartial(MiniYaml existingNodes, MiniYaml overrideNodes)
+		sealed class MergeBuffer
 		{
-			var resolvedExistingNodes = WeakResolveRemovals(existingNodes?.Nodes);
-			var resolvedOverrideNodes = WeakResolveRemovals(overrideNodes?.Nodes);
+			public Dictionary<string, List<(string Key, MiniYamlNode Node)>> TopLevelInherited { get; private set; }
+			public readonly List<MiniYamlNode> Nodes = [];
+			public readonly Dictionary<string, (int SourceIndex, int NodeIndex)> Keys = [];
+			public readonly Dictionary<string, (int SourceIndex, int NodeIndex)>.AlternateLookup<ReadOnlySpan<char>> KeysLookup;
+			public readonly Dictionary<string, MiniYamlNode> Inherited = [];
+			MergeBuffer next;
 
-			lock (ConflictScratchLock)
+			MergeBuffer()
 			{
-				try
-				{
-					// PERF: Reuse ConflictScratch for all conflict checks to avoid allocations.
-					resolvedExistingNodes?.IntoDictionaryWithConflictLog(
-						n => n.Key, n => n, "MiniYaml.Merge", ConflictScratch, k => k, n => $"{n.Key} (at {n.Location})");
-					resolvedOverrideNodes?.IntoDictionaryWithConflictLog(
-						n => n.Key, n => n, "MiniYaml.Merge", ConflictScratch, k => k, n => $"{n.Key} (at {n.Location})");
-					ConflictScratch.Clear();
-				}
-				catch (ArgumentException ex)
-				{
-					throw new YamlException(ex.Message);
-				}
+				KeysLookup = Keys.GetAlternateLookup<ReadOnlySpan<char>>();
 			}
 
-			if (existingNodes == null)
-				return overrideNodes;
-
-			if (overrideNodes == null)
-				return existingNodes;
-
-			return new MiniYaml(overrideNodes.Value ?? existingNodes.Value, MergePartial(existingNodes.Nodes, overrideNodes.Nodes));
-		}
-
-		static IReadOnlyCollection<MiniYamlNode> MergePartial(IReadOnlyCollection<MiniYamlNode> existingNodes, IReadOnlyCollection<MiniYamlNode> overrideNodes)
-		{
-			if (existingNodes.Count == 0)
-				return overrideNodes;
-
-			if (overrideNodes.Count == 0)
-				return existingNodes;
-
-			var ret = new List<MiniYamlNode>(existingNodes.Count + overrideNodes.Count);
-			var plainKeys = new HashSet<string>(existingNodes.Count + overrideNodes.Count);
-
-			foreach (var node in existingNodes)
-				MergeNode(node);
-			foreach (var node in overrideNodes)
-				MergeNode(node);
-
-			void MergeNode(MiniYamlNode node)
+			public static MergeBuffer New()
 			{
-				if (node.Key == null)
-					return;
-
-				// Append Removal nodes to the result.
-				// Therefore: we know the remainder of the method deals with a plain node.
-				if (node.Key.StartsWith('-'))
+				return new MergeBuffer()
 				{
-					ret.Add(node);
-					return;
-				}
-
-				// If no previous node with this key is present, it is new and can just be appended.
-				if (plainKeys.Add(node.Key))
-				{
-					ret.Add(node);
-					return;
-				}
-
-				// A Removal node is closer than the previous node.
-				// We should not merge the new node, as the data being merged will jump before the Removal.
-				// Instead, append it so the previous node is applied, then removed, then the new node is applied.
-				var previousNodeIndex = LastIndexOfKey(ret, node.Key);
-				var previousRemovalNodeIndex = LastIndexOfKey(ret, $"-{node.Key}");
-				if (previousRemovalNodeIndex != -1 && previousRemovalNodeIndex > previousNodeIndex)
-				{
-					ret.Add(node);
-					return;
-				}
-
-				// A previous node is present with no intervening Removal.
-				// We should merge the new one into it, in place.
-				ret[previousNodeIndex] = node.WithValue(MergePartial(ret[previousNodeIndex].Value, node.Value));
+					TopLevelInherited = [] // Only required at the top level.
+				};
 			}
 
-			return ret;
-		}
+			public MergeBuffer Next()
+			{
+				next ??= new MergeBuffer() { TopLevelInherited = TopLevelInherited };
+				return next;
+			}
 
-		static int IndexOfKey(List<MiniYamlNode> nodes, string key)
-		{
-			// PERF: Avoid LINQ.
-			for (var i = 0; i < nodes.Count; i++)
-				if (nodes[i].Key == key)
-					return i;
-			return -1;
-		}
+			public void Clear()
+			{
+				TopLevelInherited.Clear();
+				ClearInstance();
+			}
 
-		static int LastIndexOfKey(List<MiniYamlNode> nodes, string key)
-		{
-			// PERF: Avoid LINQ.
-			for (var i = nodes.Count - 1; i >= 0; i--)
-				if (nodes[i].Key == key)
-					return i;
-			return -1;
+			void ClearInstance()
+			{
+				Nodes.Clear();
+				Keys.Clear();
+				Inherited.Clear();
+				next?.ClearInstance();
+			}
 		}
 
 		public IEnumerable<string> ToLines(string key, string comment = null)
@@ -681,7 +701,7 @@ namespace OpenRA
 					yield return "\t" + line;
 		}
 
-		public static List<MiniYamlNode> Load(IReadOnlyFileSystem fileSystem, IEnumerable<string> files, MiniYaml mapRules)
+		public static ImmutableArray<MiniYamlNode> Load(IReadOnlyFileSystem fileSystem, IEnumerable<string> files, MiniYaml mapRules)
 		{
 			if (mapRules != null && mapRules.Value != null)
 			{

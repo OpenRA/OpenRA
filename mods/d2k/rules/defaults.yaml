@@ -764,7 +764,6 @@
 	Tooltip:
 		GenericName: meta-destroyedtile.generic-name
 		Name: meta-destroyedtile.name
-	CaptureManager:
 	CapturableProgressBar:
 	CapturableProgressBlink:
 		Interval: 30
