@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,8 @@ namespace OpenRA.Network
 		const string GameUnpaused = "notification-game-unpaused";
 
 		public static int? KickVoteTarget { get; internal set; }
+
+		public static event Action<Order> QuickMatchCountdownReceived = _ => { };
 
 		static Player FindPlayerByClient(this World world, Session.Client c)
 		{
@@ -395,6 +398,12 @@ namespace OpenRA.Network
 						preview.Generate();
 					}
 
+					break;
+				}
+
+				case "QMCountdown":
+				{
+					QuickMatchCountdownReceived(order);
 					break;
 				}
 
