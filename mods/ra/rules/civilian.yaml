@@ -507,6 +507,8 @@ BIO:
 	TooltipDescription@other:
 		Description: actor-bio.capturable-desc
 		ValidRelationships: Neutral, Enemy
+	WithBuildingBib:
+		HasMinibib: true
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
