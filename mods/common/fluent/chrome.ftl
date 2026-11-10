@@ -697,6 +697,11 @@ checkbox-frame-limit-gamespeed-container = Limit framerate to game tick rate
 label-gl-profile-dropdown-container = OpenGL Profile:
 label-restart-required-container-video-desc = Display and OpenGL changes require restart
 
+## settings-language.yaml
+label-language-section-header = Language
+label-language-dropdown-container = Interface Language:
+label-restart-required-container-language-desc = Language changes require restart
+
 ## settings-hotkeys.yaml
 hotkey-group-game-commands = Game Commands
 hotkey-group-viewport-commands = Viewport Commands
@@ -736,6 +741,7 @@ label-ui-scrollspeed-slider-container-scroll-speed = UI Scroll Speed:
 button-settings-panel-reset = Reset
 button-panel-gameplay = Gameplay
 button-panel-input = Input
+button-panel-language = Language
 button-panel-display = Display
 button-panel-audio = Audio
 button-panel-hotkeys = Hotkeys

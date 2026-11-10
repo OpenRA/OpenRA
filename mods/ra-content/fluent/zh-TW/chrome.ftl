@@ -1,0 +1,10 @@
+modcontent-installprompt = 紅色警戒需要原版遊戲的圖像與音訊。 快速安裝會從 2008 年紅色警戒免費版的鏡像，自動下載這些內容（不含音樂或影片）。 進階安裝可從原版遊戲光碟或數位安裝，複製音樂、影片與其他內容。
+modcontent-header = 遊戲內容可從原版遊戲光碟或現有的數位安裝擷取。OpenRA 也能從 2008 年紅色警戒免費版的線上鏡像，下載遊戲本體檔案。
+modcontent-package-basefiles = 遊戲本體檔案
+modcontent-package-aftermathfiles = 絕地逢生資料片檔案
+modcontent-package-deserttileset = C&C 沙漠地形組
+modcontent-package-basemusic = 遊戲本體音樂
+modcontent-package-allied = 盟軍戰役簡報
+modcontent-package-soviet = 蘇聯戰役簡報
+modcontent-package-counterstrikemusic = 危機任務音樂
+modcontent-package-aftermathmusic = 絕地逢生音樂
