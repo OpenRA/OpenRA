@@ -55,6 +55,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
+		protected override void TraitEnabled(Actor self)
+		{
+			ticks = Util.RandomInRange(self.World.SharedRandom, Info.Interval);
+		}
+
 		protected override void TraitDisabled(Actor self)
 		{
 			wsb.CancelCustomAnimation(self);

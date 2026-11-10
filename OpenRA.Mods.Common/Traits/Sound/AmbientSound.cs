@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 			if (delay < 0)
 				return;
 
-			if (--delay < 0)
+			if (--delay <= 0)
 			{
 				StartSound(self);
 				if (!loop)
