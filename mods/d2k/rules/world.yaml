@@ -45,6 +45,18 @@
 			Spice: 90
 			SpiceBlobs: 90
 			Dune: 50
+	Locomotor@HEAVYVEHICLE:
+		Name: heavy-vehicle
+		Crushes: crate, infantry, spicebloom
+		TerrainSpeeds:
+			Sand: 90
+			Rock: 100
+			Transition: 100
+			Concrete: 110
+			SpiceSand: 90
+			Spice: 90
+			SpiceBlobs: 90
+			Dune: 50
 	Locomotor@TANK:
 		Name: tank
 		Crushes: crate, infantry, spicebloom

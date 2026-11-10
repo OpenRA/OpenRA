@@ -24,6 +24,7 @@ mcv:
 		Order: 180
 		Category: Units
 	Mobile:
+		Locomotor: heavy-vehicle
 		Speed: 31
 	RevealsShroud:
 		Range: 2c768
@@ -90,6 +91,7 @@ harvester:
 		Order: 130
 		Category: Units
 	Mobile:
+		Locomotor: heavy-vehicle
 		Speed: 43
 	RevealsShroud:
 		Range: 3c768
