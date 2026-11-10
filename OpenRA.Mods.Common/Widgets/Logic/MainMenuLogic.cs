@@ -124,8 +124,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			loadButton.OnClick = OpenGameSaveBrowserPanel;
 
 			var encyclopediaButton = singleplayerMenu.GetOrNull<ButtonWidget>("ENCYCLOPEDIA_BUTTON");
-			if (encyclopediaButton != null)
-				encyclopediaButton.OnClick = OpenEncyclopediaPanel;
+			encyclopediaButton?.OnClick = OpenEncyclopediaPanel;
 
 			singleplayerMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => SwitchMenu(MenuType.Main);
 
@@ -148,15 +147,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			extrasMenu.Get<ButtonWidget>("MAP_EDITOR_BUTTON").OnClick = () => SwitchMenu(MenuType.MapEditor);
 
 			var assetBrowserButton = extrasMenu.GetOrNull<ButtonWidget>("ASSETBROWSER_BUTTON");
-			if (assetBrowserButton != null)
-				assetBrowserButton.OnClick = () =>
+			assetBrowserButton?.OnClick = () =>
+			{
+				SwitchMenu(MenuType.None);
+				Game.OpenWindow("ASSETBROWSER_PANEL", new WidgetArgs
 				{
-					SwitchMenu(MenuType.None);
-					Game.OpenWindow("ASSETBROWSER_PANEL", new WidgetArgs
-					{
-						{ "onExit", () => SwitchMenu(MenuType.Extras) },
-					});
-				};
+					{ "onExit", () => SwitchMenu(MenuType.Extras) },
+				});
+			};
 
 			extrasMenu.Get<ButtonWidget>("CREDITS_BUTTON").OnClick = () =>
 			{
@@ -238,10 +236,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				webServices.CheckModVersion();
 
 			var updateLabel = rootMenu.GetOrNull("UPDATE_NOTICE");
-			if (updateLabel != null)
-				updateLabel.IsVisible = () => !newsOpen && menuType != MenuType.None &&
-					menuType != MenuType.StartupPrompts &&
-					webServices.ModVersionStatus == ModVersionStatus.Outdated;
+			updateLabel?.IsVisible = () => !newsOpen && menuType != MenuType.None &&
+				menuType != MenuType.StartupPrompts &&
+				webServices.ModVersionStatus == ModVersionStatus.Outdated;
 
 			menuType = MenuType.StartupPrompts;
 

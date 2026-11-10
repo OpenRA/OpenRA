@@ -461,14 +461,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				.Count(a => a.Actor.Owner == player && !a.Actor.IsDead && !a.Trait.IsTraitDisabled).ToString(NumberFormatInfo.CurrentInfo);
 
 			var carryalls = template.GetOrNull<LabelWidget>("CARRYALLS");
-			if (carryalls != null)
-				carryalls.GetText = () => world.ActorsWithTrait<AutoCarryall>()
-					.Count(a => a.Actor.Owner == player && !a.Actor.IsDead).ToString(NumberFormatInfo.CurrentInfo);
+			carryalls?.GetText = () => world.ActorsWithTrait<AutoCarryall>()
+				.Count(a => a.Actor.Owner == player && !a.Actor.IsDead).ToString(NumberFormatInfo.CurrentInfo);
 
 			var derricks = template.GetOrNull<LabelWidget>("DERRICKS");
-			if (derricks != null)
-				derricks.GetText = () => world.ActorsHavingTrait<UpdatesDerrickCount>()
-					.Count(a => a.Owner == player && !a.IsDead).ToString(NumberFormatInfo.CurrentInfo);
+			derricks?.GetText = () => world.ActorsHavingTrait<UpdatesDerrickCount>()
+				.Count(a => a.Owner == player && !a.IsDead).ToString(NumberFormatInfo.CurrentInfo);
 
 			return template;
 		}

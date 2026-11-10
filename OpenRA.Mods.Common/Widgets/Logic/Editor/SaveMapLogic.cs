@@ -242,18 +242,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						onConfirm: () =>
 						{
 							saveMap(combinedPath);
-							if (actionManager != null)
-								actionManager.SaveFailed = false;
+							actionManager?.SaveFailed = false;
 						},
 						confirmText: OverwriteMapFailedConfirm,
-						onCancel: () =>
-						{
-							if (actionManager != null)
-								actionManager.SaveFailed = false;
-						});
+						onCancel: () => actionManager?.SaveFailed = false);
 
-					if (actionManager != null)
-						actionManager.SaveFailed = true;
+					actionManager?.SaveFailed = true;
 
 					return;
 				}
@@ -270,18 +264,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						onConfirm: () =>
 						{
 							saveMap(combinedPath);
-							if (actionManager != null)
-								actionManager.SaveFailed = false;
+							actionManager?.SaveFailed = false;
 						},
 						confirmText: SaveMapMapOutsideConfirm,
-						onCancel: () =>
-						{
-							if (actionManager != null)
-								actionManager.SaveFailed = false;
-						});
+						onCancel: () => actionManager?.SaveFailed = false);
 
-					if (actionManager != null)
-						actionManager.SaveFailed = true;
+					actionManager?.SaveFailed = true;
 
 					return;
 				}
@@ -303,8 +291,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				map.Save(package);
 
 				var actionManager = world.WorldActor.TraitOrDefault<EditorActionManager>();
-				if (actionManager != null)
-					actionManager.Modified = false;
+				actionManager?.Modified = false;
 
 				TextNotificationsManager.AddTransientLine(world.LocalPlayer, SaveCurrentMap);
 			}
@@ -320,17 +307,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Log.Write("debug", e);
 
 			var actionManager = world.WorldActor.TraitOrDefault<EditorActionManager>();
-			if (actionManager != null)
-				actionManager.SaveFailed = true;
+			actionManager?.SaveFailed = true;
 
 			ConfirmationDialogs.ButtonPrompt(modData,
 				title: SaveMapFailedTitle,
 				text: SaveMapFailedPrompt,
-				onConfirm: () =>
-				{
-					if (actionManager != null)
-						actionManager.SaveFailed = false;
-				},
+				onConfirm: () => actionManager?.SaveFailed = false,
 				confirmText: SaveMapFailedConfirm);
 		}
 

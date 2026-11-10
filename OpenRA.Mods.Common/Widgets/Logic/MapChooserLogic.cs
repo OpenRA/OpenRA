@@ -197,8 +197,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SetupOrderByDropdown();
 
 			var filterContainer = widget.GetOrNull("FILTER_ORDER_CONTROLS");
-			if (filterContainer != null)
-				filterContainer.IsVisible = () => currentTab != MapClassification.Generated;
+			filterContainer?.IsVisible = () => currentTab != MapClassification.Generated;
 
 			var mapFilterInput = widget.GetOrNull<TextFieldWidget>("MAPFILTER_INPUT");
 			if (mapFilterInput != null)

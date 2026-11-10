@@ -70,10 +70,10 @@ namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 							var valueType = fi.FieldType.GetGenericArguments()[0];
 
 							var key = (string)fi.FieldType
-								.GetProperty(nameof(SpriteSequenceField<bool>.Key))?
+								.GetProperty(nameof(SpriteSequenceField<>.Key))?
 								.GetValue(fi.GetValue(null));
 
-							var defaultValueProperty = fi.FieldType.GetProperty(nameof(SpriteSequenceField<bool>.DefaultValue));
+							var defaultValueProperty = fi.FieldType.GetProperty(nameof(SpriteSequenceField<>.DefaultValue));
 							var defaultValue = defaultValueProperty?.GetValue(fi.GetValue(null));
 
 							if (defaultValueProperty != null && defaultValueProperty.PropertyType.IsEnum)

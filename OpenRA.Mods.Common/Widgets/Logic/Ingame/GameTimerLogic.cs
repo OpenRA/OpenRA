@@ -49,18 +49,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var speedText = new CachedTransform<int, string>(p =>
 					FluentProvider.GetMessage(Speed, "percentage", p));
 
-			if (timer != null)
+			timer?.GetText = () =>
 			{
-				timer.GetText = () =>
-				{
-					if (status == null && Paused() && ShouldShowStatus())
-						return pausedText;
+				if (status == null && Paused() && ShouldShowStatus())
+					return pausedText;
 
-					var timeLimit = tlm?.TimeLimit ?? 0;
-					var displayTick = timeLimit > 0 ? timeLimit - world.WorldTick : world.WorldTick;
-					return WidgetUtils.FormatTime(Math.Max(0, displayTick), world.Timestep);
-				};
-			}
+				var timeLimit = tlm?.TimeLimit ?? 0;
+				var displayTick = timeLimit > 0 ? timeLimit - world.WorldTick : world.WorldTick;
+				return WidgetUtils.FormatTime(Math.Max(0, displayTick), world.Timestep);
+			};
 
 			if (status != null)
 			{

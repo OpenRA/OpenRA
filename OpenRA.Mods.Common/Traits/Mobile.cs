@@ -182,15 +182,14 @@ namespace OpenRA.Mods.Common.Traits
 		readonly CPos[] creationRallypoint;
 
 		#region IMove CurrentMovementTypes
-		MovementType movementTypes;
 		public MovementType CurrentMovementTypes
 		{
-			get => movementTypes;
+			get;
 
 			set
 			{
-				var oldValue = movementTypes;
-				movementTypes = value;
+				var oldValue = field;
+				field = value;
 				if (value != oldValue)
 				{
 					self.World.ActorMap.UpdateOccupiedCells(self.OccupiesSpace);

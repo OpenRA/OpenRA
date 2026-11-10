@@ -501,11 +501,7 @@ namespace OpenRA
 			AllEdgeCells = UpdateEdgeCells();
 
 			// Invalidate the entry for a cell if anything could cause the terrain index to change.
-			void InvalidateTerrainIndex(CPos c)
-			{
-				if (cachedTerrainIndexes != null)
-					cachedTerrainIndexes[c] = InvalidCachedTerrainIndex;
-			}
+			void InvalidateTerrainIndex(CPos c) => cachedTerrainIndexes?[c] = InvalidCachedTerrainIndex;
 
 			// Even though the cache is lazily initialized, we must attach these event handlers on init.
 			// This ensures our handler to invalidate the cache runs first,

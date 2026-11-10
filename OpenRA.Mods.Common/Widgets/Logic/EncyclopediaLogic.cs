@@ -203,8 +203,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				portraitSprite.Sheet.CommitBufferedData(portraitSprite.Bounds);
 			}
 
-			if (titleLabel != null)
-				titleLabel.Text = ActorName(modData.DefaultRules, actor.Name);
+			titleLabel?.Text = ActorName(modData.DefaultRules, actor.Name);
 
 			var bi = actor.TraitInfoOrDefault<BuildableInfo>();
 
@@ -232,8 +231,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					productionPower.Visible = false;
 				}
 			}
-			else if (productionContainer != null)
-				productionContainer.Visible = false;
+			else
+				productionContainer?.Visible = false;
 
 			var text = "";
 			if (bi != null)

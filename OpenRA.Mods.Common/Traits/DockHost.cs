@@ -54,15 +54,13 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 
 		public BitSet<DockType> GetDockType => Info.Type;
-		public bool IsEnabledAndInWorld => !preventDock && !IsTraitDisabled && !self.IsDead && self.IsInWorld;
+		[field: VerifySync]
+		public bool IsEnabledAndInWorld { get => field && !IsTraitDisabled && !self.IsDead && self.IsInWorld; private set; } = true;
 		public int ReservationCount => ReservedDockClients.Count;
 		public bool CanBeReserved => ReservationCount < Info.MaxQueueLength;
 		protected readonly List<DockClientManager> ReservedDockClients = [];
 
 		public WPos DockPosition => self.CenterPosition + Info.DockOffset;
-
-		[VerifySync]
-		bool preventDock = false;
 
 		[VerifySync]
 		protected Actor dockedClientActor = null;
@@ -174,12 +172,12 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		void INotifySold.Selling(Actor self) { preventDock = true; }
+		void INotifySold.Selling(Actor self) { IsEnabledAndInWorld = false; }
 
 		void INotifySold.Sold(Actor self) { UnreserveAll(); }
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e) { UnreserveAll(); }
 
-		void INotifyActorDisposing.Disposing(Actor self) { preventDock = true; UnreserveAll(); }
+		void INotifyActorDisposing.Disposing(Actor self) { IsEnabledAndInWorld = false; UnreserveAll(); }
 	}
 }

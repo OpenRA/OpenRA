@@ -107,8 +107,7 @@ namespace OpenRA.Network
 
 			if (Metadata != null)
 			{
-				if (Metadata.GameInfo != null)
-					Metadata.GameInfo.EndTimeUtc = DateTime.UtcNow;
+				Metadata.GameInfo?.EndTimeUtc = DateTime.UtcNow;
 				Metadata.Write(writer);
 			}
 

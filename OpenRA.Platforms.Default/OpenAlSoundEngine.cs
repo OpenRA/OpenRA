@@ -55,7 +55,6 @@ namespace OpenRA.Platforms.Default
 		const int PoolSize = 256;
 
 		readonly Dictionary<uint, PoolSlot> sourcePool = new(PoolSize);
-		float volume = 1f;
 		IntPtr device;
 		IntPtr context;
 
@@ -272,9 +271,9 @@ namespace OpenRA.Platforms.Default
 
 		public float Volume
 		{
-			get => volume;
-			set => AL10.alListenerf(AL10.AL_GAIN, volume = value);
-		}
+			get;
+			set => AL10.alListenerf(AL10.AL_GAIN, field = value);
+		} = 1f;
 
 		public void PauseSound(ISound sound, bool paused)
 		{

@@ -132,17 +132,16 @@ namespace OpenRA.Mods.Common.Traits
 		AttackTurreted attack;
 		IFacing facing;
 		BodyOrientation body;
-		int quantizedFacings;
 
 		[VerifySync]
 		public int QuantizedFacings
 		{
-			get => quantizedFacings;
+			get;
 			set
 			{
 				if (value == 0)
 					throw new ArgumentOutOfRangeException(nameof(value), value, "Expected nonzero facings for turret.");
-				quantizedFacings = value;
+				field = value;
 			}
 		}
 

@@ -156,27 +156,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			passwordOffsetAdjusted = false;
 			var connectionFailedTicker = panel.GetOrNull<LogicTickerWidget>("CONNECTION_FAILED_TICKER");
-			if (connectionFailedTicker != null)
+			connectionFailedTicker?.OnTick = () =>
 			{
-				connectionFailedTicker.OnTick = () =>
+				// Adjust the dialog once the AuthenticationError is parsed.
+				if (passwordField.IsVisible() && !passwordOffsetAdjusted)
 				{
-					// Adjust the dialog once the AuthenticationError is parsed.
-					if (passwordField.IsVisible() && !passwordOffsetAdjusted)
-					{
-						var offset = passwordField.Bounds.Y - connectionError.Bounds.Y;
-						abortButton.Bounds.Y += offset;
-						retryButton.Bounds.Y += offset;
-						panel.Bounds.Height += offset;
-						panel.Bounds.Y -= offset / 2;
+					var offset = passwordField.Bounds.Y - connectionError.Bounds.Y;
+					abortButton.Bounds.Y += offset;
+					retryButton.Bounds.Y += offset;
+					panel.Bounds.Height += offset;
+					panel.Bounds.Y -= offset / 2;
 
-						var background = panel.GetOrNull("CONNECTION_BACKGROUND");
-						if (background != null)
-							background.Bounds.Height += offset;
+					var background = panel.GetOrNull("CONNECTION_BACKGROUND");
+					background?.Bounds.Height += offset;
 
-						passwordOffsetAdjusted = true;
-					}
-				};
-			}
+					passwordOffsetAdjusted = true;
+				}
+			};
 		}
 	}
 
@@ -256,11 +252,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (mod.Icon == null)
 				{
 					// Hide the logo and center just the text
-					if (title != null)
-						title.Bounds.X = logo.Bounds.X;
+					title?.Bounds.X = logo.Bounds.X;
 
-					if (version != null)
-						version.Bounds.X = logo.Bounds.X;
+					version?.Bounds.X = logo.Bounds.X;
 
 					width -= logo.Bounds.Width;
 				}

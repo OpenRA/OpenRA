@@ -623,7 +623,7 @@ namespace OpenRA
 
 			var set = Activator.CreateInstance(fieldType);
 			var arguments = fieldType.GetGenericArguments();
-			var addMethod = fieldType.GetMethod(nameof(List<object>.Add), arguments);
+			var addMethod = fieldType.GetMethod(nameof(List<>.Add), arguments);
 			var addArgs = new object[1];
 			var parts = value.Span.Split(Comma);
 			foreach (var part in parts)
@@ -645,7 +645,7 @@ namespace OpenRA
 
 			var dict = Activator.CreateInstance(fieldType, nodes.Length);
 			var arguments = fieldType.GetGenericArguments();
-			var addMethod = fieldType.GetMethod(nameof(Dictionary<object, object>.Add), arguments);
+			var addMethod = fieldType.GetMethod(nameof(Dictionary<,>.Add), arguments);
 			var addArgs = new object[2];
 			foreach (var node in nodes)
 			{
@@ -663,7 +663,7 @@ namespace OpenRA
 
 			if (value.Span.IsEmpty)
 				return typeof(ImmutableArray<>).MakeGenericType(typeArgs)
-					.GetField(nameof(ImmutableArray<object>.Empty))
+					.GetField(nameof(ImmutableArray<>.Empty))
 					.GetValue(null);
 
 			object array;
@@ -689,7 +689,7 @@ namespace OpenRA
 
 			if (value.Span.IsEmpty)
 				return typeof(FrozenSet<>).MakeGenericType(typeArgs)
-					.GetProperty(nameof(FrozenSet<object>.Empty))
+					.GetProperty(nameof(FrozenSet<>.Empty))
 					.GetValue(null);
 
 			var set =
@@ -706,7 +706,7 @@ namespace OpenRA
 
 			if (nodes.Length == 0)
 				return typeof(FrozenDictionary<,>).MakeGenericType(typeArgs)
-					.GetProperty(nameof(FrozenDictionary<object, object>.Empty))
+					.GetProperty(nameof(FrozenDictionary<,>.Empty))
 					.GetValue(null);
 
 			var dict =

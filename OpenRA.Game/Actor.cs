@@ -57,12 +57,10 @@ namespace OpenRA
 		public bool IsInWorld { get; internal set; }
 		public bool WillDispose { get; private set; }
 		public bool Disposed { get; private set; }
-
-		Activity currentActivity;
 		public Activity CurrentActivity
 		{
-			get => Activity.SkipDoneActivities(currentActivity);
-			private set => currentActivity = value;
+			get => Activity.SkipDoneActivities(field);
+			private set;
 		}
 
 		public int Generation;
@@ -72,10 +70,9 @@ namespace OpenRA
 		public IOccupySpace OccupiesSpace { get; }
 		public ITargetable[] Targetables { get; }
 		public IEnumerable<ITargetablePositions> EnabledTargetablePositions { get; }
-		readonly ICrushable[] crushables;
 		public ICrushable[] Crushables
 		{
-			get => crushables ?? throw new InvalidOperationException($"Crushables for {Info.Name} are not initialized.");
+			get => field ?? throw new InvalidOperationException($"Crushables for {Info.Name} are not initialized.");
 		}
 
 		public bool IsIdle => CurrentActivity == null;
@@ -206,7 +203,7 @@ namespace OpenRA
 				EnabledTargetablePositions = targetablePositions.Where(Exts.IsTraitEnabled);
 				enabledTargetableWorldPositions = EnabledTargetablePositions.SelectMany(tp => tp.TargetablePositions(this));
 				SyncHashes = syncHashesList.ToArray();
-				crushables = crushablesList.ToArray();
+				Crushables = crushablesList.ToArray();
 			}
 		}
 

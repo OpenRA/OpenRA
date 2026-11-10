@@ -704,8 +704,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static void HideChildWidget(Widget parent, string widgetId)
 		{
 			var widget = parent.GetOrNull(widgetId);
-			if (widget != null)
-				widget.IsVisible = () => false;
+			widget?.IsVisible = () => false;
 		}
 	}
 }

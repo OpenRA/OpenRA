@@ -118,12 +118,10 @@ namespace OpenRA.Mods.Common.Widgets
 			if (Selection == selection)
 				return;
 
-			if (Selection.Actor != null)
-				Selection.Actor.Selected = false;
+			Selection.Actor?.Selected = false;
 
 			Selection = selection;
-			if (Selection.Actor != null)
-				Selection.Actor.Selected = true;
+			Selection.Actor?.Selected = true;
 
 			SelectionChanged?.Invoke();
 		}

@@ -29,8 +29,6 @@ namespace OpenRA
 		static readonly Lazy<PlatformType> LazyCurrentPlatform = Exts.Lazy(GetCurrentPlatform);
 
 		static bool engineDirAccessed;
-		static string engineDir;
-
 		static bool supportDirInitialized;
 		static string systemSupportPath;
 		static string legacyUserSupportPath;
@@ -239,11 +237,13 @@ namespace OpenRA
 				// Engine directory defaults to the location of the binaries,
 				// unless OverrideGameDir is called during startup.
 				if (!engineDirAccessed)
-					engineDir = BinDir;
+					field = BinDir;
 
 				engineDirAccessed = true;
-				return engineDir;
+				return field;
 			}
+
+			private set;
 		}
 
 		/// <summary>
@@ -267,7 +267,7 @@ namespace OpenRA
 				path += Path.DirectorySeparatorChar;
 
 			engineDirAccessed = true;
-			engineDir = path;
+			EngineDir = path;
 		}
 
 		public static string BinDir

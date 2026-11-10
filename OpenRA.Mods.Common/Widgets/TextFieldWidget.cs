@@ -40,20 +40,19 @@ namespace OpenRA.Mods.Common.Widgets
 		public int RightMargin = 5;
 		public string Background = "textfield";
 
-		TextFieldType type = TextFieldType.General;
 		public TextFieldType Type
 		{
-			get => type;
+			get;
 
 			set
 			{
-				type = value;
+				field = value;
 
 				// Revalidate text
 				text = RemoveInvalidCharacters(text);
 				CursorPosition = CursorPosition.Clamp(0, text.Length);
 			}
-		}
+		} = TextFieldType.General;
 
 		public Func<KeyInput, bool> OnEnterKey = _ => false;
 		public Func<KeyInput, bool> OnTabKey = _ => false;
