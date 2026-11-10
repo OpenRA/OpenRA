@@ -309,38 +309,18 @@ CheckSmugglerEnemies = function()
 		Trigger.OnDamaged(unit, function(self, attacker)
 			if unit.Owner == SmugglerNeutral and attacker.Owner == Harkonnen then
 				ChangeOwner(SmugglerNeutral, SmugglerHarkonnen)
-
-				--	Ensure that harvesters that was on a carryall switched sides.
-				Trigger.AfterDelay(DateTime.Seconds(15), function()
-					ChangeOwner(SmugglerNeutral, SmugglerHarkonnen)
-				end)
 			end
 
 			if unit.Owner == SmugglerAI and attacker.Owner == Harkonnen then
 				ChangeOwner(SmugglerAI, SmugglerBoth)
-
-				--	Ensure that harvesters that was on a carryall switched sides.
-				Trigger.AfterDelay(DateTime.Seconds(15), function()
-					ChangeOwner(SmugglerAI, SmugglerBoth)
-				end)
 			end
 
 			if unit.Owner == SmugglerNeutral and (attacker.Owner == AtreidesMain or attacker.Owner == AtreidesSmall or attacker.Owner == CorrinoMain or attacker.Owner == CorrinoSmall) then
 				ChangeOwner(SmugglerNeutral, SmugglerAI)
-
-				--	Ensure that harvesters that was on a carryall switched sides.
-				Trigger.AfterDelay(DateTime.Seconds(15), function()
-					ChangeOwner(SmugglerNeutral, SmugglerAI)
-				end)
 			end
 
 			if unit.Owner == SmugglerHarkonnen and (attacker.Owner == AtreidesMain or attacker.Owner == AtreidesSmall or attacker.Owner == CorrinoMain or attacker.Owner == CorrinoSmall) then
 				ChangeOwner(SmugglerHarkonnen, SmugglerBoth)
-
-				--	Ensure that harvesters that was on a carryall switched sides.
-				Trigger.AfterDelay(DateTime.Seconds(15), function()
-					ChangeOwner(SmugglerHarkonnen, SmugglerBoth)
-				end)
 			end
 
 			if attacker.Owner == Harkonnen and not MessageCheck then

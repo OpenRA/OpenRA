@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Carryall : ConditionalTrait<CarryallInfo>, INotifyKilled, ISync, ITick, IRender,
-		INotifyActorDisposing, IIssueOrder, IResolveOrder, IOrderVoice, IIssueDeployOrder,
+		INotifyActorDisposing, INotifyOwnerChanged, IIssueOrder, IResolveOrder, IOrderVoice, IIssueDeployOrder,
 		IAircraftCenterPositionOffset, IOverrideAircraftLanding
 	{
 		public enum CarryallState
@@ -182,6 +182,18 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			UnreserveCarryable(self);
+		}
+
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		{
+			// If the owner check is true, it suggests the cargo is under
+			// the effect of a ChangeOwner warhead, which can be temporary.
+			if (State != CarryallState.Carrying || Carryable == null || Carryable.IsDead || Carryable.Owner != oldOwner)
+			{
+				return;
+			}
+
+			Carryable.ChangeOwner(newOwner);
 		}
 
 		public virtual WVec OffsetForCarryable(Actor self, Actor carryable)
