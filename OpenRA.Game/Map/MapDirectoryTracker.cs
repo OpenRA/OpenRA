@@ -29,6 +29,7 @@ namespace OpenRA
 		readonly Dictionary<string, MapAction> mapActionQueue = [];
 
 		bool dirty = false;
+		Dictionary<string, (int FileCount, long LastWriteTicks)> watchedFoldersSnapshot;
 
 		public MapDirectoryTracker(IReadOnlyPackage package, MapClassification classification)
 		{
@@ -48,6 +49,71 @@ namespace OpenRA
 		public void Dispose()
 		{
 			watcher.Dispose();
+		}
+
+		/// <summary>
+		/// Enables or disables raising file system events.
+		/// Disabling takes a snapshot of the watched map folders so that changes
+		/// made while disabled can be queued when tracking is re-enabled.
+		/// </summary>
+		public void SetEnabled(bool enabled)
+		{
+			lock (syncObject)
+			{
+				if (enabled == watcher.EnableRaisingEvents)
+					return;
+
+				watcher.EnableRaisingEvents = enabled;
+
+				if (!Directory.Exists(package.Name))
+					return;
+
+				if (!enabled)
+				{
+					watchedFoldersSnapshot = SnapshotMapFolders();
+					return;
+				}
+
+				// Queue the folders that appeared, disappeared or changed while
+				// disabled so that the next UpdateMaps() call brings the cache
+				// back in sync.
+				if (watchedFoldersSnapshot != null)
+				{
+					var current = SnapshotMapFolders();
+					foreach (var (folder, fingerprint) in current)
+					{
+						if (!watchedFoldersSnapshot.TryGetValue(folder, out var old))
+							AddMapAction(MapAction.Add, folder);
+						else if (old != fingerprint)
+							AddMapAction(MapAction.Update, folder);
+					}
+
+					foreach (var folder in watchedFoldersSnapshot.Keys)
+						if (!current.ContainsKey(folder))
+							AddMapAction(MapAction.Delete, folder);
+				}
+
+				watchedFoldersSnapshot = null;
+			}
+		}
+
+		Dictionary<string, (int FileCount, long LastWriteTicks)> SnapshotMapFolders()
+		{
+			var snapshot = new Dictionary<string, (int, long)>();
+			foreach (var folder in Directory.EnumerateDirectories(package.Name))
+			{
+				var fileCount = 0;
+				var lastWriteTicks = 0L;
+				foreach (var file in Directory.EnumerateFiles(folder, "*", SearchOption.AllDirectories))
+				{
+					fileCount++;
+					lastWriteTicks = Math.Max(lastWriteTicks, File.GetLastWriteTimeUtc(file).Ticks);
+				}
+
+				snapshot[folder] = (fileCount, lastWriteTicks);
+			}
+
+			return snapshot;
 		}
 
 		void AddMapAction(MapAction mapAction, string fullpath, string oldFullPath = null)

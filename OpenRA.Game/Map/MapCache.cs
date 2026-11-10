@@ -81,6 +81,18 @@ namespace OpenRA
 				tracker.UpdateMaps(this);
 		}
 
+		/// <summary>
+		/// Enables or disables live map update tracking for all watched map locations.
+		/// Tracking only pays off while the player can act on updates (shell / lobby);
+		/// disabling it during normal play avoids burning CPU on file system events.
+		/// Changes made while disabled are queued when tracking is re-enabled.
+		/// </summary>
+		public void SetMapUpdateTracking(bool enabled)
+		{
+			foreach (var tracker in mapDirectoryTrackers)
+				tracker.SetEnabled(enabled);
+		}
+
 		public void LoadMaps(ModData modData)
 		{
 			// Utility mod that does not support maps
