@@ -17,10 +17,8 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Cnc.FileSystem
 {
-	/// <summary>
-	/// This class supports loading unencrypted V3 .meg files using
-	/// reference documentation from here https://modtools.petrolution.net/docs/MegFileFormat.
-	/// </summary>
+	[Desc("This class supports loading unencrypted V3 .meg files using"
+		+ " reference documentation from here https://modtools.petrolution.net/docs/MegFileFormat.")]
 	public class MegV3Loader : IPackageLoader
 	{
 		const uint UnencryptedMegID = 0xFFFFFFFF;
