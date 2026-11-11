@@ -211,6 +211,7 @@
 	Inherits@selection: ^SelectableCombatUnit
 	Inherits@handicaps: ^PlayerHandicaps
 	Inherits@avalancheKill: ^CliffAvalanche
+	RenderAttackRangeOnSelect:
 	Tooltip:
 		GenericName: meta-vehicle-generic-name
 	Huntable:
@@ -388,6 +389,7 @@
 	Inherits@selection: ^SelectableCombatUnit
 	Inherits@handicaps: ^PlayerHandicaps
 	Inherits@avalancheKill: ^CliffAvalanche
+	RenderAttackRangeOnSelect:
 	Tooltip:
 		GenericName: meta-infantry-generic-name
 	Huntable:
@@ -460,6 +462,7 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Inherits@handicaps: ^PlayerHandicaps
+	RenderAttackRangeOnSelect:
 	Interactable:
 	Tooltip:
 		GenericName: meta-plane-generic-name
