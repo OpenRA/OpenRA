@@ -215,11 +215,11 @@ Container@MULTIPLAYER_PANEL:
 				DropDownButton@FILTERS_DROPDOWNBUTTON:
 					X: 15
 					Y: PARENT_HEIGHT - 40
-					Width: 152
+					Width: 120
 					Height: 25
 					Text: dropdownbutton-bg-filters
 				Button@RELOAD_BUTTON:
-					X: 172
+					X: 140
 					Y: PARENT_HEIGHT - 40
 					Width: 26
 					Height: 25
@@ -234,10 +234,22 @@ Container@MULTIPLAYER_PANEL:
 							IgnoreMouseOver: True
 							Children:
 								LogicTicker@ANIMATION:
-				Label@PLAYER_COUNT:
-					X: 248
+				TextField@SEARCH_INPUT:
+					X: 172
 					Y: PARENT_HEIGHT - 40
-					Width: 189
+					Width: 150
+					Height: 25
+					Children:
+						Label@SEARCH_PLACEHOLDER:
+							X: 5
+							Width: PARENT_WIDTH - 10
+							Height: 25
+							Text: label-server-search-placeholder
+							TextColor: 808080
+				Label@PLAYER_COUNT:
+					X: 326
+					Y: PARENT_HEIGHT - 40
+					Width: 156
 					Height: 25
 					Align: Center
 					Font: Bold

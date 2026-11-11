@@ -125,6 +125,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		GameServer currentServer;
 		MapPreview currentMap;
+		List<GameServer> lastGames;
+		string searchFilter = "";
 		bool showNotices;
 		int playerCount;
 
@@ -292,6 +294,37 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					filtersButton.RemovePanel();
 					filtersButton.AttachPanel(filtersPanel);
 				};
+			}
+
+			var searchInput = widget.GetOrNull<TextFieldWidget>("SEARCH_INPUT");
+			if (searchInput != null)
+			{
+				searchInput.OnTextEdited = () =>
+				{
+					var text = searchInput.Text.Trim();
+					if (text == searchFilter)
+						return;
+
+					searchFilter = text;
+					if (searchStatus != SearchStatus.Fetching && lastGames != null)
+						RefreshServerListInner(lastGames);
+				};
+
+				searchInput.OnEscKey = _ =>
+				{
+					if (searchInput.Text.Length == 0)
+						return searchInput.YieldKeyboardFocus();
+
+					searchInput.Text = "";
+					searchInput.OnTextEdited();
+					return true;
+				};
+
+				searchInput.OnEnterKey = _ => searchInput.YieldKeyboardFocus();
+
+				var searchPlaceholder = widget.GetOrNull<LabelWidget>("SEARCH_PLACEHOLDER");
+				if (searchPlaceholder != null)
+					searchPlaceholder.IsVisible = () => searchInput.Text.Length == 0 && !searchInput.HasKeyboardFocus;
 			}
 
 			var reloadButton = widget.GetOrNull<ButtonWidget>("RELOAD_BUTTON");
@@ -650,6 +683,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			ScrollItemWidget nextServerRow = null;
 			List<Widget> rows = null;
+			lastGames = games;
 
 			if (games != null)
 				rows = LoadGameRows(games, out nextServerRow);
@@ -874,7 +908,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (game.Protected && !filters.HasFlag(MPGameFilters.Protected))
 				return true;
 
+			if (searchFilter.Length > 0 && !MatchesSearch(game, searchFilter))
+				return true;
+
 			return false;
+		}
+
+		bool MatchesSearch(GameServer game, string search)
+		{
+			static bool Contains(string value, string term) =>
+				!string.IsNullOrEmpty(value) && value.Contains(term, StringComparison.CurrentCultureIgnoreCase);
+
+			if (Contains(game.Name, search) || Contains(game.Location, search) || Contains(game.ModLabel, search))
+				return true;
+
+			if (game.Map != null && Contains(modData.MapCache[game.Map].Title, search))
+				return true;
+
+			return game.Clients.Any(c => !c.IsBot && Contains(c.Name, search));
 		}
 
 		bool disposed;

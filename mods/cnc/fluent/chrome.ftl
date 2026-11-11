@@ -564,6 +564,7 @@ image-bg-password-protected-tooltip = Requires Password
 image-bg-requires-authentication-tooltip = Requires OpenRA forum account
 button-selected-server-join = Join
 dropdownbutton-bg-filters = Filter Games
+label-server-search-placeholder = Search servers...
 button-bg-directconnect = Direct IP
 button-bg-create = Create
 
