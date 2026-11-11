@@ -91,7 +91,7 @@ if Difficulty == "tough" or Difficulty == "endless" then
 	Waves[11] = { delay = 1500, units = { Vehicles, Infantry, Patrol, Patrol, Patrol, Infantry, LongRange, Tank, Boss, Infantry, Infantry, Patrol } }
 end
 
-IdleHunt = function(actor)
+HuntFromPlane = function(actor)
 	Trigger.OnIdle(actor, function(a)
 		if a.IsInWorld then
 			a.Hunt()
@@ -149,7 +149,7 @@ SendWave = function()
 				local aircraft = ParaProxy.TargetParatroopers(Utils.Random(ParadropWaypoints).CenterPosition)
 				Utils.Do(aircraft, function(a)
 					Trigger.OnPassengerExited(a, function(t, p)
-						IdleHunt(p)
+						HuntFromPlane(p)
 					end)
 				end)
 
