@@ -14,8 +14,8 @@ ca:
 		Filename: turr.shp
 		Facings: 32
 	muzzle:
-		Filename: gunfire2.shp
-		Length: 5
+		Filename: gunfire.shp
+		Length: *
 	icon:
 		Filename: caicon.shp
 
@@ -37,8 +37,8 @@ pt:
 		Filename: mgun.shp
 		Facings: 32
 	muzzle:
-		Filename: gunfire2.shp
-		Length: 5
+		Filename: gunfire.shp
+		Length: *
 	icon:
 		Filename: pticon.shp
 

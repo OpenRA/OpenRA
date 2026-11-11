@@ -197,6 +197,7 @@ CA:
 		Recoil: 171
 		RecoilRecovery: 34
 		MuzzleSequence: muzzle
+		MuzzlePalette: muzzle
 	Armament@SECONDARY:
 		Name: secondary
 		Turret: secondary
@@ -205,6 +206,7 @@ CA:
 		Recoil: 171
 		RecoilRecovery: 34
 		MuzzleSequence: muzzle
+		MuzzlePalette: muzzle
 	AttackTurreted:
 		Turrets: primary, secondary
 		TargetFrozenActors: True
@@ -291,10 +293,12 @@ PT:
 		Weapon: 2Inch
 		LocalOffset: 208,0,48
 		MuzzleSequence: muzzle
+		MuzzlePalette: muzzle
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: DepthCharge
 		MuzzleSequence: muzzle
+		MuzzlePalette: muzzle
 	AttackTurreted:
 	WithMuzzleOverlay:
 	WithSpriteTurret:

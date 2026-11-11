@@ -81,7 +81,7 @@ mtnk:
 		Facings: 32
 		UseClassicFacings: True
 	muzzle:
-		Filename: gunfire2.shp
+		Filename: gunfire.shp
 		Length: *
 	icon:
 		Filename: mtnkicnh.tem
@@ -110,7 +110,7 @@ ltnk:
 		Facings: 32
 		UseClassicFacings: True
 	muzzle:
-		Filename: gunfire2.shp
+		Filename: gunfire.shp
 		Length: *
 	icon:
 		Filename: ltnkicnh.tem
@@ -139,7 +139,7 @@ htnk:
 		Facings: 32
 		UseClassicFacings: True
 	muzzle:
-		Filename: gunfire2.shp
+		Filename: gunfire.shp
 		Length: *
 	icon:
 		Filename: htnkicnh.tem
@@ -354,7 +354,7 @@ arty:
 		Facings: 32
 		UseClassicFacings: True
 	muzzle:
-		Filename: gunfire2.shp
+		Filename: gunfire.shp
 		Length: *
 	icon:
 		Filename: artyicnh.tem
