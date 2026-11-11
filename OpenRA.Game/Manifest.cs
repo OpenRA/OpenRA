@@ -30,6 +30,7 @@ namespace OpenRA
 
 		[FluentReference(optional: true)]
 		public readonly string WindowTitle;
+		public string WindowIcon;
 		public readonly bool Hidden;
 #pragma warning restore IDE1006 // Naming Styles
 
