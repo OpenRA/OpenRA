@@ -7,6 +7,7 @@
    information, see COPYING.
 ]]
 
+---@param actor actor
 IdleHunt = function(actor)
 	if actor.HasProperty("Hunt") and not actor.IsDead then
 		Trigger.OnIdle(actor, actor.Hunt)
