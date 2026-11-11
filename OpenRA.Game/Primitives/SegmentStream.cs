@@ -172,5 +172,20 @@ namespace OpenRA.Primitives
 			stream.Seek(offset, SeekOrigin.Begin);
 			return new MemoryStream(stream.ReadBytes(count));
 		}
+
+		public static ReadOnlySpan<byte> GetReadableData(Stream stream, long offset, int size)
+		{
+			if (stream is MemoryStream ms)
+			{
+				// avoid copying where possible
+				var buf = ms.GetBuffer();
+				return new ReadOnlySpan<byte>(buf, (int)offset, Math.Min(size, buf.Length - (int)offset));
+			}
+
+			var buffer = new byte[size];
+			stream.Seek(offset, SeekOrigin.Begin);
+			stream.ReadExactly(buffer);
+			return buffer;
+		}
 	}
 }

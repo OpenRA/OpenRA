@@ -31,6 +31,7 @@ namespace OpenRA
 		int SampleRate { get; }
 		float LengthInSeconds { get; }
 		Stream GetPCMInputStream();
+		byte[] GetPCMData();
 	}
 
 	public enum SoundType { World, UI }
@@ -94,7 +95,7 @@ namespace OpenRA
 			this.loaders = loaders;
 			this.fileSystem = fileSystem;
 			ISoundSource LoadIntoMemory(ISoundFormat soundFormat) => soundEngine.AddSoundSourceFromMemory(
-				soundFormat.GetPCMInputStream().ReadAllBytes(), soundFormat.Channels, soundFormat.SampleBits, soundFormat.SampleRate);
+				soundFormat.GetPCMData(), soundFormat.Channels, soundFormat.SampleBits, soundFormat.SampleRate);
 			sounds = new Cache<string, ISoundSource>(filename => LoadSound(filename, LoadIntoMemory));
 			currentSounds.Clear();
 			currentNotifications.Clear();
