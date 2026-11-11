@@ -119,6 +119,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Does the actor land and take off vertically?")]
 		public readonly bool VTOL = false;
 
+		[Desc("Does this VTOL actor use a direct approach when landing, rather than a fixed-wing approach trajectory?",
+			"Defaults to true for VTOL actors. Set to false to use the fixed-wing approach even when VTOL is true.")]
+		public readonly bool? VTOLApproach = null;
+
 		[Desc("Does this VTOL actor need to turn before landing (on terrain)?")]
 		public readonly bool TurnToLand = false;
 
@@ -644,7 +648,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			var cellRange = (maxSearchDistance.Length + 1023) / 1024;
 			var centerPosition = self.World.Map.CenterOfCell(targetCell);
-			foreach (var c in self.World.Map.FindTilesInCircle(targetCell, cellRange))
+
+			foreach (var c in self.World.Map.FindTilesInCircle(targetCell, cellRange)
+				.OrderBy(c => (self.World.Map.CenterOfCell(c) - centerPosition).LengthSquared))
 			{
 				if (!CanLand(c, blockedByMobile: false))
 					continue;

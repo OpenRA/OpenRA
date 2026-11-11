@@ -4,6 +4,7 @@ carryall:
 		Start: 1923
 		Facings: -32
 		Remap: 54F94B
+		ZOffset: 1024
 	icon:
 		Filename: DATA.R16
 		Start: 4290
@@ -29,3 +30,4 @@ frigate:
 		Start: 2517
 		Facings: 1
 		Remap: 54F94B
+		ZOffset: 1024

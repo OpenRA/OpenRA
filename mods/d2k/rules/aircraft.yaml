@@ -19,8 +19,8 @@ carryall.reinforce:
 		Repulsable: False
 		AirborneCondition: airborne
 		CanForceLand: false
-		CanSlide: True
 		VTOL: true
+		VTOLApproach: true
 		IdleTurnSpeed: 5
 		IdleSpeed: 115
 	Targetable@GROUND:
@@ -39,6 +39,13 @@ carryall.reinforce:
 		BeforeLoadDelay: 10
 		BeforeUnloadDelay: 15
 		LocalOffset: 0, 0, -128
+		DropRange: 1c0
+		ApproachingCondition: carryall-approaching
+	SpeedMultiplier@APPROACHING:
+		RequiresCondition: carryall-approaching
+		Modifier: 50
+	Cargo:
+		BetweenUnloadDelay: 25
 	RenderSprites:
 		Image: carryall
 	ChangesHealth:
@@ -59,12 +66,14 @@ carryall:
 		BeforeLoadDelay: 10
 		BeforeUnloadDelay: 15
 		LocalOffset: 0, 0, -128
+		ApproachingCondition: carryall-approaching
 	Encyclopedia:
 		Description: actor-carryall-encyclopedia
 		Order: 230
 		Category: Units
 	Aircraft:
 		MinAirborneAltitude: 400
+		VTOLApproach: true
 	RevealsShroud@lifting_low:
 		Range: 2c512
 		Type: GroundPosition
