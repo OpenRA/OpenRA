@@ -172,6 +172,8 @@ World:
 	MissionData:
 		Briefing: briefing
 		BriefingVideo: O_BR09_E.VQA
+		WinVideo: O_FINL_E.VQA
+		LossVideo: O_LOSE_E.VQA
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
 		Label: dropdown-difficulty.label
