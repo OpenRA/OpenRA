@@ -206,12 +206,12 @@ Background@MULTIPLAYER_PANEL:
 		DropDownButton@FILTERS_DROPDOWNBUTTON:
 			X: 20
 			Y: PARENT_HEIGHT - HEIGHT - 20
-			Width: 158
+			Width: 120
 			Height: 25
 			Text: dropdownbutton-multiplayer-panel-filters
 			Font: Bold
 		Button@RELOAD_BUTTON:
-			X: 182
+			X: 144
 			Y: PARENT_HEIGHT - HEIGHT - 20
 			Width: 26
 			Height: 25
@@ -226,10 +226,22 @@ Background@MULTIPLAYER_PANEL:
 					IgnoreMouseOver: True
 					Children:
 						LogicTicker@ANIMATION:
-		Label@PLAYER_COUNT:
-			X: 254
+		TextField@SEARCH_INPUT:
+			X: 176
 			Y: PARENT_HEIGHT - HEIGHT - 20
-			Width: 190
+			Width: 150
+			Height: 25
+			Children:
+				Label@SEARCH_PLACEHOLDER:
+					X: 5
+					Width: PARENT_WIDTH - 10
+					Height: 25
+					Text: label-server-search-placeholder
+					TextColor: 808080
+		Label@PLAYER_COUNT:
+			X: 330
+			Y: PARENT_HEIGHT - HEIGHT - 20
+			Width: 155
 			Height: 25
 			Align: Center
 			Font: Bold

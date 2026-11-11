@@ -523,6 +523,7 @@ image-multiplayer-panel-password-protected-tooltip = Requires Password
 image-multiplayer-panel-requires-authentication-tooltip = Requires OpenRA forum account
 button-selected-server-join = Join
 dropdownbutton-multiplayer-panel-filters = Filter Games
+label-server-search-placeholder = Search servers...
 button-multiplayer-panel-directconnect = Direct IP
 button-multiplayer-panel-create = Create
 
