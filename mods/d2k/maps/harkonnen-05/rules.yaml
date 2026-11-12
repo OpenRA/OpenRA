@@ -70,6 +70,7 @@ World:
 	MissionData:
 		Briefing: briefing
 		BriefingVideo: H_BR05_E.VQA
+		LossVideo: H_LOSE_E.VQA
 	MapOptions:
 		TechLevel: medium
 	ScriptLobbyDropdown@difficulty:
