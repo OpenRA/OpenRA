@@ -228,17 +228,13 @@ DeathHandLogic = function(nukeProvider)
 					actor.Type ~= "construction_yard" and
 					actor.Type ~= "silo"
 			end)
-			if #targets > 0  then
-				ActivateNuke(nukeProvider, targets)
-			end
+			ActivateNuke(nukeProvider, targets)
 		else
 			-- use nuke vs units
 			local targets = Utils.Where(Atreides.GetActorsByTypes(VehicleTypes), function(a)
 				return not a.IsDead and a.IsInWorld
 			end)
-			if #targets > 0  then
-				ActivateNuke(nukeProvider, targets)
-			end
+			ActivateNuke(nukeProvider, targets)
 		end
 		Trigger.AfterDelay(NukeChargeTime, function() DeathHandLogic(nukeProvider) end)
 	end
@@ -247,7 +243,10 @@ end
 AllPossibleTargets = { "light_inf", "trooper", "trike", "raider" , "quad", "combat_tank_o", "missile_tank", "siege_tank", "deviator", "wind_trap", "barracks", "refinery", "heavy_factory", "light_factory", "repair_pad", "outpost", "research_centre", "palace" , "silo", "medium_gun_turret", "large_gun_turret" }
 
 ActivateNuke = function(nukeProvider, possibleTargets)
-	if nukeProvider.IsDead then return end
+	if nukeProvider.IsDead or nukeProvider.Owner == Atreides or #possibleTargets == 0 then
+		return
+	end
+
 	local bestValue = {}
 	local bestIndex = 1
 
