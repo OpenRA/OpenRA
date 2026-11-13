@@ -1,0 +1,4 @@
+DogJaw:
+	ValidTargets: Infantry, Kosygin
+	Warhead@1Dam: TargetDamage
+		ValidTargets: Infantry, Kosygin
