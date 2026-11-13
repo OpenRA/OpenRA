@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -36,9 +35,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override void Activate(Actor collector)
 		{
-			foreach (var healable in collector.World.ActorsWithTrait<IHealth>().Where(tp => tp.Actor.Owner == collector.Owner))
+			foreach (var healable in collector.World.ActorsWithTraitAsIterator<IHealth>())
+			{
+				if (healable.Actor.Owner != collector.Owner)
+					continue;
+
 				if (!healable.Trait.IsDead && (info.TargetTypes.IsEmpty || info.TargetTypes.Overlaps(healable.Actor.GetEnabledTargetTypes())))
 					healable.Trait.InflictDamage(healable.Actor, healable.Actor, new Damage(-(healable.Trait.MaxHP - healable.Trait.HP)), true);
+			}
 
 			base.Activate(collector);
 		}

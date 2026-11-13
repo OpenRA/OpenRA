@@ -69,7 +69,7 @@ namespace OpenRA.Network
 			report.Orders.Clear();
 			report.Orders.AddRange(orders);
 
-			foreach (var actor in orderManager.World.ActorsHavingTrait<ISync>())
+			foreach (var actor in orderManager.World.ActorsHavingTraitAsIterator<ISync>())
 			{
 				foreach (var syncHash in actor.SyncHashes)
 				{

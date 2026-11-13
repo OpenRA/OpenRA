@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 			// PERF: Avoid LINQ.
 			Enabled = false;
 			var isActive = false;
-			foreach (var x in self.World.ActorsWithTrait<Production>())
+			foreach (var x in self.World.ActorsWithTraitAsIterator<Production>())
 			{
 				if (x.Trait.IsTraitDisabled)
 					continue;

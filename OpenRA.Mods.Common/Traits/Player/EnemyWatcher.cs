@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 			visibleActorIds = [];
 			playedNotifications = [];
 
-			foreach (var actor in self.World.ActorsWithTrait<AnnounceOnSeen>())
+			foreach (var actor in self.World.ActorsWithTraitAsIterator<AnnounceOnSeen>())
 			{
 				// We don't want notifications for allied actors or actors disguised as such
 				if (actor.Actor.AppearsFriendlyTo(self))

@@ -491,7 +491,7 @@ namespace OpenRA
 					ret += n++ * (int)(1 + a.ActorID) * Sync.HashActor(a);
 
 				// Hash fields marked with the ISync interface.
-				foreach (var actor in ActorsHavingTrait<ISync>())
+				foreach (var actor in TraitDict.ActorsHavingTraitAsIterator<ISync>())
 					foreach (var syncHash in actor.SyncHashes)
 						ret += n++ * (int)(1 + actor.ActorID) * syncHash.Hash();
 
@@ -516,6 +516,11 @@ namespace OpenRA
 			return TraitDict.ActorsWithTrait<T>();
 		}
 
+		public TraitPairIterator<T> ActorsWithTraitAsIterator<T>()
+		{
+			return TraitDict.ActorsWithTraitAsIterator<T>();
+		}
+
 		public void ApplyToActorsWithTraitTimed<T>(Action<Actor, T> action, string text)
 		{
 			TraitDict.ApplyToActorsWithTraitTimed(action, text);
@@ -529,6 +534,11 @@ namespace OpenRA
 		public IEnumerable<Actor> ActorsHavingTrait<T>()
 		{
 			return TraitDict.ActorsHavingTrait<T>();
+		}
+
+		public ActorIterator ActorsHavingTraitAsIterator<T>()
+		{
+			return TraitDict.ActorsHavingTraitAsIterator<T>();
 		}
 
 		public IEnumerable<Actor> ActorsHavingTrait<T>(Func<T, bool> predicate)
@@ -568,7 +578,7 @@ namespace OpenRA
 			// at the end of the save restoration
 			// TODO: This will need to be generalized to a request / response pair for multiplayer game saves
 			var i = 0;
-			foreach (var tp in TraitDict.ActorsWithTrait<IGameSaveTraitData>())
+			foreach (var tp in TraitDict.ActorsWithTraitAsIterator<IGameSaveTraitData>())
 			{
 				var data = tp.Trait.IssueTraitData(tp.Actor);
 				if (data != null)
