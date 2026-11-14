@@ -18,16 +18,32 @@
 --   * target selection and attack orders with land checks
 --   * local damage response and proactive idle defence
 --   * Orca retreat / return-to-base handling
+--   * base maintenance: rebuild plans, production queues, harvesters
 --   * small funds and storage helpers
 --   * xpcall-based tick safety
 --
--- Status: only bad-neighborhood uses this module so far. CA.SafeTick,
--- CA.SiteOccupied, CA.IsStartingLand, CA.AllOutAttack, CA.StartBaseDefense and
--- CA.Log are kept for future missions and are not yet verified by a mission.
+-- Status: bad-neighborhood and deceit use this module. Verified by both:
+-- land/pool/orders, damage response, idle defence, Orca handling,
+-- CA.FindFreeCell/FindFreeSite/SiteFree, CA.MissingBuilding/BuildQueue,
+-- CA.TryRebuildEntry/MaintainBase, CA.QueueUnit/TryQueueFromPool,
+-- CA.MaintainHarvesters/ReplaceHarvester and CA.RecallReserve.
+-- Kept for future missions but not called by either mission yet:
+-- CA.SafeTick, CA.SiteOccupied, CA.IsStartingLand, CA.AllOutAttack,
+-- CA.StartBaseDefense and CA.Log. Treat those as "not yet verified by a
+-- mission".
+--
+-- IsLive requires IsInWorld. Callbacks that fire before an actor enters the
+-- world (OnPassengerExited, OnCapture) must use CA.IsAlive instead; using
+-- IsLive there silently skips every healthy actor. This exact mistake broke
+-- the deceit engineer drop once.
 --
 -- The module exposes one global table, CampaignAI, so mission scripts can
 -- use CampaignAI.TakeForAttack(...) etc. without polluting the global
 -- namespace with generic short names.
+--
+-- API/options/migration: harness/campaign-ai.md
+-- Pure helper tests:     harness/campaign-ai-harness.lua
+-- Integration tests:     harness/bad-neighborhood-harness.lua, harness/deceit-harness.lua
 --
 -- Minimal usage sketch for a single-base mission:
 --
@@ -81,18 +97,21 @@ function CA.SafeTick(label, fn)
 	end
 end
 
--- Repeating timer that survives an error in its body. body returns false to
--- stop the loop, anything else (including nil) keeps it running.
-function CA.RepeatingSafeTick(label, interval, body, isActive)
+-- Repeating timer that survives an error in its body. `isActive` pauses the
+-- work but keeps the timer scheduled, so a gate that becomes true later (for
+-- example GDIHunting in Deceit) still starts the loop. `isFinished` is the
+-- hard stop; a body returning false stops the loop as before.
+function CA.RepeatingSafeTick(label, interval, body, isActive, isFinished)
 	local function step()
-		if isActive and not isActive() then return end
-		local ok, result = xpcall(body, CA.ErrorText)
-		if not ok then
-			log("ERROR %s: %s", label, tostring(result))
-		elseif result == false then
-			return
+		if isFinished and isFinished() then return end
+		if isActive == nil or isActive() then
+			local ok, result = xpcall(body, CA.ErrorText)
+			if not ok then
+				log("ERROR %s: %s", label, tostring(result))
+			elseif result == false then
+				return
+			end
 		end
-		if isActive and not isActive() then return end
 		Trigger.AfterDelay(DateTime.Seconds(interval), step)
 	end
 	return step
@@ -100,6 +119,24 @@ end
 
 function CA.IsLive(actor)
 	return actor ~= nil and not actor.IsDead and actor.IsInWorld
+end
+
+-- Only checks the death flag. Use this inside callbacks that run before the
+-- engine adds the actor to the world (OnPassengerExited, OnCapture, spawn
+-- callbacks), where CA.IsLive would be false even for a healthy actor.
+function CA.IsAlive(actor)
+	return actor ~= nil and not actor.IsDead
+end
+
+-- Safe wrapper for Player.GetActorsByType. The engine throws for unknown
+-- actor types; a future mission migrating to this module may be missing an
+-- optional actor (for example a mod without Orcas). Returning an empty list
+-- keeps the shared loops alive.
+function CA.GetActorsByType(player, kind)
+	if player == nil or kind == nil then return {} end
+	local ok, list = pcall(function() return player.GetActorsByType(kind) end)
+	if ok and list ~= nil then return list end
+	return {}
 end
 
 function CA.IsOwnedBy(actor, players)
@@ -266,6 +303,7 @@ function CA.NewBase(config)
 		baseRadius = config.baseRadius or 32,
 		defending = false,
 		defenseUntil = 0,
+		rebuilding = false,
 		allOut = false,
 	}
 end
@@ -282,7 +320,7 @@ end
 function CA.GetLocalActors(base, kind, radius)
 	local actors = {}
 	if base == nil or base.player == nil then return actors end
-	for _, actor in ipairs(base.player.GetActorsByType(kind)) do
+	for _, actor in ipairs(CA.GetActorsByType(base.player, kind)) do
 		if CA.IsLive(actor) and actor.HasProperty("Location") and CA.IsLocal(base, actor, radius) then
 			table.insert(actors, actor)
 		end
@@ -309,8 +347,10 @@ function CA.BuildingAt(kind, x, y, owner)
 	return nil
 end
 
--- Approximate site check used by fixed rebuild plans. Terrain, player actors
--- and husks never block a site; any other health-bearing actor does.
+-- Coarse 3x3 occupancy check. Every live actor with Health or Building that
+-- is not an aircraft blocks the cell. Kept for simple scripted spawns; the
+-- rebuild plans use CA.SiteFree, which is footprint-aware and can displace
+-- friendly mobile units.
 function CA.SiteOccupied(x, y)
 	for _, actor in ipairs(Map.ActorsInWorld) do
 		if CA.IsLive(actor) and actor.HasProperty("Location")
@@ -411,7 +451,13 @@ function CA.SiteFree(entry, options)
 				if overlaps then
 					if owner ~= nil and actor.Owner == owner
 						and actor.HasProperty("Move") and not actor.HasProperty("Land") then
-						actor.Move(CPos.New(x, y + size[2] + 1))
+						-- Move the blocker to a real free cell instead of a fixed
+						-- offset that may be off-map, water or occupied.
+						local destination = CA.FindFreeCell(x + math.floor(size[1] / 2),
+							y + size[2], 8, { ignore = actor, isTerrainObstacle = isObstacle })
+						if destination ~= nil then
+							actor.Move(destination)
+						end
 						-- A displaced harvester must resume harvesting; otherwise
 						-- rebuilding silently parks it forever.
 						if actor.HasProperty("FindResources") then
@@ -424,6 +470,216 @@ function CA.SiteFree(entry, options)
 		end
 	end
 	return true
+end
+
+-- Find a passable, unoccupied cell near (x, y). Used to displace units that
+-- block a rebuild footprint and as a general "park unit somewhere safe" helper.
+function CA.FindFreeCell(x, y, radius, options)
+	options = options or {}
+	radius = radius or 6
+	local isObstacle = options.isTerrainObstacle or CA.DefaultTerrainObstacle
+	local ignore = options.ignore
+
+	for r = 1, radius do
+		for dx = -r, r do
+			for dy = -r, r do
+				if math.abs(dx) == r or math.abs(dy) == r then
+					local cx, cy = x + dx, y + dy
+					if cx >= Land.minX and cx <= Land.maxX
+						and cy >= Land.minY and cy <= Land.maxY then
+						local cell = CPos.New(cx, cy)
+						if passable[Map.TerrainType(cell)] then
+							local blocked = false
+							for _, actor in ipairs(Map.ActorsInWorld) do
+								if actor ~= ignore and CA.IsLive(actor)
+									and actor.HasProperty("Location")
+									and (actor.HasProperty("Health") or isObstacle(actor)) then
+									local fp = CA.Footprint(actor.Type, options)
+									if cx >= actor.Location.X and cx < actor.Location.X + fp[1]
+										and cy >= actor.Location.Y and cy < actor.Location.Y + fp[2] then
+										blocked = true
+										break
+									end
+								end
+							end
+							if not blocked then
+								return cell
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	return nil
+end
+
+-- Try the planned cell and then a small ring around it. Fixed [Base] plans are
+-- only roughly aligned with imported maps, so a member of the footprint set is
+-- often occupied by a pre-placed unit.
+function CA.FindFreeSite(entry, options)
+	if entry == nil then return nil end
+	if CA.SiteFree(entry, options) then
+		return entry
+	end
+
+	for radius = 1, 4 do
+		for dx = -radius, radius do
+			for dy = -radius, radius do
+				if math.abs(dx) == radius or math.abs(dy) == radius then
+					local candidate = { entry[1], entry[2] + dx, entry[3] + dy }
+					if CA.SiteFree(candidate, options) then
+						return candidate
+					end
+				end
+			end
+		end
+	end
+	return nil
+end
+
+local function optionValue(value)
+	if type(value) == "function" then return value() end
+	return value
+end
+
+local supportQueue = { gtwr = true, atwr = true, silo = true }
+
+function CA.BuildQueue(kind, options)
+	options = options or {}
+	if options.queueFor ~= nil then return options.queueFor(kind) end
+	return supportQueue[kind] and "Support.GDI" or "Building.GDI"
+end
+
+function CA.MissingBuilding(plan, kind)
+	for _, entry in ipairs(plan or {}) do
+		if entry[1] == kind and CA.BuildingAt(entry[1], entry[2], entry[3]) == nil then
+			return entry
+		end
+	end
+	return nil
+end
+
+-- Spend money and build one plan entry after the engine build time. The entry
+-- is relocated to the first free site and the entry itself is updated so a
+-- later tick does not build the same structure again next to the old cell.
+function CA.TryRebuildEntry(base, entry, options)
+	if base == nil or entry == nil then return false end
+	options = options or {}
+	if base.rebuilding then return false end
+
+	local siteOptions = options.siteOptions or {}
+	local site = CA.FindFreeSite(entry, siteOptions)
+	if site == nil then return false end
+	entry[2], entry[3] = site[2], site[3]
+
+	local player = options.player or base.player
+	local cost = Actor.Cost(entry[1])
+	local reserve = optionValue(options.reserve) or 0
+	if CA.Funds(player) < cost + reserve then return false end
+	if not CA.SpendFunds(player, cost) then return false end
+	base.rebuilding = true
+
+	local buildTime = Actor.BuildTime(entry[1], CA.BuildQueue(entry[1], options))
+	Trigger.AfterDelay(buildTime, function()
+		base.rebuilding = false
+
+		if options.isActive ~= nil and not options.isActive() then
+			CA.RefundFunds(player, cost)
+			return
+		end
+		if not CA.SiteFree(site, siteOptions) then
+			CA.RefundFunds(player, cost)
+			return
+		end
+
+		local building = Actor.Create(entry[1], true, { Owner = player, Location = CPos.New(site[2], site[3]) })
+		if not CA.IsLive(building) then
+			CA.RefundFunds(player, cost)
+			return
+		end
+		if options.onComplete ~= nil then
+			CA.SafeCall("rebuild-on-complete", function()
+				options.onComplete(building)
+			end)
+		end
+	end)
+
+	return true
+end
+
+-- One maintenance pass of the shared rebuild plan. Order follows the classic
+-- campaign priority: keep the power on, restore the income/production chain,
+-- then optional structures while the economy is healthy.
+--
+-- options: plan, targets, targetOrder, lateTargetOrder, optionalEntries,
+-- optionalFunds, reserve, siteOptions, onComplete, isActive, player
+function CA.MaintainBase(base, options)
+	if base == nil then return end
+	options = options or {}
+	local player = options.player or base.player
+	local plan = options.plan or {}
+	local siteOptions = options.siteOptions or {}
+
+	local function count(kind)
+		return #CA.GetActorsByType(player, kind)
+	end
+
+	local function addMissing(order, kind)
+		local entry = CA.MissingBuilding(plan, kind)
+		if entry ~= nil then table.insert(order, entry) end
+	end
+
+	local lowPower = player.PowerState == "Low" or player.PowerState == "Critical"
+	local storageFull = CA.IsStorageNearlyFull(player, 500)
+
+	local order = {}
+	if lowPower then
+		for _, entry in ipairs(plan) do
+			if entry[1] == "nuk2" then table.insert(order, entry) end
+		end
+	end
+
+	local targets = options.targets or {}
+	for _, kind in ipairs(options.targetOrder or { "proc", "weap", "pyle" }) do
+		local target = targets[kind]
+		if target ~= nil and count(kind) < target then
+			addMissing(order, kind)
+		end
+	end
+
+	for _, entry in ipairs(plan) do
+		if (entry[1] == "nuk2" and not lowPower) or (storageFull and entry[1] == "silo") then
+			table.insert(order, entry)
+		end
+	end
+
+	for _, kind in ipairs(options.lateTargetOrder or { "hpad" }) do
+		local target = targets[kind]
+		if target ~= nil and count(kind) < target then
+			addMissing(order, kind)
+		end
+	end
+
+	if player.PowerState == "Normal" and CA.Funds(player) >= (options.optionalFunds or 1500) then
+		local optional = optionValue(options.optionalEntries)
+		for _, entry in ipairs(optional or {}) do
+			table.insert(order, entry)
+		end
+	end
+
+	local seen = {}
+	for _, entry in ipairs(order) do
+		local key = entry[1] .. entry[2] .. "," .. entry[3]
+		if not seen[key] and CA.BuildingAt(entry[1], entry[2], entry[3]) == nil then
+			seen[key] = true
+			if CA.TryRebuildEntry(base, entry, options) then
+				return
+			end
+		else
+			seen[key] = true
+		end
+	end
 end
 
 local function pruneList(list, owner)
@@ -480,15 +736,34 @@ end
 
 -- Seed the pool with the already placed units at mission start. Far-away
 -- units become attack-pool units; local units become the initial garrison.
+-- With options.nearestFirst the closest units become the home guard instead
+-- of whichever units happen to appear first in the map file.
 function CA.SeedPool(base, context, options)
 	if base == nil then return end
 	options = options or {}
 	CA.PruneReserve(base)
+
+	local units = {}
 	for _, unit in ipairs(base.player.GetGroundAttackers()) do
 		if CA.IsLive(unit) and unit.Type ~= "harv" and unit.Type ~= "mcv"
 			and (options.exclude == nil or not options.exclude(unit)) then
-			CA.AddToPool(base, unit, context)
+			table.insert(units, unit)
 		end
+	end
+
+	if options.nearestFirst then
+		local yard = yardCell(base)
+		if yard ~= nil then
+			table.sort(units, function(a, b)
+				local ax, ay = a.Location.X - yard.X, a.Location.Y - yard.Y
+				local bx, by = b.Location.X - yard.X, b.Location.Y - yard.Y
+				return ax * ax + ay * ay < bx * bx + by * by
+			end)
+		end
+	end
+
+	for _, unit in ipairs(units) do
+		CA.AddToPool(base, unit, context)
 	end
 end
 
@@ -508,37 +783,77 @@ end
 -- Take up to limit units for an attack. With keepReserve (default true) the
 -- home garrison is left intact and only surplus reserve units plus the
 -- produced pool are committed.
-function CA.TakeForAttack(base, limit, keepReserve)
+--
+-- options.prefer(unit) may return a numeric score; the lowest score is taken
+-- first (for example "closest to the front"). Without it the previous LIFO
+-- behaviour is kept: the most recently added units leave first.
+function CA.TakeForAttack(base, limit, keepReserve, options)
 	local team = {}
 	if base == nil then return team end
+	options = options or {}
 	CA.PruneReserve(base)
 	limit = limit or math.huge
 	keepReserve = keepReserve ~= false
+
+	local taken = {}
+	local function collect(list, count)
+		if count <= 0 then return end
+
+		local candidates = {}
+		for _, unit in ipairs(list) do
+			local key = CA.ActorKey(unit)
+			if CA.IsLive(unit) and unit.Owner == base.player and unit.IsInWorld
+				and not taken[key] then
+				table.insert(candidates, unit)
+			end
+		end
+
+		if options.prefer ~= nil then
+			table.sort(candidates, function(a, b)
+				return options.prefer(a) < options.prefer(b)
+			end)
+		else
+			-- Keep the historical LIFO order: newest pool entry first.
+			local reversed = {}
+			for i = #candidates, 1, -1 do
+				table.insert(reversed, candidates[i])
+			end
+			candidates = reversed
+		end
+
+		for i = 1, math.min(count, #candidates) do
+			local unit = candidates[i]
+			taken[CA.ActorKey(unit)] = true
+			table.insert(team, unit)
+		end
+	end
 
 	local reserveAvailable = #base.reserve
 	if keepReserve then
 		reserveAvailable = math.max(0, reserveAvailable - base.defenderReserve)
 	end
 
-	local taken = {}
-	local function takeFrom(list, count)
-		local index = #list
-		while index >= 1 and count > 0 do
-			local unit = table.remove(list, index)
-			index = index - 1
-			if CA.IsLive(unit) and unit.Owner == base.player and unit.IsInWorld
-				and not taken[CA.ActorKey(unit)] then
-				taken[CA.ActorKey(unit)] = true
-				table.insert(team, unit)
-				count = count - 1
+	local fromReserve = math.min(limit, reserveAvailable)
+	if fromReserve > 0 then collect(base.reserve, fromReserve) end
+	local remaining = limit - #team
+	if remaining > 0 then collect(base.produced, remaining) end
+
+	-- Remove the selected units from the pool lists.
+	local selected = {}
+	for _, unit in ipairs(team) do
+		selected[CA.ActorKey(unit)] = true
+	end
+	for _, list in ipairs({ base.reserve, base.produced }) do
+		local i = 1
+		while i <= #list do
+			if selected[CA.ActorKey(list[i])] then
+				table.remove(list, i)
+			else
+				i = i + 1
 			end
 		end
 	end
 
-	local fromReserve = math.min(limit, reserveAvailable)
-	if fromReserve > 0 then takeFrom(base.reserve, fromReserve) end
-	local remaining = limit - #team
-	if remaining > 0 then takeFrom(base.produced, remaining) end
 	return team
 end
 
@@ -632,7 +947,7 @@ function CA.WatchAttackers(team, owner, baseAttack, context)
 		return alive
 	end
 
-	CA.RepeatingSafeTick("watch-attackers", 10, tick, context and context.isActive)()
+	CA.RepeatingSafeTick("watch-attackers", 10, tick, context and context.isActive, context and context.isFinished)()
 end
 
 -- Send an existing group along optional waypoints. Unlike a plain sequence
@@ -677,6 +992,46 @@ function CA.SendTeam(team, owner, route, attack, baseAttack, context)
 	end
 end
 
+-- ---------------------------------------------------------------- production
+
+-- Queue one unit at a factory. Returns false instead of erroring when the
+-- factory is missing/busy or the player cannot afford the unit.
+function CA.QueueUnit(factory, kind, player)
+	if not CA.IsLive(factory) or not factory.IsInWorld or not factory.HasProperty("Build")
+		or not factory.HasProperty("IsProducing") or factory.IsProducing(kind) then
+		return false
+	end
+	if CA.Funds(player) < Actor.Cost(kind) then
+		return false
+	end
+	return factory.Build({ kind })
+end
+
+-- Try the entries of a shuffled unit pool. Random removal mirrors the original
+-- AI, which picks a random buildable unit instead of a fixed order.
+function CA.TryQueueFromPool(factory, pool, player, options)
+	options = options or {}
+	if factory == nil then return false end
+
+	local costs = options.costs or {}
+	local prerequisites = options.prerequisites or {}
+	local reserve = optionValue(options.reserve) or 0
+	local funds = options.funds or CA.AvailableFunds(player, reserve)
+	if funds < (options.minFunds or 0) + reserve then return false end
+
+	local kinds = {}
+	for _, kind in ipairs(pool) do table.insert(kinds, kind) end
+	for _ = #kinds, 1, -1 do
+		local kind = table.remove(kinds, Utils.RandomInteger(1, #kinds + 1))
+		if funds >= (costs[kind] or options.defaultCost or 800) + reserve
+			and (player.HasPrerequisites == nil or player.HasPrerequisites(prerequisites[kind] or {}))
+			and CA.QueueUnit(factory, kind, player) then
+			return true
+		end
+	end
+	return false
+end
+
 -- ---------------------------------------------------------------- orca
 
 local orcaHandled = {}
@@ -686,7 +1041,8 @@ function CA.GuardOrca(base, orca, context, attack)
 	if base == nil or not CA.IsLive(orca) or orca.Type ~= "orca" then return end
 	local key = CA.ActorKey(orca)
 	if orcaHandled[key] == nil then
-		orcaHandled[key] = true
+		-- Store the actor, not just a flag, so dead Orcas can be pruned.
+		orcaHandled[key] = orca
 		Trigger.OnDamaged(orca, function(actor, attacker, damage)
 			CA.OrcaDamaged(base, actor, attacker, damage, context)
 		end)
@@ -708,7 +1064,7 @@ function CA.OrcaDamaged(base, orca, attacker, damage, context)
 	if retreatingOrcas[key] then return end
 	if #CA.GetLocalActors(base, "hpad", base.baseRadius) == 0 then return end
 
-	retreatingOrcas[key] = true
+	retreatingOrcas[key] = orca
 	if orca.HasProperty("Stop") then orca.Stop() end
 	if orca.HasProperty("ReturnToBase") then orca.ReturnToBase() end
 end
@@ -717,9 +1073,18 @@ function CA.OrcaWatch(bases, context, interval)
 	interval = interval or 5
 
 	local function tick()
+		-- Drop bookkeeping for destroyed Orcas so the tables do not grow for
+		-- the whole mission.
+		for key, orca in pairs(orcaHandled) do
+			if not CA.IsLive(orca) then orcaHandled[key] = nil end
+		end
+		for key, orca in pairs(retreatingOrcas) do
+			if not CA.IsLive(orca) then retreatingOrcas[key] = nil end
+		end
+
 		for _, base in ipairs(bases) do
 			local pad = CA.LocalBuilding(base, "hpad", base.baseRadius)
-			for _, orca in ipairs(base.player.GetActorsByType("orca")) do
+			for _, orca in ipairs(CA.GetActorsByType(base.player, "orca")) do
 				if CA.IsLive(orca) and orca.IsInWorld then
 					local key = CA.ActorKey(orca)
 					if retreatingOrcas[key] then
@@ -737,7 +1102,7 @@ function CA.OrcaWatch(bases, context, interval)
 		return true
 	end
 
-	CA.RepeatingSafeTick("orca-watch", interval, tick, context and context.isActive)()
+	CA.RepeatingSafeTick("orca-watch", interval, tick, context and context.isActive, context and context.isFinished)()
 end
 
 function CA.StartOrcaWatch(bases, context, interval)
@@ -761,7 +1126,7 @@ function CA.AllOutAttack(base, target, context)
 		CA.SendTeam(team, base.player, {}, true, true, context)
 	end
 
-	for _, orca in ipairs(base.player.GetActorsByType("orca")) do
+	for _, orca in ipairs(CA.GetActorsByType(base.player, "orca")) do
 		if CA.IsLive(orca) and orca.IsInWorld then
 			CA.GuardOrca(base, orca, context, true)
 			if target ~= nil and orca.HasProperty("AttackMove")
@@ -784,8 +1149,14 @@ function CA.StartBaseDefense(base, target, context)
 	-- All-out is temporary: after the alarm window new replacements return to
 	-- the normal pool/garrison behaviour and Orcas stop being force-released.
 	Trigger.AfterDelay(DateTime.Seconds(alarmSeconds), function()
+		if context.isFinished ~= nil and context.isFinished() then return end
 		base.defending = false
 		base.allOut = false
+		if context.isActive == nil or context.isActive() then
+			-- Survivors were removed from reserve/produced when the all-out
+			-- started. Re-seed so a later TakeForAttack can commit them again.
+			CA.SeedPool(base, context)
+		end
 	end)
 end
 
@@ -829,7 +1200,7 @@ function CA.DefendAgainst(actor, attacker, damage, context)
 	end
 
 	if building and context.releaseOrcas and context.base ~= nil then
-		for _, orca in ipairs(context.base.player.GetActorsByType("orca")) do
+		for _, orca in ipairs(CA.GetActorsByType(context.base.player, "orca")) do
 			if CA.IsLive(orca) and orca.IsInWorld and orca.HasProperty("Stance") then
 				orca.Stance = "AttackAnything"
 				IdleHunt(orca)
@@ -837,13 +1208,23 @@ function CA.DefendAgainst(actor, attacker, damage, context)
 		end
 	end
 
+	-- Ground units cannot engage an aircraft by walking to its cell. Leave
+	-- air attackers to the Orcas and anti-air towers instead of pulling the
+	-- garrison underneath them.
+	local attackerIsAir = attacker.HasProperty("Land")
+
 	local radius = building and 18 or 10
+	if attackerIsAir then
+		return
+	end
+
 	for _, player in ipairs(context.players or {}) do
 		for _, unit in ipairs(player.GetGroundAttackers()) do
 			if CA.IsLive(unit) and unit.IsInWorld and unit ~= actor
 				and unit.HasProperty("AttackMove") and unit.HasProperty("Location") and unit.Owner == player
 				and unit.Type ~= "harv" and unit.Type ~= "mcv"
 				and (context.exclude == nil or not context.exclude(unit))
+				and (not context.keepAttackers or not unit.HasProperty("Stance") or unit.Stance ~= "AttackAnything")
 				and CA.SameLand(unit.Location, attacker.Location) then
 				local dx = unit.Location.X - actor.Location.X
 				local dy = unit.Location.Y - actor.Location.Y
@@ -882,7 +1263,7 @@ function CA.IdleDefense(context, interval)
 		return true
 	end
 
-	CA.RepeatingSafeTick("idle-defense", interval, tick, context.isActive)()
+	CA.RepeatingSafeTick("idle-defense", interval, tick, context.isActive, context.isFinished)()
 end
 
 function CA.StartIdleDefense(context, interval)
@@ -891,6 +1272,27 @@ function CA.StartIdleDefense(context, interval)
 			CA.IdleDefense(context, interval)
 		end)
 	end)
+end
+
+-- Bring idle home-guard units back once they wandered outside the base radius
+-- (for example after chasing an attacker). Only units still tracked in
+-- reserve are recalled, so an assault group is never pulled back.
+function CA.RecallReserve(base, radius)
+	if base == nil or base.player == nil then return end
+	local yard = yardCell(base)
+	if yard == nil then return end
+
+	CA.PruneReserve(base)
+	radius = radius or base.baseRadius or 32
+	for _, unit in ipairs(base.reserve) do
+		if CA.IsLive(unit) and unit.HasProperty("Move") and unit.HasProperty("Location")
+			and unit.IsIdle then
+			local dx, dy = unit.Location.X - yard.X, unit.Location.Y - yard.Y
+			if dx * dx + dy * dy > radius * radius then
+				unit.Move(CPos.New(yard.X, yard.Y))
+			end
+		end
+	end
 end
 
 -- ---------------------------------------------------------------- economy
@@ -922,7 +1324,7 @@ end
 function CA.AdoptFreeHarvesters(base)
 	if base == nil or base.player == nil then return end
 	base.harvesters = base.harvesters or {}
-	for _, harv in ipairs(base.player.GetActorsByType(base.harvesterKind or "harv")) do
+	for _, harv in ipairs(CA.GetActorsByType(base.player, base.harvesterKind or "harv")) do
 		if CA.IsLive(harv) then CA.TrackHarvester(base, harv) end
 	end
 end
@@ -952,6 +1354,46 @@ function CA.RestartIdleHarvesters(base)
 	end
 end
 
+-- Shared maintenance pass for the income chain: adopt free harvesters from
+-- rebuilt refineries, refresh claims, restart idle collectors and run the
+-- watchdog. Returns false when there is no refinery to support harvesters.
+function CA.MaintainHarvesters(base, config)
+	if base == nil or base.player == nil then return false end
+	config = config or {}
+	local refineryKind = config.refineryKind or base.refineryKind or "proc"
+	if #CA.GetActorsByType(base.player, refineryKind) == 0 then
+		return false
+	end
+
+	CA.AdoptFreeHarvesters(base)
+	CA.RefreshHarvesterClaims(base, config)
+	CA.RestartIdleHarvesters(base)
+	CA.UpdateIncomeWatchdog(base)
+	return true
+end
+
+-- Build one replacement harvester when the local refineries are understaffed.
+-- config.canBuild(kind) lets the mission apply its tech prerequisites, and
+-- config.harvesterCost/reserve keep the spend in line with the mission.
+function CA.ReplaceHarvester(base, config)
+	if base == nil or base.player == nil then return false end
+	config = config or {}
+	if CA.NeededHarvesters(base, config) <= 0 then return false end
+
+	local factoryKind = config.harvesterProductionKind or base.harvesterProductionKind or "weap"
+	local factory = CA.LocalBuilding(base, factoryKind, base.baseRadius)
+	if factory == nil then return false end
+
+	local harvKind = config.harvesterKind or base.harvesterKind or "harv"
+	if config.canBuild ~= nil and not config.canBuild(harvKind) then return false end
+	if factory.HasProperty("IsProducing") and factory.IsProducing(harvKind) then return false end
+
+	local cost = config.harvesterCost or 1100
+	if CA.Funds(base.player) < cost + (optionValue(config.reserve) or 0) then return false end
+
+	return CA.QueueUnit(factory, harvKind, base.player)
+end
+
 -- Assign each tracked harvester to the nearest local refinery that still has
 -- capacity. The claim tables are bookkeeping only; harvesters keep their
 -- engine resource-finding behaviour.
@@ -965,7 +1407,7 @@ function CA.RefreshHarvesterClaims(base, config)
 	base.refineryClaims = {}
 	base.harvesterClaims = {}
 	local refineries = {}
-	for _, proc in ipairs(base.player.GetActorsByType(refineryKind)) do
+	for _, proc in ipairs(CA.GetActorsByType(base.player, refineryKind)) do
 		if CA.IsLive(proc) and CA.IsLocal(base, proc, base.baseRadius) then
 			local entry = { actor = proc, harvesters = {} }
 			base.refineryClaims[CA.ActorKey(proc)] = entry
@@ -1088,15 +1530,29 @@ function CA.UpdateIncomeWatchdog(base)
 		base.incomeSuspect = false
 		return false
 	end
-	if #base.player.GetActorsByType(base.refineryKind or "proc") == 0 then
+	if #CA.GetActorsByType(base.player, base.refineryKind or "proc") == 0 then
 		base.incomeSuspect = false
 		return false
 	end
 
 	local window = base.incomeWindow or 120
 	if DateTime.GameTime - (base.lastIncomeTime or 0) > DateTime.Seconds(window) then
-		base.incomeSuspect = true
-		CA.RestartIdleHarvesters(base)
+		-- Spending can keep the cash total flat even while harvesters are
+		-- delivering. Only flag a stalled economy when a harvester is
+		-- actually idle; otherwise the watchdog would fight normal
+		-- production and rebuild spending.
+		local idle = false
+		for _, harv in pairs(base.harvesters) do
+			if CA.IsLive(harv) and harv.IsIdle then
+				idle = true
+				break
+			end
+		end
+
+		if idle then
+			base.incomeSuspect = true
+			CA.RestartIdleHarvesters(base)
+		end
 	end
 	return base.incomeSuspect
 end
@@ -1121,7 +1577,10 @@ end
 
 function CA.RefundFunds(player, amount)
 	if player == nil or amount <= 0 then return end
-	player.Resources = (player.Resources or 0) + amount
+	-- SpendFunds drains Resources first and falls back to Cash. Refunding to
+	-- Cash keeps the full amount even when the resource storage is nearly
+	-- full; refunding to Resources could be clamped by ResourceCapacity.
+	player.Cash = (player.Cash or 0) + amount
 end
 
 function CA.IsStorageFull(player)

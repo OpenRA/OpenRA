@@ -32,6 +32,7 @@ local GDI_AI = {
 	players = nil,
 	base = nil,
 	isActive = function() return not MissionFinished end,
+	isFinished = function() return MissionFinished end,
 	repairThreshold = 0.7,
 	releaseOrcas = true,
 	allOut = false,
@@ -53,6 +54,7 @@ local GDI_IDLE_DEFENSE = {
 	enemy = nil,
 	players = nil,
 	isActive = function() return not MissionFinished and GDIAttackWavesStarted end,
+	isFinished = function() return MissionFinished end,
 }
 
 -- Shared damage response for placed, produced and rebuilt GDI actors. Keeping
@@ -159,6 +161,28 @@ GDIRebuildPlan = {
 	{ "gtwr", 38, 15 }, { "gtwr", 50, 19 }, { "gtwr", 38, 12 }, { "gtwr", 54, 19 },
 }
 
+-- Shared rebuild configuration. Optional silos/towers come from the same
+-- [Base] plan and are only rebuilt while the economy is healthy.
+GDI_REBUILD_OPTIONS = {
+	plan = GDIRebuildPlan,
+	targets = { proc = 2, weap = 1, pyle = 1, hpad = 2 },
+	reserve = function() return RebuildReserve[Difficulty or "normal"] end,
+	siteOptions = GDI_SITE_OPTIONS,
+	isActive = function() return not MissionFinished and GDIHasBase() end,
+	optionalEntries = function()
+		local list = {}
+		for _, entry in ipairs(GDIRebuildPlan) do
+			if entry[1] == "silo" or entry[1] == "atwr" or entry[1] == "gtwr" then
+				table.insert(list, entry)
+			end
+		end
+		return list
+	end,
+	onComplete = function(building)
+		RegisterDamageResponse(building)
+	end,
+}
+
 GDIProductionStarted = false
 GDIAttackWavesStarted = false
 GDIIonCannonUnlocked = false
@@ -166,8 +190,6 @@ IonCannonStrikesStarted = false
 IonCannonObjectiveAdded = false
 NextWaveIndex = 0
 NextProduction = "vehicle"
-RebuildInProgress = false
-
 -- Global (the mission script uses it too). Same semantics as the shared
 -- helper: an actor must also be in the world, so cargo inside a transport is
 -- not treated as a live unit.
@@ -186,25 +208,15 @@ end
 -- The named actor globals keep pointing at the original, possibly destroyed
 -- building. Production and economy always resolve a live building instead.
 LocalBuilding = function(kind)
+	if GDIHome ~= nil then
+		return AI.LocalBuilding(GDIHome, kind)
+	end
 	for _, actor in ipairs(GDI.GetActorsByType(kind)) do
 		if IsLive(actor) and actor.IsInWorld and actor.Owner == GDI then
 			return actor
 		end
 	end
-
 	return nil
-end
-
-GDIFunds = function(player)
-	return AI.Funds(player)
-end
-
-SpendFunds = function(player, amount)
-	return AI.SpendFunds(player, amount)
-end
-
-RefundFunds = function(player, amount)
-	AI.RefundFunds(player, amount)
 end
 
 CellsOf = function(waypoints)
@@ -220,16 +232,7 @@ GetCombatUnits = function()
 end
 
 Queue = function(factory, kind, player)
-	if not IsLive(factory) or not factory.IsInWorld or not factory.HasProperty("Build")
-		or not factory.HasProperty("IsProducing") or factory.IsProducing(kind) then
-		return false
-	end
-
-	if GDIFunds(player) < Actor.Cost(kind) then
-		return false
-	end
-
-	return factory.Build({ kind })
+	return AI.QueueUnit(factory, kind, player)
 end
 
 -- ---------------------------------------------------------------- garrison
@@ -427,206 +430,42 @@ TryProduceUnit = function()
 end
 
 TryProduceVehicle = function(pool, reserve, funds)
-	local factory = LocalBuilding("weap")
-	if factory == nil or funds < 600 + reserve then
-		return false
-	end
-
-	for _ = #pool, 1, -1 do
-		local unitType = table.remove(pool, Utils.RandomInteger(1, #pool + 1))
-		if funds >= (UnitCosts[unitType] or 800) + reserve
-			and GDI.HasPrerequisites(UnitPrerequisites[unitType] or {})
-			and Queue(factory, unitType, GDI) then
-			return true
-		end
-	end
-
-	return false
+	return AI.TryQueueFromPool(LocalBuilding("weap"), pool, GDI, {
+		costs = UnitCosts,
+		prerequisites = UnitPrerequisites,
+		reserve = reserve,
+		funds = funds,
+		minFunds = 600,
+	})
 end
 
 TryProduceInfantry = function(reserve, funds)
-	local factory = LocalBuilding("pyle")
-	if factory == nil or funds < 100 + reserve then
-		return false
-	end
-
-	local pool = { "e1", "e2", "e3" }
-	for _ = #pool, 1, -1 do
-		local unitType = table.remove(pool, Utils.RandomInteger(1, #pool + 1))
-		if funds >= (UnitCosts[unitType] or 100) + reserve
-			and GDI.HasPrerequisites(UnitPrerequisites[unitType] or {})
-			and Queue(factory, unitType, GDI) then
-			return true
-		end
-	end
-
-	return false
+	return AI.TryQueueFromPool(LocalBuilding("pyle"), { "e1", "e2", "e3" }, GDI, {
+		costs = UnitCosts,
+		prerequisites = UnitPrerequisites,
+		reserve = reserve,
+		funds = funds,
+		minFunds = 100,
+		defaultCost = 100,
+	})
 end
 
 -- --------------------------------------------------------------- economy
 
 RestartIdleHarvesters = function()
-	if #GDI.GetActorsByType("proc") == 0 then
-		return
-	end
-
-	-- Adopt FreeActor harvesters from rebuilt refineries before counting, then
-	-- re-task idle collectors and update the income watchdog.
-	AI.AdoptFreeHarvesters(GDIHome)
-	AI.RefreshHarvesterClaims(GDIHome, GDI_ECONOMY_OPTIONS)
-	AI.RestartIdleHarvesters(GDIHome)
-	AI.UpdateIncomeWatchdog(GDIHome)
+	AI.MaintainHarvesters(GDIHome, GDI_ECONOMY_OPTIONS)
 end
 
 ReplaceHarvester = function()
-	if AI.NeededHarvesters(GDIHome, GDI_ECONOMY_OPTIONS) <= 0 then
-		return
-	end
-
-	local factory = LocalBuilding("weap")
-	if factory == nil then
-		return
-	end
-
-	if not GDI.HasPrerequisites(UnitPrerequisites.harv) then
-		return
-	end
-
-	if factory.HasProperty("IsProducing") and factory.IsProducing("harv") then
-		return
-	end
-
-	if GDIFunds(GDI) < UnitCosts.harv + UnitReserve[Difficulty or "normal"] then
-		return
-	end
-
-	Queue(factory, "harv", GDI)
-end
-
-BuildingAt = function(kind, x, y)
-	return AI.BuildingAt(kind, x, y) ~= nil
-end
-
-MissingBuilding = function(kind)
-	for _, entry in ipairs(GDIRebuildPlan) do
-		if entry[1] == kind and not BuildingAt(entry[1], entry[2], entry[3]) then
-			return entry
-		end
-	end
-
-	return nil
-end
-
-TryRebuildEntry = function(entry)
-	if RebuildInProgress or not AI.SiteFree(entry, GDI_SITE_OPTIONS) then
-		return false
-	end
-
-	local cost = Actor.Cost(entry[1])
-	if GDIFunds(GDI) < cost + RebuildReserve[Difficulty or "normal"] then
-		return false
-	end
-
-	if not SpendFunds(GDI, cost) then
-		return false
-	end
-	RebuildInProgress = true
-
-	local queue = (entry[1] == "gtwr" or entry[1] == "atwr" or entry[1] == "silo")
-		and "Support.GDI" or "Building.GDI"
-	local buildTime = Actor.BuildTime(entry[1], queue)
-
-	Trigger.AfterDelay(buildTime, function()
-		RebuildInProgress = false
-		if MissionFinished or not GDIHasBase() or not AI.SiteFree(entry, GDI_SITE_OPTIONS) then
-			RefundFunds(GDI, cost)
-			return
-		end
-
-		local building = Actor.Create(entry[1], true, { Owner = GDI, Location = CPos.New(entry[2], entry[3]) })
-		if not IsLive(building) then
-			RefundFunds(GDI, cost)
-			return
-		end
-
-		RegisterDamageResponse(building)
-	end)
-
-	return true
+	return AI.ReplaceHarvester(GDIHome, {
+		harvesterCost = UnitCosts.harv,
+		reserve = function() return UnitReserve[Difficulty or "normal"] end,
+		canBuild = function(kind) return GDI.HasPrerequisites(UnitPrerequisites[kind] or {}) end,
+	})
 end
 
 RebuildOneBuilding = function()
-	if not GDIHasBase() then
-		return
-	end
-
-	local difficulty = Difficulty or "normal"
-	local power = GDI.PowerState
-	local lowPower = power == "Low" or power == "Critical"
-	local storageFull = AI.IsStorageNearlyFull(GDI, 500)
-
-	-- 1. Keep the lights on, then the income and production chain.
-	local order = {}
-	if lowPower then
-		for _, entry in ipairs(GDIRebuildPlan) do
-			if entry[1] == "nuk2" then
-				table.insert(order, entry)
-			end
-		end
-	end
-
-	-- Two refineries is the original target count; rebuild a missing one even
-	-- while the other still runs.
-	if #GDI.GetActorsByType("proc") < 2 then
-		local entry = MissingBuilding("proc")
-		if entry then
-			table.insert(order, entry)
-		end
-	end
-
-	for _, kind in ipairs({ "weap", "pyle" }) do
-		if #GDI.GetActorsByType(kind) == 0 then
-			local entry = MissingBuilding(kind)
-			if entry then
-				table.insert(order, entry)
-			end
-		end
-	end
-
-	for _, entry in ipairs(GDIRebuildPlan) do
-		if (entry[1] == "nuk2" and not lowPower) or (storageFull and entry[1] == "silo") then
-			table.insert(order, entry)
-		end
-	end
-
-	-- The original base has two helipads and two refineries: rebuild both up to
-	-- that target count, not only when the last one is gone.
-	if #GDI.GetActorsByType("hpad") < 2 then
-		local entry = MissingBuilding("hpad")
-		if entry then
-			table.insert(order, entry)
-		end
-	end
-
-	-- 2. Optional structures only while the economy is healthy.
-	if power == "Normal" and GDIFunds(GDI) >= 1500 then
-		for _, entry in ipairs(GDIRebuildPlan) do
-			if entry[1] == "silo" or entry[1] == "atwr" or entry[1] == "gtwr" then
-				table.insert(order, entry)
-			end
-		end
-	end
-
-	local seen = {}
-	for _, entry in ipairs(order) do
-		local key = entry[1] .. entry[2] .. "," .. entry[3]
-		if not seen[key] and not BuildingAt(entry[1], entry[2], entry[3]) and TryRebuildEntry(entry) then
-			return
-		end
-		seen[key] = true
-	end
-
-	return
+	AI.MaintainBase(GDIHome, GDI_REBUILD_OPTIONS)
 end
 
 MaintenanceTick = function()
@@ -638,6 +477,7 @@ MaintenanceTick = function()
 		RestartIdleHarvesters()
 		ReplaceHarvester()
 		RebuildOneBuilding()
+		AI.RecallReserve(GDIHome)
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(15), MaintenanceTick)
