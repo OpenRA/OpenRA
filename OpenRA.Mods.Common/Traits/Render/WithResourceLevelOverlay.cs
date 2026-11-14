@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 
 			var a = new Animation(self.World, rs.GetImage(self));
-			a.PlayFetchIndex(info.Sequence, () =>
+			a.PlayFetchIndex(wsb.NormalizeSequence(self, info.Sequence), () =>
 				playerResources.ResourceCapacity != 0 ?
 				(10 * a.CurrentSequence.Length - 1) * playerResources.Resources / (10 * playerResources.ResourceCapacity) :
 				0);
