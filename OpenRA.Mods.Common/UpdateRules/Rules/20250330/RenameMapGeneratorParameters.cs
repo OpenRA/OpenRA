@@ -18,8 +18,10 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 	/// </summary>
 	public class RenameMapGeneratorParameters : UpdateRule
 	{
-		public override string Name => "Add labels to MarkerLayerOverlay colors.";
-		public override string Description => "Renames generator Settings nodes to Options or Parameters.";
+		public override string Name => "Rename map generator Settings to Options and Parameters.";
+		public override string Description =>
+			"The Settings node of the map generator traits is renamed to Options,\n" +
+			"and the Settings nodes inside MultiChoiceOption choices are renamed to Parameters.";
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
