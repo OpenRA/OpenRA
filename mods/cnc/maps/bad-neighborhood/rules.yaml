@@ -1,0 +1,110 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, campaign-ai.lua, bad-neighborhood.lua, bad-neighborhood-AI.lua
+	MissionData:
+		Briefing: briefing
+		StartVideo: tankkill.vqa
+		LossVideo: nodlose.vqa
+		WinVideo: obel.vqa
+	# Original [Basic] has Theme=No theme, so there is no starting music. The
+	# engine default victory music is GDI's, so Nod missions must set their own.
+	MusicPlaylist:
+		VictoryMusic: nod_win1
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+	# Campaign missions are not skirmishes: never restrict building to the
+	# base radius. Hide the option entirely so it cannot be re-enabled.
+	MapBuildRadius:
+		BuildRadiusCheckboxEnabled: False
+		BuildRadiusCheckboxVisible: False
+
+Player:
+	EnemyWatcher:
+	PlayerResources:
+		DefaultCash: 0
+	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
+		Enabled: True
+
+HARV:
+	Harvester:
+		SearchFromProcRadius: 30
+		SearchFromHarvesterRadius: 20
+
+# The original places a single wooden crate inside the cyclone-fenced pen in
+# the north-east of the GDI base. Vanilla WCRATE is decorative, so give the
+# pickup a fixed cash bonus instead of the original random goodie.
+WCRATE:
+	GiveCashCrateAction:
+		Amount: 1000
+		SelectionShares: 1
+		UseCashTick: true
+
+# The original village buildings leave husks behind. In this mission the
+# destroyed buildings should clear the cell instead, so the narrow village
+# streets stay passable and the player can actually fight through them.
+V20:
+	-SpawnActorOnDeath:
+
+V21:
+	-SpawnActorOnDeath:
+
+V22:
+	-SpawnActorOnDeath:
+
+V23:
+	-SpawnActorOnDeath:
+
+V24:
+	-SpawnActorOnDeath:
+
+V25:
+	-SpawnActorOnDeath:
+
+V26:
+	-SpawnActorOnDeath:
+
+V27:
+	-SpawnActorOnDeath:
+
+V28:
+	-SpawnActorOnDeath:
+
+V29:
+	-SpawnActorOnDeath:
+
+V30:
+	-SpawnActorOnDeath:
+
+V31:
+	-SpawnActorOnDeath:
+
+V32:
+	-SpawnActorOnDeath:
+
+V33:
+	-SpawnActorOnDeath:
+
+V34:
+	-SpawnActorOnDeath:
+
+V35:
+	-SpawnActorOnDeath:
+
+V36:
+	-SpawnActorOnDeath:
+
+# Scripted transports (apc1/apc2 and gdi1) leave the map after unloading.
+# Empty transports must not keep the GDI All-Destroyed check open.
+APC:
+	-MustBeDestroyed:
+
+TRAN:
+	-MustBeDestroyed:
+
