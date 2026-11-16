@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -41,7 +42,7 @@ namespace OpenRA
 				AddTextNotification(TextNotificationPool.Transients, SystemClientId, SystemMessageLabel, FluentProvider.GetMessage(text));
 		}
 
-		public static void AddFeedbackLine(string text, params object[] args)
+		public static void AddFeedbackLine(string text, params ReadOnlySpan<object> args)
 		{
 			AddTextNotification(TextNotificationPool.Feedback, SystemClientId, SystemMessageLabel, FluentProvider.GetMessage(text, args));
 		}
@@ -51,17 +52,17 @@ namespace OpenRA
 			AddTextNotification(TextNotificationPool.Mission, SystemClientId, prefix, text, prefixColor);
 		}
 
-		public static void AddPlayerJoinedLine(string text, params object[] args)
+		public static void AddPlayerJoinedLine(string text, params ReadOnlySpan<object> args)
 		{
 			AddTextNotification(TextNotificationPool.Join, SystemClientId, SystemMessageLabel, FluentProvider.GetMessage(text, args));
 		}
 
-		public static void AddPlayerLeftLine(string text, params object[] args)
+		public static void AddPlayerLeftLine(string text, params ReadOnlySpan<object> args)
 		{
 			AddTextNotification(TextNotificationPool.Leave, SystemClientId, SystemMessageLabel, FluentProvider.GetMessage(text, args));
 		}
 
-		public static void AddSystemLine(string text, params object[] args)
+		public static void AddSystemLine(string text, params ReadOnlySpan<object> args)
 		{
 			AddSystemLine(SystemMessageLabel, FluentProvider.GetMessage(text, args));
 		}
@@ -76,7 +77,7 @@ namespace OpenRA
 			AddTextNotification(TextNotificationPool.Chat, clientId, prefix, text, prefixColor, textColor);
 		}
 
-		public static void Debug(string format, params object[] args)
+		public static void Debug(string format, params ReadOnlySpan<object> args)
 		{
 			AddSystemLine("Debug", format.FormatCurrent(args));
 		}

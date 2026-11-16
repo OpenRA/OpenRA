@@ -243,7 +243,7 @@ namespace OpenRA
 			});
 		}
 
-		public string Sign(params string[] data)
+		public string Sign(params ReadOnlySpan<string> data)
 		{
 			// If we don't have any keys, or we know for sure that they haven't been linked to the forum
 			// then we can't do much here. If we have keys but don't yet know if they have been linked to the
@@ -252,7 +252,7 @@ namespace OpenRA
 			if (State < LinkState.CheckingLink)
 				return null;
 
-			return CryptoUtil.Sign(keyData.Parameters, data.Where(x => !string.IsNullOrEmpty(x)).JoinWith(string.Empty));
+			return CryptoUtil.Sign(keyData.Parameters, string.Concat(data));
 		}
 
 		public string DecryptString(string data)

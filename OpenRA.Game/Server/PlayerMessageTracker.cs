@@ -22,16 +22,13 @@ namespace OpenRA.Server
 		readonly Dictionary<int, List<long>> messageTracker = [];
 		readonly Server server;
 		readonly Action<Connection, int, int, byte[]> dispatchOrdersToClient;
-		readonly Action<Connection, string, object[]> sendFluentMessageTo;
 
 		public PlayerMessageTracker(
 			Server server,
-			Action<Connection, int, int, byte[]> dispatchOrdersToClient,
-			Action<Connection, string, object[]> sendFluentMessageTo)
+			Action<Connection, int, int, byte[]> dispatchOrdersToClient)
 		{
 			this.server = server;
 			this.dispatchOrdersToClient = dispatchOrdersToClient;
-			this.sendFluentMessageTo = sendFluentMessageTo;
 		}
 
 		public void DisableChatUI(Connection conn, int time)
@@ -56,7 +53,7 @@ namespace OpenRA.Server
 			if (!isAdmin && time < settings.FloodLimitJoinCooldown)
 			{
 				var remaining = CalculateRemaining(settings.FloodLimitJoinCooldown);
-				sendFluentMessageTo(conn, ChatTemporaryDisabled, ["remaining", remaining]);
+				server.SendFluentMessageTo(conn, ChatTemporaryDisabled, ["remaining", remaining]);
 				return true;
 			}
 
@@ -64,7 +61,7 @@ namespace OpenRA.Server
 			if (tracker.Count >= settings.FloodLimitMessageCount)
 			{
 				var remaining = CalculateRemaining(tracker[0] + settings.FloodLimitInterval);
-				sendFluentMessageTo(conn, ChatTemporaryDisabled, ["remaining", remaining]);
+				server.SendFluentMessageTo(conn, ChatTemporaryDisabled, ["remaining", remaining]);
 				return true;
 			}
 

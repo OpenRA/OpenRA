@@ -65,11 +65,11 @@ namespace OpenRA.Network
 					{
 						var message = new FluentMessage(node.Value);
 						if (message.Key == Joined)
-							TextNotificationsManager.AddPlayerJoinedLine(message.Key, message.Arguments.ToArray());
+							TextNotificationsManager.AddPlayerJoinedLine(message.Key, message.Arguments.AsSpan());
 						else if (message.Key == Left)
-							TextNotificationsManager.AddPlayerLeftLine(message.Key, message.Arguments.ToArray());
+							TextNotificationsManager.AddPlayerLeftLine(message.Key, message.Arguments.AsSpan());
 						else
-							TextNotificationsManager.AddSystemLine(message.Key, message.Arguments.ToArray());
+							TextNotificationsManager.AddSystemLine(message.Key, message.Arguments.AsSpan());
 					}
 
 					break;

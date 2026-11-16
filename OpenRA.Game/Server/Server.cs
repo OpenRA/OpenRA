@@ -319,7 +319,7 @@ namespace OpenRA.Server
 
 			MapStatusCache = new MapStatusCache(modData, MapStatusChanged, type == ServerType.Dedicated && settings.EnableLintChecks);
 
-			playerMessageTracker = new PlayerMessageTracker(this, DispatchOrdersToClient, SendFluentMessageTo);
+			playerMessageTracker = new PlayerMessageTracker(this, DispatchOrdersToClient);
 			VoteKickTracker = new VoteKickTracker(this);
 
 			LobbyInfo = new Session
@@ -969,13 +969,13 @@ namespace OpenRA.Server
 			DispatchOrdersToClient(conn, 0, 0, Order.FromTargetString(order, data, true).Serialize());
 		}
 
-		public void SendFluentMessage(string key, params object[] args)
+		public void SendFluentMessage(string key, params ReadOnlySpan<object> args)
 		{
 			var conns = Conns.ToArray();
 			SendFluentMessage(conns, key, args);
 		}
 
-		public void SendFluentMessage(ReadOnlySpan<Connection> conns, string key, params object[] args)
+		public void SendFluentMessage(ReadOnlySpan<Connection> conns, string key, params ReadOnlySpan<object> args)
 		{
 			var text = FluentMessage.Serialize(key, args);
 			DispatchServerOrdersToClients(conns, Order.FromTargetString("FluentMessage", text, true).Serialize());
@@ -984,7 +984,7 @@ namespace OpenRA.Server
 				WriteLineWithTimeStamp(FluentProvider.GetMessage(key, args));
 		}
 
-		public void SendFluentMessageTo(Connection conn, string key, object[] args = null)
+		public void SendFluentMessageTo(Connection conn, string key, ReadOnlySpan<object> args = default)
 		{
 			var text = FluentMessage.Serialize(key, args);
 			DispatchOrdersToClient(conn, 0, 0, Order.FromTargetString("FluentMessage", text, true).Serialize());

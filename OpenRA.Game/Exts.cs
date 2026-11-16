@@ -36,12 +36,12 @@ namespace OpenRA
 			return actor.Owner.Color;
 		}
 
-		public static string FormatInvariant(this string format, params object[] args)
+		public static string FormatInvariant(this string format, params ReadOnlySpan<object> args)
 		{
 			return string.Format(CultureInfo.InvariantCulture, format, args);
 		}
 
-		public static string FormatCurrent(this string format, params object[] args)
+		public static string FormatCurrent(this string format, params ReadOnlySpan<object> args)
 		{
 			return string.Format(CultureInfo.CurrentCulture, format, args);
 		}
