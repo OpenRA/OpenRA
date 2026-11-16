@@ -241,14 +241,9 @@ namespace OpenRA.Mods.Common.Widgets
 			listOffset = Math.Min(0, Math.Max(Bounds.Width - rightButtonRect.Width - leftButtonRect.Width - contentWidth, listOffset));
 		}
 
-		// Is added to world.ActorAdded by the SidebarLogic handler
-		public void ActorChanged(Actor a)
+		public void RefreshQueueCache(World world)
 		{
-			// Ignore non-production actors and actors owned by non-local player
-			if (!a.Info.HasTraitInfo<ProductionQueueInfo>() || a.Owner != a.World.LocalPlayer)
-				return;
-
-			var queues = a.World.ActorsWithTrait<ProductionQueue>()
+			var queues = world.ActorsWithTrait<ProductionQueue>()
 				.Where(p => p.Actor.Owner == p.Actor.World.LocalPlayer && p.Actor.IsInWorld)
 				.Select(p => p.Trait);
 
@@ -270,6 +265,16 @@ namespace OpenRA.Mods.Common.Widgets
 			// Queue destroyed, others of same type: switch to another tab
 			else if (!Groups[queueGroup].Tabs.Select(t => t.Queue).Contains(CurrentQueue))
 				SelectNextTab(false);
+		}
+
+		// Is added to world.ActorAdded by the SidebarLogic handler
+		public void ActorChanged(Actor a)
+		{
+			// Ignore non-production actors and actors owned by non-local player
+			if (!a.Info.HasTraitInfo<ProductionQueueInfo>() || a.Owner != a.World.LocalPlayer)
+				return;
+
+			RefreshQueueCache(a.World);
 		}
 
 		public override void Tick()
