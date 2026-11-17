@@ -790,6 +790,11 @@ button-panel-audio = Audio
 button-panel-hotkeys = Hotkeys
 button-panel-advanced = Advanced
 
+## text-notifications.yaml
+label-chat-url-warning =
+    Be careful: links shared in chat can be dangerous.
+    Only open URLs from people you trust.
+
 ## tooltips.yaml
 label-latency-tooltip-prefix = Latency:
 label-anonymous-player-tooltip-name = Anonymous Player
