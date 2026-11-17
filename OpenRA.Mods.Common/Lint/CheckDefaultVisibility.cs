@@ -31,40 +31,40 @@ namespace OpenRA.Mods.Common.Lint
 
 		static void Run(Action<string> emitError, Ruleset rules)
 		{
-			foreach (var actorInfo in rules.Actors)
+			foreach (var actorInfo in rules.Actors.Values)
 			{
 				// Catch TypeDictionary errors.
 				try
 				{
-					var visibilityTypes = actorInfo.Value.TraitInfos<IDefaultVisibilityInfo>();
+					var visibilityTypes = actorInfo.TraitInfos<IDefaultVisibilityInfo>();
 					var count = visibilityTypes.Count;
 
 					if (count == 0)
 						continue;
 					else if (count > 1)
 						emitError(
-							$"Actor type `{actorInfo.Key}` defines multiple default visibility types: " +
+							$"Actor type `{actorInfo.Name}` defines multiple default visibility types: " +
 							$"{string.Join(", ", visibilityTypes.Select(vis => vis.GetType().Name))}.");
 					else
 					{
-						var vis = actorInfo.Value.TraitInfoOrDefault<HiddenUnderShroudInfo>();
+						var vis = actorInfo.TraitInfoOrDefault<HiddenUnderShroudInfo>();
 						if (vis != null && vis.Type == VisibilityType.Footprint)
 						{
-							var ios = actorInfo.Value.TraitInfoOrDefault<IOccupySpaceInfo>();
+							var ios = actorInfo.TraitInfoOrDefault<IOccupySpaceInfo>();
 							if (ios == null)
 								emitError(
-									$"Actor type `{actorInfo.Key}` defines VisibilityType.Footprint in `{vis.GetType().Name}` " +
+									$"Actor type `{actorInfo.Name}` defines VisibilityType.Footprint in `{vis.GetType().Name}` " +
 									"but has no IOccupySpace traits.");
-							else if (ios.OccupiedCells(actorInfo.Value, CPos.Zero).Count == 0)
+							else if (ios.OccupiedCells(actorInfo, CPos.Zero).Count == 0)
 								emitError(
-									$"Actor type `{actorInfo.Key}` defines VisibilityType.Footprint in `{vis.GetType().Name}` " +
+									$"Actor type `{actorInfo.Name}` defines VisibilityType.Footprint in `{vis.GetType().Name}` " +
 									"but does not have any footprint cells.");
 						}
 					}
 				}
 				catch (InvalidOperationException e)
 				{
-					emitError($"{e.Message} (Actor type `{actorInfo.Key}`).");
+					emitError($"{e.Message} (Actor type `{actorInfo.Name}`).");
 				}
 			}
 		}

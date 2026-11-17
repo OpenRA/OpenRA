@@ -18,12 +18,12 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		void ILintRulesPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
 		{
-			foreach (var actorInfo in rules.Actors)
+			foreach (var actorInfo in rules.Actors.Values)
 			{
-				var selectable = actorInfo.Value.TraitInfos<SelectableInfo>().Count;
-				var interactable = actorInfo.Value.TraitInfos<InteractableInfo>().Count;
+				var selectable = actorInfo.TraitInfos<SelectableInfo>().Count;
+				var interactable = actorInfo.TraitInfos<InteractableInfo>().Count;
 				if (selectable > 0 && selectable != interactable)
-					emitWarning($"Actor `{actorInfo.Value.Name}` defines both Interactable and Selectable traits. This may cause unexpected results.");
+					emitWarning($"Actor `{actorInfo.Name}` defines both Interactable and Selectable traits. This may cause unexpected results.");
 			}
 		}
 	}

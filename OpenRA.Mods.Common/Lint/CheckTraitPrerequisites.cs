@@ -29,17 +29,17 @@ namespace OpenRA.Mods.Common.Lint
 
 		static void Run(Action<string> emitError, Action<string> emitWarning, Ruleset rules)
 		{
-			foreach (var actorInfo in rules.Actors)
+			foreach (var actorInfo in rules.Actors.Values)
 			{
 				try
 				{
-					var hasTraits = actorInfo.Value.TraitsInConstructOrder().Any();
-					if (!hasTraits && !Enum.TryParse<SystemActors>(actorInfo.Key, true, out _))
-						emitWarning($"Actor `{actorInfo.Key}` has no traits. Is this intended?");
+					var hasTraits = actorInfo.TraitsInConstructOrder().Any();
+					if (!hasTraits && !Enum.TryParse<SystemActors>(actorInfo.Name, true, out _))
+						emitWarning($"Actor `{actorInfo.Name}` has no traits. Is this intended?");
 				}
 				catch (Exception e)
 				{
-					emitError($"Actor `{actorInfo.Key}` is not constructible; failure: {e.Message}.");
+					emitError($"Actor `{actorInfo.Name}` is not constructible; failure: {e.Message}.");
 				}
 			}
 		}

@@ -41,9 +41,9 @@ namespace OpenRA.Mods.Common.Lint
 				foreach (var sequence in s.Value.Nodes)
 					cursors.Add(sequence.Key);
 
-			foreach (var actorInfo in rules.Actors)
+			foreach (var actorInfo in rules.Actors.Values)
 			{
-				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
+				foreach (var traitInfo in actorInfo.TraitInfos<TraitInfo>())
 				{
 					var fields = Utility.GetFields(traitInfo.GetType());
 					foreach (var field in fields)
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Lint
 							continue;
 
 						if (!cursors.Contains(cursor))
-							emitError($"Undefined cursor `{cursor}` for actor `{actorInfo.Value.Name}` with trait `{traitInfo}`.");
+							emitError($"Undefined cursor `{cursor}` for actor `{actorInfo.Name}` with trait `{traitInfo}`.");
 					}
 				}
 			}

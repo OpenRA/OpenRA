@@ -65,8 +65,8 @@ namespace OpenRA.Mods.Common.Traits
 				reference.Add(new OwnerInit(owner.Name));
 
 			var world = worldRenderer.World;
-			if (!world.Map.Rules.Actors.TryGetValue(reference.Type.ToLowerInvariant(), out Info))
-				throw new InvalidDataException($"Actor {id} of unknown type {reference.Type.ToLowerInvariant()}");
+			if (!world.Map.Rules.Actors.TryGetValue(reference.Type, out Info))
+				throw new InvalidDataException($"Actor {id} of unknown type {reference.Type}");
 
 			GenerateFootprint();
 			UpdateFromCellChange();

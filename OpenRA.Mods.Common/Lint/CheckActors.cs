@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Lint
 			foreach (var actor in map.ActorDefinitions)
 			{
 				var name = actor.Value.Value;
-				if (!map.Rules.Actors.ContainsKey(name.ToLowerInvariant()))
+				if (!map.Rules.Actors.ContainsKey(name))
 					emitError($"Actor `{name}` is not defined by any rule.");
 
 				if (scriptBindings.Contains(actor.Key))

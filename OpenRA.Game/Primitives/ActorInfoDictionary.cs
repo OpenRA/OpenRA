@@ -23,7 +23,7 @@ namespace OpenRA
 		{
 			ArgumentNullException.ThrowIfNull(dict);
 
-			this.dict = new Dictionary<string, ActorInfo>(dict);
+			this.dict = new Dictionary<string, ActorInfo>(dict, StringComparer.OrdinalIgnoreCase);
 
 			// Include an empty entry for each system actor to guarantee that
 			// they will be defined even if not specified in the mod yaml
@@ -42,7 +42,14 @@ namespace OpenRA
 		public int Count => dict.Count;
 
 		public ActorInfo this[string key] => dict[key];
-		public ActorInfo this[SystemActors key] => dict[key.ToString().ToLowerInvariant()];
+		public ActorInfo this[SystemActors key] => dict[key switch
+		{
+			SystemActors.Player => "player",
+			SystemActors.EditorPlayer => "editorPlayer",
+			SystemActors.World => "world",
+			SystemActors.EditorWorld => "editorWorld",
+			_ => throw new NotImplementedException(),
+		}];
 
 		IEnumerable<string> IReadOnlyDictionary<string, ActorInfo>.Keys => dict.Keys;
 		IEnumerable<ActorInfo> IReadOnlyDictionary<string, ActorInfo>.Values => dict.Values;

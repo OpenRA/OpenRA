@@ -94,9 +94,9 @@ namespace OpenRA.Mods.Common.Lint
 
 		static void ExtractRulesetFluentKeys(ModData modData, Ruleset rules, Keys keys)
 		{
-			foreach (var actorInfo in rules.Actors)
-				foreach (var ti in actorInfo.Value.TraitInfos<TraitInfo>())
-					ExtractFluentKeys(modData, ti, $"Actor `{actorInfo.Key}` trait {ti.GetType().Name[..^4]}", keys);
+			foreach (var actorInfo in rules.Actors.Values)
+				foreach (var ti in actorInfo.TraitInfos<TraitInfo>())
+					ExtractFluentKeys(modData, ti, $"Actor `{actorInfo.Name}` trait {ti.GetType().Name[..^4]}", keys);
 
 			foreach (var w in rules.Weapons)
 				foreach (var wh in w.Value.Warheads)

@@ -31,9 +31,9 @@ namespace OpenRA.Mods.Common.Lint
 
 		static void Run(Action<string> emitError, Ruleset rules)
 		{
-			foreach (var actorInfo in rules.Actors)
+			foreach (var actorInfo in rules.Actors.Values)
 			{
-				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
+				foreach (var traitInfo in actorInfo.TraitInfos<TraitInfo>())
 				{
 					var fields = Utility.GetFields(traitInfo.GetType());
 					foreach (var field in fields.Where(Utility.HasAttribute<NotificationReferenceAttribute>))
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Lint
 
 							if (string.IsNullOrEmpty(type) || !rules.Notifications.TryGetValue(type.ToLowerInvariant(), out var soundInfo) ||
 								!soundInfo.Notifications.ContainsKey(notification))
-								emitError($"Undefined notification reference `{type ?? "(null)"}.{notification}` detected at `{traitInfo.GetType().Name}` for `{actorInfo.Key}`.");
+								emitError($"Undefined notification reference `{type ?? "(null)"}.{notification}` detected at `{traitInfo.GetType().Name}` for `{actorInfo.Name}`.");
 						}
 					}
 				}

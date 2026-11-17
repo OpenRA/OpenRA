@@ -39,24 +39,24 @@ namespace OpenRA.Mods.Common.Lint
 			// As the map has not been created we need to get MapGrid info directly from manifest.
 			var tileSize = defaultTerrainInfo.Values.First().TileSize;
 			var tileScale = modData.GetOrCreate<MapGrid>().TileScale;
-			foreach (var actorInfo in rules.Actors)
+			foreach (var actorInfo in rules.Actors.Values)
 			{
 				// Catch TypeDictionary errors.
 				try
 				{
-					var interactable = actorInfo.Value.TraitInfoOrDefault<InteractableInfo>();
+					var interactable = actorInfo.TraitInfoOrDefault<InteractableInfo>();
 					if (interactable == null)
 						continue;
 
 					if (HasInvalidBounds(interactable.Bounds, tileSize, tileScale))
-						emitError($"{actorInfo.Key}.{interactable.GetType().Name}.{nameof(interactable.Bounds)} are empty or negative.");
+						emitError($"{actorInfo.Name}.{interactable.GetType().Name}.{nameof(interactable.Bounds)} are empty or negative.");
 
 					if (HasInvalidBounds(interactable.DecorationBounds, tileSize, tileScale))
-						emitError($"{actorInfo.Key}.{interactable.GetType().Name}.{nameof(interactable.DecorationBounds)} are empty or negative.");
+						emitError($"{actorInfo.Name}.{interactable.GetType().Name}.{nameof(interactable.DecorationBounds)} are empty or negative.");
 				}
 				catch (InvalidOperationException e)
 				{
-					emitError($"{e.Message} (Actor type `{actorInfo.Key}`).");
+					emitError($"{e.Message} (Actor type `{actorInfo.Name}`).");
 				}
 			}
 		}

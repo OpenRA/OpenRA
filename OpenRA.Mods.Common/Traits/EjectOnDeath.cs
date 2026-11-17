@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (!Info.AllowUnsuitableCell)
 				{
-					var pilotInfo = self.World.Map.Rules.Actors[Info.PilotActor.ToLowerInvariant()];
+					var pilotInfo = self.World.Map.Rules.Actors[Info.PilotActor];
 					var pilotPositionable = pilotInfo.TraitInfo<IPositionableInfo>();
 					if (!pilotPositionable.CanEnterCell(self.World, null, self.Location))
 						return;

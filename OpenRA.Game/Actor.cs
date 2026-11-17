@@ -147,12 +147,8 @@ namespace OpenRA
 
 			if (name != null)
 			{
-				name = name.ToLowerInvariant();
-
-				if (!world.Map.Rules.Actors.ContainsKey(name))
+				if (!world.Map.Rules.Actors.TryGetValue(name, out Info))
 					throw new NotImplementedException("No rules definition for unit " + name);
-
-				Info = world.Map.Rules.Actors[name];
 
 				var resolveOrdersList = new List<IResolveOrder>();
 				var renderModifiersList = new List<IRenderModifier>();

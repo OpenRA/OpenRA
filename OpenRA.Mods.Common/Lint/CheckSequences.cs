@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Lint
 		static void Run(Action<string> emitError, Action<string> emitWarning, Ruleset rules, SequenceSet sequences)
 		{
 			var factions = rules.Actors[SystemActors.World].TraitInfos<FactionInfo>().Select(f => f.InternalName).ToArray();
-			foreach (var actorInfo in rules.Actors)
+			foreach (var actorInfo in rules.Actors.Values)
 			{
 				// Catch TypeDictionary errors.
 				try
@@ -45,17 +45,17 @@ namespace OpenRA.Mods.Common.Lint
 					var images = new HashSet<string>();
 
 					// Actors may have 0 or 1 RenderSprites traits.
-					var renderInfo = actorInfo.Value.TraitInfoOrDefault<RenderSpritesInfo>();
+					var renderInfo = actorInfo.TraitInfoOrDefault<RenderSpritesInfo>();
 					if (renderInfo != null)
 					{
-						images.Add(renderInfo.GetImage(actorInfo.Value, null).ToLowerInvariant());
+						images.Add(renderInfo.GetImage(actorInfo, null).ToLowerInvariant());
 
 						// Some actors define faction-specific artwork.
 						foreach (var faction in factions)
-							images.Add(renderInfo.GetImage(actorInfo.Value, faction).ToLowerInvariant());
+							images.Add(renderInfo.GetImage(actorInfo, faction).ToLowerInvariant());
 					}
 
-					foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
+					foreach (var traitInfo in actorInfo.TraitInfos<TraitInfo>())
 					{
 						// Remove the "Info" suffix.
 						var traitName = traitInfo.GetType().Name;
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Lint
 								if (string.IsNullOrEmpty(imageOverride))
 								{
 									if (!sequenceReference.AllowNullImage)
-										emitError($"Actor type `{actorInfo.Value.Name}` trait `{traitName}` must define a value for `{sequenceReference.ImageReference}`.");
+										emitError($"Actor type `{actorInfo.Name}` trait `{traitName}` must define a value for `{sequenceReference.ImageReference}`.");
 
 									continue;
 								}
@@ -97,12 +97,12 @@ namespace OpenRA.Mods.Common.Lint
 										// TODO: Remove prefixed sequence references and instead use explicit lists of lintable references.
 										if (!sequences.Sequences(i).Any(s => s.StartsWith(sequence, StringComparison.Ordinal)))
 											emitWarning(
-												$"Actor type `{actorInfo.Value.Name}` trait `{traitName}` field `{field.Name}` " +
+												$"Actor type `{actorInfo.Name}` trait `{traitName}` field `{field.Name}` " +
 												$"defines a prefix `{sequence}` that does not match any sequences on image `{i}`.");
 									}
 									else if (!sequences.HasSequence(i, sequence))
 										emitError(
-											$"Actor type `{actorInfo.Value.Name}` trait `{traitName}` field `{field.Name}` " +
+											$"Actor type `{actorInfo.Name}` trait `{traitName}` field `{field.Name}` " +
 											$"references an undefined sequence `{sequence}` on image `{i}`.");
 								}
 							}
@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Lint
 				}
 				catch (InvalidOperationException e)
 				{
-					emitError($"{e.Message} (Actor type `{actorInfo.Key}`)");
+					emitError($"{e.Message} (Actor type `{actorInfo.Name}`)");
 				}
 			}
 

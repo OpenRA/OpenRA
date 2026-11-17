@@ -30,14 +30,14 @@ namespace OpenRA.Mods.Common.Lint
 
 		static void Run(Action<string> emitError, Ruleset rules)
 		{
-			foreach (var actorInfo in rules.Actors)
+			foreach (var actorInfo in rules.Actors.Values)
 			{
-				var duplicateNames = actorInfo.Value.TraitInfos<WithSpriteBodyInfo>()
+				var duplicateNames = actorInfo.TraitInfos<WithSpriteBodyInfo>()
 					.CountBy(wsb => wsb.Name)
 					.Where(g => g.Value > 1)
 					.Select(g => g.Key);
 				foreach (var duplicateName in duplicateNames)
-					emitError($"Actor type `{actorInfo.Key}` has more than one *SpriteBody with Name: {duplicateName}.");
+					emitError($"Actor type `{actorInfo.Name}` has more than one *SpriteBody with Name: {duplicateName}.");
 			}
 		}
 	}

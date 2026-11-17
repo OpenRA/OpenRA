@@ -30,26 +30,26 @@ namespace OpenRA.Mods.Common.Lint
 
 		static void Run(Action<string> emitError, Ruleset rules)
 		{
-			foreach (var actorInfo in rules.Actors)
+			foreach (var actorInfo in rules.Actors.Values)
 			{
 				// Catch TypeDictionary errors.
 				try
 				{
-					var ios = actorInfo.Value.TraitInfoOrDefault<IOccupySpaceInfo>();
-					foreach (var rsi in actorInfo.Value.TraitInfos<RevealsShroudInfo>())
+					var ios = actorInfo.TraitInfoOrDefault<IOccupySpaceInfo>();
+					foreach (var rsi in actorInfo.TraitInfos<RevealsShroudInfo>())
 					{
 						if (rsi.Type != VisibilityType.Footprint)
 							continue;
 
 						if (ios == null)
-							emitError($"Actor type `{actorInfo.Key}` defines VisibilityType.Footprint in `{rsi.GetType()}` but has no IOccupySpace traits.");
-						else if (ios.OccupiedCells(actorInfo.Value, CPos.Zero).Count == 0)
-							emitError($"Actor type `{actorInfo.Key}` defines VisibilityType.Footprint in `{rsi.GetType()}` but does not have any footprint cells.");
+							emitError($"Actor type `{actorInfo.Name}` defines VisibilityType.Footprint in `{rsi.GetType()}` but has no IOccupySpace traits.");
+						else if (ios.OccupiedCells(actorInfo, CPos.Zero).Count == 0)
+							emitError($"Actor type `{actorInfo.Name}` defines VisibilityType.Footprint in `{rsi.GetType()}` but does not have any footprint cells.");
 					}
 				}
 				catch (InvalidOperationException e)
 				{
-					emitError($"{e.Message} (Actor type `{actorInfo.Key}`).");
+					emitError($"{e.Message} (Actor type `{actorInfo.Name}`).");
 				}
 			}
 		}
