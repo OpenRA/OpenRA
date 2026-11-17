@@ -28,6 +28,7 @@ Players:
 		Name: Creeps
 		NonCombatant: True
 		Faction: Random
+		Enemies: Atreides, Ordos, OrdosSmall, Harkonnen, Smugglers, SmugglersAtreides, SmugglersAI, SmugglersBoth
 	PlayerReference@Atreides:
 		Name: Atreides
 		Playable: True
