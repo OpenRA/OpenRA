@@ -35,9 +35,9 @@ namespace OpenRA.Mods.Common.Lint
 			var playerPalettes = new List<string>();
 			GetPalettes(rules, palettes, playerPalettes, emitError);
 
-			foreach (var actorInfo in rules.Actors)
+			foreach (var actorInfo in rules.Actors.Values)
 			{
-				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
+				foreach (var traitInfo in actorInfo.TraitInfos<TraitInfo>())
 				{
 					var fields = Utility.GetFields(traitInfo.GetType());
 					foreach (var field in fields)
@@ -64,12 +64,12 @@ namespace OpenRA.Mods.Common.Lint
 							if (isPlayerPalette)
 							{
 								if (!playerPalettes.Contains(reference))
-									emitError($"Undefined player palette reference `{reference}` detected at `{traitInfo}` for `{actorInfo.Key}`");
+									emitError($"Undefined player palette reference `{reference}` detected at `{traitInfo}` for `{actorInfo.Name}`");
 							}
 							else
 							{
 								if (!palettes.Contains(reference))
-									emitError($"Undefined palette reference `{reference}` detected at `{traitInfo}` for `{actorInfo.Key}`");
+									emitError($"Undefined palette reference `{reference}` detected at `{traitInfo}` for `{actorInfo.Name}`");
 							}
 						}
 					}

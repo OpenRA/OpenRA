@@ -31,12 +31,12 @@ namespace OpenRA.Mods.Common.Lint
 
 		static void Run(Action<string> emitError, Action<string> emitWarning, Ruleset rules)
 		{
-			foreach (var actorInfo in rules.Actors)
+			foreach (var actorInfo in rules.Actors.Values)
 			{
 				var granted = new HashSet<string>();
 				var consumed = new HashSet<string>();
 
-				foreach (var trait in actorInfo.Value.TraitInfos<TraitInfo>())
+				foreach (var trait in actorInfo.TraitInfos<TraitInfo>())
 				{
 					var fields = Utility.GetFields(trait.GetType());
 					var properties = trait.GetType().GetProperties();
@@ -68,11 +68,11 @@ namespace OpenRA.Mods.Common.Lint
 
 				var unconsumed = granted.Except(consumed).ToList();
 				if (unconsumed.Count != 0)
-					emitWarning($"Actor type `{actorInfo.Key}` grants conditions that are not consumed: {unconsumed.JoinWith(", ")}.");
+					emitWarning($"Actor type `{actorInfo.Name}` grants conditions that are not consumed: {unconsumed.JoinWith(", ")}.");
 
 				var ungranted = consumed.Except(granted).ToList();
 				if (ungranted.Count != 0)
-					emitError($"Actor type `{actorInfo.Key}` consumes conditions that are not granted: {ungranted.JoinWith(", ")}.");
+					emitError($"Actor type `{actorInfo.Name}` consumes conditions that are not granted: {ungranted.JoinWith(", ")}.");
 			}
 		}
 	}

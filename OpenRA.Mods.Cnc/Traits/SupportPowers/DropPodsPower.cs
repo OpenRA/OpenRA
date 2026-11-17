@@ -82,18 +82,15 @@ namespace OpenRA.Mods.Cnc.Traits
 	public class DropPodsPower : SupportPower
 	{
 		readonly DropPodsPowerInfo info;
-		readonly string[] unitTypes;
-		readonly Dictionary<string, Func<CPos, WPos>> getLaunchLocation = [];
-		readonly Dictionary<string, FrozenSet<string>> landableTerrainTypes = [];
+		readonly Dictionary<string, Func<CPos, WPos>> getLaunchLocation = new(StringComparer.OrdinalIgnoreCase);
+		readonly Dictionary<string, FrozenSet<string>> landableTerrainTypes = new(StringComparer.OrdinalIgnoreCase);
 
 		public DropPodsPower(Actor self, DropPodsPowerInfo info)
 			: base(self, info)
 		{
 			this.info = info;
 
-			unitTypes = info.UnitTypes.Select(unit => unit.ToLowerInvariant()).ToArray();
-
-			foreach (var unitType in unitTypes)
+			foreach (var unitType in info.UnitTypes)
 			{
 				if (!self.World.Map.Rules.Actors.TryGetValue(unitType, out var actorInfo))
 					throw new NotImplementedException("No rules definition for unit " + unitType);
@@ -146,7 +143,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				}
 
 				var dropAmount = world.SharedRandom.Next(info.Drops.X, info.Drops.Y);
-				var validUnitTypes = unitTypes.ToList();
+				var validUnitTypes = info.UnitTypes.ToList();
 				for (var i = 0; i < dropAmount; i++)
 				{
 					if (validUnitTypes.Count == 0)

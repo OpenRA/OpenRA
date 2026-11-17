@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (unitGroup.BaseActor != null)
 			{
 				var facing = unitGroup.BaseActorFacing ?? new WAngle(w.SharedRandom.Next(1024));
-				var baseActor = w.CreateActor(unitGroup.BaseActor.ToLowerInvariant(),
+				var baseActor = w.CreateActor(unitGroup.BaseActor,
 				[
 					new LocationInit(p.HomeLocation + unitGroup.BaseActorOffset),
 					new OwnerInit(p),
@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.Traits
 			var locomotorsByName = w.WorldActor.TraitsImplementing<Locomotor>().ToDictionary(l => l.Info.Name);
 			foreach (var s in unitGroup.SupportActors)
 			{
-				var actorRules = w.Map.Rules.Actors[s.ToLowerInvariant()];
+				var actorRules = w.Map.Rules.Actors[s];
 				var ip = actorRules.TraitInfo<IPositionableInfo>();
 				var validCells = supportSpawnCells.Where(c => ip.CanEnterCell(w, null, c));
 
@@ -154,7 +154,7 @@ namespace OpenRA.Mods.Common.Traits
 				var subCell = ip.SharesCell ? w.ActorMap.FreeSubCell(validCell) : 0;
 				var facing = unitGroup.SupportActorsFacing ?? new WAngle(w.SharedRandom.Next(1024));
 
-				w.CreateActor(s.ToLowerInvariant(),
+				w.CreateActor(s,
 				[
 					new OwnerInit(p),
 					new LocationInit(validCell),

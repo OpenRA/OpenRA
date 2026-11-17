@@ -31,9 +31,9 @@ namespace OpenRA.Mods.Common.Lint
 
 		static void Run(Action<string> emitError, Ruleset rules)
 		{
-			foreach (var actorInfo in rules.Actors)
+			foreach (var actorInfo in rules.Actors.Values)
 			{
-				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
+				foreach (var traitInfo in actorInfo.TraitInfos<TraitInfo>())
 				{
 					var fields = Utility.GetFields(traitInfo.GetType()).Where(Utility.HasAttribute<VoiceSetReferenceAttribute>);
 					foreach (var field in fields)
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Lint
 							if (string.IsNullOrEmpty(voiceSet))
 								continue;
 
-							CheckVoices(actorInfo.Value, emitError, rules, voiceSet);
+							CheckVoices(actorInfo, emitError, rules, voiceSet);
 						}
 					}
 				}

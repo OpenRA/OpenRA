@@ -19,21 +19,21 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		void ILintRulesPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
 		{
-			foreach (var actorInfo in rules.Actors)
+			foreach (var actorInfo in rules.Actors.Values)
 			{
-				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
+				foreach (var traitInfo in actorInfo.TraitInfos<TraitInfo>())
 				{
 					var traitLocation = Utility.GetCustomAttributes<TraitLocationAttribute>(traitInfo.GetType(), true).FirstOrDefault();
 					if (traitLocation == null)
 						continue;
 
-					if (!Enum.TryParse(actorInfo.Key, true, out SystemActors systemActor) || !traitLocation.SystemActors.HasFlag(systemActor))
+					if (!Enum.TryParse(actorInfo.Name, true, out SystemActors systemActor) || !traitLocation.SystemActors.HasFlag(systemActor))
 					{
 						// Remove the "Info" suffix.
 						var traitName = traitInfo.GetType().Name;
 						traitName = traitName[..^4];
 						var locations = traitLocation.SystemActors.ToString().Replace(", ", " or ");
-						emitError($"`{traitName}` does not belong on `{actorInfo.Key}`. It is a system trait meant for {locations}.");
+						emitError($"`{traitName}` does not belong on `{actorInfo.Name}`. It is a system trait meant for {locations}.");
 					}
 				}
 			}

@@ -463,8 +463,8 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 							actor.Add(new SubCellInit((SubCell)subcell));
 					}
 
-					if (!map.Rules.Actors.ContainsKey(parts[1].ToLowerInvariant()))
-						Console.WriteLine($"Ignoring unknown actor type: `{parts[1].ToLowerInvariant()}`");
+					if (!map.Rules.Actors.ContainsKey(parts[1]))
+						Console.WriteLine($"Ignoring unknown actor type: `{parts[1]}`");
 					else
 						nodes.Add(new MiniYamlNode("Actor" + (map.ActorDefinitions.Count + nodes.Count), actor.Save()));
 				}

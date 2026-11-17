@@ -23,7 +23,7 @@ namespace OpenRA
 		{
 			ArgumentNullException.ThrowIfNull(dict);
 
-			this.dict = new Dictionary<string, ActorInfo>(dict);
+			this.dict = new Dictionary<string, ActorInfo>(dict, StringComparer.OrdinalIgnoreCase);
 
 			// Include an empty entry for each system actor to guarantee that
 			// they will be defined even if not specified in the mod yaml

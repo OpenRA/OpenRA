@@ -204,9 +204,9 @@ namespace OpenRA.Mods.Common.Traits
 			// PERF: Cache this delegate so it does not have to be allocated repeatedly.
 			actorShouldBeRemoved = removeActorPosition.Contains;
 
-			LargestActorRadius = map.Rules.Actors.SelectMany(a => a.Value.TraitInfos<HitShapeInfo>()).Max(h => h.Type.OuterRadius);
-			var blockers = map.Rules.Actors.Where(a => a.Value.HasTraitInfo<IBlocksProjectilesInfo>()).ToList();
-			LargestBlockingActorRadius = blockers.Count != 0 ? blockers.SelectMany(a => a.Value.TraitInfos<HitShapeInfo>()).Max(h => h.Type.OuterRadius) : WDist.Zero;
+			LargestActorRadius = map.Rules.Actors.Values.SelectMany(a => a.TraitInfos<HitShapeInfo>()).Max(h => h.Type.OuterRadius);
+			var blockers = map.Rules.Actors.Values.Where(a => a.HasTraitInfo<IBlocksProjectilesInfo>()).ToList();
+			LargestBlockingActorRadius = blockers.Count != 0 ? blockers.SelectMany(a => a.TraitInfos<HitShapeInfo>()).Max(h => h.Type.OuterRadius) : WDist.Zero;
 		}
 
 		void INotifyCreated.Created(Actor self)

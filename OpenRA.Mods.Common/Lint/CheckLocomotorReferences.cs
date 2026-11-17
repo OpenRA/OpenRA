@@ -42,9 +42,9 @@ namespace OpenRA.Mods.Common.Lint
 				emitError($"More than one Locomotor exists with the name `{duplicateName}`.");
 
 			var locomotorNamesSet = locomotorNames.ToHashSet();
-			foreach (var actorInfo in rules.Actors)
+			foreach (var actorInfo in rules.Actors.Values)
 			{
-				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
+				foreach (var traitInfo in actorInfo.TraitInfos<TraitInfo>())
 				{
 					var fields = Utility.GetFields(traitInfo.GetType()).Where(Utility.HasAttribute<LocomotorReferenceAttribute>);
 					foreach (var field in fields)
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Lint
 							if (string.IsNullOrEmpty(locomotor))
 								continue;
 
-							CheckLocomotors(actorInfo.Value, emitError, locomotorNamesSet, locomotor);
+							CheckLocomotors(actorInfo, emitError, locomotorNamesSet, locomotor);
 						}
 					}
 				}

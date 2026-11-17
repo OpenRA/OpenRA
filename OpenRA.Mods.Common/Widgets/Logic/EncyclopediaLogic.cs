@@ -260,7 +260,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		static string ActorName(Ruleset rules, string name)
 		{
-			if (rules.Actors.TryGetValue(name.ToLowerInvariant(), out var actor))
+			if (rules.Actors.TryGetValue(name, out var actor))
 			{
 				var actorTooltip = actor.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);
 				if (actorTooltip != null)

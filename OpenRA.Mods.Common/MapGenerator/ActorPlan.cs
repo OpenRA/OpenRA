@@ -58,8 +58,8 @@ namespace OpenRA.Mods.Common.MapGenerator
 		{
 			Map = map;
 			Reference = reference;
-			if (!map.Rules.Actors.TryGetValue(Reference.Type.ToLowerInvariant(), out Info))
-				throw new ArgumentException($"MultiBrush Actor of unknown type `{Reference.Type.ToLowerInvariant()}`");
+			if (!map.Rules.Actors.TryGetValue(Reference.Type, out Info))
+				throw new ArgumentException($"MultiBrush Actor of unknown type `{Reference.Type}`");
 		}
 
 		/// <summary>

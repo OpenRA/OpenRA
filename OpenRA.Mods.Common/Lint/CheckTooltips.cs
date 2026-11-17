@@ -30,22 +30,22 @@ namespace OpenRA.Mods.Common.Lint
 
 		static void Run(Action<string> emitError, Ruleset rules)
 		{
-			foreach (var actorInfo in rules.Actors)
+			foreach (var actorInfo in rules.Actors.Values)
 			{
 				// Catch TypeDictionary errors.
 				try
 				{
-					var buildable = actorInfo.Value.TraitInfoOrDefault<BuildableInfo>();
+					var buildable = actorInfo.TraitInfoOrDefault<BuildableInfo>();
 					if (buildable == null)
 						continue;
 
-					var tooltip = actorInfo.Value.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);
+					var tooltip = actorInfo.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);
 					if (tooltip == null)
-						emitError($"The following buildable actor has no (enabled) Tooltip: `{actorInfo.Key}`.");
+						emitError($"The following buildable actor has no (enabled) Tooltip: `{actorInfo.Name}`.");
 				}
 				catch (InvalidOperationException e)
 				{
-					emitError($"{e.Message} (Actor type `{actorInfo.Key}`).");
+					emitError($"{e.Message} (Actor type `{actorInfo.Name}`).");
 				}
 			}
 		}

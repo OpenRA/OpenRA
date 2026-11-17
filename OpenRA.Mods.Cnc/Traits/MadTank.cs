@@ -243,7 +243,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			void EjectDriver()
 			{
-				var driver = self.World.CreateActor(mad.info.DriverActor.ToLowerInvariant(),
+				var driver = self.World.CreateActor(mad.info.DriverActor,
 				[
 					new LocationInit(self.Location),
 					new OwnerInit(self.Owner)

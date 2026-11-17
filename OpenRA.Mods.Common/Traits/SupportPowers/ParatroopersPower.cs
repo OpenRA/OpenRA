@@ -92,9 +92,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!facing.HasValue)
 				facing = new WAngle(1024 * self.World.SharedRandom.Next(info.QuantizedFacings) / info.QuantizedFacings);
 
-			var utLower = info.UnitType.ToLowerInvariant();
-			if (!self.World.Map.Rules.Actors.TryGetValue(utLower, out var unitType))
-				throw new YamlException($"Actors ruleset does not include the entry '{utLower}'");
+			if (!self.World.Map.Rules.Actors.TryGetValue(info.UnitType, out var unitType))
+				throw new YamlException($"Actors ruleset does not include the entry '{info.UnitType}'");
 
 			var altitude = unitType.TraitInfo<AircraftInfo>().CruiseAltitude.Length;
 			var dropRotation = WRot.FromYaw(facing.Value);

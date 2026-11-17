@@ -783,8 +783,8 @@ namespace OpenRA
 
 		public byte[] SavePreview()
 		{
-			var actorTypes = Rules.Actors.Values.Where(a => a.HasTraitInfo<IMapPreviewSignatureInfo>());
-			var actors = ActorDefinitions.Where(a => actorTypes.Any(ai => ai.Name == a.Value.Value));
+			var actorTypes = Rules.Actors.Values.Where(a => a.HasTraitInfo<IMapPreviewSignatureInfo>()).ToArray();
+			var actors = ActorDefinitions.Where(a => actorTypes.Any(ai => string.Equals(ai.Name, a.Value.Value, StringComparison.OrdinalIgnoreCase)));
 			var positions = new List<(MPos Uv, Color Color)>();
 			foreach (var actor in actors)
 			{
