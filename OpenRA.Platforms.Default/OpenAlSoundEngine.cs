@@ -36,6 +36,36 @@ namespace OpenRA.Platforms.Default
 			return defaultDevices.Concat(physicalDevices).ToArray();
 		}
 
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate byte ReopenDeviceDelegate(IntPtr device, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, IntPtr attributes);
+
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		delegate void GetInteger64Delegate(IntPtr device, int parameter, int size, out long value);
+
+		public void Tick()
+		{
+			if (reopenDevice == null)
+				return;
+
+			var connected = new int[1];
+			ALC10.alcGetIntegerv(device, AlcConnected, 1, connected);
+
+			// Wall clock on purpose: it keeps counting while the machine is asleep.
+			var now = DateTime.UtcNow.Ticks / TimeSpan.TicksPerMillisecond;
+			var clock = now;
+			getInteger64?.Invoke(device, AlcDeviceClock, 1, out clock);
+
+			if (CoreAudioDefaultOutputMonitor.TakeChanged())
+				watchdog.NotifyOutputChanged(now);
+
+			if (!watchdog.ShouldReopen(now, connected[0] != 0, clock))
+				return;
+
+			Log.Write("sound", $"Reopening the audio device: {watchdog.LastReason}.");
+			if (reopenDevice(device, deviceName, IntPtr.Zero) != 0 || reopenDevice(device, null, IntPtr.Zero) != 0)
+				watchdog.ReportReopened();
+		}
+
 		sealed class PoolSlot
 		{
 			public bool IsActive;
@@ -48,12 +78,18 @@ namespace OpenRA.Platforms.Default
 
 		const int MaxInstancesPerFrame = 3;
 		const int GroupDistance = 2730;
+		const int AlcConnected = 0x313;
+		const int AlcDeviceClock = 0x1600;
 		const int GroupDistanceSqr = GroupDistance * GroupDistance;
 
 		// https://github.com/kcat/openal-soft/issues/580
 		// https://github.com/kcat/openal-soft/blob/b6aa73b26004afe63d83097f2f91ecda9bc25cb9/alc/alc.cpp#L3191-L3203
 		const int PoolSize = 256;
 
+		readonly SoundDeviceWatchdog watchdog = new();
+		readonly string deviceName;
+		readonly ReopenDeviceDelegate reopenDevice;
+		readonly GetInteger64Delegate getInteger64;
 		readonly Dictionary<uint, PoolSlot> sourcePool = new(PoolSize);
 		float volume = 1f;
 		IntPtr device;
@@ -116,6 +152,9 @@ namespace OpenRA.Platforms.Default
 
 		public OpenAlSoundEngine(string deviceName)
 		{
+			this.deviceName = deviceName;
+			CoreAudioDefaultOutputMonitor.Start();
+
 			if (deviceName != null)
 				Console.WriteLine("Using sound device `{0}`", deviceName);
 			else
@@ -134,6 +173,14 @@ namespace OpenRA.Platforms.Default
 			if (context == IntPtr.Zero)
 				throw new InvalidOperationException("Can't create OpenAL context");
 			ALC10.alcMakeContextCurrent(context);
+
+			var reopenAddress = ALC10.alcGetProcAddress(device, "alcReopenDeviceSOFT");
+			if (reopenAddress != IntPtr.Zero)
+				reopenDevice = Marshal.GetDelegateForFunctionPointer<ReopenDeviceDelegate>(reopenAddress);
+
+			var getInteger64Address = ALC10.alcGetProcAddress(device, "alcGetInteger64vSOFT");
+			if (getInteger64Address != IntPtr.Zero)
+				getInteger64 = Marshal.GetDelegateForFunctionPointer<GetInteger64Delegate>(getInteger64Address);
 
 			for (var i = 0; i < PoolSize; i++)
 			{

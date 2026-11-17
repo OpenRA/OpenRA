@@ -15,6 +15,8 @@ namespace OpenRA.Platforms.Default
 {
 	sealed class DummySoundEngine : ISoundEngine
 	{
+		public void Tick() { }
+
 		public bool Dummy => true;
 
 		public SoundDevice[] AvailableDevices()
