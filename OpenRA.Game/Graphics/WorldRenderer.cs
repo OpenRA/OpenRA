@@ -40,6 +40,7 @@ namespace OpenRA.Graphics
 		readonly Lazy<DebugVisualizations> debugVis;
 		readonly Func<string, PaletteReference> createPaletteReference;
 		readonly bool enableDepthBuffer;
+		byte lastStencilGroup;
 
 		readonly List<IFinalizedRenderable> preparedRenderables = [];
 		readonly List<IFinalizedRenderable> preparedOverlayRenderables = [];
@@ -256,10 +257,18 @@ namespace OpenRA.Graphics
 					preparedAnnotationRenderables.Add(renderAnnotation.PrepareRender(this));
 		}
 
+		public byte NextStencilGroup()
+		{
+			lastStencilGroup = (byte)(lastStencilGroup % byte.MaxValue + 1);
+			return lastStencilGroup;
+		}
+
 		public void PrepareRenderables()
 		{
 			if (World.WorldActor.Disposed)
 				return;
+
+			lastStencilGroup = 0;
 
 			RefreshPalette();
 

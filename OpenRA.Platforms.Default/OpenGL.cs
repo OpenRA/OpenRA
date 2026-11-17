@@ -106,7 +106,13 @@ namespace OpenRA.Platforms.Default
 
 		// Depth buffer
 		public const int GL_DEPTH_COMPONENT = 0x1902;
+		public const int GL_DEPTH_STENCIL = 0x84F9;
 		public const int GL_LEQUAL = 0x0203;
+
+		// Stencil buffer
+		public const int GL_NOTEQUAL = 0x0205;
+		public const int GL_KEEP = 0x1E00;
+		public const int GL_REPLACE = 0x1E01;
 
 		// BlendingFactorDest
 		public const int GL_ZERO = 0;
@@ -142,6 +148,7 @@ namespace OpenRA.Platforms.Default
 
 		public const int GL_TEXTURE0 = 0x84C0;
 		public const int GL_DEPTH_COMPONENT16 = 0x81A5;
+		public const int GL_DEPTH24_STENCIL8 = 0x88F0;
 
 		// OpenGL 2
 		public const int GL_FRAGMENT_SHADER = 0x8B30;
@@ -232,6 +239,7 @@ namespace OpenRA.Platforms.Default
 		public const int GL_RENDERBUFFER = 0x8D41;
 		public const int GL_COLOR_ATTACHMENT0 = 0x8CE0;
 		public const int GL_DEPTH_ATTACHMENT = 0x8D00;
+		public const int GL_DEPTH_STENCIL_ATTACHMENT = 0x821A;
 		public const int GL_FRAMEBUFFER_COMPLETE = 0x8CD5;
 		public const int GL_FRAMEBUFFER_BINDING = 0x8CA6;
 
@@ -427,6 +435,12 @@ namespace OpenRA.Platforms.Default
 		public delegate void DepthFunc(int func);
 		public static DepthFunc glDepthFunc { get; private set; }
 
+		public delegate void StencilFunc(int func, int reference, uint mask);
+		public static StencilFunc glStencilFunc { get; private set; }
+
+		public delegate void StencilOp(int sfail, int dpfail, int dppass);
+		public static StencilOp glStencilOp { get; private set; }
+
 		public delegate void Scissor(int x, int y, int width, int height);
 		public static Scissor glScissor { get; private set; }
 
@@ -619,6 +633,8 @@ namespace OpenRA.Platforms.Default
 				glBlendEquationSeparate = Bind<BlendEquationSeparate>("glBlendEquationSeparate");
 				glBlendFunc = Bind<BlendFunc>("glBlendFunc");
 				glDepthFunc = Bind<DepthFunc>("glDepthFunc");
+				glStencilFunc = Bind<StencilFunc>("glStencilFunc");
+				glStencilOp = Bind<StencilOp>("glStencilOp");
 				glScissor = Bind<Scissor>("glScissor");
 				glReadPixels = Bind<ReadPixels>("glReadPixels");
 				glGenTextures = Bind<GenTextures>("glGenTextures");
