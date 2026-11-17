@@ -28,7 +28,7 @@ Players:
 		Name: Creeps
 		NonCombatant: True
 		Faction: Random
-		Enemies: Harkonnen, Atreides, Corrino, Ordos, Mercenaries
+		Enemies: Harkonnen, Atreides, Corrino, Ordos, Mercenaries, MercenariesNeutral
 	PlayerReference@Ordos:
 		Name: Ordos
 		Playable: True
