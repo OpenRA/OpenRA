@@ -59,7 +59,7 @@ namespace OpenRA
 
 		static StringBuilder AppendIndentedLine(this StringBuilder sb, int indent, string message)
 		{
-			return sb.Append(new string(' ', indent * 2)).Append(message).AppendLine();
+			return sb.Append(' ', indent * 2).Append(message).AppendLine();
 		}
 
 		static StringBuilder BuildExceptionReport(Exception ex, StringBuilder sb, int indent)
