@@ -64,6 +64,9 @@ jobs:
       - name: Clone Repository
         uses: actions/checkout@v7
 
+      - name: Remove system .NET
+        run: sudo rm -rf /usr/share/dotnet
+
       - name: Install .NET 10.0
         uses: actions/setup-dotnet@v6
         with:
@@ -92,6 +95,9 @@ jobs:
     steps:
       - name: Clone Repository
         uses: actions/checkout@v7
+
+      - name: Remove system .NET
+        run: sudo rm -rf /usr/share/dotnet
 
       - name: Install .NET 10.0
         uses: actions/setup-dotnet@v6
@@ -155,6 +161,9 @@ jobs:
     steps:
       - name: Clone Repository
         uses: actions/checkout@v7
+
+      - name: Remove system .NET
+        run: sudo rm -rf /usr/share/dotnet
 
       - name: Install .NET 10.0
         uses: actions/setup-dotnet@v6
