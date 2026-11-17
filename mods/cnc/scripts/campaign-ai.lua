@@ -22,15 +22,22 @@
 --   * small funds and storage helpers
 --   * xpcall-based tick safety
 --
--- Status: bad-neighborhood and deceit use this module. Verified by both:
+-- Status: bad-neighborhood, deceit, eviction-notice, cloak-and-dagger and
+-- hostile-takeover use this module. The scheduler, unit self-defence,
+-- engineer capture, per-pad Orcas, "n-th building" start, one-shot cell
+-- triggers and counter-attack helpers were extracted from hostile-takeover
+-- (2026-11-17) and are covered by harness/campaign-ai-harness.lua.
+--
+-- Verified by both older ports:
 -- land/pool/orders, damage response, idle defence, Orca handling,
 -- CA.FindFreeCell/FindFreeSite/SiteFree, CA.MissingBuilding/BuildQueue,
 -- CA.TryRebuildEntry/MaintainBase, CA.QueueUnit/TryQueueFromPool,
 -- CA.MaintainHarvesters/ReplaceHarvester and CA.RecallReserve.
--- Kept for future missions but not called by either mission yet:
+-- Kept for future missions but not called by any mission yet:
 -- CA.SafeTick, CA.SiteOccupied, CA.IsStartingLand, CA.AllOutAttack,
 -- CA.StartBaseDefense and CA.Log. Treat those as "not yet verified by a
--- mission".
+-- mission". CA.StartBaseDefense is intentionally not used by
+-- hostile-takeover, which needs CA.DefendAgainstAttacker instead.
 --
 -- IsLive requires IsInWorld. Callbacks that fire before an actor enters the
 -- world (OnPassengerExited, OnCapture) must use CA.IsAlive instead; using
@@ -1032,7 +1039,334 @@ function CA.TryQueueFromPool(factory, pool, player, options)
 	return false
 end
 
--- ---------------------------------------------------------------- orca
+-- ---------------------------------------------------------------- triggers
+
+-- Run `onStarted` once the given player has placed `count` real buildings.
+-- Wall segments (brik/barb/sbag/cycl/wood) fire OnBuildingPlaced once per
+-- segment and would otherwise let three cheap wall pieces start the AI.
+-- Captured buildings do not fire the trigger at all, so they never count.
+--
+-- options: ignoreTypes (extra actor names), fallbackSeconds (start anyway
+-- after that many seconds), isFinished
+function CA.StartProductionAfterBuildings(player, count, onStarted, options)
+	options = options or {}
+	local placed = 0
+	local started = false
+	local fallback = options.fallbackSeconds
+	local finished = options.isFinished or function() return false end
+
+	local ignored = {
+		brik = true, barb = true, sbag = true, cycl = true, wood = true,
+	}
+	for _, name in ipairs(options.ignoreTypes or {}) do
+		ignored[name] = true
+	end
+
+	local function start()
+		if started or finished() then return end
+		started = true
+		CA.SafeCall("production-start", function() onStarted() end)
+	end
+
+	Trigger.OnBuildingPlaced(player, function(_, building)
+		if started or finished() or building == nil then return end
+		if building.Owner ~= player or ignored[building.Type] then return end
+		placed = placed + 1
+		if placed >= count then start() end
+	end)
+
+	if fallback ~= nil and fallback > 0 then
+		Trigger.AfterDelay(DateTime.Seconds(fallback), start)
+	end
+
+	return function() return started end
+end
+
+-- Register a footprint trigger that fires for the first entry of one player
+-- and removes itself afterwards. Covers the common mission pattern in one
+-- place instead of a hand-written guard in every mission.
+--
+-- options: isFinished, onEnter(actor)
+function CA.OnFirstEntry(cells, owner, onEnter, options)
+	options = options or {}
+	local finished = options.isFinished or function() return false end
+	local done = false
+
+	Trigger.OnEnteredFootprint(cells, function(actor, id)
+		if done or finished() or actor == nil or actor.Owner ~= owner then return end
+		done = true
+		Trigger.RemoveFootprintTrigger(id)
+		CA.SafeCall("first-entry", function() onEnter(actor) end)
+	end)
+end
+
+-- ---------------------------------------------------------------- scheduler
+
+-- Deterministic production loop. Replaces the per-mission ProductionTick
+-- copies in Bad Neighborhood, Deceit, Eviction Notice and Hostile Takeover.
+--
+-- A mission supplies data (pools, caps, interval, factories, reserve) and
+-- the loop handles the mechanics that were learned the hard way:
+--   * only units produced by the AI count towards the cap, never the
+--     starting garrison or scripted drops
+--   * the pool is scanned, so one unaffordable entry (a 1500 $ Mammoth next
+--     to a 600 $ Jeep) cannot stall the line
+--   * one unit per tick, alternating categories
+--   * a broken income chain pauses combat production, a missing harvester
+--     does NOT (reserving its cost froze every CA mission)
+--
+-- options:
+--   pools        = { infantry = {...}, vehicle = {...}, aircraft = {...} }
+--                  or a single array used for every factory
+--   factories    = { infantry = "pyle", vehicle = "weap", aircraft = "hpad" }
+--   interval     = seconds between ticks (number or function)
+--   maxTotal     = produced units total (number or function)
+--   maxPerCategory = limit per category (default half of maxTotal, min 4)
+--   reserve      = cash kept free (number or function)
+--   extraReserve = optional function returning additional reserved cash
+--   economy      = options for CA.ClassifyEconomy; if nil the gate is off
+--   radius       = factory search radius (default base.baseRadius)
+--   produceOrcas = true to also run one Orca per helipad
+--   onQueue      = optional function(kind, factory)
+--   isActive/isFinished
+function CA.StartProduction(base, context, options)
+	options = options or {}
+	context = context or {}
+	local factories = options.factories or { infantry = "pyle", vehicle = "weap" }
+	local radius = options.radius or base.baseRadius or 24
+
+	local indices = { infantry = 1, vehicle = 1, aircraft = 1 }
+	local turn = false
+	local pending = nil
+
+	-- Clear the in-flight guard as soon as the factory actually produces the
+	-- unit. Without this the guard only expires on its 60 s safety timeout, so
+	-- the loop would build one unit per minute no matter what interval the
+	-- mission configured (this regression appeared during the migration).
+	Trigger.OnAnyProduction(function(factory, unit)
+		if pending ~= nil and unit ~= nil
+			and pending.factory == factory and pending.kind == unit.Type then
+			pending = nil
+		end
+	end)
+
+	local function option(value)
+		if type(value) == "function" then return value() end
+		return value
+	end
+
+	local function interval()
+		return option(options.interval) or 30
+	end
+
+	local function pool(category)
+		local pools = options.pools
+		if pools == nil then return {} end
+		if pools[category] ~= nil then return pools[category] end
+		if pools[1] ~= nil then return pools end
+		return {}
+	end
+
+	-- Exact category lookup by unit type. Deriving it from the mission's pools
+	-- avoids the engine limitation that infantry cannot be detected by
+	-- HasProperty (there is no "Infantry" script property).
+	local typeCategory = {}
+	local function buildTypeCategory()
+		local pools = options.pools
+		if pools == nil then return end
+		for category, entries in pairs(pools) do
+			if category ~= "1" and type(entries) == "table" then
+				for _, kind in ipairs(entries) do
+					if typeCategory[kind] == nil then typeCategory[kind] = category end
+				end
+			end
+		end
+	end
+	buildTypeCategory()
+
+	local function categoryOf(unit)
+		if unit == nil then return "vehicle" end
+		return typeCategory[unit.Type] or CA.DefaultUnitCategory(unit)
+	end
+
+	local countProduced = function()
+		return CA.CountProducedUnits(base, categoryOf)
+	end
+
+	local function tryCategory(category)
+		if pending ~= nil then return false end
+
+		local factoryType = factories[category]
+		if factoryType == nil then return false end
+
+		local factory = CA.LocalBuilding(base, factoryType, radius)
+		if factory == nil or not CA.IsLive(factory) then return false end
+
+		-- Optional category cap supplied by the mission.
+		local categoryCap = options.maxPerCategory
+		if type(categoryCap) == "table" then categoryCap = categoryCap[category] end
+		if categoryCap ~= nil then
+			local _, perCategory = countProduced()
+			if (perCategory[category] or 0) >= categoryCap then return false end
+		end
+
+		local entries = pool(category)
+		if #entries == 0 then return false end
+
+		local reserve = (option(options.reserve) or 0) + (option(options.extraReserve) or 0)
+		for offset = 0, #entries - 1 do
+			local slot = (indices[category] - 1 + offset) % #entries + 1
+			local kind = entries[slot]
+			if not factory.IsProducing(kind) and CA.Funds(base.player) >= Actor.Cost(kind) + reserve then
+				if CA.QueueUnit(factory, kind, base.player) then
+					indices[category] = slot % #entries + 1
+					pending = { factory = factory, kind = kind }
+					Trigger.AfterDelay(DateTime.Seconds(60), function()
+						if pending ~= nil and pending.factory == factory and pending.kind == kind then
+							pending = nil
+						end
+					end)
+					if options.onQueue ~= nil then
+						CA.SafeCall("production-on-queue", function()
+							options.onQueue(kind, factory)
+						end)
+					end
+					return true
+				end
+			end
+		end
+		return false
+	end
+
+	local function tick()
+		if options.isFinished ~= nil and options.isFinished() then return end
+		if options.isActive ~= nil and not options.isActive() then
+			Trigger.AfterDelay(DateTime.Seconds(interval()), tick)
+			return
+		end
+
+		CA.SafeCall("production", function()
+			-- A structurally broken economy pauses combat production. A
+			-- missing harvester does not; that mistake froze whole missions.
+			local blocked = false
+			if options.economy ~= nil then
+				local economy = CA.ClassifyEconomy(base, options.economy)
+				blocked = economy.state == "Crisis" or economy.state == "Liquidation"
+			end
+
+			if not blocked then
+				local maxTotal = option(options.maxTotal)
+				local total = countProduced()
+				if maxTotal == nil or total < maxTotal then
+					if turn then
+						if not tryCategory("infantry") then tryCategory("vehicle") end
+					else
+						if not tryCategory("vehicle") then tryCategory("infantry") end
+					end
+					turn = not turn
+				end
+
+				if options.produceOrcas then
+					CA.ProduceOrcaPerPad(base, context, options.orcaOptions)
+				end
+			end
+		end)
+
+		if options.isFinished ~= nil and options.isFinished() then return end
+		Trigger.AfterDelay(DateTime.Seconds(interval()), tick)
+	end
+
+	Trigger.AfterDelay(DateTime.Seconds(options.firstDelay or 0), tick)
+	return tick
+end
+
+-- Default unit category. HasProperty checks *member* names of the script
+-- command classes, not trait names: there is no "Infantry" or "Aircraft"
+-- member. Aircraft are identified by their AircraftProperties members
+-- (Land/ReturnToBase), everything else falls back to "vehicle".
+-- Missions that need infantry/vehicle caps rely on CA.StartProduction, which
+-- derives the category from the mission's pools.
+function CA.DefaultUnitCategory(unit)
+	if unit == nil then return "vehicle" end
+	if unit.HasProperty("Land") or unit.HasProperty("ReturnToBase") then
+		return "aircraft"
+	end
+	return "vehicle"
+end
+
+-- Count the units an AI has actually produced (base.produced), pruning dead
+-- and captured entries. Missions that implement their own loop use this to
+-- keep the cap semantics identical to CA.StartProduction.
+--
+-- categoryOf: optional function(unit) -> category name
+function CA.CountProducedUnits(base, categoryOf)
+	if base == nil then return 0, { infantry = 0, vehicle = 0, aircraft = 0 } end
+	categoryOf = categoryOf or CA.DefaultUnitCategory
+
+	for i = #base.produced, 1, -1 do
+		local unit = base.produced[i]
+		if not CA.IsAlive(unit) or unit.Owner ~= base.player or not unit.IsInWorld then
+			table.remove(base.produced, i)
+		end
+	end
+
+	local total, perCategory = 0, { infantry = 0, vehicle = 0, aircraft = 0 }
+	for _, unit in ipairs(base.produced) do
+		total = total + 1
+		local category = categoryOf(unit) or "vehicle"
+		perCategory[category] = (perCategory[category] or 0) + 1
+	end
+	return total, perCategory
+end
+
+
+
+-- One Orca per helipad, matching the original AI. Nod13c, Deceit and
+-- Hostile Takeover each had their own copy of this logic.
+--
+-- options: reserve (cash kept free, default 800), busySeconds (default 240),
+--          pads (explicit list; default: local helipads of the base)
+function CA.ProduceOrcaPerPad(base, context, options)
+	options = options or {}
+	if base == nil or base.orcaBusy ~= nil then return false end
+
+	local radius = options.radius or base.baseRadius or 24
+	local pads = options.pads
+	local padCount = 0
+	local hpad = nil
+	if pads ~= nil then
+		for _, pad in ipairs(pads) do
+			if CA.IsLive(pad) then
+				padCount = padCount + 1
+				hpad = hpad or pad
+			end
+		end
+	else
+		for _, pad in ipairs(CA.GetActorsByType(base.player, "hpad")) do
+			if CA.IsLive(pad) and CA.IsLocal(base, pad, radius) then
+				padCount = padCount + 1
+				hpad = hpad or pad
+			end
+		end
+	end
+	if padCount == 0 or hpad == nil then return false end
+	if hpad.IsProducing("orca") then return false end
+
+	local orcas = 0
+	for _, orca in ipairs(CA.GetActorsByType(base.player, "orca")) do
+		if CA.IsLive(orca) then orcas = orcas + 1 end
+	end
+	if orcas >= padCount then return false end
+	if CA.Funds(base.player) < Actor.Cost("orca") + (options.reserve or 800) then return false end
+
+	if not CA.QueueUnit(hpad, "orca", base.player) then return false end
+
+	base.orcaBusy = hpad
+	Trigger.AfterDelay(DateTime.Seconds(options.busySeconds or 240), function()
+		if base.orcaBusy == hpad then base.orcaBusy = nil end
+	end)
+	return true
+end
 
 local orcaHandled = {}
 local retreatingOrcas = {}
@@ -1160,6 +1494,173 @@ function CA.StartBaseDefense(base, target, context)
 	end)
 end
 
+-- ---------------------------------------------------------------- unit defence
+
+-- `Defend` does not chase in OpenRA, and CA.DefendAgainst deliberately skips
+-- the damaged actor itself. A lone picket (a tank on a bridge, a guard tower
+-- post without neighbours) can therefore be outranged forever without ever
+-- shooting back. This helper sends the damaged unit at its attacker once.
+--
+-- Enable per context with `selfDefend = true`; it runs from the damage hook.
+function CA.SelfDefend(unit, attacker, context)
+	if context ~= nil and context.isActive ~= nil and not context.isActive() then return end
+	if not CA.IsLive(unit) or not CA.IsLive(attacker) then return end
+	if not unit.HasProperty("Location") or not unit.HasProperty("AttackMove") then return end
+	if not attacker.HasProperty("Location") then return end
+	if not CA.SameLand(unit.Location, attacker.Location) then return end
+	if unit.HasProperty("Stop") then unit.Stop() end
+	unit.AttackMove(attacker.Location, 2)
+end
+
+-- Convenience context for a unit pool that only needs "shoot back":
+-- CA.UnitContext(base, enemy) plus optional overrides.
+function CA.UnitContext(base, enemy, overrides)
+	local context = {
+		enemy = enemy,
+		players = { base.player },
+		base = base,
+		isActive = function() return true end,
+		keepAttackers = true,
+		repairThreshold = 0.7,
+		-- DefendAgainst calls CA.SelfDefend for non-buildings; no onDamage
+		-- hook is needed, which avoids issuing the same order twice.
+		selfDefend = true,
+	}
+
+	for key, value in pairs(overrides or {}) do
+		context[key] = value
+	end
+	return context
+end
+
+-- Register a mobile unit for damage response and self-defence. Buildings use
+-- CA.RegisterDamageHandler; units need the same handler, and without this a
+-- produced or scripted unit never reacts at all.
+function CA.RegisterUnit(unit, context)
+	if unit == nil or context == nil then return end
+	if not unit.HasProperty("Move") or unit.Type == "harv" or unit.Type == "mcv" then return end
+	CA.RegisterDamageHandler(unit, context)
+end
+
+-- ---------------------------------------------------------------- capture
+
+-- Engineers are consumed by a capture, so a group of engineers must spread
+-- across different buildings. Sending them all to the nearest target leaves
+-- the first capture to one engineer and the rest standing with a dead order
+-- (this happened in Deceit and Hostile Takeover).
+--
+-- targets: iterable any (towns, Nod.GetActors()) or an explicit list
+function CA.CaptureBuildingsFor(unit, enemy, context)
+	local candidates = {}
+	for _, actor in ipairs(enemy.GetActors()) do
+		if CA.IsLive(actor) and actor.HasProperty("Location")
+			and actor.HasProperty("StartBuildingRepairs")
+			and CA.TargetOnLand(unit.Location, actor) then
+			table.insert(candidates, actor)
+		end
+	end
+
+	table.sort(candidates, function(a, b)
+		local da = (a.Location.X - unit.Location.X) ^ 2 + (a.Location.Y - unit.Location.Y) ^ 2
+		local db = (b.Location.X - unit.Location.X) ^ 2 + (b.Location.Y - unit.Location.Y) ^ 2
+		if da ~= db then return da < db end
+		return a.ActorID < b.ActorID
+	end)
+	return candidates
+end
+
+-- Assign engineers to buildings, one claim per engineer. `claims` must be a
+-- table shared by the whole drop (mission-owned) so parallel engineers see
+-- each other's reservations.
+--
+-- options: claims, context, retrySeconds, onNoTarget
+function CA.CaptureWithEngineers(units, enemy, options)
+	options = options or {}
+	local claims = options.claims or {}
+	local context = options.context
+
+	local function pick(unit)
+		for _, actor in ipairs(CA.CaptureBuildingsFor(unit, enemy, context)) do
+			local claim = claims[CA.ActorKey(actor)]
+			if claim == nil or not CA.IsAlive(claim) then
+				return actor
+			end
+		end
+		return nil
+	end
+
+	local function order(unit)
+		if context ~= nil and context.isActive ~= nil and not context.isActive() then return end
+		if not CA.IsAlive(unit) then return end
+
+		local target = pick(unit)
+		if target == nil then
+			if options.onNoTarget ~= nil then options.onNoTarget(unit) end
+			return
+		end
+
+		local key = CA.ActorKey(target)
+		claims[key] = unit
+		unit.Capture(target)
+
+		Trigger.AfterDelay(DateTime.Seconds(options.retrySeconds or 10), function()
+			if claims[key] == unit then claims[key] = nil end
+			if not CA.IsAlive(unit) or not unit.IsIdle then return end
+			if CA.IsLive(target) and target.Owner == enemy then
+				claims[key] = unit
+				unit.Capture(target)
+				return
+			end
+			order(unit)
+		end)
+	end
+
+	for _, unit in ipairs(units or {}) do
+		order(unit)
+	end
+end
+
+-- Send the local garrison at the attacker. CA.StartBaseDefense/AllOutAttack
+-- order "Attack Base", which marches the units to the nearest enemy building
+-- instead of the thing that is actually shooting. Missions that want a real
+-- response use this instead.
+--
+-- options: alarmSeconds (default 45), releaseOrcas (default true),
+--          isFinished
+function CA.DefendAgainstAttacker(base, attacker, context, options)
+	options = options or {}
+	if base == nil or base.allOut then return false end
+	if not CA.IsLive(attacker) or not attacker.HasProperty("Location") then return false end
+
+	base.allOut = true
+	base.underAttackUntil = DateTime.GameTime + DateTime.Seconds(options.alarmSeconds or 45)
+
+	local team = CA.GetCombatUnits(base, context)
+	base.reserve = {}
+	base.produced = {}
+
+	if #team > 0 then
+		CA.SendTeam(team, base.player, { { Location = attacker.Location } }, true, false, context)
+	end
+
+	if options.releaseOrcas ~= false then
+		for _, orca in ipairs(CA.GetActorsByType(base.player, "orca")) do
+			if CA.IsLive(orca) and orca.HasProperty("Stance") then
+				orca.Stance = "AttackAnything"
+				IdleHunt(orca)
+			end
+		end
+	end
+
+	local finished = options.isFinished or function() return false end
+	Trigger.AfterDelay(DateTime.Seconds(options.alarmSeconds or 45), function()
+		if base == nil then return end
+		base.allOut = false
+		if not finished() then CA.SeedPool(base, context) end
+	end)
+	return true
+end
+
 -- ---------------------------------------------------------------- defence
 
 -- Register the standard damage response for placed, produced or rebuilt
@@ -1206,6 +1707,12 @@ function CA.DefendAgainst(actor, attacker, damage, context)
 				IdleHunt(orca)
 			end
 		end
+	end
+
+	-- A damaged mobile unit shoots back at its attacker (see CA.SelfDefend).
+	-- Buildings are handled by the repair/all-out logic above.
+	if not building and context.selfDefend then
+		CA.SelfDefend(actor, attacker, context)
 	end
 
 	-- Ground units cannot engage an aircraft by walking to its cell. Leave
