@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -20,7 +21,7 @@ namespace OpenRA
 
 		public static Arguments Empty => new();
 
-		public Arguments(params string[] src)
+		public Arguments(params ReadOnlySpan<string> src)
 		{
 			var regex = new Regex("([^=]+)=(.*)");
 			foreach (var s in src)

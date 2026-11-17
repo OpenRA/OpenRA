@@ -9,6 +9,8 @@
  */
 #endregion
 
+using System;
+using System.Buffers;
 using Eluant;
 using OpenRA.Mods.Common.Widgets;
 using OpenRA.Primitives;
@@ -39,24 +41,33 @@ namespace OpenRA.Mods.Common.Scripting.Global
 		{
 			if (args != null)
 			{
-				var argumentDictionary = new object[args.Count * 2];
-				var i = 0;
-				foreach (var kv in args)
+				var length = args.Count * 2;
+				var argumentDictionaryArray = ArrayPool<object>.Shared.Rent(length);
+				try
 				{
-					using (kv.Key)
-					using (kv.Value)
+					var argumentDictionary = argumentDictionaryArray.AsSpan(0, length);
+					var i = 0;
+					foreach (var kv in args)
 					{
-						if (!kv.Key.TryGetClrValue<string>(out var variable) || !kv.Value.TryGetClrValue<object>(out var value))
-							throw new LuaException(
-								"String arguments requires a table of [\"string\"]=value pairs. " +
-								$"Received {kv.Key.WrappedClrType().Name},{kv.Value.WrappedClrType().Name}");
+						using (kv.Key)
+						using (kv.Value)
+						{
+							if (!kv.Key.TryGetClrValue<string>(out var variable) || !kv.Value.TryGetClrValue<object>(out var value))
+								throw new LuaException(
+									"String arguments requires a table of [\"string\"]=value pairs. " +
+									$"Received {kv.Key.WrappedClrType().Name},{kv.Value.WrappedClrType().Name}");
 
-						argumentDictionary[i++] = variable;
-						argumentDictionary[i++] = value;
+							argumentDictionary[i++] = variable;
+							argumentDictionary[i++] = value;
+						}
 					}
-				}
 
-				return FluentProvider.GetMessage(key, argumentDictionary);
+					return FluentProvider.GetMessage(key, argumentDictionary);
+				}
+				finally
+				{
+					ArrayPool<object>.Shared.Return(argumentDictionaryArray);
+				}
 			}
 
 			return FluentProvider.GetMessage(key);

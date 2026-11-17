@@ -140,19 +140,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine("Run this command with the --apply flag to apply the update rules.");
 		}
 
-		static void Log(StreamWriter logWriter, string format, params object[] args)
+		static void Log(StreamWriter logWriter, string format, params ReadOnlySpan<object> args)
 		{
 			logWriter.Write(format, args);
 			Console.Write(format, args);
 		}
 
-		static void LogLine(StreamWriter logWriter, string format, params object[] args)
+		static void LogLine(StreamWriter logWriter, string format, params ReadOnlySpan<object> args)
 		{
 			logWriter.WriteLine(format, args);
 			Console.WriteLine(format, args);
 		}
 
-		static void LogSuccess(StreamWriter logWriter, string format, params object[] args)
+		static void LogSuccess(StreamWriter logWriter, string format, params ReadOnlySpan<object> args)
 		{
 			logWriter.WriteLine(format, args);
 
@@ -162,7 +162,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.ForegroundColor = originalColor;
 		}
 
-		static void LogError(StreamWriter logWriter, string format, params object[] args)
+		static void LogError(StreamWriter logWriter, string format, params ReadOnlySpan<object> args)
 		{
 			logWriter.WriteLine(format, args);
 
@@ -172,7 +172,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.ForegroundColor = originalColor;
 		}
 
-		static void LogWarning(StreamWriter logWriter, string format, params object[] args)
+		static void LogWarning(StreamWriter logWriter, string format, params ReadOnlySpan<object> args)
 		{
 			logWriter.WriteLine(format, args);
 

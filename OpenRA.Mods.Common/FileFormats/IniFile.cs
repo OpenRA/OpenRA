@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.FileFormats
 				Load(s);
 		}
 
-		public IniFile(params Stream[] streams)
+		public IniFile(params ReadOnlySpan<Stream> streams)
 		{
 			foreach (var s in streams)
 				Load(s);
