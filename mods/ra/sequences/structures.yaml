@@ -51,6 +51,14 @@ bio:
 	make:
 		Filename: biomake.shp
 		Length: *
+	bib:
+		TilesetFilenames:
+			SNOW: mbHOSP.sno
+			INTERIOR: mbHOSP.int
+			TEMPERAT: mbHOSP.tem
+			DESERT: mbHOSP.des
+		Length: *
+		Offset: 0,1
 
 oilb:
 	Defaults:
