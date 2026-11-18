@@ -210,6 +210,8 @@ World:
 	MissionData:
 		Briefing: briefing
 		BriefingVideo: H_BR09_E.VQA
+		WinVideo: H_FINL_E.VQA
+		LossVideo: H_LOSE_E.VQA
 	MapOptions:
 		TechLevel: unrestricted
 	ScriptLobbyDropdown@difficulty:
