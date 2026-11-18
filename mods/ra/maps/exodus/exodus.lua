@@ -184,33 +184,49 @@ SendSovietParadrop = function()
 end
 
 AircraftTargets = function(yak)
-	local targets = Utils.Where(Map.ActorsInWorld, function(a)
-		return (a.Owner == Allies1 or a.Owner == Allies2) and a.HasProperty("Health") and yak.CanTarget(a)
+	local mobiles = { }
+	local mobileCount = 0
+	local targetOwner = Allies1
+	if Allies2 and Utils.Random({ true, false }) then
+		targetOwner = Allies2
+	end
+
+	local targets = Utils.Where(targetOwner.GetActors(), function(a)
+		if not a.HasProperty("Health") or not yak.CanTarget(a) then
+			return false
+		end
+
+		if a.HasProperty("Move") then
+			mobileCount = mobileCount + 1
+			mobiles[mobileCount] = a
+		end
+
+		return true
 	end)
 
-	-- Prefer mobile units
-	table.sort(targets, function(a, b) return a.HasProperty("Move") and not b.HasProperty("Move") end)
+	-- Mobile targets should have priority.
+	if mobileCount > 0 then
+		return mobiles
+	end
 
 	return targets
 end
 
 YakAttack = function(yak, target)
-	if not target or target.IsDead or (not target.IsInWorld) or (not yak.CanTarget(target)) then
-		local targets = AircraftTargets(yak)
-		if #targets > 0 then
-			target = Utils.Random(targets)
+	Trigger.OnIdle(yak, function()
+		if not target or target.IsDead or not target.IsInWorld or not yak.CanTarget(target) then
+			local targets = AircraftTargets(yak)
+			if #targets > 0 then
+				target = Utils.Random(targets)
+			end
 		end
-	end
 
-	if target and yak.AmmoCount() > 0 and yak.CanTarget(target) then
-		yak.Attack(target)
-	else
-		-- Includes yak.Resupply()
-		yak.ReturnToBase()
-	end
-
-	yak.CallFunc(function()
-		YakAttack(yak, target)
+		if target and yak.AmmoCount() > 0 and yak.CanTarget(target) then
+			yak.Attack(target)
+		else
+			-- Includes yak.Resupply()
+			yak.ReturnToBase()
+		end
 	end)
 end
 
