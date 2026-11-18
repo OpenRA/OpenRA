@@ -22,11 +22,14 @@
 --   * small funds and storage helpers
 --   * xpcall-based tick safety
 --
--- Status: bad-neighborhood, deceit, eviction-notice, cloak-and-dagger and
--- hostile-takeover use this module. The scheduler, unit self-defence,
--- engineer capture, per-pad Orcas, "n-th building" start, one-shot cell
--- triggers and counter-attack helpers were extracted from hostile-takeover
--- (2026-11-17) and are covered by harness/campaign-ai-harness.lua.
+-- Status: bad-neighborhood, deceit, eviction-notice, cloak-and-dagger,
+-- hostile-takeover and under-siege use this module. The scheduler, unit
+-- self-defence, engineer capture, per-pad Orcas, "n-th building" start,
+-- one-shot cell triggers, counter-attack helpers (2026-11-17) and the
+-- type-filtered team formation / timed special threat (under-siege,
+-- 2026-11-17) and cloak-aware scripted targeting (CA.IsCloaked,
+-- CA.ClosestEnemy; under-siege playtest 2026-11-18) are covered by
+-- harness/campaign-ai-harness.lua.
 --
 -- Verified by both older ports:
 -- land/pool/orders, damage response, idle defence, Orca handling,
@@ -121,6 +124,24 @@ function CA.RepeatingSafeTick(label, interval, body, isActive, isFinished)
 		end
 		Trigger.AfterDelay(DateTime.Seconds(interval), step)
 	end
+	return step
+end
+
+-- Schedule a repeating, mission-specific threat. This is the timed sibling of
+-- CA.RepeatingSafeTick: the first execution can be delayed independently of
+-- the repeat interval, and the body can stop the series by returning false.
+--
+-- options: label, firstDelay, interval, execute, isActive, isFinished
+function CA.StartSpecialThreat(context, options)
+	options = options or {}
+	context = context or {}
+	local step = CA.RepeatingSafeTick(
+		options.label or "special-threat",
+		options.interval or 300,
+		options.execute,
+		options.isActive or context.isActive,
+		options.isFinished or context.isFinished)
+	Trigger.AfterDelay(DateTime.Seconds(options.firstDelay or 0), step)
 	return step
 end
 
@@ -866,6 +887,17 @@ end
 
 -- ---------------------------------------------------------------- targets
 
+-- Script-side enemy scans cannot ask the engine "can my owner see this
+-- actor?", so they must not look through cloak on their own. The original
+-- TechnoClass::In_Range rejects cloaked objects outright, and OpenRA's own
+-- AutoTarget already filters with Actor.CanBeViewedByPlayer (which honours
+-- DetectCloaked). A scripted scan that ignores cloak made idle defenders
+-- chase a cloaked Stealth Tank (Under Siege playtest). Detected cloaked
+-- actors are still engaged by the engine's AutoTarget.
+function CA.IsCloaked(actor)
+	return actor ~= nil and actor.HasProperty("IsCloaked") and actor.IsCloaked
+end
+
 function CA.ClosestEnemy(unit, enemy, maxDistance, capture, context)
 	if not CA.IsLive(unit) or enemy == nil or not unit.HasProperty("Location") then return nil end
 	context = context or {}
@@ -875,6 +907,7 @@ function CA.ClosestEnemy(unit, enemy, maxDistance, capture, context)
 		if CA.IsLive(actor) and actor.HasProperty("Location")
 			and actor.HasProperty("Health") and not actor.HasProperty("Land")
 			and CA.TargetOnLand(unit.Location, actor)
+			and (context.includeCloaked or not CA.IsCloaked(actor))
 			and (context.exclude == nil or not context.exclude(actor))
 			and (not capture or (unit.HasProperty("CanCapture") and unit.CanCapture(actor))) then
 			local dx = unit.Location.X - actor.Location.X
@@ -975,11 +1008,17 @@ function CA.SendTeam(team, owner, route, attack, baseAttack, context)
 			for _, waypoint in ipairs(route) do
 				local cell = cellOf(waypoint)
 				if cell ~= nil and CA.SameLand(unit.Location, cell) then
-					if unit.HasProperty("AttackMove") then
+					-- `attack = false` is the original Move mission (for example
+					-- SCB35EA's `mtnk` team); do not turn it into AttackMove just
+					-- because the unit also has that command.
+					if attack and unit.HasProperty("AttackMove") then
 						unit.AttackMove(cell)
 						ordered = true
 					elseif unit.HasProperty("Move") then
 						unit.Move(cell)
+						ordered = true
+					elseif unit.HasProperty("AttackMove") then
+						unit.AttackMove(cell)
 						ordered = true
 					end
 				end
@@ -997,6 +1036,66 @@ function CA.SendTeam(team, owner, route, attack, baseAttack, context)
 	if attack and #team > 0 then
 		CA.WatchAttackers(team, owner, baseAttack, context)
 	end
+end
+
+-- Recruit an existing group by exact unit type. The original "Create Team"
+-- action does not spawn units; it takes them from the house's existing army.
+-- Existing callers hand-rolled this filter (Hostile Takeover's FindGDIUnits);
+-- this is the shared, deterministic replacement.
+--
+-- companions: array of { kind, count }
+-- options: routeStart (CPos/actor for nearest-first), exclude(actor),
+--          reserve (set of ActorKey values already claimed),
+--          keepReserve (do not take base.reserve units)
+-- Returns the selected units (possibly understrength) or nil if none.
+function CA.FormTeam(base, context, companions, options)
+	if base == nil or base.player == nil then return nil end
+	options = options or {}
+	local claimed = {}
+	for key in pairs(options.reserve or {}) do claimed[key] = true end
+	if options.keepReserve and base.reserve ~= nil then
+		for _, unit in ipairs(base.reserve) do claimed[CA.ActorKey(unit)] = true end
+	end
+
+	local start = cellOf(options.routeStart)
+
+	local function distance(unit)
+		if start == nil or unit.Location == nil then return 0 end
+		local dx = unit.Location.X - start.X
+		local dy = unit.Location.Y - start.Y
+		return dx * dx + dy * dy
+	end
+
+	local function available(unit)
+		return CA.IsLive(unit) and unit.Owner == base.player and unit.IsInWorld
+			and unit.HasProperty("Location")
+			and not claimed[CA.ActorKey(unit)]
+			and (options.exclude == nil or not options.exclude(unit))
+	end
+
+	local team = {}
+	for _, entry in ipairs(companions or {}) do
+		local kind, count = entry[1], entry[2] or 1
+		local candidates = {}
+		for _, unit in ipairs(CA.GetActorsByType(base.player, kind)) do
+			if available(unit) then table.insert(candidates, unit) end
+		end
+		table.sort(candidates, function(a, b)
+			local da, db = distance(a), distance(b)
+			if da ~= db then return da < db end
+			local ka, kb = CA.ActorKey(a), CA.ActorKey(b)
+			if type(ka) == "number" and type(kb) == "number" then return ka < kb end
+			return tostring(ka) < tostring(kb)
+		end)
+
+		for i = 1, math.min(count, #candidates) do
+			local unit = candidates[i]
+			claimed[CA.ActorKey(unit)] = true
+			table.insert(team, unit)
+		end
+	end
+	if #team == 0 then return nil end
+	return team
 end
 
 -- ---------------------------------------------------------------- production
