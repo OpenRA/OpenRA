@@ -60,6 +60,7 @@ namespace OpenRA.Mods.Common.Activities
 		protected override void OnActorDispose(Actor self)
 		{
 			queue.DeliverFinished();
+			queue.RestockingEnabled = true;
 		}
 
 		public override bool Tick(Actor self)
@@ -79,6 +80,7 @@ namespace OpenRA.Mods.Common.Activities
 				else
 				{
 					queue.DeliverFinished();
+					queue.RestockingEnabled = true;
 					return true;
 				}
 			}
@@ -86,6 +88,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (orderedActors == null || orderedActors.Count == 0)
 			{
 				queue.DeliverFinished();
+				queue.RestockingEnabled = true;
 				return true;
 			}
 

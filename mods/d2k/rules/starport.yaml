@@ -3,7 +3,7 @@ mcv.starport:
 	Buildable:
 		Prerequisites: starport
 		Queue: Starport
-		BuildDuration: 0
+		BuildDuration: 1500
 	Valued:
 		Cost: 2500
 	-MapEditorData:
@@ -17,7 +17,7 @@ harvester.starport:
 	Buildable:
 		Prerequisites: starport
 		Queue: Starport
-		BuildDuration: 0
+		BuildDuration: 1500
 	Valued:
 		Cost: 1500
 	-MapEditorData:
@@ -31,7 +31,7 @@ trike.starport:
 	Buildable:
 		Prerequisites: starport
 		Queue: Starport
-		BuildDuration: 0
+		BuildDuration: 1500
 	Valued:
 		Cost: 315
 	-MapEditorData:
@@ -45,7 +45,7 @@ quad.starport:
 	Buildable:
 		Prerequisites: starport
 		Queue: Starport
-		BuildDuration: 0
+		BuildDuration: 1500
 	Valued:
 		Cost: 500
 	-MapEditorData:
@@ -59,7 +59,7 @@ siege_tank.starport:
 	Buildable:
 		Prerequisites: starport
 		Queue: Starport
-		BuildDuration: 0
+		BuildDuration: 1500
 	Valued:
 		Cost: 1075
 	-MapEditorData:
@@ -73,7 +73,7 @@ missile_tank.starport:
 	Buildable:
 		Prerequisites: starport
 		Queue: Starport
-		BuildDuration: 0
+		BuildDuration: 1500
 	Valued:
 		Cost: 1250
 	-MapEditorData:
@@ -87,7 +87,7 @@ combat_tank_a.starport:
 	Buildable:
 		Prerequisites: ~starport.atreides_combat
 		Queue: Starport
-		BuildDuration: 0
+		BuildDuration: 1500
 	Valued:
 		Cost: 875
 	-MapEditorData:
@@ -101,7 +101,7 @@ combat_tank_h.starport:
 	Buildable:
 		Prerequisites: ~starport.harkonnen_combat
 		Queue: Starport
-		BuildDuration: 0
+		BuildDuration: 1500
 	Valued:
 		Cost: 875
 	-MapEditorData:
@@ -115,7 +115,7 @@ combat_tank_o.starport:
 	Buildable:
 		Prerequisites: ~starport.ordos_combat
 		Queue: Starport
-		BuildDuration: 0
+		BuildDuration: 1500
 	Valued:
 		Cost: 875
 	-MapEditorData:
@@ -129,7 +129,7 @@ carryall.starport:
 	Buildable:
 		Prerequisites: starport
 		Queue: Starport
-		BuildDuration: 0
+		BuildDuration: 1500
 	Valued:
 		Cost: 1500
 	-MapEditorData:

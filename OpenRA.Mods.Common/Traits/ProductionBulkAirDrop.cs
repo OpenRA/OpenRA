@@ -77,7 +77,10 @@ namespace OpenRA.Mods.Common.Traits
 					if (anotherProducer.Trait != null && anotherProducer.Trait is ProductionBulkAirdrop anotherStarport)
 						anotherStarport.DeliverOrder(anotherProducer.Actor, orderedActors, productionType, queue);
 					else
+					{
 						queue.DeliverFinished();
+					}
+
 					return;
 				}
 
@@ -114,9 +117,12 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				orderedActors.RemoveAll(actor => actor.Actor.HasTraitInfo<AircraftInfo>());
+				if (!queue.RestockingEnabled)
+					queue.RestockingEnabled = true;
 				if (orderedActors.Count == 0)
 				{
 					queue.DeliverFinished();
+					queue.RestockingEnabled = true;
 					return;
 				}
 
