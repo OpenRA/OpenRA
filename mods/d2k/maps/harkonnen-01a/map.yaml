@@ -28,6 +28,7 @@ Players:
 		Name: Creeps
 		NonCombatant: True
 		Faction: Random
+		Enemies: Atreides, Harkonnen
 	PlayerReference@Harkonnen:
 		Name: Harkonnen
 		Playable: True
