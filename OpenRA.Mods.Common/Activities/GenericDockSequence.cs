@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Activities
 		protected readonly IDockHost DockHost;
 		protected readonly WithDockingOverlay DockHostSpriteOverlay;
 		protected readonly DockClientManager DockClient;
-		protected readonly IDockClientBody DockClientBody;
+		protected readonly IDockClientBody[] DockClientBodys;
 		protected readonly bool IsDragRequired;
 		protected readonly int DragLength;
 		protected readonly WPos StartDrag;
@@ -38,6 +38,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		readonly INotifyDockClient[] notifyDockClients;
 		readonly INotifyDockHost[] notifyDockHosts;
+		int dockClientConditionToken = Actor.InvalidConditionToken;
 
 		bool dockInitiated = false;
 
@@ -47,7 +48,7 @@ namespace OpenRA.Mods.Common.Activities
 			dockingState = DockingState.Drag;
 
 			DockClient = client;
-			DockClientBody = self.TraitOrDefault<IDockClientBody>();
+			DockClientBodys = self.TraitsImplementing<IDockClientBody>().ToArray();
 			notifyDockClients = self.TraitsImplementing<INotifyDockClient>().ToArray();
 
 			DockHost = host;
@@ -59,7 +60,9 @@ namespace OpenRA.Mods.Common.Activities
 			DragLength = dragLength;
 			StartDrag = self.CenterPosition;
 			EndDrag = hostActor.CenterPosition + dragOffset;
-
+			if (DockHost.DockedClientCondition != null)
+				dockClientConditionToken = self.TraitsImplementing<ExternalCondition>().FirstOrDefault(c => c.Info.Condition == DockHost.DockedClientCondition)
+				.GrantCondition(self, DockHost);
 			QueueChild(new Wait(dockWait));
 		}
 
@@ -115,6 +118,8 @@ namespace OpenRA.Mods.Common.Activities
 					DockHost.OnDockCompleted(DockHostActor, self, DockClient);
 					DockClient.OnDockCompleted(self, DockHostActor, DockHost);
 					NotifyUndocked(self);
+					if (dockClientConditionToken != Actor.InvalidConditionToken)
+						dockClientConditionToken = self.RevokeCondition(dockClientConditionToken);
 					if (IsDragRequired)
 						QueueChild(new Drag(self, EndDrag, StartDrag, DragLength));
 
@@ -145,10 +150,11 @@ namespace OpenRA.Mods.Common.Activities
 
 		public virtual void PlayDockCientAnimation(Actor self, Action after)
 		{
-			if (DockClientBody != null)
+			if (DockClientBodys != null)
 			{
 				dockingState = DockingState.Wait;
-				DockClientBody.PlayDockAnimation(self, () => after());
+				foreach (var dockingClient in DockClientBodys)
+					dockingClient.PlayDockAnimation(self, () => after());
 			}
 			else
 				after();
@@ -175,10 +181,12 @@ namespace OpenRA.Mods.Common.Activities
 
 		public virtual void PlayUndockClientAnimation(Actor self, Action after)
 		{
-			if (DockClientBody != null)
+			if (DockClientBodys != null)
 			{
 				dockingState = DockingState.Wait;
-				DockClientBody.PlayReverseDockAnimation(self, () => after());
+				foreach (var dockingClient in DockClientBodys)
+					if (dockingClient.IsTraitEnabled())
+						dockingClient.PlayReverseDockAnimation(self, () => after());
 			}
 			else
 				after();

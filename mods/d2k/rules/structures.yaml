@@ -325,6 +325,9 @@ barracks:
 refinery:
 	Inherits: ^Building
 	Inherits@BUILDINGVFX: ^DamagedBuildingEffects
+	PlaceBuildingVariants:
+		Actors: refinery_nw
+		Facings: 128, 896, 384
 	Buildable:
 		Prerequisites: wind_trap
 		Queue: Building
@@ -366,6 +369,7 @@ refinery:
 		Type: Unload
 		DockAngle: 640
 		DockOffset: 1c0,512,0
+		DockedClientCondition: docked_se
 	StoresPlayerResources:
 		Capacity: 2000
 	CustomSellValue:
@@ -427,6 +431,76 @@ refinery:
 		Offset: 1200, -200, 0
 	WithDamageOverlay@Fire2Ordos:
 		Offset: 0, -200, 0
+
+
+refinery_nw:
+	Inherits: refinery
+	Buildable:
+		Prerequisites: ~disabled
+		Queue: Building
+		BuildPaletteOrder: 310
+		Description: actor-refinery.description
+	RenderSprites:
+		Image: refinery_nw.ordos
+		FactionImages:
+			atreides: refinery_nw.atreides
+			fremen: refinery_nw.atreides
+			harkonnen: refinery_nw.harkonnen
+			corrino: refinery_nw.harkonnen
+	WithIdleOverlay@middle:
+		Sequence: idle-middle
+		RequiresCondition: !build-incomplete
+	DockHost:
+		Type: Unload
+		DockAngle: 128
+		DockOffset: -1c0,512,0
+		DockedClientCondition: docked_nw
+	D2kBuilding:
+		Footprint: === =xx xx=
+		Dimensions: 3,3
+		LocalCenterOffset: 0, -512,0
+	Selectable:
+		Bounds: 3072, 2048, 0, 1024
+	HitShape:
+		Type: Rectangle
+			TopLeft: -512, 0
+			BottomRight: 1536, 1024
+	HitShape@BOTTOM:
+		Type: Rectangle
+			TopLeft: -1536, 1024
+			BottomRight: 512, 2048
+	ProvidesPrerequisite:
+		Prerequisite: refinery
+	FreeActorWithDelivery:
+		DeliveryOffset: 0,0
+	FloatingSpriteEmitter@SmokeSmallAtreides:
+		Offset: -900, 712, 0
+	FloatingSpriteEmitter@SmokeHugeAtreides:
+		Offset: 700,-112,0
+	WithDamageOverlay@Fire1_Atreides:
+		Offset: -512, 600,0
+	WithDamageOverlay@Fire2_atreides:
+		Offset: -1024, -800, 0
+		LoopSequence: 2
+	FloatingSpriteEmitter@SmokeHugeHarkonnen:
+		Offset: 1100,-288,0
+	FloatingSpriteEmitter@SmokeSmallHarkonnen:
+		Offset: -512, 0,0
+	WithDamageOverlay@Fire1Harkonnen:
+		Offset: -350, 1000,0
+	WithDamageOverlay@Fire2Harkonnen:
+		Offset: -1024, -450, 0
+		LoopSequence: 2
+	FloatingSpriteEmitter@SmokeHugeOrdos:
+		Offset: 400, -288, 0
+		Gravity: 70
+	FloatingSpriteEmitter@SmokeSmallOrdos:
+		Offset: -250, 762, 0
+		SpawnFrequency: 3, 13
+	WithDamageOverlay@Fire1Ordos:
+		Offset: -1000, 300, 0
+	WithDamageOverlay@Fire2Ordos:
+		Offset: -1524, -200, 0
 
 silo:
 	Inherits: ^Building
