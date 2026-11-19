@@ -1008,6 +1008,7 @@ local EconomyTuning = {
 	HealthyReserve = 500,
 	RepairReserve = 500,
 	SellBuffer = 0,
+	RetaskCooldownSeconds = 60,
 	-- Two silos per base are plenty; the map already ships two per base.
 	MaxSilos = 2,
 	-- The northern base has room for three pads.
@@ -1143,14 +1144,14 @@ end
 -- SiteFree displacements and interrupted harvest cycles can leave a
 -- harvester idle; without this it would stand still forever and only the
 -- cashflow watchdog (which retasks a single harvester) would notice.
-local function RestartIdleHarvesters(base)
+local function RestartIdleHarvesters(base, force)
 	if base.harvesters == nil then return end
 	-- Harvesting without a refinery is pointless and would only queue
 	-- activities that immediately fail.
 	if LocalBuilding(base, "proc") == nil then return end
 	for _, harv in pairs(base.harvesters) do
 		if IsLive(harv) and harv.IsInWorld and harv.Owner == base.player
-			and harv.HasProperty("FindResources") and harv.IsIdle then
+			and harv.HasProperty("FindResources") and (force or harv.IsIdle) then
 			harv.FindResources()
 		end
 	end
@@ -1489,11 +1490,10 @@ local function EconomyPowerBuildKind(base)
 	local recent = base.lastPowerKind ~= nil and base.lastPowerAt ~= nil
 		and DateTime.GameTime - base.lastPowerAt <= DateTime.Seconds(BaseTuning.PowerOscillationSeconds)
 	if (base.preferNuk2 or recent) and base.player.HasPrerequisites(prerequisites.nuk2) then
-		-- A base that prefers NUK2 waits for it instead of dropping a small
-		-- NUKE somewhere else.
-		if base.preferNuk2 or AvailableFundsForBase(base) >= Actor.Cost("nuk2") then
-			return "nuk2"
-		end
+		-- A base that prefers NUK2 asks for it first; TryBuildPower falls
+		-- back to the cheap NUKE if it cannot be placed or afforded, so a
+		-- Strained base can still restore power and reach the optional builds.
+		return "nuk2"
 	end
 	return "nuke"
 end
@@ -1506,9 +1506,9 @@ local function EconomyTryBuildPowerKind(base, kind, yard)
 			return StartBuilding(base, entry, yard)
 		end
 	end
-	-- The west base keeps its NUK2s in the western cluster. A NUK2 request
-	-- does not fall back to a NUKE here; only the explicit recovery NUKE path
-	-- (no refinery) may use a free site.
+	-- The west base keeps its NUK2s in the western cluster; a NUK2 request
+	-- does not use FindNearbySite. TryBuildPower falls back to a cheap NUKE
+	-- at a free site when this fails (e.g. all NUK2 nodes blocked).
 	if base.preferNuk2 and kind == "nuk2" then return false end
 	local entry = FindNearbySite(base, kind, yard.Location, nil)
 	if entry ~= nil then return StartBuilding(base, entry, yard) end
@@ -1522,7 +1522,8 @@ local function TryBuildPower(base)
 	local kind = EconomyPowerBuildKind(base)
 	if kind == "nuk2" then
 		if EconomyTryBuildPowerKind(base, "nuk2", yard) then return true end
-		if base.preferNuk2 then return false end
+		-- Do not leave the base permanently Strained: fall back to a NUKE
+		-- when the NUK2 cluster has no free/affordable site.
 		kind = "nuke"
 	end
 	return EconomyTryBuildPowerKind(base, kind, yard)
@@ -1905,6 +1906,15 @@ local function UpdateEconomyFacts(base)
 	end
 	local hasIncome = HasStructuralIncome(base)
 	UpdateIncomeWatchdog(base, hasIncome)
+	-- A claimed harvester can be alive but stuck on a destroyed refinery
+	-- without being idle. If the income watchdog sees flat funds, force a
+	-- search instead of waiting for the safety timeout.
+	if IsIncomeSuspect(base)
+		and (base.lastForceRetask == nil
+			or DateTime.GameTime - base.lastForceRetask >= DateTime.Seconds(EconomyTuning.RetaskCooldownSeconds)) then
+		base.lastForceRetask = DateTime.GameTime
+		RestartIdleHarvesters(base, true)
+	end
 	if not base.rebuilding and not base.harvesterBuilding then
 		ReconcileRecoveryReservation(base)
 	end
@@ -1957,12 +1967,13 @@ end
 
 local function NormalEconomy(base)
 	-- Economy first: a missing harvester is useless to replace after units
-	-- and optional buildings have consumed the funds.
+	-- and optional buildings have consumed the funds. Airfields and the
+	-- barracks come before new units so infantry/vehicles cannot starve them.
 	RebuildHarvester(base)
 	Rebuild(base)
-	Produce(base)
 	EnsureHelipad(base)
 	ProduceOrca(base)
+	Produce(base)
 end
 
 local function StrainedEconomy(base)
@@ -2177,6 +2188,9 @@ StartBuilding = function(base, entry, yard)
 				base.recoveryPowerPolicy = nil
 				Trigger.AfterDelay(DateTime.Seconds(EconomyTuning.FreeActorGraceSeconds), function()
 					AdoptFreeHarvester(base)
+					-- A surviving harvester may be stuck on the destroyed
+					-- refinery; force a new search now that a refinery exists.
+					RestartIdleHarvesters(base, true)
 				end)
 			end
 			ReconcileRecoveryReservation(base)
@@ -2233,7 +2247,9 @@ Rebuild = function(base)
 		if TryBuildProc(base) then return end
 	end
 
-	if Bootstrap(base) then return end
+	-- Do not spend the recovery money on the barracks while the weapons
+	-- factory is still missing; the pyle can wait, the WEAP cannot.
+	if LocalBuilding(base, "weap") ~= nil and Bootstrap(base) then return end
 
 	-- Low power pauses radar, support powers and base defenses. Add capacity
 	-- even when local power plants exist: the player-wide network can still
@@ -2375,6 +2391,9 @@ local function CombatOrderPending(base)
 end
 
 Produce = function(base)
+	-- Rebuild the barracks before queueing more units: vehicles from the
+	-- WEAP otherwise consume the funds and the building site the pyle needs.
+	if LocalBuilding(base, "pyle") == nil then return end
 	local factory = LocalBuilding(base, "weap")
 	if LocalBuilding(base, "fact") == nil then
 		-- A lost construction yard is recovered by an MCV. This branch must
