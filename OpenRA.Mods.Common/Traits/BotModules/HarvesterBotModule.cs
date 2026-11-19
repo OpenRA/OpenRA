@@ -329,9 +329,11 @@ namespace OpenRA.Mods.Common.Traits
 				harvesters.Remove(a);
 
 			// Find new harvesters
-			var newHarvesters = world.ActorsHavingTrait<Harvester>().Where(a => !unitCannotBeOrdered(a) && !harvesters.ContainsKey(a));
-			foreach (var a in newHarvesters)
-				harvesters[a] = new HarvesterTraitWrapper(a);
+			foreach (var actor in world.ActorsHavingTraitAsIterator<Harvester>())
+			{
+				if (!unitCannotBeOrdered(actor) && !harvesters.ContainsKey(actor))
+					harvesters[actor] = new HarvesterTraitWrapper(actor);
+			}
 
 			harvestersNeedingOrders.Clear();
 			foreach (var h in harvesters)
