@@ -742,7 +742,12 @@ local function TrackHarvester(base, harv)
 	trackedHarvesters[key] = true
 	base.harvester = harv
 	Trigger.OnKilled(harv, function(_, killer)
-		if EconomyActorKey(base.harvester) == key then base.harvester = nil end
+		-- The actor is already dead here and no longer exposes ActorID; clear
+		-- the primary pointer by liveness/identity instead of recomputing it.
+		if not IsLive(base.harvester) or base.harvester == harv
+			or EconomyActorKey(base.harvester) == key then
+			base.harvester = nil
+		end
 		Trigger.AfterDelay(1, function()
 			RebuildHarvester(base, killer)
 			RequestRelief(base)

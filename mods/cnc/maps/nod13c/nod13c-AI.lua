@@ -1506,8 +1506,9 @@ local function EconomyTryBuildPowerKind(base, kind, yard)
 			return StartBuilding(base, entry, yard)
 		end
 	end
-	-- The west base keeps its NUK2s in the western cluster; the cheap NUKE
-	-- may fall back to a free site when recovery needs any power at all.
+	-- The west base keeps its NUK2s in the western cluster. A NUK2 request
+	-- does not fall back to a NUKE here; only the explicit recovery NUKE path
+	-- (no refinery) may use a free site.
 	if base.preferNuk2 and kind == "nuk2" then return false end
 	local entry = FindNearbySite(base, kind, yard.Location, nil)
 	if entry ~= nil then return StartBuilding(base, entry, yard) end
