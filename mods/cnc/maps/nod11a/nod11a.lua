@@ -34,19 +34,39 @@
 -- numbers there refer to the waypoint0..waypoint15 actors on this map.
 -- The original splits the player's forces across a river; both groups are
 -- imported separately.
+--
+-- Shared with nod11a-AI.lua: BaseDefenseTriggered, BaseTakenOver, CheckForSams,
+-- Commando, EliminateGDI, GDI, InitialUnits, Nod, PendingGDIReinforcementsUntil,
+-- SetupAI, StartAttackSchedule, StartMammothPatrol, TryStartGDIProduction.
 
-NodBase = { NodConYard }
+local NodBase = { NodConYard }
 
 -- Extra starting cash for Nod on top of the 2000 from rules.yaml.
-RefineryGoal = 3
-StartingCashBonus = { easy = 1500, normal = 1000, hard = 0 }
-BaseTakenOver = false
+local RefineryGoal = 3
+local StartingCashBonus = { easy = 1500, normal = 1000, hard = 0 }
 
-CommandoTypes = { easy = "rmbo.easy", normal = "rmbo", hard = "rmbo" }
+local CommandoTypes = { easy = "rmbo.easy", normal = "rmbo", hard = "rmbo" }
+
+---@type integer
+local FindBase
+---@type integer
+local CaptureTechCenter
+---@type integer
+local BuildRefineries
+---@type integer
+local BuildSAMs
+---@type actor
+local Boat
+
+-- Assigned in WorldLoaded; captures the difficulty-dependent boat type.
+local SpawnBoat
+
+-- Shared with nod11a-AI.lua.
+BaseTakenOver = false
 
 -- The map ships the normal Commando. Only Easy gets the tougher, regenerating
 -- variant; Normal and Hard keep AutoTarget and AttackMove.
-SetCommandoVariant = function(nod, difficulty)
+local function SetCommandoVariant(nod, difficulty)
 	local commandoType = CommandoTypes[difficulty] or "rmbo"
 	if commandoType ~= "rmbo" and not Commando.IsDead then
 		local location = Commando.Location
@@ -64,6 +84,7 @@ SetCommandoVariant = function(nod, difficulty)
 	Commando.Stance = "Defend"
 end
 
+-- Called from nod11a-AI.lua.
 StartMammothPatrol = function()
 	if Mammoth.IsDead or BaseDefenseTriggered then
 		return
@@ -72,7 +93,7 @@ StartMammothPatrol = function()
 	Mammoth.Patrol({ waypoint1.Location, waypoint2.Location, waypoint3.Location, waypoint2.Location }, true, DateTime.Seconds(1))
 end
 
-ConYardDiscovered = function(_, discoverer)
+local function ConYardDiscovered(_, discoverer)
 	if not Nod.IsObjectiveCompleted(FindBase) and discoverer == Nod then
 		Nod.MarkCompletedObjective(FindBase)
 
@@ -96,7 +117,7 @@ ConYardDiscovered = function(_, discoverer)
 	end
 end
 
-TechCenterCaptured = function(_, _, _, newOwner)
+local function TechCenterCaptured(_, _, _, newOwner)
 	if not Nod.IsObjectiveCompleted(CaptureTechCenter) and newOwner == Nod then
 		Nod.MarkCompletedObjective(CaptureTechCenter)
 
@@ -104,6 +125,21 @@ TechCenterCaptured = function(_, _, _, newOwner)
 			Media.PlaySpeechNotification(Nod, "NewOptions")
 		end)
 	end
+end
+
+local function CheckForRefineries()
+	return #Nod.GetActorsByType("proc") >= RefineryGoal
+end
+
+-- A starting unit loaded into a transport is temporarily out of the world but
+-- still alive. Do not treat that as the loss of the starting group.
+local function StartingGroupAlive()
+	for _, actor in ipairs(InitialUnits or {}) do
+		if not actor.IsDead then
+			return true
+		end
+	end
+	return false
 end
 
 WorldLoaded = function()
@@ -179,21 +215,6 @@ WorldLoaded = function()
 	end
 
 	SetupAI()
-end
-
-CheckForRefineries = function()
-	return #Nod.GetActorsByType("proc") >= RefineryGoal
-end
-
--- A starting unit loaded into a transport is temporarily out of the world but
--- still alive. Do not treat that as the loss of the starting group.
-local function StartingGroupAlive()
-	for _, actor in ipairs(InitialUnits or {}) do
-		if not actor.IsDead then
-			return true
-		end
-	end
-	return false
 end
 
 Tick = function()
