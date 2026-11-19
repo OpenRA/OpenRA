@@ -8,41 +8,45 @@
 ]]
 
 -- GDI attacks, cell triggers and production for Nod mission 11a.
+--
+-- Shared with nod11a.lua: BaseDefenseTriggered, BaseTakenOver, CheckForSams,
+-- Commando, EliminateGDI, GDI, InitialUnits, Nod, PendingGDIReinforcementsUntil,
+-- SetupAI, StartAttackSchedule, StartMammothPatrol, TryStartGDIProduction.
 
 -- Seconds after the Nod base was taken over. Hard is the original schedule
 -- plus 20 s; Normal and Easy are stretched further.
-WaveTimes = {
+local WaveTimes = {
 	easy = { chn1 = 15, atk2 = 290, atk3 = 305, zzzz = 325, atk4 = 340, atk5 = 390, atk6 = 410, auto = 495 },
 	normal = { chn1 = 10, atk2 = 230, atk3 = 245, zzzz = 255, atk4 = 270, atk5 = 310, atk6 = 325, auto = 390 },
 	hard = { chn1 = 5, atk2 = 170, atk3 = 180, zzzz = 190, atk4 = 200, atk5 = 230, atk6 = 240, auto = 290 },
 }
 
 -- Seconds between repeated A10 strikes (HQ alive, fewer than 3 powered SAMs).
-AirstrikeInterval = { easy = 160, normal = 140, hard = 120 }
+local AirstrikeInterval = { easy = 160, normal = 140, hard = 120 }
 
 -- Seconds after the base takeover until GDI starts producing units.
-ProductionStartDelay = { easy = 420, normal = 300, hard = 240 }
+local ProductionStartDelay = { easy = 420, normal = 300, hard = 240 }
 -- Produced units wait in a pool. When the pool is full (reserve + group size)
 -- GDI sends a group of the oldest units on an attack route and keeps the
 -- reserve as defenders. MaxProducedUnits = reserve + group size.
-AttackGroupSize = { easy = 4, normal = 5, hard = 6 }
-DefenderReserve = { easy = 2, normal = 3, hard = 4 }
-MaxProducedUnits = { easy = 6, normal = 8, hard = 10 }
+local AttackGroupSize = { easy = 4, normal = 5, hard = 6 }
+local DefenderReserve = { easy = 2, normal = 3, hard = 4 }
+local MaxProducedUnits = { easy = 6, normal = 8, hard = 10 }
 -- Minimum seconds between two produced attack groups.
-AttackGroupCooldown = { easy = 150, normal = 110, hard = 80 }
+local AttackGroupCooldown = { easy = 150, normal = 110, hard = 80 }
 -- Seconds during which damage reactions of the defenders are not repeated.
-DefenseLockoutSeconds = 10
+local DefenseLockoutSeconds = 10
 
 -- Extra strong assault this many seconds after the last scripted wave (atk6).
 -- Not in the original mission.
-FinalWaveDelay = 420
+local FinalWaveDelay = 420
 -- Hard only: every further final wave gets FinalWaveExtraStep more units
 -- (up to FinalWaveMaxUnits), and once the first one has come every auto wave
 -- gets extra units (see AutoWaveExtras).
-FinalWaveExtraStep = { "e2", "e3" }
-FinalWaveMaxUnits = 25
-FinalWaveCount = 0
-FinalWaveUnits = {
+local FinalWaveExtraStep = { "e2", "e3" }
+local FinalWaveMaxUnits = 25
+local FinalWaveCount = 0
+local FinalWaveUnits = {
 	easy = { "e2", "e2", "e2", "e2", "e3", "e3", "e3", "mtnk", "mtnk", "htnk" },
 	normal = { "e1", "e1", "e2", "e2", "e2", "e2", "e3", "e3", "e3", "mtnk", "mtnk", "jeep", "htnk" },
 	hard = { "e1", "e1", "e1", "e2", "e2", "e2", "e2", "e3", "e3", "e3", "e3", "mtnk", "mtnk", "mtnk", "jeep", "htnk", "htnk" },
@@ -50,12 +54,53 @@ FinalWaveUnits = {
 
 -- The original "Autocreate" trigger keeps producing teams from the auto1..auto8
 -- pool instead of spawning a single team.
-AutoWaveDelays = {
+local AutoWaveDelays = {
 	-- Stretched (~1.5x) because produced groups now add pressure.
 	easy = { min = 210, max = 285 },
 	normal = { min = 150, max = 210 },
 	hard = { min = 120, max = 165 },
 }
+
+-- Mission state.
+-- The 'dely' cell trigger disables the original 'yyyy' lose trigger.
+local YyyyDisabled = false
+local ProdTriggered = false
+local GDIProductionStarted = false
+local AirstrikeDisabled = false
+local HuntTriggered = false
+local AttackScheduleStarted = false
+-- Set for good once the GDI Construction Yard is destroyed or captured: no more waves.
+local WavesStopped = false
+-- 'atk1' was entered before the base takeover; StartAttackSchedule sends it.
+local Atk1Sent = false
+local Atk1Pending = false
+local ProducedGDIUnits = {}
+local ProductionBusy = {}
+local OrcaBusy = nil
+local NextGroupTime = 0
+local DefenseLockUntil = 0
+-- Timestamp of the harvester order in flight (see WatchGDIHarvester).
+local HarvesterStamp
+-- GDI economy: first frame without a harvester, and the refinery rebuild in flight.
+local NoHarvesterSince = nil
+local RefineryBusy = false
+
+-- Shared with nod11a.lua.
+BaseDefenseTriggered = false
+-- Wave actors are created off-world and installed at frame end. Keep the
+-- mission victory check from firing in that window.
+PendingGDIReinforcementsUntil = 0
+
+-- Forward declarations: only assigned where defined below.
+local ProcessGDIRebuild
+local PullDefenders
+local SpendGDIFunds
+local FinishGDIBuilding
+local GDIFunds
+local IsOrcaRetreating
+local QueueGDIRebuild
+local ProduceGDIUnit
+local StartBaseDefense
 
 -- TD [Triggers] "Time" values are seconds (e.g. SCG05EB atk1=40 is
 -- 40 seconds in the gdi05b port), not 1/10 minute.
@@ -70,12 +115,12 @@ InitialUnits = {
 	Commando,
 }
 
-HuntBuildings = {
+local HuntBuildings = {
 	GDINuke1, GDINuke2, GDINuke3,
 	GDIBarracks, GDICYard, GDIProc, GDIWeaponsFactory,
 }
 
-IsMobileNod = function(actor)
+local function IsMobileNod(actor)
 	return actor.Owner == Nod and actor.HasProperty("Move")
 end
 
@@ -162,7 +207,7 @@ local function GuardArea(guards, center, range)
 	end)
 end
 
-PrepareAreaGuards = function()
+local function PrepareAreaGuards()
 	local teams =
 	{
 		{ actors = { SouthGrenadier1, SouthGrenadier2, SouthGrenadier3, SouthGrenadier4 }, range = 6 },
@@ -191,7 +236,7 @@ local function RevealTechBaseTower(tower)
 	tower.GrantCondition("revealed")
 end
 
-PrepareTowerReveals = function()
+local function PrepareTowerReveals()
 	Utils.Do({ TechBaseTower1, TechBaseTower2 }, function(tower)
 		Trigger.OnEnteredProximityTrigger(tower.CenterPosition, WDist.FromCells(9), function(actor, id)
 			if not IsMobileNod(actor) then
@@ -206,9 +251,9 @@ end
 
 -- Waves enter on the top map edge (y = 3) instead of inside the playable
 -- area, so they walk in rather than pop up.
-WaveSpawn = CPos.New(waypoint6.Location.X, 3)
+local WaveSpawn = CPos.New(waypoint6.Location.X, 3)
 
-TeamDefs = {
+local TeamDefs = {
 	atk1 = { units = { "e1", "e1", "e2", "e2", "e2" }, start = WaveSpawn, moves = { waypoint1.Location, waypoint7.Location, waypoint11.Location, waypoint9.Location, waypoint8.Location } },
 	atk2 = { units = { "e2", "e2", "e3", "e3", "e3" }, start = WaveSpawn, moves = { waypoint1.Location, waypoint4.Location, waypoint5.Location, waypoint9.Location, waypoint8.Location } },
 	atk3 = { units = { "e1", "e1", "e1", "e1", "e2", "e2" }, start = WaveSpawn, moves = { waypoint1.Location, waypoint4.Location, waypoint5.Location, waypoint9.Location, waypoint8.Location } },
@@ -226,13 +271,13 @@ TeamDefs = {
 }
 
 -- The first AutoInfantryOnlyWaves auto waves are drawn from infantry-only teams.
-AutoInfantryOnlyWaves = 4
-AutoInfantryTeamNames = { "auto1", "auto2" }
-AutoWaveCount = 0
+local AutoInfantryOnlyWaves = 4
+local AutoInfantryTeamNames = { "auto1", "auto2" }
+local AutoWaveCount = 0
 
-AutoTeamNames = { "auto1", "auto2", "auto3", "auto4", "auto5", "auto6", "auto7", "auto8" }
+local AutoTeamNames = { "auto1", "auto2", "auto3", "auto4", "auto5", "auto6", "auto7", "auto8" }
 
-GDIBaseBuildings = {
+local GDIBaseBuildings = {
 	{ type = "nuke", pos = CPos.New(54, 4) },
 	{ type = "nuke", pos = CPos.New(53, 6) },
 	{ type = "nuke", pos = CPos.New(42, 4) },
@@ -253,7 +298,7 @@ GDIBaseBuildings = {
 	{ type = "hpad", pos = CPos.New(44, 4) },
 }
 
-GDIProductionTypes = {
+local GDIProductionTypes = {
 	pyle = { "e1", "e2", "e3" },
 	weap = { "jeep", "mtnk" },
 }
@@ -261,33 +306,13 @@ GDIProductionTypes = {
 -- Skip rotations whose prerequisites are currently missing. HTNK is not in
 -- the rotation at all: 11a has no EYE, so ordering it would let the queue
 -- reject the order while the script waits for a callback that never comes.
-GDIUnitPrerequisites = {
+local GDIUnitPrerequisites = {
 	e1 = { "barracks" },
 	e2 = { "anyhq" },
 	e3 = { "barracks" },
 	jeep = { "weap" },
 	mtnk = { "anyhq" },
 }
-
-YyyyDisabled = false
-ProdTriggered = false
-GDIProductionStarted = false
-AirstrikeDisabled = false
-BaseDefenseTriggered = false
-HuntTriggered = false
-AttackScheduleStarted = false
--- Set for good once the GDI Construction Yard is destroyed or captured: no more waves.
-WavesStopped = false
-Atk1Sent = false
-Atk1Pending = false
-ProducedGDIUnits = {}
-ProductionBusy = {}
-OrcaBusy = nil
-NextGroupTime = 0
-DefenseLockUntil = 0
--- Wave actors are created off-world and installed at frame end. Keep the
--- mission victory check from firing in that window.
-PendingGDIReinforcementsUntil = 0
 
 local function Cells(indices)
 	local cells = {}
@@ -297,12 +322,12 @@ local function Cells(indices)
 	return cells
 end
 
-Atk1Cells = Cells({
+local Atk1Cells = Cells({
 	2831, 2830, 2829, 2767, 2766, 2765,
 	2703, 2702, 2701, 2639, 2638, 2637,
 })
 
-DelyCells = Cells({
+local DelyCells = Cells({
 	2574, 2573, 2572, 2571, 2570, 2569, 2568, 2567,
 	2510, 2509, 2508, 2507, 2506, 2505, 2504, 2503,
 	2446, 2445, 2444, 2443, 2442, 2441, 2440, 2439,
@@ -310,7 +335,7 @@ DelyCells = Cells({
 
 -- Units spawn at the start cell and then attack-move along the path, so they
 -- engage everything on the way instead of walking past it.
-SendTeam = function(units, start, moves)
+local function SendTeam(units, start, moves)
 	PendingGDIReinforcementsUntil = DateTime.GameTime + DateTime.Seconds(2)
 	-- DateTime.Seconds(0.25) truncates to 0 ticks. Use a quarter second worth
 	-- of ticks so the squad is still spaced out.
@@ -323,7 +348,7 @@ SendTeam = function(units, start, moves)
 	end)
 end
 
-AttackWave = function(def)
+local function AttackWave(def)
 	if WavesStopped or GDI.HasNoRequiredUnits() then
 		return
 	end
@@ -331,7 +356,7 @@ AttackWave = function(def)
 	SendTeam(def.units, def.start, def.moves)
 end
 
-FinalWave = function()
+local function FinalWave()
 	if WavesStopped or GDI.HasNoRequiredUnits() then
 		return
 	end
@@ -361,7 +386,7 @@ FinalWave = function()
 	end
 end
 
-ChinookDrop = function()
+local function ChinookDrop()
 	if WavesStopped or GDI.HasNoRequiredUnits() then
 		return
 	end
@@ -386,11 +411,11 @@ end
 -- SouthSafeRadius of a living member is skipped, so napalm cannot splash onto
 -- them, and the protection follows the units wherever the player moves them.
 -- Afterwards they are normal targets.
-SouthSafeUntil = { easy = DateTime.Minutes(20), normal = DateTime.Minutes(20), hard = DateTime.Minutes(15) }
-SouthSafeRadius = 10 * 1024
-SouthGroup = {}
+local SouthSafeUntil = { easy = DateTime.Minutes(20), normal = DateTime.Minutes(20), hard = DateTime.Minutes(15) }
+local SouthSafeRadius = 10 * 1024
+local SouthGroup = {}
 
-InitSouthGroup = function()
+local function InitSouthGroup()
 	Utils.Do(Nod.GetActors(), function(actor)
 		if actor.HasProperty("Location") and actor.Location.X >= 44 and actor.Location.Y >= 18 then
 			table.insert(SouthGroup, actor)
@@ -399,13 +424,13 @@ InitSouthGroup = function()
 end
 
 -- Distance in world units (1024 per cell) between two positions.
-DistanceBetween = function(a, b)
+local function DistanceBetween(a, b)
 	local dx = a.X - b.X
 	local dy = a.Y - b.Y
 	return math.sqrt(dx * dx + dy * dy)
 end
 
-IsInAirstrikeSafeZone = function(actor)
+local function IsInAirstrikeSafeZone(actor)
 	if DateTime.GameTime >= SouthSafeUntil[Difficulty or "normal"] then
 		return false
 	end
@@ -421,7 +446,7 @@ end
 
 -- Like GetAirstrikeTarget from campaign.lua (ground attackers, away from
 -- SAM sites), but skipping the safe zone.
-GetNodAirstrikeTarget = function()
+local function GetNodAirstrikeTarget()
 	local candidates = Utils.Where(Nod.GetGroundAttackers(), function(actor)
 		return not actor.IsDead and not IsInAirstrikeSafeZone(actor)
 	end)
@@ -460,7 +485,7 @@ GetNodAirstrikeTarget = function()
 	return nil
 end
 
-Airstrike = function()
+local function Airstrike()
 	if not BaseTakenOver or AirstrikeDisabled or GDIHQ.IsDead or GDIHQ.Owner ~= GDI
 		or not GDIHQ.HasProperty("TargetAirstrike") then
 		return
@@ -484,7 +509,7 @@ Airstrike = function()
 end
 
 -- Hard only, after the first final wave: 2, 3, then 4 extra infantry units.
-AutoWaveExtras = function()
+local function AutoWaveExtras()
 	local extras = {}
 	if Difficulty ~= "hard" or FinalWaveCount < 1 then
 		return extras
@@ -497,7 +522,7 @@ AutoWaveExtras = function()
 	return extras
 end
 
-AutoWave = function()
+local function AutoWave()
 	if WavesStopped or GDI.HasNoRequiredUnits() then
 		return
 	end
@@ -532,25 +557,25 @@ end
 --    building in that order is rebuilt next.
 --  * Everything except the Construction Yard needs a living Construction Yard.
 --  * The site must be free: GDI units are sent away, enemy units are waited out.
-RebuildQueue = {}
-RebuildWorkerRunning = false
-RebuildBusy = false
-RebuildPending = {}
-RebuildPollSeconds = 5
-RebuildSiteTimeoutAttempts = 30
+local RebuildQueue = {}
+local RebuildWorkerRunning = false
+local RebuildBusy = false
+local RebuildPending = {}
+local RebuildPollSeconds = 5
+local RebuildSiteTimeoutAttempts = 30
 -- Seconds a sold building needs before it counts as gone (sell animation).
-RebuildSoldDelaySeconds = 15
+local RebuildSoldDelaySeconds = 15
 
-GDIBuildingPriority = { fact = 1, proc = 2, weap = 3, pyle = 4, hq = 5, nuke = 6, atwr = 7, gtwr = 8, hpad = 9, silo = 10 }
+local GDIBuildingPriority = { fact = 1, proc = 2, weap = 3, pyle = 4, hq = 5, nuke = 6, atwr = 7, gtwr = 8, hpad = 9, silo = 10 }
 -- Occupied cells (width, height) of each building, used for the free-site check.
-GDIBuildingFootprint = {
+local GDIBuildingFootprint = {
 	fact = { 3, 3 }, proc = { 3, 4 }, weap = { 3, 3 }, pyle = { 2, 3 }, hq = { 2, 3 },
 	nuke = { 2, 3 }, atwr = { 1, 1 }, gtwr = { 1, 1 }, hpad = { 2, 2 }, silo = { 2, 1 },
 }
 
 -- Prerequisites the normal GDI queues would enforce. Direct Actor.Create
 -- rebuilds must not bypass them.
-GDIBuildingPrerequisites = {
+local GDIBuildingPrerequisites = {
 	proc = { "anypower" },
 	weap = { "proc" },
 	pyle = { "anypower" },
@@ -563,13 +588,13 @@ GDIBuildingPrerequisites = {
 	silo = { "proc" },
 }
 
-CanBuildGDIBuilding = function(buildingType)
+local function CanBuildGDIBuilding(buildingType)
 	local prerequisites = GDIBuildingPrerequisites[buildingType]
 	return prerequisites == nil or GDI.HasPrerequisites(prerequisites)
 end
 
 -- Script rebuilds need a duration without a real production queue.
-ScriptBuildTime = function(buildingType)
+local function ScriptBuildTime(buildingType)
 	local time = Actor.BuildTime(buildingType)
 
 	local power = GDI.PowerState
@@ -580,15 +605,15 @@ ScriptBuildTime = function(buildingType)
 	return time
 end
 -- Hard: restored every time they are killed.
-HardRebuildTypes = { fact = true, proc = true, weap = true, pyle = true, nuke = true, hq = true, hpad = true, silo = true }
+local HardRebuildTypes = { fact = true, proc = true, weap = true, pyle = true, nuke = true, hq = true, hpad = true, silo = true }
 -- Hard, while GDI has no harvester: only these are rebuilt (money is needed for the harvester).
-EconomyRebuildTypes = { fact = true, proc = true, weap = true, nuke = true }
+local EconomyRebuildTypes = { fact = true, proc = true, weap = true, nuke = true }
 
-BuildingKey = function(building)
+local function BuildingKey(building)
 	return building.type .. ":" .. building.pos.X .. "," .. building.pos.Y
 end
 
-GDIBuildingExists = function(building)
+local function GDIBuildingExists(building)
 	local exists = false
 	Utils.Do(GDI.GetActorsByType(building.type), function(actor)
 		if not actor.IsDead and actor.Location.X == building.pos.X and actor.Location.Y == building.pos.Y then
@@ -598,7 +623,7 @@ GDIBuildingExists = function(building)
 	return exists
 end
 
-IsMainBaseBuilding = function(buildingType, pos)
+local function IsMainBaseBuilding(buildingType, pos)
 	for _, building in ipairs(GDIBaseBuildings) do
 		if building.type == buildingType and building.pos.X == pos.X and building.pos.Y == pos.Y then
 			return true
@@ -608,7 +633,7 @@ IsMainBaseBuilding = function(buildingType, pos)
 end
 
 -- Ground units standing on the building site (aircraft do not block).
-BlockingUnits = function(building, ignore)
+local function BlockingUnits(building, ignore)
 	local size = GDIBuildingFootprint[building.type] or { 2, 2 }
 	local topLeft = WPos.New(building.pos.X * 1024, building.pos.Y * 1024, 0)
 	local bottomRight = WPos.New((building.pos.X + size[1]) * 1024, (building.pos.Y + size[2]) * 1024, 0)
@@ -619,7 +644,7 @@ end
 
 -- Immobile actors (buildings, walls, wrecks) block a rebuild site. Movable
 -- units are handled by ClearBuildingSite instead.
-FixedSiteBlocker = function(building)
+local function FixedSiteBlocker(building)
 	local size = GDIBuildingFootprint[building.type] or { 2, 2 }
 	local topLeft = WPos.New(building.pos.X * 1024, building.pos.Y * 1024, 0)
 	local bottomRight = WPos.New((building.pos.X + size[1]) * 1024, (building.pos.Y + size[2]) * 1024, 0)
@@ -638,13 +663,13 @@ FixedSiteBlocker = function(building)
 	return blocker
 end
 
-PermanentSiteBlocker = function(building)
+local function PermanentSiteBlocker(building)
 	return FixedSiteBlocker(building) ~= nil
 end
 
 -- Sends GDI units off the site; returns true if the site is free. Units of
 -- other players cannot be moved, the rebuild simply waits for them to leave.
-ClearBuildingSite = function(building, ignore)
+local function ClearBuildingSite(building, ignore)
 	if PermanentSiteBlocker(building) then
 		return false
 	end
@@ -664,7 +689,7 @@ end
 -- GDI from restoring a building. Search a nearby free cell for the same
 -- footprint instead of overbuilding the blocker. The plan is updated so later
 -- existence checks and kill/capture handlers use the new site.
-AlternativeSiteSearchRadius = 10
+local AlternativeSiteSearchRadius = 10
 
 local function FootprintFor(buildingType)
 	return GDIBuildingFootprint[buildingType] or { 2, 2 }
@@ -712,7 +737,7 @@ local function IsVacantSite(site, ignoreType, ignorePos)
 	return FixedSiteBlocker(site) == nil and #BlockingUnits(site) == 0
 end
 
-FindAlternativeSite = function(building)
+local function FindAlternativeSite(building)
 	local origin = building.pos
 	local candidates = {}
 	for dx = -AlternativeSiteSearchRadius, AlternativeSiteSearchRadius do
@@ -751,7 +776,7 @@ FindAlternativeSite = function(building)
 	return nil
 end
 
-RelocateRebuildSite = function(building, newPos)
+local function RelocateRebuildSite(building, newPos)
 	local oldPos = building.pos
 	local exactMatch = nil
 	local planEntries = 0
@@ -791,7 +816,7 @@ RelocateRebuildSite = function(building, newPos)
 	building.pos = newPos
 end
 
-RegisterGDIBuilding = function(actor)
+local function RegisterGDIBuilding(actor)
 	Trigger.OnDamaged(actor, PullDefenders)
 
 	if Difficulty == "hard" then
@@ -809,7 +834,7 @@ RegisterGDIBuilding = function(actor)
 	end
 end
 
-StartRebuildWorker = function()
+local function StartRebuildWorker()
 	if RebuildWorkerRunning or not GDIProductionStarted then
 		return
 	end
@@ -836,7 +861,7 @@ QueueGDIRebuild = function(building, sold)
 end
 
 -- Called once when GDI production starts: queue everything that is missing.
-StartGDIRebuild = function()
+local function StartGDIRebuild()
 	for _, building in ipairs(GDIBaseBuildings) do
 		if not GDIBuildingExists(building) then
 			QueueGDIRebuild(building, false)
@@ -846,7 +871,7 @@ end
 
 -- Power plants can be lost after StartGDIRebuild has already run. Without
 -- anypower the tech-gated rebuilds and the emergency refinery would stall.
-EnsurePowerPlants = function()
+local function EnsurePowerPlants()
 	if GDI.PowerState == "Normal" then
 		return
 	end
@@ -860,7 +885,7 @@ end
 
 -- HQ/EYE is the only anyhq source. If both are lost, E2 and MTNK can never be
 -- produced again; keep the main-base HQ in the rebuild queue.
-EnsureHQ = function()
+local function EnsureHQ()
 	if #GDI.GetActorsByType("hq") > 0 or #GDI.GetActorsByType("eye") > 0 then
 		return
 	end
@@ -875,7 +900,7 @@ end
 
 -- Without the airfield, Orcas cannot land and repair. Rebuild it on every
 -- difficulty, not only when StartGDIRebuild runs once.
-EnsureAirfield = function()
+local function EnsureAirfield()
 	if #GDI.GetActorsByType("hpad") > 0 then
 		return
 	end
@@ -890,9 +915,9 @@ end
 
 -- FACT is not in the build menu. Build an MCV in the Weapons Factory, drive
 -- it to the old yard site and deploy it there with the regular transform.
-FactMcv = nil
+local FactMcv = nil
 
-FinishGDIFact = function(building, attempt)
+local function FinishGDIFact(building, attempt)
 	local key = BuildingKey(building)
 	local function ClearState()
 		RebuildPending[key] = nil
@@ -1034,7 +1059,7 @@ end
 -- Pays now, places the building after its build time (retrying while the site
 -- is blocked; after RebuildSiteTimeoutAttempts tries the money is refunded and
 -- the building queued again).
-PlaceGDIBuilding = function(building)
+local function PlaceGDIBuilding(building)
 	RebuildPending[BuildingKey(building)] = true
 	RebuildBusy = true
 
@@ -1126,7 +1151,7 @@ FinishGDIBuilding = function(building, attempt)
 	RebuildBusy = false
 end
 
-PickRebuildCandidate = function()
+local function PickRebuildCandidate()
 	local now = DateTime.GameTime
 	local hard = Difficulty == "hard"
 	local yardAlive = #GDI.GetActorsByType("fact") > 0
@@ -1225,21 +1250,9 @@ ProcessGDIRebuild = function()
 	Trigger.AfterDelay(DateTime.Seconds(RebuildPollSeconds), ProcessGDIRebuild)
 end
 
-CountProducedUnits = function()
-	local alive = {}
-	for _, actor in ipairs(ProducedGDIUnits) do
-		if not actor.IsDead then
-			table.insert(alive, actor)
-		end
-	end
-	ProducedGDIUnits = alive
-	return #alive
-end
-
--- Same as CountProducedUnits, but only units that can receive a scripted
--- AttackMove. Harvesters queued on the vehicle factory do not count against
--- the group size.
-CountAttackGroupUnits = function()
+-- Only units that can receive a scripted AttackMove count. Harvesters
+-- queued on the vehicle factory do not count against the group size.
+local function CountAttackGroupUnits()
 	local count = 0
 	for _, actor in ipairs(ProducedGDIUnits) do
 		if not actor.IsDead and CanAttackMove(actor) then
@@ -1251,9 +1264,9 @@ end
 
 -- Sends the oldest produced units as one attack group once the pool holds the
 -- defender reserve plus a full group. Routes are the scripted wave routes.
-GroupRoutes = { "atk2", "atk5" }
+local GroupRoutes = { "atk2", "atk5" }
 
-TrySendGroup = function()
+local function TrySendGroup()
 	if BaseDefenseTriggered or DateTime.GameTime < NextGroupTime then
 		return
 	end
@@ -1336,10 +1349,10 @@ end
 
 -- Register the defender reaction for every harvester, including replacements
 -- built after setup and free harvesters spawned by a new refinery.
-RegisteredHarvesters = {}
+local RegisteredHarvesters = {}
 -- Fallback for engines without the ActorID script property (older DLLs):
 -- keep a list and compare with == instead of crashing on a missing property.
-RegisteredHarvesterList = {}
+local RegisteredHarvesterList = {}
 
 -- Actor wrappers do not have stable Lua table identity across callbacks.
 -- Key by the stable ActorID when the running engine exposes it.
@@ -1349,7 +1362,7 @@ local function RegisteredHarvesterKey(harv)
 	return nil
 end
 
-RegisterHarvesterDefense = function(harv)
+local function RegisterHarvesterDefense(harv)
 	if harv == nil then
 		return
 	end
@@ -1369,7 +1382,7 @@ end
 -- An Orca that lost more than 75 % of its health flies home to the helipad to
 -- be repaired and is left out of further attacks until it is repaired
 -- (OrcaWatch). Without a helipad it keeps fighting.
-OrcaRetreating = {}
+local OrcaRetreating = {}
 
 IsOrcaRetreating = function(orca)
 	for _, other in ipairs(OrcaRetreating) do
@@ -1380,7 +1393,7 @@ IsOrcaRetreating = function(orca)
 	return false
 end
 
-SetOrcaRetreating = function(orca, retreating)
+local function SetOrcaRetreating(orca, retreating)
 	local list = {}
 	for _, other in ipairs(OrcaRetreating) do
 		if other ~= orca and not other.IsDead then
@@ -1393,7 +1406,7 @@ SetOrcaRetreating = function(orca, retreating)
 	OrcaRetreating = list
 end
 
-OrcaDamaged = function(orca)
+local function OrcaDamaged(orca)
 	if orca.IsDead or IsOrcaRetreating(orca) then
 		return
 	end
@@ -1407,7 +1420,7 @@ OrcaDamaged = function(orca)
 	orca.ReturnToBase()
 end
 
-OrcaWatch = function()
+local function OrcaWatch()
 	if GDI.HasNoRequiredUnits() then
 		return
 	end
@@ -1437,13 +1450,13 @@ end
 
 -- Orcas from the helipad defend the base: they wait on the pad and join
 -- PullDefenders / the main-base alarm. SAMs are the counter.
-MaxOrcas = { easy = 1, normal = 2, hard = 3 }
+local MaxOrcas = { easy = 1, normal = 2, hard = 3 }
 
 -- Forward declaration: the watchdog is defined below but registered from
 -- inside ProduceOrca. Without this the name resolves to a nil global.
 local WatchOrcaProduction
 
-ProduceOrca = function()
+local function ProduceOrca()
 	if GDI.HasNoRequiredUnits() then
 		return
 	end
@@ -1634,22 +1647,20 @@ end
 -- Construction Yard, HQ, Weapons Factory or Refinery; power plants only last
 -- and only while power stays sufficient), (4) as a last resort all
 -- GDI ground units and Orcas attack (not on Easy).
-EconomySellOrder = { "silo", "gtwr", "atwr", "pyle", "hpad" }
+local EconomySellOrder = { "silo", "gtwr", "atwr", "pyle", "hpad" }
 -- Power plants are sold last and only while the remaining power still covers
 -- the drain (never the HQ: it is not in any sell list).
-PowerPlantType = "nuke"
-PowerPlantOutput = 100
+local PowerPlantType = "nuke"
+local PowerPlantOutput = 100
 -- PROC stores 1000 resources, SILO stores 3000 (structures.yaml). Do not
 -- sell a silo if that would destroy stored resources.
-SiloCapacity = 3000
-EconomyGraceSeconds = 30
-EconomySellCooldownSeconds = 20
-GDIRefineryPosition = CPos.New(45, 6)
-NoHarvesterSince = nil
-HarvesterBuilding = false
-RefineryBusy = false
-LastEconomySale = -100000
-AllOutAttackStarted = false
+local SiloCapacity = 3000
+local EconomyGraceSeconds = 30
+local EconomySellCooldownSeconds = 20
+local GDIRefineryPosition = CPos.New(45, 6)
+local HarvesterBuilding = false
+local LastEconomySale = -100000
+local AllOutAttackStarted = false
 
 GDIFunds = function()
 	return GDI.Cash + GDI.Resources
@@ -1685,7 +1696,7 @@ local function WatchGDIHarvester(factory, stamp, checks)
 	end)
 end
 
-BuildGDIHarvester = function(factory)
+local function BuildGDIHarvester(factory)
 	if HarvesterBuilding then
 		return
 	end
@@ -1725,8 +1736,8 @@ end
 -- Creates the refinery at `position` (paid, after its build time). A fresh
 -- refinery spawns a free harvester. If the money was spent in the meantime
 -- the refinery is not dropped: the payment is retried (RefineryPayAttempts).
-RefineryPayAttempts = 12
-CreateGDIRefinery = function(position, delay, attempt)
+local RefineryPayAttempts = 12
+local function CreateGDIRefinery(position, delay, attempt)
 	attempt = attempt or 0
 	RefineryBusy = true
 	Trigger.AfterDelay(delay, function()
@@ -1781,13 +1792,13 @@ end
 -- Engine default Sellable.RefundPercent: a sold building returns 50 % of its
 -- sale value, scaled by its health. PROC overrides the sale value with
 -- CustomSellValue 400 (structures.yaml), not half of its 1500 build cost.
-ReplaceRefundPercent = 50
-ProcSellValue = 400
-ProcRefund = function(proc)
+local ReplaceRefundPercent = 50
+local ProcSellValue = 400
+local function ProcRefund(proc)
 	return math.floor(ProcSellValue * ReplaceRefundPercent * proc.Health / (100 * proc.MaxHealth))
 end
 
-ReplaceGDIRefinery = function(proc)
+local function ReplaceGDIRefinery(proc)
 	local position = proc.Location
 	proc.Sell()
 	CreateGDIRefinery(position, DateTime.Seconds(6) + ScriptBuildTime("proc"))
@@ -1795,7 +1806,7 @@ end
 
 -- Returns true while a sale was made or is still cooling down, false if there
 -- is nothing left to sell.
-SellForEconomy = function()
+local function SellForEconomy()
 	local candidate = nil
 	for _, buildingType in ipairs(EconomySellOrder) do
 		local list = GDI.GetActorsByType(buildingType)
@@ -1831,7 +1842,7 @@ SellForEconomy = function()
 	return true
 end
 
-CheckGDIEconomy = function()
+local function CheckGDIEconomy()
 	if GDI.HasNoRequiredUnits() or AllOutAttackStarted then
 		return
 	end
