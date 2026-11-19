@@ -11,20 +11,38 @@
 -- base on the mainland before it can destroy GDI. The original victory and
 -- defeat triggers only check the destruction of the opposing house; the
 -- Temple objective is a mission briefing request, not a win condition.
-StartingCashBonus = { easy = 2000, normal = 1000, hard = 0 }
-GDIReinforcementPassengers = {}
+--
+-- Shared with nod13b-AI.lua: AirstrikeStopped, GDI, GDIWest, HouseEliminated,
+-- IonCannonStopped, MissionFinished, Nod, NodHasSouthernBase, SetupAI,
+-- StopWestReinforcements, TrackGDIReinforcements, WestReinforcementsStopped.
+
+local StartingCashBonus = { easy = 2000, normal = 1000, hard = 0 }
+local GDIReinforcementPassengers = {}
+local OutcomeCheckPending = false
+
+-- Original times, converted from tenths of a minute: the MCV and two Light
+-- Tanks arrive at 14.8 minutes, the transport helicopter at 19.3 minutes.
+local MCVDelay = { easy = 1066, normal = 888, hard = 755 }
+local ChinookDelay = { easy = 1390, normal = 1158, hard = 985 }
+local MCVRetryDelay = 90
+local MaxMCVResends = 2
+
+-- Shared with nod13b-AI.lua.
 MissionFinished = false
-OutcomeCheckPending = false
 AirstrikeStopped = false
 IonCannonStopped = false
 WestReinforcementsStopped = false
 
--- Original times, converted from tenths of a minute: the MCV and two Light
--- Tanks arrive at 14.8 minutes, the transport helicopter at 19.3 minutes.
-MCVDelay = { easy = 1066, normal = 888, hard = 755 }
-ChinookDelay = { easy = 1390, normal = 1158, hard = 985 }
-MCVRetryDelay = 90
-MaxMCVResends = 2
+---@type integer
+local EliminateGDI
+---@type integer
+local BuildTemple
+---@type integer
+local StopAirstrikesObjective
+---@type integer
+local StopWestReinforcementsObjective
+---@type integer
+local StopIonCannonObjective
 
 local function IsLive(actor)
 	return actor ~= nil and actor.Owner ~= nil and not actor.IsDead
@@ -34,6 +52,7 @@ local function IsGDIPlayer(player)
 	return player == GDI or player == GDIWest
 end
 
+-- Called from nod13b-AI.lua.
 TrackGDIReinforcements = function(passengers)
 	for i = #GDIReinforcementPassengers, 1, -1 do
 		if GDIReinforcementPassengers[i].IsDead then table.remove(GDIReinforcementPassengers, i) end
@@ -46,6 +65,7 @@ end
 -- Empty aircraft are ignored by All Destr., but their passengers still count.
 -- The check also covers the player's own transport so a loaded helicopter
 -- cannot be mistaken for an eliminated house.
+-- Called from nod13b-AI.lua.
 HouseEliminated = function(player)
 	if not player.HasNoRequiredUnits() then
 		return false
@@ -88,6 +108,7 @@ end
 
 -- The western base calls in its relief force through its Communications
 -- Center. Destroying or capturing it permanently stops those reinforcements.
+-- Called from nod13b-AI.lua.
 function StopWestReinforcements()
 	if WestReinforcementsStopped then return end
 	WestReinforcementsStopped = true
@@ -124,6 +145,21 @@ local function EnsureSouthernAccess()
 		SendSouthernMCV()
 	end
 	Trigger.AfterDelay(DateTime.Seconds(MCVRetryDelay), EnsureSouthernAccess)
+end
+
+local function CheckOutcome()
+	OutcomeCheckPending = false
+	if MissionFinished then
+		return
+	end
+
+	if DateTime.GameTime > DateTime.Seconds(2) and HouseEliminated(Nod) then
+		MissionFinished = true
+		Nod.MarkFailedObjective(EliminateGDI)
+	elseif HouseEliminated(GDI) and HouseEliminated(GDIWest) then
+		MissionFinished = true
+		Nod.MarkCompletedObjective(EliminateGDI)
+	end
 end
 
 WorldLoaded = function()
@@ -164,21 +200,6 @@ WorldLoaded = function()
 	end)
 
 	SetupAI()
-end
-
-CheckOutcome = function()
-	OutcomeCheckPending = false
-	if MissionFinished then
-		return
-	end
-
-	if DateTime.GameTime > DateTime.Seconds(2) and HouseEliminated(Nod) then
-		MissionFinished = true
-		Nod.MarkFailedObjective(EliminateGDI)
-	elseif HouseEliminated(GDI) and HouseEliminated(GDIWest) then
-		MissionFinished = true
-		Nod.MarkCompletedObjective(EliminateGDI)
-	end
 end
 
 Tick = function()

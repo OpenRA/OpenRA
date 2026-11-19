@@ -16,16 +16,21 @@
 -- central HQ, the Ion Cannon by destroying the eastern EYE. All timers are
 -- compressed compared to the original.
 --
+-- Shared with nod13b.lua: AirstrikeStopped, GDI, GDIWest, HouseEliminated,
+-- IonCannonStopped, MissionFinished, Nod, NodHasSouthernBase, SetupAI,
+-- StopWestReinforcements, TrackGDIReinforcements, WestReinforcementsStopped.
+--
 -- Design note: the broad base alarm (any repairable building hit) and the
 -- broad harvester defense (all nearby ground units react) are deliberate.
--- They are the preferred behavior for the nod13a backport; see
--- HANDOFF-NOD13A.md, section "Aus nod13b übernehmen".
+-- They are the preferred behavior for the nod13a backport.
 
 local difficulty
 local land = {}
 local bases = {}
-AllOutAttackStarted = false
-BaseAlarmStarted = false
+-- Write-only alarm flags: the mission smoke test observes the all-out and
+-- broad-alarm paths through them.
+local AllOutAttackStarted = false
+local BaseAlarmStarted = false
 local gdiPlayers = {}
 local guarded = {}
 local trackedHarvesters = {}
@@ -38,6 +43,7 @@ local SouthRegion = 0
 local RebuildHarvester
 local Queue
 local RequestRelief
+local NodSouthPresence
 
 local MaxProducedUnits = { easy = 5, normal = 7, hard = 9 }
 local DefenderReserve = { easy = 2, normal = 3, hard = 4 }
@@ -70,7 +76,7 @@ end
 
 -- Actor wrappers are not guaranteed to keep Lua table identity across
 -- callbacks. Use the stable ActorID when the engine exposes it.
-function EconomyActorKey(actor)
+local function EconomyActorKey(actor)
 	if actor == nil then return nil end
 	if actor.HasProperty("ActorID") then return actor.ActorID end
 	return actor
