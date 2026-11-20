@@ -1,0 +1,61 @@
+MapFormat: 12
+
+RequiresMod: cnc
+
+Title: Flame Tank Test
+
+Author: OpenRA
+
+Tileset: TEMPERAT
+
+MapSize: 40,30
+
+Bounds: 2,2,36,26
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: gdi
+	PlayerReference@Player:
+		Name: Player
+		Playable: True
+		AllowBots: False
+		Required: True
+		Faction: nod
+		Color: FE1100
+		Enemies: Target
+	PlayerReference@Target:
+		Name: Target
+		Faction: gdi
+		Color: F5D378
+		Enemies: Player
+
+Actors:
+	Flamer: ftnk
+		Location: 20,15
+		Owner: Player
+		Facing: 0
+	Dummy: e1
+		Location: 14,15
+		Owner: Target
+		Stance: HoldFire
+
+Rules:
+	World:
+		-SpawnStartingUnits:
+		-MapStartingLocations:
+		-CrateSpawner:
+	Player:
+		-ConquestVictoryConditions:
+		PlayerResources:
+			DefaultCash: 0
+	E1:
+		AutoTarget:
+			InitialStance: HoldFire
+			InitialStanceAI: HoldFire
