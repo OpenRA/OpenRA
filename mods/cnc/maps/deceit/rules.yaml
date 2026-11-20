@@ -1,0 +1,136 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, campaign-ai.lua, deceit.lua, deceit-AI.lua
+	MissionData:
+		Briefing: briefing
+		StartVideo: nitejump.vqa
+		LossVideo: akira.vqa
+		WinVideo: nuke.vqa
+	# Original [Basic] has Theme=No theme. The engine default victory music is
+	# GDI's, so Nod missions must set their own.
+	MusicPlaylist:
+		VictoryMusic: nod_win1
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+	# Campaign missions are not skirmishes: never restrict building to the
+	# base radius.
+	MapBuildRadius:
+		BuildRadiusCheckboxEnabled: False
+		BuildRadiusCheckboxVisible: False
+
+Player:
+	EnemyWatcher:
+	PlayerResources:
+		DefaultCash: 0
+	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
+		Enabled: True
+
+# Engineers may fully capture base buildings (Communications Center, Advanced
+# Communications Center, ...), matching nod11a/nod11b. The default only allows
+# sabotage.
+^BaseBuilding:
+	Capturable:
+		Types: building
+
+# Required for Trigger.OnDiscovered on the cut-off Nod conyard (nod11a
+# pattern). The Tick check in deceit.lua remains the fallback for aircraft.
+FACT:
+	AnnounceOnSeen:
+
+# The empty `echn`/`chn2` GDI transport lands at waypoint 3 and can be taken
+# by the Nod engineer, matching the nod13b mission pattern.
+E6:
+	Captures@transport:
+		CaptureTypes: mission-transport
+		ValidRelationships: Enemy
+
+TRAN.CAPTURE:
+	Inherits: TRAN
+	RenderSprites:
+		Image: TRAN
+	Buildable:
+		Prerequisites: ~disabled
+	Cargo:
+		LoadedCondition: carrying-passengers
+	CaptureManager:
+	Capturable:
+		Types: mission-transport
+		RequiresCondition: !airborne && !carrying-passengers
+
+HARV:
+	Harvester:
+		SearchFromProcRadius: 30
+		SearchFromHarvesterRadius: 20
+
+# The original `ion1`/`ion2` triggers grant GDI the Ion Cannon when the marked
+# tanks or the GDI factory are attacked. The EYE itself is not rebuildable.
+EYE:
+	Buildable:
+		Prerequisites: ~disabled
+
+# The cut-off Nod base has no Communications Center, but the original helipad
+# provides the Apache. Drop the `anyhq` prerequisite for this mission.
+HELI:
+	Buildable:
+		Prerequisites: hpad
+
+# The GDI guard towers are hidden by the shroud until a Nod unit approaches.
+# The reveal radius (9 cells) is larger than the tower range, so the player
+# sees the tower before it opens fire.
+GTWR:
+	ExternalCondition@REVEALED:
+		Condition: revealed
+	RevealsShroud@REVEALED:
+		RequiresCondition: revealed
+		ValidRelationships: Enemy
+		Range: 2c512
+	RevealOnDeath:
+		RequiresCondition: revealed
+		Duration: 1
+		RevealForRelationships: Enemy
+
+# Scripted transports (atk1/atk2/gdi2/gdi4/chin) leave after unloading. Empty
+# transports must not keep the GDI All-Destroyed check open. APC is not used
+# as a scripted transport here, so it keeps MustBeDestroyed and still counts
+# for victory when GDI produces one.
+TRAN:
+	-MustBeDestroyed:
+
+# Village buildings in the south-west. The original mission leaves husks, but
+# the narrow streets need to stay passable.
+V01:
+	-SpawnActorOnDeath:
+
+V02:
+	-SpawnActorOnDeath:
+
+V04:
+	-SpawnActorOnDeath:
+
+V05:
+	-SpawnActorOnDeath:
+
+V06:
+	-SpawnActorOnDeath:
+
+V07:
+	-SpawnActorOnDeath:
+
+V08:
+	-SpawnActorOnDeath:
+
+V09:
+	-SpawnActorOnDeath:
+
+V11:
+	-SpawnActorOnDeath:
+
+V13:
+	-SpawnActorOnDeath:

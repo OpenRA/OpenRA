@@ -1,0 +1,133 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, campaign-ai.lua, hostile-takeover.lua, hostile-takeover-AI.lua
+	MissionData:
+		Briefing: briefing
+		StartVideo: dessweep.vqa
+		LossVideo: nodlose.vqa
+		WinVideo: samsite.vqa
+	# Original [Basic] has Theme=No theme, so there is no starting music.
+	# The engine default victory music is GDI's; Nod missions set their own.
+	MusicPlaylist:
+		VictoryMusic: nod_win1
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+	# Campaign missions are not skirmishes: never restrict building to the
+	# base radius. Hide the option entirely so it cannot be re-enabled.
+	MapBuildRadius:
+		BuildRadiusCheckboxEnabled: False
+		BuildRadiusCheckboxVisible: False
+
+Player:
+	EnemyWatcher:
+	PlayerResources:
+		DefaultCash: 0
+	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
+		Enabled: True
+
+HARV:
+	Harvester:
+		SearchFromProcRadius: 30
+		SearchFromHarvesterRadius: 20
+
+# Engineers capture base buildings immediately, matching Deceit / Cloak and
+# Dagger. This is the core economy of the mission: Nod sells captured GDI
+# structures to fund the reclaimed base.
+^BaseBuilding:
+	Capturable:
+		Types: building
+
+E6:
+	Captures@transport:
+		CaptureTypes: mission-transport
+		ValidRelationships: Enemy
+
+# The three empty Chinooks that land in the cyclone pen are captured with an
+# engineer. They must not keep the All-Destroyed win condition open.
+TRAN.CAPTURE:
+	Inherits: TRAN
+	RenderSprites:
+		Image: TRAN
+	Buildable:
+		Prerequisites: ~disabled
+	Cargo:
+		LoadedCondition: carrying-passengers
+	CaptureManager:
+	Capturable:
+		Types: mission-transport
+		RequiresCondition: !airborne && !carrying-passengers
+
+# hov1 is the original JEEP + LST team. The OpenRA LST has cargo disabled
+# by default; enabling Vehicle cargo lets ReinforceWithLandingCraft load the
+# Jeep, drive to the beach and unload it instead of spawning it in the sea.
+LST:
+	Cargo:
+		Types: Vehicle
+
+TRAN:
+	-MustBeDestroyed:
+
+# The imported GDI base has three Advanced Power Plants and draws 615 power
+# before the missing Weapons Factory is rebuilt (655 afterwards: 8 ATWR,
+# 12 GTWR, refinery, silos, barracks, weapons factory). Stock NUK2 (200)
+# would leave the base permanently at low power, disabling every ATWR at
+# mission start. The original keeps the AGTs online until two of the three
+# plants are lost: 3x340 = 1020 (online), 2x340 = 680 (still online),
+# 1x340 = 340 (offline). Capturing two plants and then the Construction Yard
+# (so GDI cannot rebuild) is the intended power puzzle.
+NUK2:
+	Power:
+		Amount: 340
+# The village is scenery and the opening fight happens in its narrow streets.
+# The original leaves husks; the port removes them so the Flame Tank and the
+# engineer are not blocked by wrecks. The church still dies normally, so the
+# money crate under it still appears.
+V20:
+	-SpawnActorOnDeath:
+V21:
+	-SpawnActorOnDeath:
+V22:
+	-SpawnActorOnDeath:
+V23:
+	-SpawnActorOnDeath:
+V24:
+	-SpawnActorOnDeath:
+V25:
+	-SpawnActorOnDeath:
+
+# The Nod construction yard uses the Nod-specific actor for the correct
+# tooltip/art. A ProvidesPrerequisite@buildingname without an explicit
+# Prerequisite defaults to the actor name, i.e. "fact.nod", but NUKE/PROC/
+# HAND require "fact". Provide the original prerequisite explicitly.
+FACT.NOD:
+	ProvidesPrerequisite@fact:
+		Prerequisite: fact
+		Factions: nod
+
+# GDI has no Communications Center in this mission, but the original base
+# has room for two helipads. Orcas are allowed from a helipad without the
+# HQ gate so the pads can actually be used; this is a deliberate deviation.
+ORCA:
+	Buildable:
+		Prerequisites: hpad, ~techlevel.medium
+
+# GDI has neither a Communications Center nor an EYE in this mission, so the
+# stock prerequisites (anyhq / eye) would permanently lock out every vehicle
+# except the Jeep. The weapons factory is used instead; the difficulty pools
+# in hostile-takeover.lua decide which tanks GDI may field.
+MTNK:
+	Buildable:
+		Prerequisites: weap, ~techlevel.medium
+MSAM:
+	Buildable:
+		Prerequisites: weap, ~techlevel.medium
+HTNK:
+	Buildable:
+		Prerequisites: weap, ~techlevel.high
