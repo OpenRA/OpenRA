@@ -21,20 +21,23 @@
 -- the `civ1` trigger (they run north and report), so the footprint trips
 -- are the player's own mistakes rather than random wandering.
 
+-- Shared with bad-neighborhood-AI.lua: Nod, GDI, MissionFinished, AlertGDI,
+-- IsLive, SetupGDI, SendOrcas, UnlockIonCannon.
+
 -- Original [CellTriggers]
-Civ2Cells = {
+local Civ2Cells = {
 	CPos.New(30, 55), CPos.New(31, 55), CPos.New(31, 56), CPos.New(32, 55), CPos.New(32, 56), CPos.New(33, 56),
 	CPos.New(45, 53), CPos.New(46, 52), CPos.New(46, 53), CPos.New(47, 52), CPos.New(47, 53), CPos.New(48, 52),
 	CPos.New(59, 53), CPos.New(59, 54), CPos.New(60, 53), CPos.New(60, 54), CPos.New(61, 53), CPos.New(61, 54)
 }
 
-Ion1Cells = {
+local Ion1Cells = {
 	CPos.New(16, 48), CPos.New(16, 49), CPos.New(16, 50), CPos.New(16, 51), CPos.New(17, 48), CPos.New(17, 49),
 	CPos.New(17, 50), CPos.New(17, 51)
 }
 
 -- `yyyy`: the western approach and the diagonal in front of the GDI base.
-YyyyCells = {
+local YyyyCells = {
 	CPos.New(29, 12), CPos.New(29, 13), CPos.New(29, 14), CPos.New(30, 12), CPos.New(30, 13), CPos.New(30, 14),
 	CPos.New(33, 22), CPos.New(34, 22), CPos.New(34, 23), CPos.New(35, 22), CPos.New(35, 23), CPos.New(35, 24),
 	CPos.New(36, 23), CPos.New(36, 24), CPos.New(36, 25), CPos.New(37, 24), CPos.New(37, 25), CPos.New(37, 26),
@@ -45,7 +48,7 @@ YyyyCells = {
 }
 
 -- `delz`: Nod entering here disables the `zzzz` trip (original `delz`).
-DelzCells = {
+local DelzCells = {
 	CPos.New(31, 12), CPos.New(31, 13), CPos.New(31, 14), CPos.New(32, 12), CPos.New(32, 13), CPos.New(32, 14),
 	CPos.New(34, 20), CPos.New(35, 20), CPos.New(35, 21), CPos.New(36, 20), CPos.New(36, 21), CPos.New(36, 22),
 	CPos.New(37, 20), CPos.New(37, 21), CPos.New(37, 22), CPos.New(37, 23), CPos.New(38, 21), CPos.New(38, 22),
@@ -57,7 +60,7 @@ DelzCells = {
 }
 
 -- `zzzz`: the second trip wire directly south of the GDI base.
-ZzzzCells = {
+local ZzzzCells = {
 	CPos.New(49, 20), CPos.New(49, 21), CPos.New(50, 20), CPos.New(50, 21), CPos.New(51, 20), CPos.New(51, 21),
 	CPos.New(52, 20), CPos.New(52, 21), CPos.New(53, 20), CPos.New(53, 21), CPos.New(54, 20), CPos.New(54, 21),
 	CPos.New(55, 20), CPos.New(55, 21)
@@ -65,38 +68,57 @@ ZzzzCells = {
 
 -- `dzne`: a civilian entering here sets the drop-zone flare (original `dzne`,
 -- Neutral/Player Enters). The late villager walks through it.
-DzneCells = {
+local DzneCells = {
 	CPos.New(18, 48), CPos.New(18, 49), CPos.New(18, 50), CPos.New(18, 51),
 	CPos.New(19, 48), CPos.New(19, 49), CPos.New(19, 50), CPos.New(19, 51)
 }
 
 -- `dely`: entering here disables the `yyyy` trip (original `dely`).
-DelyCells = {
+local DelyCells = {
 	CPos.New(50, 18), CPos.New(50, 19), CPos.New(51, 18), CPos.New(51, 19), CPos.New(52, 18), CPos.New(52, 19),
 	CPos.New(53, 18), CPos.New(53, 19), CPos.New(54, 18), CPos.New(54, 19)
 }
 
 -- `orc2`: Nod entering here calls in a second Orca flight.
-Orc2Cells = {
+local Orc2Cells = {
 	CPos.New(46, 5), CPos.New(46, 6), CPos.New(46, 7), CPos.New(46, 8), CPos.New(47, 5), CPos.New(47, 6),
 	CPos.New(47, 7), CPos.New(47, 8)
 }
 
 -- `civ1` runs north to the GDI base and reports, `civ2` joins the fight.
-RunForHelpCivilians = { Civilian5, Civilian6, Civilian8 }
-VillageAttackCivilians = { Civilian3, Civilian4, Civilian7 }
+local RunForHelpCivilians = { Civilian5, Civilian6, Civilian8 }
+local VillageAttackCivilians = { Civilian3, Civilian4, Civilian7 }
 
 -- `civ3` spawns one more villager in the original after 20 minutes, which
 -- then walks towards the Nod base. It only marks the drop zone if it actually
 -- discovers Nod; walking into the old dzne area is not enough. The spawn time
 -- is the difficulty knob: easy 15 min, normal 10 min, hard 7 min.
-Civ3Delay = { easy = 900, normal = 600, hard = 420 }
+local Civ3Delay = { easy = 900, normal = 600, hard = 420 }
 
+-- Shared with bad-neighborhood-AI.lua.
 MissionFinished = false
-CiviliansReported = false
-VillageAlerted = false
-DropZoneMarked = false
-LateVillager = nil
+
+---@type boolean
+local CiviliansReported = false
+---@type boolean
+local VillageAlerted = false
+---@type boolean
+local DropZoneMarked = false
+---@type actor?
+local LateVillager = nil
+---@type integer?
+local EliminateGDI
+---@type player
+local Neutral
+---@type player
+local Civilians
+local FootprintTriggers = {}
+
+local CiviliansDiscovered
+local GuideLateVillager
+local SetupCivilians
+local SetupDetection
+local SpawnLateVillager
 
 WorldLoaded = function()
 	Nod = Player.GetPlayer("Nod")
@@ -190,7 +212,7 @@ end
 
 -- civ2: Nod entered the GDI-friendly village. The armed villagers join the
 -- fight and GDI is alerted.
-CiviliansAttack = function()
+local function CiviliansAttack()
 	if VillageAlerted or MissionFinished then
 		return
 	end
@@ -265,7 +287,7 @@ GuideLateVillager = function()
 	Trigger.AfterDelay(DateTime.Seconds(15), GuideLateVillager)
 end
 
-MarkDropZone = function()
+local function MarkDropZone()
 	if DropZoneMarked or MissionFinished then
 		return
 	end
@@ -276,23 +298,23 @@ MarkDropZone = function()
 end
 
 SetupDetection = function()
-	YyyyTrigger = Trigger.OnEnteredFootprint(YyyyCells, function(actor, id)
+	FootprintTriggers.yyyy = Trigger.OnEnteredFootprint(YyyyCells, function(actor, id)
 		if actor.Owner ~= Nod then
 			return
 		end
 
 		Trigger.RemoveFootprintTrigger(id)
-		YyyyTrigger = nil
+		FootprintTriggers.yyyy = nil
 		AlertGDI()
 	end)
 
-	ZzzzTrigger = Trigger.OnEnteredFootprint(ZzzzCells, function(actor, id)
+	FootprintTriggers.zzzz = Trigger.OnEnteredFootprint(ZzzzCells, function(actor, id)
 		if actor.Owner ~= Nod and actor.Owner ~= Civilians then
 			return
 		end
 
 		Trigger.RemoveFootprintTrigger(id)
-		ZzzzTrigger = nil
+		FootprintTriggers.zzzz = nil
 		AlertGDI()
 	end)
 
@@ -303,9 +325,9 @@ SetupDetection = function()
 		end
 
 		Trigger.RemoveFootprintTrigger(id)
-		if ZzzzTrigger then
-			Trigger.RemoveFootprintTrigger(ZzzzTrigger)
-			ZzzzTrigger = nil
+		if FootprintTriggers.zzzz then
+			Trigger.RemoveFootprintTrigger(FootprintTriggers.zzzz)
+			FootprintTriggers.zzzz = nil
 		end
 	end)
 
@@ -316,15 +338,15 @@ SetupDetection = function()
 		end
 
 		Trigger.RemoveFootprintTrigger(id)
-		if YyyyTrigger then
-			Trigger.RemoveFootprintTrigger(YyyyTrigger)
-			YyyyTrigger = nil
+		if FootprintTriggers.yyyy then
+			Trigger.RemoveFootprintTrigger(FootprintTriggers.yyyy)
+			FootprintTriggers.yyyy = nil
 		end
 	end)
 
 	-- dzne (original: Neutral): a civilian entering this area sets the
 	-- drop-zone flare. The late villager walks through here on its way.
-	DzneTrigger = Trigger.OnEnteredFootprint(DzneCells, function(actor, id)
+	FootprintTriggers.dzne = Trigger.OnEnteredFootprint(DzneCells, function(actor, id)
 		if actor.Owner ~= Civilians then
 			return
 		end

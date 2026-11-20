@@ -10,24 +10,36 @@
 
    The three GDI Chinooks are `tran.capture`: only the empty, landed
    transport is capturable by an engineer, matching TRAN capture in TD.
-   Everything else is fixed original data; see harness/hostile-takeover-analysis.md.
+   Everything else is fixed original data.
+
+-- Shared with hostile-takeover-AI.lua: CurrentDifficulty, GDI, GDI2Cells,
+-- GDI3Cells, GDI9Cells, GDIBuildingsHunt, GDIBuildingsLost, GDIChinooks,
+-- GDIHome, GIContext, Grd1Cells, Grd2Cells, InitGDI, IsLive, MissionFinished,
+-- Nod, OnNodBaseReclaimed, OnTransportCaptured.
 ]]
 
 local AI = CampaignAI
 
--- Objective ids and mission state are also read by hostile-takeover-AI.lua.
+-- Cross-file state stays global (see header).
 MissionFinished = false
-OutpostMarked = false
-OutpostReached = false
-OutpostCaptured = false
-NodBaseReclaimed = false
-TransportObjectiveDone = false
-ChurchCrateSpawned = false
 GDIChinooks = {}
 GDIBuildingsLost = 0
 GDIBuildingsHunt = false
 GIContext = nil
 GDIHome = nil
+
+---@type boolean
+local OutpostMarked = false
+---@type boolean
+local OutpostReached = false
+---@type boolean
+local OutpostCaptured = false
+---@type boolean
+local NodBaseReclaimed = false
+---@type boolean
+local TransportObjectiveDone = false
+---@type boolean
+local ChurchCrateSpawned = false
 
 -- Delegating wrapper; the shared AI owns the IsInWorld-aware implementation.
 IsLive = function(actor)
@@ -39,9 +51,9 @@ end
 -- sell refunds by health, so the damaged HQ only yields ~50 $. Nod starts
 -- with 500 $ instead, enough for the first engineer; the HQ sale is a
 -- small bonus and captured GDI structures fund the rest.
-NodStartingCash = 500
+local NodStartingCash = 500
 
-DifficultySettings = {
+local DifficultySettings = {
 	easy = { gdiCash = 2000, prodDelay = 480, autoDelay = 600, waveInterval = 300, waveCount = 1, prodInterval = 45, maxProducedUnits = 5, assaultSize = 4, pressureSquadSize = 2,
 		vehiclePool = { "jeep", "mtnk", "mtnk" }, prodReserve = 800, rebuildReserve = 0, baseAttackDelay = 240 },
 	normal = { gdiCash = 2000, prodDelay = 600, autoDelay = 780, waveInterval = 300, waveCount = 2, prodInterval = 32, maxProducedUnits = 7, assaultSize = 6, pressureSquadSize = 3,
@@ -50,13 +62,14 @@ DifficultySettings = {
 		vehiclePool = { "mtnk", "msam", "htnk", "jeep" }, prodReserve = 400, rebuildReserve = 0, baseAttackDelay = 360 },
 }
 
+-- CurrentDifficulty is defined below and shared with hostile-takeover-AI.lua.
 function CurrentDifficulty()
 	return DifficultySettings[Difficulty] or DifficultySettings.normal
 end
 
 -- Cell lists from [CellTriggers]. Every cell is y*64 + x in the original;
 -- the lists below are already converted to CPos.
-DzneCells = { -- 16 cells, x16-17/y48-55 (cyclone pen)
+local DzneCells = { -- 16 cells, x16-17/y48-55 (cyclone pen)
 	CPos.New(16, 48), CPos.New(16, 49), CPos.New(16, 50), CPos.New(16, 51), CPos.New(16, 52), CPos.New(16, 53),
 	CPos.New(16, 54), CPos.New(16, 55), CPos.New(17, 48), CPos.New(17, 49), CPos.New(17, 50), CPos.New(17, 51),
 	CPos.New(17, 52), CPos.New(17, 53), CPos.New(17, 54), CPos.New(17, 55),
@@ -103,13 +116,25 @@ Grd2Cells = { -- 27 cells, three chokepoints between the Nod and GDI bases
 	CPos.New(35, 20), CPos.New(35, 21), CPos.New(36, 20),
 }
 
-function WinMission()
+---@type player
+local Neutral
+---@type player
+local NodBase
+---@type integer?
+local EliminateGDI
+---@type integer?
+local CaptureTransport
+---@type integer?
+local ReachOutpost
+local CheckObjectives
+
+local function WinMission()
 	if MissionFinished then return end
 	MissionFinished = true
 	Nod.MarkCompletedObjective(EliminateGDI)
 end
 
-function FailMission()
+local function FailMission()
 	if MissionFinished then return end
 	MissionFinished = true
 	Nod.MarkFailedObjective(EliminateGDI)
@@ -122,20 +147,20 @@ function OnTransportCaptured()
 	Nod.MarkCompletedObjective(CaptureTransport)
 end
 
-function MarkDropZone()
+local function MarkDropZone()
 	if OutpostMarked or MissionFinished then return end
 	OutpostMarked = true
 	Actor.Create("flare", true, { Owner = Nod, Location = DefaultFlareLocation.Location })
 	Media.DisplayMessageToPlayer(Nod, UserInterface.GetFluentMessage("outpost-marked"))
 end
 
-function OnOutpostReached()
+local function OnOutpostReached()
 	if MissionFinished or OutpostReached then return end
 	OutpostReached = true
 	Nod.MarkCompletedObjective(ReachOutpost)
 end
 
-function CheckTransportObjective()
+local function CheckTransportObjective()
 	if TransportObjectiveDone or MissionFinished then return end
 	for _, tran in ipairs(GDIChinooks) do
 		if IsLive(tran) and tran.Owner == Nod then
@@ -156,7 +181,7 @@ end
 -- owner, so a Nod-owned construction yard at (7,26) would reveal the whole
 -- base (and its parked harvester) on mission start. The base and its
 -- harvester become Nod only when a Nod ground unit reaches the flare.
-function FindNodBaseHarvester()
+local function FindNodBaseHarvester()
 	if not IsLive(NodProc) then return nil end
 	for _, harv in ipairs(AI.GetActorsByType(NodBase, "harv")) do
 		if IsLive(harv) and harv.Owner == NodBase and harv.HasProperty("Location") then
@@ -170,7 +195,7 @@ function FindNodBaseHarvester()
 	return nil
 end
 
-function EnsureBaseHarvester()
+local function EnsureBaseHarvester()
 	if not NodBaseReclaimed or MissionFinished then return end
 	local harv = FindNodBaseHarvester()
 	if harv == nil then return end
@@ -182,7 +207,7 @@ function EnsureBaseHarvester()
 	if harv.HasProperty("Stance") then harv.Stance = "Defend" end
 end
 
-function TransferNodBase()
+local function TransferNodBase()
 	if NodBaseReclaimed or MissionFinished then return end
 
 	if IsLive(NodFact) and NodFact.Owner ~= Nod then
@@ -200,7 +225,7 @@ function TransferNodBase()
 	Media.DisplayMessageToPlayer(Nod, UserInterface.GetFluentMessage("base-reclaimed"))
 end
 
-function TransferOutpost()
+local function TransferOutpost()
 	if OutpostCaptured or MissionFinished then return end
 
 	if IsLive(NodHand) and NodHand.Owner ~= Nod then
@@ -214,7 +239,7 @@ function TransferOutpost()
 	Media.DisplayMessageToPlayer(Nod, UserInterface.GetFluentMessage("outpost-captured"))
 end
 
-function CheckOutpostTransfer()
+local function CheckOutpostTransfer()
 	if OutpostCaptured or MissionFinished then return end
 
 	local hqCell = CPos.New(34, 41)
@@ -235,7 +260,7 @@ end
 
 -- Base transfer is independent of the objective flag so it still happens if
 -- the objective was completed earlier (or from an old state).
-function CheckNodBaseReclaim()
+local function CheckNodBaseReclaim()
 	if NodBaseReclaimed or MissionFinished then return end
 	local targets = { CPos.New(6, 34), CPos.New(7, 26) }
 	for _, actor in ipairs(Nod.GetActors()) do
@@ -254,7 +279,7 @@ function CheckNodBaseReclaim()
 	end
 end
 
-function CheckOutpostObjective()
+local function CheckOutpostObjective()
 	if OutpostReached or MissionFinished then return end
 	local targets = { CPos.New(6, 34), CPos.New(7, 26) }
 	for _, actor in ipairs(Nod.GetActors()) do
@@ -272,7 +297,7 @@ function CheckOutpostObjective()
 	end
 end
 
-function CheckObjectives()
+CheckObjectives = function()
 	if MissionFinished then return end
 
 	CheckTransportObjective()
@@ -294,7 +319,7 @@ function CheckObjectives()
 	Trigger.AfterDelay(DateTime.Seconds(5), CheckObjectives)
 end
 
-function SetupNodStances()
+local function SetupNodStances()
 	Utils.Do(Nod.GetActors(), function(actor)
 		if actor.HasProperty("Stance") then
 			actor.Stance = "Defend"
@@ -307,7 +332,7 @@ end
 -- Harvester docked inside it. OpenRA transfers only the building, so the
 -- docked GDI harvester is handed to Nod on capture. The player can use the
 -- captured refinery immediately; this is the mission's intended economy.
-function TransferRefineryHarvester()
+local function TransferRefineryHarvester()
 	if MissionFinished then return end
 	if not IsLive(GDIProc) or GDIProc.Owner ~= Nod then return end
 
@@ -327,7 +352,7 @@ function TransferRefineryHarvester()
 	end
 end
 
-function SetupRefineryCapture()
+local function SetupRefineryCapture()
 	if not IsLive(GDIProc) then return end
 
 	Trigger.OnCapture(GDIProc, function(_, _, _, newOwner)
@@ -337,7 +362,7 @@ function SetupRefineryCapture()
 	end)
 end
 
-function SetupDzneTrigger()
+local function SetupDzneTrigger()
 	Trigger.OnEnteredFootprint(DzneCells, function(actor, id)
 		if MissionFinished or actor.Owner ~= Nod then
 			return
@@ -348,7 +373,7 @@ function SetupDzneTrigger()
 	end)
 end
 
-function SetupChurch()
+local function SetupChurch()
 	if not IsLive(Church) then
 		return
 	end

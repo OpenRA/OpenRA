@@ -9,16 +9,26 @@
    Autocreate teams. All teams are formed from existing GDI units, never
    spawned from thin air, and every route is the original waypoint list.
    No randomness is used anywhere.
+
+-- Shared with hostile-takeover.lua: CurrentDifficulty, GDI, GDI2Cells,
+-- GDI3Cells, GDI9Cells, GDIBuildingsHunt, GDIBuildingsLost, GDIChinooks,
+-- GDIHome, GIContext, Grd1Cells, Grd2Cells, InitGDI, IsLive, MissionFinished,
+-- Nod, OnNodBaseReclaimed, OnTransportCaptured.
 ]]
 
 local AI = CampaignAI
 
-GDIProductionStarted = false
-GDIAIAlerted = false
-IdleDefenseStarted = false
-GIOffensiveContext = nil
-GIBaseDefenseContext = nil
-GIUnitContext = nil
+local AutoWaveTick
+local ProductionTick
+local ScheduleGDI7
+local StartProductionLoop
+
+local GDIProductionStarted = false
+local GDIAIAlerted = false
+local IdleDefenseStarted = false
+local GIOffensiveContext = nil
+local GIBaseDefenseContext = nil
+local GIUnitContext = nil
 
 -- Active scripted teams. A key can only have one live team at a time, which
 -- mirrors `Max Allowed` for the Autocreate types and prevents two triggers
@@ -99,7 +109,7 @@ end
 
 -- Units use the shared self-defence context from CampaignAI: a damaged
 -- unit shoots back at its attacker instead of being outranged forever.
-function RegisterGDIUnit(actor)
+local function RegisterGDIUnit(actor)
 	if GIUnitContext == nil or not IsGDIUnit(actor) then return end
 	local key = AI.ActorKey(actor)
 	if RegisteredGDIUnits[key] then return end
@@ -223,7 +233,7 @@ end
 -- and retries with the next free building.
 local CaptureClaims = {}
 
-function OrderEngineerCapture(unit)
+local function OrderEngineerCapture(unit)
 	AI.CaptureWithEngineers({ unit }, Nod, {
 		claims = CaptureClaims,
 		context = GIContext,
@@ -360,7 +370,7 @@ end
 
 -- One announced counter-attack after `auto`, capped like Deceit's
 -- AssaultSize so the whole garrison is not thrown away at once.
-function LaunchAssault()
+local function LaunchAssault()
 	if MissionFinished or not GDIHasBase() then return end
 	local units = FindSurplusUnits(CurrentDifficulty().assaultSize)
 	if #units == 0 then return end
@@ -370,7 +380,7 @@ end
 
 -- Regular pressure squad from surplus units (Deceit/Bad Neighborhood). The
 -- home guard is not touched because only unreserved surplus is taken.
-function SendPressureSquad()
+local function SendPressureSquad()
 	if MissionFinished or not GDIHasBase() then return end
 	local units = FindSurplusUnits(CurrentDifficulty().pressureSquadSize)
 	if #units == 0 then return end
@@ -473,7 +483,7 @@ end
 
 -- Send the base garrison at the attacker (the shared helper does not march
 -- them to the nearest enemy building like AllOutAttack would).
-function StartGDIBaseDefense(attacker)
+local function StartGDIBaseDefense(attacker)
 	if MissionFinished or GDIHome == nil then return end
 	AI.DefendAgainstAttacker(GDIHome, attacker, GIBaseDefenseContext, {
 		alarmSeconds = 45,
@@ -484,7 +494,7 @@ end
 
 -- The GDI garrison defends its base from the start; this does not make the
 -- outer pickets chase across the map because the context is base-local.
-function StartBaseDefenseOnce()
+local function StartBaseDefenseOnce()
 	if IdleDefenseStarted or MissionFinished then return end
 	IdleDefenseStarted = true
 	AI.StartIdleDefense(GIBaseDefenseContext, 10)
@@ -493,7 +503,7 @@ end
 -- GDI production starts as soon as the player has placed three real
 -- buildings. Captured buildings never fire the trigger and wall segments are
 -- ignored by the shared helper.
-function StartGDIProduction()
+local function StartGDIProduction()
 	if MissionFinished or GDIProductionStarted then
 		return
 	end
@@ -572,7 +582,7 @@ local function SetupTimedTriggers()
 	Trigger.AfterDelay(DateTime.Seconds(4800), ScheduleGDI7)
 end
 
-function ScheduleGDI7()
+ScheduleGDI7 = function()
 	if MissionFinished then
 		return
 	end
@@ -587,7 +597,7 @@ end
 -- Mammoth cannot stall the line behind a 600 $ Jeep.
 local InfantryPool = { "e3", "e1", "e3" }
 
-function StartProductionLoop()
+StartProductionLoop = function()
 	AI.StartProduction(GDIHome, GIContext, {
 		pools = {
 			infantry = InfantryPool,
@@ -608,7 +618,7 @@ end
 
 -- Kept as the maintenance half of the old ProductionTick: rebuild,
 -- harvesters and harvester replacement still run on their own cadence.
-function ProductionTick()
+ProductionTick = function()
 	if MissionFinished then
 		return
 	end
@@ -635,7 +645,7 @@ function ProductionTick()
 	Trigger.AfterDelay(DateTime.Seconds(CurrentDifficulty().prodInterval), ProductionTick)
 end
 
-function DoAllToHunt()
+local function DoAllToHunt()
 	for _, actor in ipairs(GDI.GetActors()) do
 		if IsLive(actor) and actor.HasProperty("Hunt") then
 			if actor.HasProperty("Stance") then
@@ -646,7 +656,7 @@ function DoAllToHunt()
 	end
 end
 
-function OnGDIBuildingLost()
+local function OnGDIBuildingLost()
 	if MissionFinished then
 		return
 	end
@@ -661,7 +671,7 @@ function OnGDIBuildingLost()
 	DoAllToHunt()
 end
 
-function RegisterGDIBuilding(building)
+local function RegisterGDIBuilding(building)
 	if not IsLive(building) or building.Owner ~= GDI or not building.HasProperty("StartBuildingRepairs") then
 		return
 	end
@@ -686,7 +696,7 @@ function RegisterGDIBuilding(building)
 	end
 end
 
-function AutoWaveTick()
+AutoWaveTick = function()
 	if MissionFinished or not GDIAIAlerted then
 		return
 	end

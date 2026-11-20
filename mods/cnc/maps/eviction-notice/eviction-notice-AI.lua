@@ -11,40 +11,56 @@
 --
 -- The original house is trigger-driven and passive until it is discovered.
 -- Placed units therefore use the same pattern as Bad Neighborhood: Defend for
--- their own position, no proactive IdleDefense until GDIAttackWavesStarted,
--- and a shared damage handler that calls AlertGDI on the first contact.
+-- their own position, no proactive IdleDefense until the alert, and a shared
+-- damage handler that calls AlertGDI on the first contact.
 -- Production and the fixed Autocreate-style waves only start on the alert.
+--
+-- Shared with eviction-notice.lua: AlertGDI, GDI, GDI_AI, InitAi,
+-- IonCannonOnline, IsLive, MissionFinished, MissionStartTick, Nod,
+-- OnGDIProduced, RegisterGDIActor.
 
 local AI = CampaignAI
+
+local GDIHasBase
+local FireIonCannon
+local MaintenanceTick
+local ProductionTick
+local ScheduleEngineers
+local SendEngineers
+local SendNextAutoWave
+local SendPressureSquad
+local StartIonCannon
+local StartPatrol
+local WaveTick
 
 IsLive = function(actor)
 	return AI.IsLive(actor)
 end
 
-AlertTime = { easy = 1500, normal = 1200, hard = 900 }
-AlertFirstWave = { easy = 75, normal = 50, hard = 35 }
-AlertWaveInterval = { easy = 210, normal = 150, hard = 100 }
-ProductionInterval = { easy = 30, normal = 22, hard = 15 }
-EngineerDelay = { easy = 360, normal = 300, hard = 240 }
-HomeGuardSize = { easy = 3, normal = 4, hard = 6 }
-PressureSquadSize = { easy = 2, normal = 3, hard = 4 }
-MaxGDIArmy = { easy = 8, normal = 12, hard = 16 }
-StartingCash = 9000
-IonCannonInterval = 300
+local AlertTime = { easy = 1500, normal = 1200, hard = 900 }
+local AlertFirstWave = { easy = 75, normal = 50, hard = 35 }
+local AlertWaveInterval = { easy = 210, normal = 150, hard = 100 }
+local ProductionInterval = { easy = 30, normal = 22, hard = 15 }
+local EngineerDelay = { easy = 360, normal = 300, hard = 240 }
+local HomeGuardSize = { easy = 3, normal = 4, hard = 6 }
+local PressureSquadSize = { easy = 2, normal = 3, hard = 4 }
+local MaxGDIArmy = { easy = 8, normal = 12, hard = 16 }
+local StartingCash = 9000
+local IonCannonInterval = 300
 
-GDIAlerted = false
-GDIAttackWavesStarted = false
-GDIProductionStarted = false
-GDIHome = nil
+local GDIAlerted = false
+local GDIProductionStarted = false
+local GDIHome = nil
+-- GDI_AI is shared with eviction-notice.lua; keep it global.
 GDI_AI = nil
-GDI_IDLE_DEFENSE = nil
-GDIRegistered = {}
-GDIProducedUnits = {}
-NextUnitIndex = 1
-NextWaveIndex = 1
-NextPressureRoute = 1
+local GDI_IDLE_DEFENSE = nil
+local GDIRegistered = {}
+local GDIProducedUnits = {}
+local NextUnitIndex = 1
+local NextWaveIndex = 1
+local NextPressureRoute = 1
 
-UnitRotation = {
+local UnitRotation = {
 	easy = { "e1", "e2", "e3", "jeep", "mtnk", "apc" },
 	normal = { "e1", "e2", "e3", "jeep", "mtnk", "apc", "msam", "e2", "mtnk" },
 	hard = { "e1", "e2", "e3", "jeep", "mtnk", "apc", "msam", "e2", "mtnk", "htnk" },
@@ -53,7 +69,7 @@ UnitRotation = {
 -- Keep production moving when a tech building is lost: the EYE gates the
 -- Mammoth tank, the HQ gates E2/MTNK/MSAM, and a destroyed factory removes
 -- its whole unit class from the rotation for that tick.
-UnitPrerequisites = {
+local UnitPrerequisites = {
 	e1 = { "barracks" },
 	e2 = { "anyhq", "~techlevel.medium" },
 	e3 = { "barracks" },
@@ -65,7 +81,7 @@ UnitPrerequisites = {
 }
 
 -- Original [Base] layout. GDI rebuilds one entry per maintenance pass.
-GDI_PLAN = {
+local GDI_PLAN = {
 	{ "nuk2", 6, 3 }, { "proc", 8, 12 }, { "pyle", 17, 4 }, { "weap", 10, 8 }, { "proc", 12, 3 },
 	{ "nuk2", 4, 11 }, { "nuk2", 3, 14 }, { "atwr", 8, 4 }, { "atwr", 6, 9 }, { "atwr", 6, 15 },
 	{ "gtwr", 9, 8 }, { "nuk2", 13, 12 }, { "atwr", 15, 9 }, { "atwr", 13, 15 }, { "nuk2", 11, 14 },
@@ -73,7 +89,7 @@ GDI_PLAN = {
 	{ "silo", 9, 17 }, { "atwr", 18, 19 },
 }
 
-GDI_REBUILD_OPTIONS = {
+local GDI_REBUILD_OPTIONS = {
 	plan = GDI_PLAN,
 	targets = { proc = 2, weap = 1, pyle = 1 },
 	reserve = 500,
@@ -97,7 +113,7 @@ GDI_REBUILD_OPTIONS = {
 -- north-east road near the top-right Tiberium field (WP3, 49,5) so waves no
 -- longer appear directly in front of the GDI base. The rotation is fixed and
 -- has no RNG.
-AutoWaves = {
+local AutoWaves = {
 	{ units = { "e2", "mtnk" }, entry = waypoint3, route = { }, baseAttack = false }, -- gatk5
 	{ units = { "e2", "e2", "e3", "e3", "mtnk" }, entry = waypoint3, route = { waypoint12 }, baseAttack = false }, -- gatk4
 	{ units = { "htnk" }, entry = waypoint3, route = { waypoint2 }, baseAttack = true }, -- gatk1
@@ -106,19 +122,21 @@ AutoWaves = {
 	{ units = { "e2", "e2", "e2", "e3", "e3", "e6" }, entry = waypoint3, route = { waypoint2, waypoint5 }, baseAttack = false }, -- gatk
 }
 
-PressureRoutes = {
+local PressureRoutes = {
 	{ waypoint2, waypoint9, waypoint8 },
 	{ waypoint5, waypoint4, waypoint6 },
 	{ waypoint2, waypoint5 },
 }
 
-function GDIHasBase()
+GDIHasBase = function()
 	return IsLive(GDICYard) and GDICYard.Owner == GDI
 end
 
 function RegisterGDIActor(actor)
 	if not IsLive(actor) or actor.Owner ~= GDI then return end
 	if actor.Type == "airstrike.proxy" or actor.Type == "airstrike.single" then return end
+	-- Aircraft husks inherit without ScriptTriggers; they cannot carry triggers.
+	if actor.Type:match("%.husk$") then return end
 	if not actor.HasProperty("Health") then return end
 	if GDIRegistered[actor] then return end
 	GDIRegistered[actor] = true
@@ -165,7 +183,7 @@ function OnGDIProduced(producer, unit, productionType)
 	AI.AddToPool(GDIHome, unit, GDI_AI)
 end
 
-function CountProducedUnits()
+local function CountProducedUnits()
 	local count = 0
 	local i = #GDIProducedUnits
 	while i >= 1 do
@@ -240,7 +258,7 @@ function InitAi()
 	end)
 end
 
-function StartPatrol()
+StartPatrol = function()
 	if MissionFinished then return end
 
 	local patrol = { Actor103, Actor122, Actor123 }
@@ -254,7 +272,7 @@ function StartPatrol()
 	end)
 end
 
-function MaintenanceTick()
+MaintenanceTick = function()
 	if MissionFinished or not GDIHasBase() then return end
 
 	AI.SafeCall("maintenance", function()
@@ -277,13 +295,13 @@ function MaintenanceTick()
 	Trigger.AfterDelay(DateTime.Seconds(15), MaintenanceTick)
 end
 
-function StartGDIProduction()
+local function StartGDIProduction()
 	if GDIProductionStarted or MissionFinished then return end
 	GDIProductionStarted = true
 	ProductionTick()
 end
 
-function ProductionTick()
+ProductionTick = function()
 	if MissionFinished or not GDIAlerted or not GDIHasBase() or GDI.HasNoRequiredUnits() then return end
 
 	local difficulty = Difficulty or "normal"
@@ -317,7 +335,6 @@ function AlertGDI(reason)
 	if GDIAlerted or MissionFinished then return end
 
 	GDIAlerted = true
-	GDIAttackWavesStarted = true
 
 	local messages = {
 		civilians = "civilians-reached-gdi",
@@ -334,7 +351,7 @@ function AlertGDI(reason)
 	StartIonCannon()
 end
 
-function WaveTick()
+WaveTick = function()
 	if MissionFinished or not GDIHasBase() or GDI.HasNoRequiredUnits() then return end
 
 	AI.SafeCall("waves", function()
@@ -345,7 +362,7 @@ function WaveTick()
 	Trigger.AfterDelay(DateTime.Seconds(AlertWaveInterval[Difficulty or "normal"]), WaveTick)
 end
 
-function SendNextAutoWave()
+SendNextAutoWave = function()
 	local def = AutoWaves[NextWaveIndex]
 	NextWaveIndex = NextWaveIndex % #AutoWaves + 1
 	if def == nil then return end
@@ -358,7 +375,7 @@ function SendNextAutoWave()
 	end)
 end
 
-function SendPressureSquad()
+SendPressureSquad = function()
 	local units = AI.TakeForAttack(GDIHome, PressureSquadSize[Difficulty or "normal"], true)
 	if #units == 0 then return end
 
@@ -367,11 +384,11 @@ function SendPressureSquad()
 	AI.SendTeam(units, GDI, route, true, false, GDI_AI)
 end
 
-function ScheduleEngineers()
+ScheduleEngineers = function()
 	Trigger.AfterDelay(DateTime.Seconds(EngineerDelay[Difficulty or "normal"]), SendEngineers)
 end
 
-function SendEngineers()
+SendEngineers = function()
 	if MissionFinished or not GDIHasBase() or GDI.HasNoRequiredUnits() then return end
 
 	-- Original grnf2: four engineers in a Chinook, unload at WP10 and attack
@@ -400,7 +417,7 @@ function SendEngineers()
 		end)
 end
 
-function StartIonCannon()
+StartIonCannon = function()
 	if IonCannonOnline or MissionFinished then return end
 	if not IsLive(GDIAdvComCenter) or GDIAdvComCenter.Owner ~= GDI then return end
 
@@ -414,7 +431,7 @@ function StartIonCannon()
 	Trigger.AfterDelay(DateTime.Seconds(delay), FireIonCannon)
 end
 
-function FindIonCannonTarget()
+local function FindIonCannonTarget()
 	local eye = GDIAdvComCenter
 	local units = { }
 	Utils.Do(Nod.GetGroundAttackers(), function(unit)
@@ -453,7 +470,7 @@ function FindIonCannonTarget()
 	return best
 end
 
-function FireIonCannon()
+FireIonCannon = function()
 	if MissionFinished or not IonCannonOnline then return end
 	if not IsLive(GDIAdvComCenter) or GDIAdvComCenter.Owner ~= GDI then
 		IonCannonOnline = false

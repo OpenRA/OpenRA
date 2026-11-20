@@ -41,10 +41,15 @@
 -- As in 11a, the Nod base is owned by the non-combatant NodBase player until
 -- the strike team reaches it. Only then does it transfer to the player and
 -- does the GDI AI (harvesters, production, waves, A10) start.
+--
+-- Shared with nod11b-AI.lua: BaseTakenOver, CheckForSams, EliminateGDI, GDI,
+-- Nod, PendingGDIReinforcementsUntil, SetupAI, StartAttackSchedule, StrikeTeam,
+-- StrikeTeamSafe, TryStartGDIProduction.
 
 -- The north-west strike team. The original `xxxx` trigger is attached to 15
 -- of the 16 units; the E3 at (9,4) with subcell 2 is missing it. All 16 are
 -- tracked here so the lose condition cannot be dodged (documented deviation).
+-- Shared with nod11b-AI.lua.
 StrikeTeam = {
 	Commando,
 	Engineer1, Engineer2, Engineer3,
@@ -52,17 +57,34 @@ StrikeTeam = {
 	RocketSoldier1, RocketSoldier2, RocketSoldier3, RocketSoldier4, RocketSoldier5, RocketSoldier6,
 }
 
-NodBase = { NodConYard, NodNuke, NodHQ }
-
+-- Shared with nod11b-AI.lua: the `xxxx` lose trigger is disarmed once the
+-- strike team reached the rendezvous.
 StrikeTeamSafe = false
-RefineryGoal = 3
-StartingCashBonus = { easy = 1500, normal = 1000, hard = 1000 }
 
-CommandoTypes = { easy = "rmbo.easy", normal = "rmbo", hard = "rmbo" }
+local NodBase = { NodConYard, NodNuke, NodHQ }
+
+local RefineryGoal = 3
+local StartingCashBonus = { easy = 1500, normal = 1000, hard = 1000 }
+
+local CommandoTypes = { easy = "rmbo.easy", normal = "rmbo", hard = "rmbo" }
+
+---@type integer
+local FindBase
+---@type integer
+local CaptureTechCenter
+---@type integer
+local BuildRefineries
+---@type integer
+local BuildSAMs
+---@type actor
+local Boat
+
+-- Assigned in WorldLoaded; captures the difficulty-dependent boat type.
+local SpawnBoat
 
 -- The map ships the normal Commando. Only Easy gets the tougher, regenerating
 -- variant; Normal and Hard keep AutoTarget and AttackMove.
-SetCommandoVariant = function(nod, difficulty)
+local function SetCommandoVariant(nod, difficulty)
 	local commandoType = CommandoTypes[difficulty] or "rmbo"
 	if commandoType ~= "rmbo" and not Commando.IsDead then
 		local location = Commando.Location
@@ -80,7 +102,7 @@ SetCommandoVariant = function(nod, difficulty)
 	Commando.Stance = "Defend"
 end
 
-NodBaseDiscovered = function(_, discoverer)
+local function NodBaseDiscovered(_, discoverer)
 	if not Nod.IsObjectiveCompleted(FindBase) and discoverer == Nod then
 		Nod.MarkCompletedObjective(FindBase)
 
@@ -108,7 +130,7 @@ NodBaseDiscovered = function(_, discoverer)
 	end
 end
 
-TechCenterCaptured = function(_, _, _, newOwner)
+local function TechCenterCaptured(_, _, _, newOwner)
 	if not Nod.IsObjectiveCompleted(CaptureTechCenter) and newOwner == Nod then
 		Nod.MarkCompletedObjective(CaptureTechCenter)
 
@@ -116,6 +138,21 @@ TechCenterCaptured = function(_, _, _, newOwner)
 			Media.PlaySpeechNotification(Nod, "NewOptions")
 		end)
 	end
+end
+
+local function CheckForRefineries()
+	return #Nod.GetActorsByType("proc") >= RefineryGoal
+end
+
+-- A starting unit loaded into a transport is temporarily out of the world but
+-- still alive. Do not treat that as the loss of the starting group.
+local function StartingGroupAlive()
+	for _, actor in ipairs(StrikeTeam or {}) do
+		if not actor.IsDead then
+			return true
+		end
+	end
+	return false
 end
 
 WorldLoaded = function()
@@ -205,21 +242,6 @@ WorldLoaded = function()
 	end
 
 	SetupAI()
-end
-
-CheckForRefineries = function()
-	return #Nod.GetActorsByType("proc") >= RefineryGoal
-end
-
--- A starting unit loaded into a transport is temporarily out of the world but
--- still alive. Do not treat that as the loss of the starting group.
-local function StartingGroupAlive()
-	for _, actor in ipairs(StrikeTeam or {}) do
-		if not actor.IsDead then
-			return true
-		end
-	end
-	return false
 end
 
 Tick = function()
