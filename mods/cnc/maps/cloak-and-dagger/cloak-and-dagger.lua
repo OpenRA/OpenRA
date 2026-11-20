@@ -26,27 +26,41 @@
 --   gohp  Attacked on V01-V08/V10 -> Create Team civhlp (existing C1/C5/C6/C8).
 --   hlp2  Neutral enters the base-approach cells -> Create Team gdihlp2
 --         (the two existing HTNKs drive to the village and back).
+--
+-- Shared with cloak-and-dagger-AI.lua: DisableIonCannon, GDI, InitGDI,
+-- IsCloaked, IsLive, MissionFinished, Nod, NodStartingCash.
 local AI = CampaignAI
 
+-- Cross-file state stays global (see header).
 MissionFinished = false
-MCVRequired = true
-STNKRequired = true
-DesxDone = false
-AutoDone = false
-ProdDone = false
-Hlp2Done = false
-VillageAttacked = false
-ApachesSent = false
-DiversionCompleted = false
-PowerDownCompleted = false
-SouthernTowersDestroyed = 0
 
-VillageBuildings = { }
-VillageGuards = { }
+---@type boolean
+local MCVRequired = true
+---@type boolean
+local STNKRequired = true
+---@type boolean
+local DesxDone = false
+---@type boolean
+local Hlp2Done = false
+---@type boolean
+local VillageAttacked = false
+---@type boolean
+local ApachesSent = false
+---@type boolean
+local DiversionCompleted = false
+---@type boolean
+local PowerDownCompleted = false
+---@type integer
+local SouthernTowersDestroyed = 0
+
+---@type table[]
+local VillageBuildings = { }
+---@type table[]
+local VillageGuards = { }
 
 -- The seven southern guards exist only on Hard. Normal/Easy remove them
 -- before the mission starts.
-function ApplyDifficultyGuards()
+local function ApplyDifficultyGuards()
 	if (Difficulty or "normal") == "hard" then return end
 	Utils.Do(VillageGuards, function(unit)
 		if IsLive(unit) then unit.Destroy() end
@@ -56,7 +70,7 @@ end
 
 -- Easy: remove the outpost ATWR and trade one base NUK2 for a basic NUKE
 -- (100 instead of 200 power). Normal/Hard keep the outpost ATWR.
-function ApplyEasyMapChanges()
+local function ApplyEasyMapChanges()
 	if (Difficulty or "normal") ~= "easy" then return end
 
 	if IsLive(Actor173) then Actor173.Destroy() end
@@ -66,12 +80,12 @@ function ApplyEasyMapChanges()
 		Actor.Create("nuke", true, { Owner = GDI, Location = location })
 	end
 end
-CounterAttackUnits = { }
-SouthernTowers = { }
+local CounterAttackUnits = { }
+local SouthernTowers = { }
 
 -- Original desx cells (18). (3,11) is not part of the zone; the MCV sits in
 -- the pocket and trips it as soon as it moves east to (4,11).
-DesxCells = {
+local DesxCells = {
 	CPos.New(2, 9), CPos.New(3, 9), CPos.New(4, 9), CPos.New(5, 9),
 	CPos.New(2, 10), CPos.New(3, 10), CPos.New(4, 10), CPos.New(5, 10),
 	CPos.New(4, 11), CPos.New(5, 11),
@@ -80,22 +94,32 @@ DesxCells = {
 }
 
 -- Original hlp2 cells (8): the villager route between WP0 and WP2.
-Hlp2Cells = {
+local Hlp2Cells = {
 	CPos.New(6, 25), CPos.New(7, 25), CPos.New(8, 25), CPos.New(9, 25),
 	CPos.New(7, 26), CPos.New(8, 26), CPos.New(9, 26), CPos.New(10, 26),
 }
 
 -- Original Nod Edge is South; (54,61) is the passable edge cell next to the
 -- stealth tank's start.
-NodSouthEntry = CPos.New(54, 61)
+local NodSouthEntry = CPos.New(54, 61)
 
-function FailMission()
+---@type player
+local Neutral
+---@type integer?
+local RecoverMCV
+---@type integer?
+local VillageDiversion
+---@type integer?
+local PowerDown
+local CheckObjectives
+
+local function FailMission()
 	if MissionFinished then return end
 	MissionFinished = true
 	Nod.MarkFailedObjective(RecoverMCV)
 end
 
-function WinMission()
+local function WinMission()
 	if MissionFinished then return end
 	MissionFinished = true
 	Nod.MarkCompletedObjective(RecoverMCV)
@@ -103,7 +127,7 @@ end
 
 -- Move every live member of a team to a waypoint and call back once they are
 -- all idle. Used for the two "Create Team" routes that contain Guard waits.
-function MoveTeamThen(team, waypoint, done)
+local function MoveTeamThen(team, waypoint, done)
 	local any = false
 	Utils.Do(team, function(unit)
 		if IsLive(unit) then
@@ -136,7 +160,7 @@ function MoveTeamThen(team, waypoint, done)
 	Trigger.AfterDelay(DateTime.Seconds(2), WaitForArrival)
 end
 
-function StartCivilianHelp()
+local function StartCivilianHelp()
 	if VillageAttacked or MissionFinished then return end
 	VillageAttacked = true
 
@@ -168,7 +192,7 @@ function StartCivilianHelp()
 	end)
 end
 
-function CreateGDIHelpTeam()
+local function CreateGDIHelpTeam()
 	if MissionFinished then return end
 
 	-- Original gdihlp2: the two existing Mammoth tanks at the base entrance.
@@ -207,7 +231,7 @@ function CreateGDIHelpTeam()
 	end)
 end
 
-function OrderCounterAttack(target)
+local function OrderCounterAttack(target)
 	if target == nil or not IsLive(target) then return end
 	Utils.Do(CounterAttackUnits, function(unit)
 		if not IsLive(unit) then return end
@@ -219,13 +243,13 @@ function OrderCounterAttack(target)
 	end)
 end
 
-function OnCounterAttack(self, attacker, damage)
+local function OnCounterAttack(self, attacker, damage)
 	if MissionFinished or damage == nil or damage <= 0 then return end
 	if attacker == nil or attacker.Owner ~= Nod then return end
 	OrderCounterAttack(attacker)
 end
 
-function MammothRetaliation(killer)
+local function MammothRetaliation(killer)
 	if MissionFinished then return end
 	Utils.Do({ Actor207, Actor208 }, function(unit)
 		if not IsLive(unit) then return end
@@ -237,19 +261,19 @@ function MammothRetaliation(killer)
 	end)
 end
 
-function OnSouthernTowerKilled(self, killer)
+local function OnSouthernTowerKilled(self, killer)
 	if MissionFinished then return end
 	SouthernTowersDestroyed = SouthernTowersDestroyed + 1
 	if SouthernTowersDestroyed >= 2 then MammothRetaliation(killer) end
 end
 
-function OnVillageAttacked(self, attacker, damage)
+local function OnVillageAttacked(self, attacker, damage)
 	if VillageAttacked or MissionFinished then return end
 	if damage == nil or damage <= 0 then return end
 	StartCivilianHelp()
 end
 
-function OnDesxCellEntered(actor, id)
+local function OnDesxCellEntered(actor, id)
 	if DesxDone or MissionFinished then return end
 	if not IsLive(actor) or actor.Owner ~= Nod or IsCloaked(actor) then return end
 
@@ -258,7 +282,7 @@ function OnDesxCellEntered(actor, id)
 	STNKRequired = false
 end
 
-function OnHlp2CellEntered(actor, id)
+local function OnHlp2CellEntered(actor, id)
 	if Hlp2Done or MissionFinished then return end
 	if not IsLive(actor) or actor.Owner ~= Neutral or IsCloaked(actor) then return end
 
@@ -269,7 +293,7 @@ end
 
 -- Original apch is attached to the Tech Center with a Player Enters event,
 -- which means "the linked object was captured" for either house.
-function OnTechCenterCaptured(self, captor, oldOwner, newOwner)
+local function OnTechCenterCaptured(self, captor, oldOwner, newOwner)
 	if ApachesSent or MissionFinished then return end
 
 	ApachesSent = true
@@ -280,7 +304,7 @@ function OnTechCenterCaptured(self, captor, oldOwner, newOwner)
 	end)
 end
 
-function CheckObjectives()
+CheckObjectives = function()
 	if MissionFinished then return end
 
 	-- power-down: the outpost reactor is the critical NUK2; when the GDI
