@@ -5,9 +5,29 @@
    as published by the Free Software Foundation, either version 3 of
    the License, or (at your option) any later version. For more
    information, see COPYING.
+
+   Shared with under-siege.lua: GDI, InitGDI, MissionFinished, Nod.
 ]]
 
 local AI = CampaignAI
+
+local AllToHunt
+local MaintenanceTick
+
+local GDIProductionStarted = false
+local GDIAIAlerted = false
+local GDIHome = nil
+local GDIStartingUnits
+local GDI_REBUILD_OPTIONS = nil
+local GIBaseDefenseContext = nil
+local GIContext = nil
+local GICounterContext = nil
+local GIUnitContext = nil
+local GDIAirstrikeProxy = nil
+local GDINukeRetaliation = false
+local GDIPendingNukes = {}
+local HuntMessageSent = false
+local NukeMessageSent = false
 
 -- Original times: `Time` is measured in 6 s ticks (HouseClass::AI).
 --   astk 80  -> 480 s = 8:00, repeating every 480 s (persist 2)
@@ -103,8 +123,8 @@ local BaseReinforcementCells = {
 -- MSAMs are the only GDI unit whose OpenRA range (227mm, 11c0) exceeds
 -- the original (6 cells), so they must start outside 11 cells of every Nod
 -- actor or they open fire on the base at mission start. The *_Msam lists
--- are the furthest cells of each group and are verified by the harness;
--- the tank lists may sit closer because their guns reach ~5 cells.
+-- are the furthest cells of each group; the tank lists may sit closer
+-- because their guns reach ~5 cells.
 local EastTankCells = { { 49, 30 }, { 49, 31 }, { 50, 31 }, { 48, 30 } }
 local EastMsamCells = { { 54, 34 }, { 54, 35 }, { 54, 36 } }
 local WestTankCells = { { 11, 28 }, { 12, 28 }, { 11, 29 } }
@@ -189,7 +209,7 @@ local function SpawnReinforcements(entries)
 			if cell == nil then
 				-- All preferred cells are blocked; skip instead of stacking a
 				-- vehicle on top of a building.
-				log("under-siege: no free cell for hard reinforcement " .. entry.kind)
+				AI.Log("under-siege: no free cell for hard reinforcement %s", entry.kind)
 			else
 				claimed[CellKey(cell)] = true
 				-- Angle.South/West/East are WAngle objects; the init table
@@ -210,7 +230,7 @@ local function SpawnReinforcements(entries)
 	return spawned
 end
 
-GDIHasBase = function()
+local function GDIHasBase()
 	return #AI.GetActorsByType(GDI, "fact") > 0
 end
 
@@ -237,8 +257,6 @@ end
 -- nothing important.
 local NUKE_FLIGHT_FALLBACK = 20
 
-GDINukesInFlight = 0
-GDIPendingNukes = {}
 local NukeImpactWatchers = {}
 
 local function PendingNukeCount()
@@ -255,7 +273,6 @@ local function ResolveOldestNuke()
 	for _, token in ipairs(GDIPendingNukes) do
 		if not token.resolved then
 			token.resolved = true
-			GDINukesInFlight = PendingNukeCount()
 			return true
 		end
 	end
@@ -322,21 +339,19 @@ local function OnNukeLaunched()
 
 	local token = { resolved = false }
 	table.insert(GDIPendingNukes, token)
-	GDINukesInFlight = PendingNukeCount()
 
 	Trigger.AfterDelay(DateTime.Seconds(NUKE_FLIGHT_FALLBACK), function()
 		if MissionFinished or token.resolved then
 			return
 		end
 		token.resolved = true
-		GDINukesInFlight = PendingNukeCount()
 		RetaliateToSuperweapon()
 	end)
 end
 
 -- --------------------------------------------------------------- unit handling
 
-RegisterGDIUnit = function(unit)
+local function RegisterGDIUnit(unit)
 	if not AI.IsLive(unit) or unit.Owner ~= GDI or unit.Type == "harv" then
 		return
 	end
@@ -350,7 +365,7 @@ end
 
 local GDIRegisteredBuildings = {}
 
-RegisterGDIBuilding = function(building)
+local function RegisterGDIBuilding(building)
 	if not AI.IsLive(building) or building.Owner ~= GDI or not building.HasProperty("StartBuildingRepairs") then
 		return
 	end
@@ -364,7 +379,7 @@ RegisterGDIBuilding = function(building)
 	RegisterSuperweaponWatcher(building)
 end
 
-StartGDIBaseDefense = function(attacker)
+local function StartGDIBaseDefense(attacker)
 	if not AI.IsLive(attacker) or MissionFinished then
 		return
 	end
@@ -549,7 +564,7 @@ end
 
 -- --------------------------------------------------------------- production
 
-StartGDIProduction = function()
+local function StartGDIProduction()
 	if GDIProductionStarted or MissionFinished then
 		return
 	end
@@ -606,7 +621,7 @@ end
 
 -- --------------------------------------------------------------- alert wave
 
-AlertGDI = function()
+local function AlertGDI()
 	if GDIAIAlerted or MissionFinished then
 		return
 	end
@@ -668,7 +683,7 @@ local function ClusterScore(actor, mobileOnly)
 	return score
 end
 
-FindAirstrikeTarget = function()
+local function FindAirstrikeTarget()
 	local best, bestScore
 
 	local function consider(actor, mobileOnly)
@@ -702,7 +717,7 @@ FindAirstrikeTarget = function()
 	return best and best.CenterPosition
 end
 
-Airstrike = function()
+local function Airstrike()
 	if MissionFinished then
 		return false
 	end

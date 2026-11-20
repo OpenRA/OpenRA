@@ -15,7 +15,17 @@
 -- The GDI base is static; its units keep their Guard stance (Defend in
 -- OpenRA). The only timed GDI threats are the two engineer transports and
 -- the Ion Cannon.
+--
+-- Shared with cloak-and-dagger.lua: DisableIonCannon, GDI, InitGDI,
+-- IsCloaked, IsLive, MissionFinished, Nod, NodStartingCash.
 local AI = CampaignAI
+
+local GDI_AI
+local ScheduleEngineers
+local SendEngineersAPC
+local SendEngineersChinook
+local StartIonCannon
+local FireIonCannon
 
 IsLive = function(actor)
 	return AI.IsLive(actor)
@@ -25,28 +35,28 @@ IsCloaked = function(actor)
 	return actor.HasProperty("IsCloaked") and actor.IsCloaked
 end
 
-StartingGDICash = 8000
+local StartingGDICash = 8000
 
 -- Original zzzz: TriggerTime 400 in 6 second units = 40:00, persistence 2
 -- repeats every 40:00. Original eng2/engs: 380/390 units = 38:00/39:00.
 -- Difficulty tuning: Hard brings both threats forward; Easy keeps the
 -- engineer transports one-shot.
-IonCannonFirst = { easy = 2400, normal = 2400, hard = 1800 }
-IonCannonInterval = { easy = 2400, normal = 2400, hard = 1800 }
-EngineerFirstAPC = { easy = 2280, normal = 2280, hard = 1560 }
-EngineerFirstChinook = { easy = 2340, normal = 2340, hard = 1620 }
-EngineerIntervalAPC = { easy = nil, normal = 2280, hard = 1560 }
-EngineerIntervalChinook = { easy = nil, normal = 2340, hard = 1620 }
+local IonCannonFirst = { easy = 2400, normal = 2400, hard = 1800 }
+local IonCannonInterval = { easy = 2400, normal = 2400, hard = 1800 }
+local EngineerFirstAPC = { easy = 2280, normal = 2280, hard = 1560 }
+local EngineerFirstChinook = { easy = 2340, normal = 2340, hard = 1620 }
+local EngineerIntervalAPC = { easy = nil, normal = 2280, hard = 1560 }
+local EngineerIntervalChinook = { easy = nil, normal = 2340, hard = 1620 }
 NodStartingCash = { easy = 6000, normal = 5000, hard = 4000 }
 
 GDI_AI = nil
-IonCannonOnline = false
-IonCannonDisabled = false
+local IonCannonOnline = false
+local IonCannonDisabled = false
 
 -- GDI's declared Edge is North. These are the two road entries that lead
 -- directly into the base and to the scripted Chinook landing waypoint.
-GDI_NORTH_ENTRY = CPos.New(8, 2)
-GDI_NORTH_EAST_ENTRY = CPos.New(45, 2)
+local GDI_NORTH_ENTRY = CPos.New(8, 2)
+local GDI_NORTH_EAST_ENTRY = CPos.New(45, 2)
 
 function InitGDI()
 	GDI.Cash = StartingGDICash
@@ -62,13 +72,13 @@ function InitGDI()
 	ScheduleEngineers()
 end
 
-function ScheduleEngineers()
+ScheduleEngineers = function()
 	local difficulty = Difficulty or "normal"
 	Trigger.AfterDelay(DateTime.Seconds(EngineerFirstAPC[difficulty]), SendEngineersAPC)
 	Trigger.AfterDelay(DateTime.Seconds(EngineerFirstChinook[difficulty]), SendEngineersChinook)
 end
 
-function SendEngineersAPC()
+SendEngineersAPC = function()
 	if MissionFinished or GDI.HasNoRequiredUnits() then return end
 
 	-- Original engapc: E6 x4 + APC, Move 9 -> 0 -> 5, Unload 5, Attack Base.
@@ -94,7 +104,7 @@ function SendEngineersAPC()
 	end
 end
 
-function SendEngineersChinook()
+SendEngineersChinook = function()
 	if MissionFinished or GDI.HasNoRequiredUnits() then return end
 
 	-- Original engchin: E6 x5 + TRAN, Move 7, Unload 7, Attack Base.
@@ -110,6 +120,17 @@ function SendEngineersChinook()
 					if not IsLive(unit) then return end
 					if unit.HasProperty("Stance") then unit.Stance = "AttackAnything" end
 					AI.OrderAttack(unit, GDI_AI)
+				end)
+			end)
+		end,
+		function(tran)
+			-- Give UnloadCargo time to finish before the transport leaves;
+			-- an exitPath would queue the move before the unload activity.
+			Trigger.AfterDelay(DateTime.Seconds(5), function()
+				if not IsLive(tran) then return end
+				tran.Move(GDI_NORTH_EAST_ENTRY)
+				Trigger.AfterDelay(DateTime.Seconds(20), function()
+					if IsLive(tran) then tran.Destroy() end
 				end)
 			end)
 		end)
@@ -129,11 +150,11 @@ function DisableIonCannon()
 	end
 end
 
-function StartIonCannon()
+StartIonCannon = function()
 	Trigger.AfterDelay(DateTime.Seconds(IonCannonFirst[Difficulty or "normal"]), FireIonCannon)
 end
 
-function FindIonCannonTarget()
+local function FindIonCannonTarget()
 	local eye = GDI_EYE
 	if not IsLive(eye) then return nil end
 
@@ -174,7 +195,7 @@ function FindIonCannonTarget()
 	return best
 end
 
-function FireIonCannon()
+FireIonCannon = function()
 	if MissionFinished or IonCannonDisabled then return end
 	if not IsLive(GDI_EYE) or GDI_EYE.Owner ~= GDI then
 		DisableIonCannon()

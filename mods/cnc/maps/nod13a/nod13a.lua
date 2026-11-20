@@ -10,22 +10,34 @@
 -- SCB13EA: the original victory and defeat triggers require the destruction
 -- of the opposing house. The briefing requests a Temple, but no original
 -- trigger makes building or preserving it a condition for victory.
-StartingCashBonus = { easy = 2000, normal = 1000, hard = 0 }
-GDIReinforcementPassengers = {}
-MissionFinished = false
-OutcomeCheckPending = false
+--
+-- Shared with nod13a-AI.lua: CheckArmorEscalation, GDI, GDISouth, GDIWest,
+-- MissionFinished, Nod, SetupAI, TrackGDIReinforcements.
 
-LandingZoneCells = {
+local StartingCashBonus = { easy = 2000, normal = 1000, hard = 0 }
+local GDIReinforcementPassengers = {}
+local OutcomeCheckPending = false
+
+-- Shared with nod13a-AI.lua.
+MissionFinished = false
+
+---@type integer
+local EliminateGDI
+---@type integer
+local BuildTemple
+
+local LandingZoneCells = {
 	CPos.New(55, 47), CPos.New(56, 46), CPos.New(55, 46),
 	CPos.New(54, 46), CPos.New(57, 45), CPos.New(56, 45), CPos.New(55, 45),
 }
 
-SendEmptyChinook = function(destination)
+local function SendEmptyChinook(destination)
 	if MissionFinished then return end
 	Reinforcements.ReinforceWithTransport(GDISouth, "tran.capture", nil,
 		{ CPos.New(61, 35), destination.Location })
 end
 
+-- Called from nod13a-AI.lua.
 TrackGDIReinforcements = function(passengers)
 	for _, passenger in ipairs(passengers) do
 		table.insert(GDIReinforcementPassengers, passenger)
@@ -33,7 +45,7 @@ TrackGDIReinforcements = function(passengers)
 end
 
 -- Empty aircraft are ignored by All Destr., but their passengers still count.
-HouseEliminated = function(player)
+local function HouseEliminated(player)
 	if not player.HasNoRequiredUnits() then
 		return false
 	end
@@ -58,6 +70,21 @@ HouseEliminated = function(player)
 	end
 
 	return true
+end
+
+local function CheckOutcome()
+	OutcomeCheckPending = false
+	if MissionFinished then
+		return
+	end
+
+	if DateTime.GameTime > DateTime.Seconds(2) and HouseEliminated(Nod) then
+		MissionFinished = true
+		Nod.MarkFailedObjective(EliminateGDI)
+	elseif HouseEliminated(GDI) and HouseEliminated(GDIWest) and HouseEliminated(GDISouth) then
+		MissionFinished = true
+		Nod.MarkCompletedObjective(EliminateGDI)
+	end
 end
 
 WorldLoaded = function()
@@ -88,21 +115,6 @@ WorldLoaded = function()
 	Trigger.AfterDelay(DateTime.Seconds(18), function() SendEmptyChinook(waypoint1) end)
 
 	SetupAI()
-end
-
-CheckOutcome = function()
-	OutcomeCheckPending = false
-	if MissionFinished then
-		return
-	end
-
-	if DateTime.GameTime > DateTime.Seconds(2) and HouseEliminated(Nod) then
-		MissionFinished = true
-		Nod.MarkFailedObjective(EliminateGDI)
-	elseif HouseEliminated(GDI) and HouseEliminated(GDIWest) and HouseEliminated(GDISouth) then
-		MissionFinished = true
-		Nod.MarkCompletedObjective(EliminateGDI)
-	end
 end
 
 Tick = function()

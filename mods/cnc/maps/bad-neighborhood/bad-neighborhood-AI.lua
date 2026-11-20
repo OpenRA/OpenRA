@@ -25,8 +25,36 @@
 -- Reusable helpers live in mods/cnc/scripts/campaign-ai.lua. The mission
 -- keeps its alert gating, scripted teams and Ion Cannon, but uses the shared
 -- garrison/attack pools, damage response and Orca lifecycle.
+--
+-- Shared with bad-neighborhood.lua: Nod, GDI, MissionFinished, AlertGDI,
+-- IsLive, SetupGDI, SendOrcas, UnlockIonCannon.
+
 local AI = CampaignAI
 local GDIHome
+local GDI_ECONOMY_OPTIONS
+local GDIHasBase
+local GDIAttackWavesStarted
+local CaptureNodStructure
+local IonCannonStrike
+local LaunchAssault
+local MaintenanceTick
+local OnGDIProduced
+local ProductionTick
+local ScheduleScriptedReinforcements
+local SendAPC
+local SendAPC1
+local SendAPC2
+local SendAutoWave
+local SendEngineers
+local SendPressureSquad
+local SpawnPatrol
+local SpawnTeam
+local StartGDIProduction
+local TryProduceInfantry
+local TryProduceUnit
+local TryProduceVehicle
+local TryStartIonCannon
+local WaveTick
 local GDI_AI = {
 	enemy = nil,
 	players = nil,
@@ -65,28 +93,28 @@ local function RegisterDamageResponse(actor)
 end
 
 -- Original GoodGuy credits: 20 * 100.
-StartingCash = 2000
+local StartingCash = 2000
 -- Original `prod` trigger fires after 30 seconds (5 x 6 s). The port keeps
 -- the longer 3-5 minute delay on purpose for pacing; the harder difficulties
 -- start slightly earlier so the base is awake sooner.
-ProductionStart = { easy = 300, normal = 240, hard = 180 }
-ProductionInterval = { easy = 30, normal = 22, hard = 15 }
-MaxGDIArmy = { easy = 12, normal = 18, hard = 24 }
-UnitReserve = { easy = 300, normal = 400, hard = 500 }
-RebuildReserve = { easy = 500, normal = 700, hard = 900 }
+local ProductionStart = { easy = 300, normal = 240, hard = 180 }
+local ProductionInterval = { easy = 30, normal = 22, hard = 15 }
+local MaxGDIArmy = { easy = 12, normal = 18, hard = 24 }
+local UnitReserve = { easy = 300, normal = 400, hard = 500 }
+local RebuildReserve = { easy = 500, normal = 700, hard = 900 }
 -- Home guard kept at the construction yard; the rest of the paid army is
 -- available for attack waves. PressureSquadSize is the number of surplus
 -- units sent with each paid wave.
-HomeGuardSize = { easy = 3, normal = 4, hard = 6 }
-PressureSquadSize = { easy = 2, normal = 3, hard = 4 }
+local HomeGuardSize = { easy = 3, normal = 4, hard = 6 }
+local PressureSquadSize = { easy = 2, normal = 3, hard = 4 }
 
-AlertFirstWave = { easy = 75, normal = 50, hard = 35 }
-AlertWaveInterval = { easy = 210, normal = 150, hard = 100 }
+local AlertFirstWave = { easy = 75, normal = 50, hard = 35 }
+local AlertWaveInterval = { easy = 210, normal = 150, hard = 100 }
 
 -- Original [Triggers] timetable: apc1 at 25, gdi1/orc1 at 45 and apc2 at 50
 -- minutes. That is far too long for a ported mission; the schedule starts
 -- when GDI is alerted instead and is compressed as documented in the port.
-AttackSchedule = {
+local AttackSchedule = {
 	easy = { apc1 = 300, engineers = 360, orcas = 420, apc2 = 600 },
 	normal = { apc1 = 240, engineers = 300, orcas = 330, apc2 = 480 },
 	hard = { apc1 = 180, engineers = 240, orcas = 270, apc2 = 360 },
@@ -95,17 +123,17 @@ AttackSchedule = {
 -- `xxxx` gives the Ion Cannon to GDI after 20 minutes (200 tenths of a
 -- minute), `ion1` does the same when the marked area is entered. The times
 -- are compressed as in the other ports.
-IonCannonUnlockTime = { easy = 900, normal = 720, hard = 600 }
-IonCannonFirstDelay = { easy = 150, normal = 120, hard = 90 }
-IonCannonInterval = { easy = 360, normal = 300, hard = 240 }
+local IonCannonUnlockTime = { easy = 900, normal = 720, hard = 600 }
+local IonCannonFirstDelay = { easy = 150, normal = 120, hard = 90 }
+local IonCannonInterval = { easy = 360, normal = 300, hard = 240 }
 
-UnitCosts = {
+local UnitCosts = {
 	e1 = 100, e2 = 160, e3 = 300,
 	jeep = 400, mtnk = 900, apc = 600, msam = 900, htnk = 1800,
 	orca = 1200, harv = 1100,
 }
 
-UnitPrerequisites = {
+local UnitPrerequisites = {
 	e1 = { "barracks" }, e2 = { "anyhq", "~techlevel.medium" }, e3 = { "barracks" },
 	jeep = { "weap" }, mtnk = { "anyhq", "~techlevel.medium" },
 	apc = { "pyle" }, msam = { "anyhq", "~techlevel.medium" },
@@ -116,15 +144,15 @@ UnitPrerequisites = {
 
 -- Route 4/5/8/9 runs from the south gate through the village, 4/5/16/6
 -- heads west towards the Nod base and 10/11 stays in the north-west.
-VillageRoute = { waypoint4, waypoint5, waypoint8, waypoint9 }
-WestRoute = { waypoint4, waypoint5, waypoint16, waypoint6 }
-ShortRoute = { waypoint4, waypoint5 }
-NorthRoute = { waypoint10, waypoint11 }
-Routes = { VillageRoute, WestRoute, ShortRoute, NorthRoute }
+local VillageRoute = { waypoint4, waypoint5, waypoint8, waypoint9 }
+local WestRoute = { waypoint4, waypoint5, waypoint16, waypoint6 }
+local ShortRoute = { waypoint4, waypoint5 }
+local NorthRoute = { waypoint10, waypoint11 }
+local Routes = { VillageRoute, WestRoute, ShortRoute, NorthRoute }
 
 -- Original `auto1`..`auto7` attack teams, in their original order and with
 -- their original waypoint routes.
-AutoWaves = {
+local AutoWaves = {
 	{ units = { "e1", "e1", "e2", "e2" }, route = VillageRoute },
 	{ units = { "e3", "e3", "mtnk" }, route = WestRoute },
 	{ units = { "htnk" }, route = VillageRoute },
@@ -141,7 +169,7 @@ AutoWaves = {
 -- The shared site check knows the CNC footprints. The owner is set in
 -- SetupGDI so friendly units that block a rebuild can be moved out of the
 -- footprint instead of blocking it forever.
-GDI_SITE_OPTIONS = { owner = nil }
+local GDI_SITE_OPTIONS = { owner = nil }
 GDI_ECONOMY_OPTIONS = {
 	harvestersPerRefinery = 1,
 	strainedFunds = 1500,
@@ -151,7 +179,7 @@ GDI_ECONOMY_OPTIONS = {
 -- Original [Base] layout. `eye` is deliberately absent: the original `delx`
 -- trigger disables the Ion Cannon permanently when the Advanced
 -- Communications Center is destroyed, so GDI must not rebuild it.
-GDIRebuildPlan = {
+local GDIRebuildPlan = {
 	{ "nuk2", 48, 12 }, { "nuk2", 49, 9 }, { "nuk2", 47, 9 }, { "nuk2", 45, 9 },
 	{ "proc", 42, 11 }, { "proc", 45, 12 },
 	{ "weap", 50, 14 }, { "pyle", 55, 14 },
@@ -163,7 +191,7 @@ GDIRebuildPlan = {
 
 -- Shared rebuild configuration. Optional silos/towers come from the same
 -- [Base] plan and are only rebuilt while the economy is healthy.
-GDI_REBUILD_OPTIONS = {
+local GDI_REBUILD_OPTIONS = {
 	plan = GDIRebuildPlan,
 	targets = { proc = 2, weap = 1, pyle = 1, hpad = 2 },
 	reserve = function() return RebuildReserve[Difficulty or "normal"] end,
@@ -183,13 +211,15 @@ GDI_REBUILD_OPTIONS = {
 	end,
 }
 
-GDIProductionStarted = false
+local GDIProductionStarted = false
 GDIAttackWavesStarted = false
-GDIIonCannonUnlocked = false
-IonCannonStrikesStarted = false
-IonCannonObjectiveAdded = false
-NextWaveIndex = 0
-NextProduction = "vehicle"
+local GDIIonCannonUnlocked = false
+local IonCannonStrikesStarted = false
+local IonCannonObjectiveAdded = false
+local NextWaveIndex = 0
+local NextProduction = "vehicle"
+---@type integer?
+local StopIonCannon
 -- Global (the mission script uses it too). Same semantics as the shared
 -- helper: an actor must also be in the world, so cargo inside a transport is
 -- not treated as a live unit.
@@ -207,7 +237,7 @@ end
 
 -- The named actor globals keep pointing at the original, possibly destroyed
 -- building. Production and economy always resolve a live building instead.
-LocalBuilding = function(kind)
+local function LocalBuilding(kind)
 	if GDIHome ~= nil then
 		return AI.LocalBuilding(GDIHome, kind)
 	end
@@ -219,7 +249,7 @@ LocalBuilding = function(kind)
 	return nil
 end
 
-CellsOf = function(waypoints)
+local function CellsOf(waypoints)
 	local cells = {}
 	for i = 1, #waypoints do
 		cells[i] = waypoints[i].Location
@@ -227,11 +257,11 @@ CellsOf = function(waypoints)
 	return cells
 end
 
-GetCombatUnits = function()
+local function GetCombatUnits()
 	return AI.GetCombatUnits(GDIHome, GDI_AI)
 end
 
-Queue = function(factory, kind, player)
+local function Queue(factory, kind, player)
 	return AI.QueueUnit(factory, kind, player)
 end
 
@@ -452,11 +482,11 @@ end
 
 -- --------------------------------------------------------------- economy
 
-RestartIdleHarvesters = function()
+local function RestartIdleHarvesters()
 	AI.MaintainHarvesters(GDIHome, GDI_ECONOMY_OPTIONS)
 end
 
-ReplaceHarvester = function()
+local function ReplaceHarvester()
 	return AI.ReplaceHarvester(GDIHome, {
 		harvesterCost = UnitCosts.harv,
 		reserve = function() return UnitReserve[Difficulty or "normal"] end,
@@ -464,7 +494,7 @@ ReplaceHarvester = function()
 	})
 end
 
-RebuildOneBuilding = function()
+local function RebuildOneBuilding()
 	AI.MaintainBase(GDIHome, GDI_REBUILD_OPTIONS)
 end
 
@@ -872,9 +902,9 @@ IonCannonStrike = function()
 	Trigger.AfterDelay(DateTime.Seconds(IonCannonInterval[Difficulty or "normal"]), IonCannonStrike)
 end
 
--- Harness/diagnostic hook. Mirrors nod13c's EconomyDebug: reports the shared
--- pool state without exposing the internal base table to gameplay code.
-function GDIAIDebug()
+-- Diagnostic hook. Mirrors nod13c's EconomyDebug: reports the shared pool
+-- state without exposing the internal base table to gameplay code.
+GDI_AI.debugState = function()
 	if GDIHome == nil then
 		return { reserve = 0, produced = 0, defenderReserve = 0, allOut = false }
 	end

@@ -5,11 +5,22 @@
    as published by the Free Software Foundation, either version 3 of
    the License, or (at your option) any later version. For more
    information, see COPYING.
+
+   Shared with under-siege-AI.lua: GDI, InitGDI, MissionFinished, Nod.
 ]]
 
 local AI = CampaignAI
 
 MissionFinished = false
+
+---@type boolean
+local ChurchCrateSpawned = false
+---@type integer?
+local DestroyGDI
+---@type player
+local Neutral
+local CheckObjectives
+local SetupChurchCrate
 
 WorldLoaded = function()
 	Nod = Player.GetPlayer("Nod")
@@ -26,9 +37,11 @@ WorldLoaded = function()
 
 	DestroyGDI = AddPrimaryObjective(Nod, "destroy-all-gdi")
 
+	-- The stealth tank stays on HoldFire so it does not reveal itself by
+	-- auto-attacking; every other Nod unit holds its position on Defend.
 	Utils.Do(Nod.GetGroundAttackers(), function(unit)
 		if unit.HasProperty("Stance") then
-			unit.Stance = "Defend"
+			unit.Stance = unit.Type == "stnk" and "HoldFire" or "Defend"
 		end
 	end)
 
