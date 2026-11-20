@@ -81,6 +81,12 @@ E2:
 		Weapon: GrenadierExplode
 		EmptyWeapon: GrenadierExplode
 		Chance: 50
+		DeathTypes: DefaultDeath, BulletDeath, RippedApartDeath, SmallExplosionDeath, ExplosionDeath, FireDeath, TiberiumDeath
+	FireWarheadsOnDeath@CRUSH:
+		Weapon: GrenadierCrushExplode
+		EmptyWeapon: GrenadierCrushExplode
+		Chance: 100
+		DeathTypes: CrushDeath
 
 E3:
 	Inherits: ^Soldier
@@ -213,6 +219,11 @@ E5:
 	-DamagedByTerrain:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
+	FireWarheadsOnDeath@CRUSH:
+		Weapon: ChemWarriorCrushExplode
+		EmptyWeapon: ChemWarriorCrushExplode
+		Chance: 100
+		DeathTypes: CrushDeath
 
 E6:
 	Inherits: ^Soldier

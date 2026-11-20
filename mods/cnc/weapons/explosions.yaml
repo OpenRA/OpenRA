@@ -113,6 +113,25 @@ GrenadierExplode:
 	Warhead@2Eff: CreateEffect
 		ImpactSounds: xplosml2.aud
 
+GrenadierCrushExplode:
+	Inherits: ^DamagingExplosionHE
+	Warhead@1Dam: SpreadDamage
+		Spread: 384
+		Damage: 3000
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Eff: CreateEffect
+		ImpactSounds: xplosml2.aud
+
+ChemWarriorCrushExplode:
+	Inherits: ^DamagingExplosionHE
+	Warhead@1Dam: SpreadDamage
+		Spread: 512
+		Damage: 8000
+		DamageTypes: Prone50Percent, TriggerProne, TiberiumDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: chemball
+		ImpactSounds: xplos.aud
+
 BuildingExplode:
 	Warhead@1Eff: CreateEffect
 		Explosions: building, building_napalm, med_frag, poof, small_building
