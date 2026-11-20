@@ -678,13 +678,13 @@ Actors:
 		Location: 22,26
 		Owner: GDI
 	Actor204: hpad
-		Location: 18,59
+		Location: 18,60
 		Owner: GDIWest
 	Actor205: hpad
-		Location: 20,59
+		Location: 20,60
 		Owner: GDIWest
 	Actor206: hpad
-		Location: 22,59
+		Location: 22,60
 		Owner: GDIWest
 	Actor207: fact
 		Location: 43,13
@@ -703,9 +703,6 @@ Actors:
 		Owner: GDI
 	Actor212: nuk2
 		Location: 34,2
-		Owner: GDI
-	Actor213: nuk2
-		Location: 46,13
 		Owner: GDI
 	Actor214: weap
 		Location: 31,3
@@ -737,7 +734,7 @@ Actors:
 	Actor223: atwr
 		Location: 52,15
 		Owner: GDI
-	Actor224: nuke
+	Actor224: nuk2
 		Location: 53,18
 		Owner: GDI
 	GDIEYE: eye
@@ -955,7 +952,7 @@ Actors:
 		Owner: GDI
 		Facing: 512
 	Actor296: htnk
-		Location: 33,12
+		Location: 32,12
 		Owner: GDI
 		Facing: 512
 	Actor297: htnk

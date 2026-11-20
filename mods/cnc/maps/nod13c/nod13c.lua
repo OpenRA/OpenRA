@@ -20,29 +20,45 @@
 -- (GDINorthHQ): destroying or capturing it stops them permanently. The
 -- south-western EYE controls both the Ion Cannon and the western relief
 -- force; destroying or capturing it stops both.
-StartingCashBonus = { easy = 2000, normal = 1000, hard = 0 }
-MissionFinished = false
-OutcomeCheckPending = false
-SecondMCVSent = false
-MCVFallbackEnabled = true
-MCVInFlight = false
-MCVResends = 0
-MaxMCVResends = 2
-AirstrikeStopped = false
-IonCannonStopped = false
-WestReinforcementsStopped = false
+--
+-- Shared with nod13c-AI.lua: AirstrikeStopped, GDI, GDISouth, GDIWest,
+-- HouseEliminated, IonCannonStopped, IsStartingLand, MissionFinished,
+-- MultiRefineryEnabled, Nod, SetupAI, WestReinforcementsStopped.
+
+local StartingCashBonus = { easy = 2000, normal = 1000, hard = 0 }
+local OutcomeCheckPending = false
+local SecondMCVSent = false
+local MCVFallbackEnabled = true
+local MCVInFlight = false
+local MCVResends = 0
+local MaxMCVResends = 2
 
 -- Original times, converted from tenths of a minute: the empty GDI
 -- transport lands at 0.1 minutes (6 s), the Nod commando and its transport
 -- arrive at 0.8 minutes (48 s), the second MCV at 20 minutes (1200 s).
-FirstTransportDelay = 6
-CommandoDelay = 48
-SecondMCVDelay = { easy = 1440, normal = 1200, hard = 1020 }
-MCVRetryDelay = 90
+local FirstTransportDelay = 6
+local CommandoDelay = 48
+local SecondMCVDelay = { easy = 1440, normal = 1200, hard = 1020 }
+local MCVRetryDelay = 90
+
+---@type integer
+local EliminateGDI
+---@type integer
+local BuildTemple
+---@type integer
+local StopAirstrikesObjective
+---@type integer
+local StopEyeObjective
+
+-- Shared with nod13c-AI.lua.
+MissionFinished = false
+AirstrikeStopped = false
+IonCannonStopped = false
+WestReinforcementsStopped = false
 
 -- dely: entering this western strip cancels the early MCV that the
 -- destroyed central GDI outpost HQ would otherwise provide.
-DelyCells = {
+local DelyCells = {
 	CPos.New(3, 30), CPos.New(3, 31), CPos.New(3, 32), CPos.New(3, 33),
 	CPos.New(3, 34), CPos.New(3, 35), CPos.New(3, 36), CPos.New(3, 37),
 	CPos.New(3, 38), CPos.New(3, 39), CPos.New(3, 40),
@@ -153,7 +169,7 @@ end
 
 -- delx: the northern base's Communications Center feeds the A10 strikes.
 -- Destroying or capturing it stops them for the rest of the mission.
-function StopAirstrikes()
+local function StopAirstrikes()
 	if AirstrikeStopped then return end
 	AirstrikeStopped = true
 	Media.DisplayMessageToPlayer(Nod, UserInterface.GetFluentMessage("airstrikes-stopped"))
@@ -162,7 +178,7 @@ end
 
 -- delz + west relief relay: the south-western EYE controls both the Ion
 -- Cannon and the western base's relief force. Losing it stops both for good.
-function StopEyePowers()
+local function StopEyePowers()
 	if IonCannonStopped and WestReinforcementsStopped then return end
 	IonCannonStopped = true
 	WestReinforcementsStopped = true
@@ -259,7 +275,7 @@ WorldLoaded = function()
 	SetupAI()
 end
 
-CheckOutcome = function()
+local function CheckOutcome()
 	OutcomeCheckPending = false
 	if MissionFinished then
 		return

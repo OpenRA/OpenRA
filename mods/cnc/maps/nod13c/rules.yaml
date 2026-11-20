@@ -19,7 +19,6 @@ World:
 		Default: normal
 	MapBuildRadius:
 		BuildRadiusCheckboxEnabled: False
-	-LegacyBridgeLayer:
 
 Player:
 	EnemyWatcher:

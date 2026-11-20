@@ -89,7 +89,7 @@ end
 -- Actor wrappers are not guaranteed to keep Lua table identity across
 -- callbacks. Use the stable ActorID when the engine exposes it, and fall back
 -- to the table on older engine DLLs.
-function EconomyActorKey(actor)
+local function EconomyActorKey(actor)
 	if actor == nil then return nil end
 	if actor.HasProperty("ActorID") then return actor.ActorID end
 	return actor
