@@ -20,6 +20,32 @@
 local AI = CampaignAI
 local GDIHome
 
+-- Shared with deceit.lua: BaseTakenOver, EchnTransport, EngineersDisabled,
+-- GDI, GDIAdvComCenter, GDIAmbushSent, GDICYard, GDIIonCannonUnlocked, IsLive,
+-- IsNodPlayer, MissionFinished, Neutral, NextAutoWaveTime, Nod, NodFact,
+-- SignalRelayActive, SignalRelayDelay, SignalRelayUntil, TransportDropRange,
+-- AddIonCannonObjective, PrepareTowerReveal, SendAgentJeep, SendAmbush,
+-- SendAtk2, SendChin, SendEchnChinook, SendEngineerTeam, SendGDI2, SendGDI4,
+-- SignalCapturedChinook, SetupGDI, StartGDIAfterBaseFound, UnlockIonCannon.
+
+local GDIHunting
+local GDIHasBase
+local IonCannonStrike
+local MaintenanceTick
+local HuntTick
+local OnGDIProduced
+local ProductionTick
+local SendAutoWave
+local SendGDI1
+local SendPressureSquad
+local SpawnTeam
+local StartGDIProduction
+local TryProduceInfantry
+local TryProduceUnit
+local TryProduceVehicle
+local TryStartIonCannon
+local SetupAutoWaves
+
 -- Defined in deceit.lua; keep the engine default if this file is loaded alone.
 TransportDropRange = TransportDropRange or 3
 SignalRelayUntil = SignalRelayUntil or 0
@@ -64,7 +90,9 @@ local StartingCash = 9000
 -- Original `prod` trigger fires after 15 * 6 seconds (90 s).
 local ProductionStart = { easy = 90, normal = 75, hard = 60 }
 local ProductionInterval = { easy = 30, normal = 22, hard = 15 }
-local MaxGDIArmy = { easy = 14, normal = 20, hard = 26 }
+-- Additional units GDI may build over the starting army. The map already
+-- starts with 70 ground units, so keep this as a tight replacement cap.
+local MaxGDIArmy = { easy = 6, normal = 10, hard = 14 }
 local UnitReserve = { easy = 300, normal = 400, hard = 500 }
 local RebuildReserve = { easy = 500, normal = 700, hard = 900 }
 local HomeGuardSize = { easy = 3, normal = 4, hard = 6 }
@@ -72,14 +100,16 @@ local HomeGuardSize = { easy = 3, normal = 4, hard = 6 }
 -- The original `auto` Autocreate trigger fires whenever something is
 -- destroyed. The original timed `gdi1` attack appears at 250 * 6 s =
 -- 25 minutes game time, but the port starts its timers after base discovery
--- and already has autocreate pressure. Use a shorter, readable delay.
+-- and already has autocreate pressure. Use a shorter, readable delay; the
+-- first attack was pushed back another eight minutes after playtesting.
 local AutoWaveCooldown = { easy = 90, normal = 60, hard = 45 }
-local GDI1Time = { easy = 720, normal = 600, hard = 480 }
+local GDI1Time = { easy = 1200, normal = 1080, hard = 960 }
 
 -- After the base is discovered the placed army is committed through the
 -- shared campaign-ai pool instead of sitting at home forever. The home guard
--- stays behind; all surplus units are fed into assaults and pressure waves.
-local AssaultSize = { easy = 8, normal = 12, hard = 16 }
+-- stays behind; the first pooled assault is kept small, the rest follows in
+-- pressure waves.
+local AssaultSize = { easy = 4, normal = 6, hard = 8 }
 local PressureSquadSize = { easy = 3, normal = 5, hard = 7 }
 local AlertFirstWave = { easy = 45, normal = 30, hard = 20 }
 local AlertWaveInterval = { easy = 90, normal = 60, hard = 45 }
@@ -107,11 +137,11 @@ local UnitPrerequisites = {
 
 -- The GDI base sits in the north-east. These routes lead from the base gate
 -- towards the south-west, where the cut-off Nod base is.
-SouthRoute = { waypoint13, waypoint0, waypoint2, waypoint4, waypoint21 }
-CenterRoute = { waypoint3, waypoint17, waypoint11, waypoint12, waypoint4 }
+local SouthRoute = { waypoint13, waypoint0, waypoint2, waypoint4, waypoint21 }
+local CenterRoute = { waypoint3, waypoint17, waypoint11, waypoint12, waypoint4 }
 -- Waypoint 6 (60,61) is a river tile; the shared orders filter it out anyway,
 -- but the route reads better without it.
-EastRoute = { waypoint5, waypoint2, waypoint4 }
+local EastRoute = { waypoint5, waypoint2, waypoint4 }
 local Routes = { SouthRoute, CenterRoute, EastRoute }
 
 -- Commit the units closest to the Nod base first, so an assault does not start
@@ -142,7 +172,7 @@ local AutoWaves = {
 -- The 8 [Base] ATWRs are pre-placed in map.yaml; the seven [Base] GTWR nodes
 -- are omitted because the map already has 18 GTWRs at its outposts.
 -- Positions decoded from the packed values (`x = byte 1`, `y = byte 3`).
-GDIRebuildPlan = {
+local GDIRebuildPlan = {
 	{ "fact", 59, 3 },
 	{ "nuk2", 56, 3 }, { "nuk2", 48, 9 },
 	-- The four [Base] power plants are pre-placed; keep them in the plan so
@@ -161,7 +191,7 @@ GDIRebuildPlan = {
 -- [Base] GTWR nodes stay omitted because the map already has 18 GTWRs at its
 -- outposts. Only towers that actually existed at mission start are rebuilt
 -- when destroyed.
-GDITowerPlan = {}
+local GDITowerPlan = {}
 
 local GDI_SITE_OPTIONS = { owner = nil }
 local GDI_ECONOMY_OPTIONS = {
@@ -191,27 +221,29 @@ local GDI_REBUILD_OPTIONS = {
 -- Land bounds shared by the region scan and the safe-entry search.
 local GDI_LAND = { minX = 2, maxX = 61, minY = 2, maxY = 61 }
 
-GDIProductionStarted = false
-GDIAttackWavesStarted = false
-GDIBaseStarted = false
-GDIWaveLoopStarted = false
+local GDIProductionStarted = false
+local GDIAttackWavesStarted = false
+local GDIBaseStarted = false
+local GDIWaveLoopStarted = false
 -- GDIIonCannonUnlocked is declared in deceit.lua; the mission script owns it.
-IonCannonStrikesStarted = false
+local IonCannonStrikesStarted = false
 GDIHunting = false
+-- Cross-file state initialized here; deceit.lua also reads it.
 EngineersDisabled = false
-InitialGDIBuildings = 0
-InitialGDIArmy = 0
-AgentJeepSent = false
-ChinSent = false
-GDI2Sent = false
-Atk2Sent = false
-EchnSent = false
-NextWaveIndex = 0
+local InitialGDIBuildings = 0
+local InitialGDIArmy = 0
+local AgentJeepSent = false
+local ChinSent = false
+local GDI2Sent = false
+local Atk2Sent = false
+local EchnSent = false
+local NextWaveIndex = 0
+-- Cross-file state initialized here; deceit.lua also updates it.
 NextAutoWaveTime = 0
-AutoWaveRegistered = {}
-NextProduction = "vehicle"
+local AutoWaveRegistered = {}
+local NextProduction = "vehicle"
 -- Cached safe entry cell for the `gdi1` attack (waypoint 6 is a river tile).
-GDI1Entry = nil
+local GDI1Entry = nil
 
 -- Global (the mission script uses it too).
 IsLive = function(actor)
@@ -222,7 +254,7 @@ GDIHasBase = function()
 	return IsLive(GDICYard) and GDICYard.Owner == GDI
 end
 
-LocalBuilding = function(kind)
+local function LocalBuilding(kind)
 	if GDIHome ~= nil then
 		return AI.LocalBuilding(GDIHome, kind)
 	end
@@ -234,11 +266,11 @@ LocalBuilding = function(kind)
 	return nil
 end
 
-GetCombatUnits = function()
+local function GetCombatUnits()
 	return AI.GetCombatUnits(GDIHome, GDI_AI)
 end
 
-Queue = function(factory, kind, player)
+local function Queue(factory, kind, player)
 	return AI.QueueUnit(factory, kind, player)
 end
 
@@ -469,11 +501,11 @@ end
 
 -- --------------------------------------------------------------- economy
 
-RestartIdleHarvesters = function()
+local function RestartIdleHarvesters()
 	AI.MaintainHarvesters(GDIHome, GDI_ECONOMY_OPTIONS)
 end
 
-ReplaceHarvester = function()
+local function ReplaceHarvester()
 	return AI.ReplaceHarvester(GDIHome, {
 		harvesterCost = UnitCosts.harv,
 		reserve = function() return UnitReserve[Difficulty or "normal"] end,
@@ -481,7 +513,7 @@ ReplaceHarvester = function()
 	})
 end
 
-RebuildOneBuilding = function()
+local function RebuildOneBuilding()
 	AI.MaintainBase(GDIHome, GDI_REBUILD_OPTIONS)
 end
 
@@ -553,7 +585,7 @@ end
 -- surplus placed/produced units are committed through the pool. The original
 -- Autocreate teams keep their shape; paid pool units fill them first and only
 -- the missing part is spawned for free.
-LaunchAssault = function()
+local function LaunchAssault()
 	if MissionFinished or not GDIHasBase() then
 		return
 	end
@@ -566,7 +598,7 @@ LaunchAssault = function()
 	AI.SendTeam(units, GDI, {}, true, true, GDI_AI)
 end
 
-WaveTick = function()
+local function WaveTick()
 	if MissionFinished or GDI.HasNoRequiredUnits() or not GDIHasBase() then
 		return
 	end
@@ -654,14 +686,15 @@ SpawnTeam = function(units, route, baseAttack)
 end
 
 -- Original `gdi1`: `gad2` (2 MTNK + 1 MSAM) enters at waypoint 6 and moves
--- via 13, 0, 2, 4 to waypoint 21 near the Nod base. The port uses 12/10/8
--- minutes after base discovery instead of the original 25 minutes.
+-- via 13, 0, 2, 4 to waypoint 21 near the Nod base. The port uses 20/18/16
+-- minutes after base discovery instead of the original 25 minutes; the first
+-- attack was delayed by another eight minutes after playtesting.
 --
 -- Waypoint 6 (60,61) is a river tile on the imported map. Units spawned
 -- there have no passable land region, so CA.SendTeam's SameLand filter drops
 -- every route waypoint and the tanks idle in the bottom-right corner. Enter
 -- at the nearest passable cell inside the land-region bounds from SetupGDI.
-GDI1EntryCell = function()
+local function GDI1EntryCell()
 	if GDI1Entry ~= nil then
 		return GDI1Entry
 	end
@@ -786,7 +819,7 @@ end
 -- walking to the Nod base and capturing the nearest capturable structure.
 -- Pick the target when the engineer is actually in the world and retry on
 -- idle, because the first target may be destroyed or captured en route.
-CaptureNearestNodStructure = function(engineer)
+local function CaptureNearestNodStructure(engineer)
 	if MissionFinished or not IsLive(engineer) or not engineer.HasProperty("Capture")
 		or not engineer.HasProperty("Location") then
 		return
@@ -812,7 +845,7 @@ CaptureNearestNodStructure = function(engineer)
 	end
 end
 
-ChinookTeam = function(units, entry, unload, attackBase, attackUnits)
+local function ChinookTeam(units, entry, unload, attackBase, attackUnits)
 	if MissionFinished or not GDIHasBase() then
 		return
 	end
@@ -1084,7 +1117,9 @@ end
 
 -- --------------------------------------------------------------- reports
 
-GDIAIDebug = function()
+-- Diagnostic hook. Mirrors bad-neighborhood's GDI_AI.debugState: reports the
+-- shared pool state without exposing the internal base table to gameplay code.
+GDI_AI.debugState = function()
 	AI.PruneReserve(GDIHome)
 	return {
 		state = AI.ClassifyEconomy(GDIHome, GDI_ECONOMY_OPTIONS).state,

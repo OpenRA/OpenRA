@@ -17,12 +17,16 @@
 -- The original `seek` trigger (one HTNK ordered to attack the player) is
 -- deliberately not ported: it removed the stealth opening. The HTNK remains
 -- as a normal guard on the map.
+--
+-- Shared with eviction-notice-AI.lua: AlertGDI, GDI, GDI_AI, InitAi,
+-- IonCannonOnline, IsLive, MissionFinished, MissionStartTick, Nod,
+-- OnGDIProduced, RegisterGDIActor.
 local AI = CampaignAI
 
-RunForHelpCivs = { Actor109, Actor110 }
+local RunForHelpCivs = { Actor109, Actor110 }
 
 -- Original `bomb` cells (astk2, one 3-plane A10 strike).
-BombCells = {
+local BombCells = {
 	CPos.New(17, 8), CPos.New(16, 8),
 	CPos.New(17, 7), CPos.New(16, 7),
 	CPos.New(17, 6), CPos.New(16, 6),
@@ -31,14 +35,14 @@ BombCells = {
 }
 
 -- Original `boo2` cells (grnf1, two HTNKs from WP5).
-InnerBaseCells = {
+local InnerBaseCells = {
 	CPos.New(7, 5),
 	CPos.New(7, 6), CPos.New(8, 6), CPos.New(9, 6),
 	CPos.New(7, 7), CPos.New(8, 7), CPos.New(9, 7),
 }
 
 -- Original `civv` cells: a civilian reaching any of these warns GDI.
-CivsHelpCells = {
+local CivsHelpCells = {
 	CPos.New(20, 10), CPos.New(19, 10), CPos.New(18, 10),
 	CPos.New(20, 9), CPos.New(19, 9), CPos.New(18, 9),
 	CPos.New(20, 8), CPos.New(19, 8), CPos.New(18, 8),
@@ -46,21 +50,42 @@ CivsHelpCells = {
 	CPos.New(19, 6), CPos.New(18, 6),
 }
 
-CivsRunning = false
-CivsReachedGDI = false
-BombCellTriggered = false
-InnerBaseCellTriggered = false
-HQAirstrikeSent = false
+-- Cross-file state stays global (see header).
 IonCannonOnline = false
 MissionFinished = false
 MissionStartTick = 0
-NodDamageRegistered = {}
 
-GDIAirstrike3 = nil
-GDIAirstrike1 = nil
+---@type boolean
+local CivsRunning = false
+---@type boolean
+local CivsReachedGDI = false
+---@type boolean
+local BombCellTriggered = false
+---@type boolean
+local InnerBaseCellTriggered = false
+---@type boolean
+local HQAirstrikeSent = false
+---@type table<actor, boolean>
+local NodDamageRegistered = {}
 
-function RegisterNodActor(actor)
+---@type actor?
+local GDIAirstrike3
+---@type actor?
+local GDIAirstrike1
+---@type integer?
+local EliminateGDI
+---@type player
+local Neutral
+---@type player
+local Civilians
+---@type actor?
+local Flare
+local SendGDIHelpTeam
+
+local function RegisterNodActor(actor)
 	if not IsLive(actor) or actor.Owner ~= Nod then return end
+	-- Aircraft husks inherit without ScriptTriggers; they cannot carry triggers.
+	if actor.Type:match("%.husk$") then return end
 	if not actor.HasProperty("Health") then return end
 	if NodDamageRegistered[actor] then return end
 	NodDamageRegistered[actor] = true
@@ -77,13 +102,13 @@ function RegisterNodActor(actor)
 	end)
 end
 
-function SendAirstrike(proxy, target)
+local function SendAirstrike(proxy, target)
 	if proxy == nil or not IsLive(proxy) or proxy.Owner ~= GDI then return end
 	if not proxy.HasProperty("TargetAirstrike") then return end
 	proxy.TargetAirstrike(target, Angle.SouthEast)
 end
 
-function RunForHelp(discovered, discoverer)
+local function RunForHelp(discovered, discoverer)
 	if CivsRunning or MissionFinished then return end
 	if discoverer ~= Nod then return end
 	CivsRunning = true
@@ -119,7 +144,7 @@ function RunForHelp(discovered, discoverer)
 	end)
 end
 
-function SendGDIHelpTeam()
+SendGDIHelpTeam = function()
 	if MissionFinished then return end
 	Reinforcements.Reinforce(GDI, { "mtnk", "mtnk", "msam" }, { waypoint3.Location }, 10, function(unit)
 		if not IsLive(unit) then return end
@@ -129,7 +154,7 @@ function SendGDIHelpTeam()
 	end)
 end
 
-function OnBombCellEntered(actor, id)
+local function OnBombCellEntered(actor, id)
 	if BombCellTriggered or MissionFinished then return end
 	if not IsLive(actor) or actor.Owner ~= Nod then return end
 	BombCellTriggered = true
@@ -138,7 +163,7 @@ function OnBombCellEntered(actor, id)
 	SendAirstrike(GDIAirstrike3, actor.CenterPosition)
 end
 
-function OnInnerBaseCellEntered(actor, id)
+local function OnInnerBaseCellEntered(actor, id)
 	if InnerBaseCellTriggered or MissionFinished then return end
 	if not IsLive(actor) or actor.Owner ~= Nod then return end
 	InnerBaseCellTriggered = true
@@ -155,7 +180,7 @@ function OnInnerBaseCellEntered(actor, id)
 	end)
 end
 
-function HQCaptured(self, captor, oldOwner, newOwner)
+local function HQCaptured(self, captor, oldOwner, newOwner)
 	if HQAirstrikeSent or MissionFinished then return end
 	if newOwner ~= Nod then return end
 	HQAirstrikeSent = true
@@ -163,14 +188,14 @@ function HQCaptured(self, captor, oldOwner, newOwner)
 	SendAirstrike(GDIAirstrike1, self.CenterPosition)
 end
 
-function EyeDisabled()
+local function EyeDisabled()
 	if IonCannonOnline then
 		IonCannonOnline = false
 		Media.DisplayMessageToPlayer(Nod, UserInterface.GetFluentMessage("ion-cannon-destroyed"))
 	end
 end
 
-function CheckObjectives()
+local function CheckObjectives()
 	if MissionFinished then return end
 
 	-- Catch Nod buildings/units that were created after WorldLoaded.
