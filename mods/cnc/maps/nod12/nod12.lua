@@ -9,12 +9,17 @@
 
 -- Port of the original Nod mission 12 ("Secure Ion Cannon Security Codes",
 -- SCB12EA.INI).
+--
+-- Shared with nod12-AI.lua: AirstrikeStopped, EnableIonCannon, GDI,
+-- GDIHarvestingStarted, GDIAirstrikeProxy, IonCannonOnline, IsLive, Nod,
+-- NodHasConstructionYard, SendBridgeResponse, SetupAI, StartGDIHarvesting,
+-- WavesStopped.
 
-StartingCashBonus = { easy = 2000, normal = 1000, hard = 0 }
+local StartingCashBonus = { easy = 2000, normal = 1000, hard = 0 }
 
 -- Original [CellTriggers] for ion1, the two areas that hand the Ion Cannon
 -- to GDI.
-IonCannonCells = {
+local IonCannonCells = {
 	CPos.New(44, 24), CPos.New(45, 24), CPos.New(46, 24),
 	CPos.New(45, 23), CPos.New(46, 23), CPos.New(47, 23),
 	CPos.New(46, 22), CPos.New(47, 22), CPos.New(48, 22),
@@ -23,7 +28,14 @@ IonCannonCells = {
 	CPos.New(34, 8), CPos.New(35, 8), CPos.New(36, 8), CPos.New(37, 8),
 }
 
-InitPlayers = function()
+---@type integer
+local CaptureCenter
+---@type integer
+local StopReinforcements
+---@type integer
+local StopAirstrikes
+
+local function InitPlayers()
 	Nod = Player.GetPlayer("Nod")
 	GDI = Player.GetPlayer("GDI")
 end
@@ -32,7 +44,7 @@ end
 -- Ground defenders open fire on what they see (the mission felt passive when
 -- they had to be hit first); harvesters keep Defend so they do not walk off
 -- their route.
-SetInitialStances = function()
+local function SetInitialStances()
 	Utils.Do(Nod.GetActors(), function(actor)
 		if actor.HasProperty("Stance") then
 			actor.Stance = "Defend"
@@ -52,7 +64,7 @@ end
 
 -- The original `win` trigger (Cap=Win/Des=Lose) is attached to the Advanced
 -- Communications Center: capturing it wins the mission, destroying it loses.
-CenterCaptured = function(_, _, _, newOwner)
+local function CenterCaptured(_, _, _, newOwner)
 	if newOwner ~= Nod then
 		return
 	end
@@ -61,7 +73,7 @@ CenterCaptured = function(_, _, _, newOwner)
 	Nod.MarkCompletedObjective(CaptureCenter)
 end
 
-CenterDestroyed = function()
+local function CenterDestroyed()
 	IonCannonOnline = false
 	Media.DisplayMessageToPlayer(Nod, UserInterface.GetFluentMessage("advanced-communications-center-destroyed"))
 

@@ -20,19 +20,27 @@
 -- GDI Chinook, `echn` an unarmed GDI Chinook fly-by, and `gren` the ambush
 -- teams. The `ion1`/`ion2` triggers grant GDI the Ion Cannon when the marked
 -- tanks or the factory are attacked.
+--
+-- Shared with deceit-AI.lua: BaseTakenOver, EchnTransport, EngineersDisabled,
+-- GDI, GDIAdvComCenter, GDIAmbushSent, GDICYard, GDIIonCannonUnlocked, IsLive,
+-- IsNodPlayer, MissionFinished, Neutral, NextAutoWaveTime, Nod, NodFact,
+-- SignalRelayActive, SignalRelayDelay, SignalRelayUntil, TransportDropRange,
+-- AddIonCannonObjective, PrepareTowerReveal, SendAgentJeep, SendAmbush,
+-- SendAtk2, SendChin, SendEchnChinook, SendEngineerTeam, SendGDI2, SendGDI4,
+-- SignalCapturedChinook, SetupGDI, StartGDIAfterBaseFound, UnlockIonCannon.
 
 -- Original [CellTriggers]
-DzonCells = {
+local DzonCells = {
 	CPos.New(13, 34), CPos.New(13, 35), CPos.New(13, 36), CPos.New(13, 37),
 	CPos.New(14, 35), CPos.New(14, 36), CPos.New(14, 37)
 }
 
-SuprCells = {
+local SuprCells = {
 	CPos.New(4, 10), CPos.New(4, 11), CPos.New(4, 12),
 	CPos.New(5, 10), CPos.New(5, 11), CPos.New(5, 12), CPos.New(5, 13)
 }
 
-EchnCells = {
+local EchnCells = {
 	CPos.New(37, 34), CPos.New(37, 35), CPos.New(38, 34), CPos.New(38, 35),
 	CPos.New(55, 52), CPos.New(55, 53), CPos.New(56, 52), CPos.New(56, 53),
 	CPos.New(57, 52), CPos.New(57, 53)
@@ -40,7 +48,7 @@ EchnCells = {
 
 -- `gren`: ambush cells around the central outposts, the eastern GDI gate and
 -- the north-western village.
-GrenCells = {
+local GrenCells = {
 	CPos.New(33, 32), CPos.New(34, 32), CPos.New(35, 32),
 	CPos.New(33, 33), CPos.New(34, 33), CPos.New(35, 33),
 	CPos.New(33, 34), CPos.New(34, 34),
@@ -57,34 +65,84 @@ GrenCells = {
 	CPos.New(53, 57), CPos.New(54, 57), CPos.New(57, 57)
 }
 
+-- Cross-file state stays global (see header).
 MissionFinished = false
-DropZoneMarked = false
 GDIAmbushSent = false
-NodEstablished = false
 BaseTakenOver = false
-BaseTransferPending = false
-NodBaseDiscovered = nil
 EchnTransport = nil
-EchnSignalSent = false
-VillageJeepTriggered = false
-VillageJeepTarget = nil
-HeliGranted = false
 GDIIonCannonUnlocked = false
-StopIonCannon = nil
-StartingUnits = {}
-NodBaseBuildings = {}
-CommsHQs = {}
-CommsCaptured = {}
-CommsCaptureCount = 0
-CommsObjectives = {}
+
+---@type boolean
+local BaseTransferPending = false
+
+---@type boolean
+local DropZoneMarked = false
+---@type boolean
+local NodEstablished = false
+---@type function?
+local NodBaseDiscovered
+---@type boolean
+local EchnSignalSent = false
+---@type actor?
+local VillageJeepTarget = nil
+---@type boolean
+local HeliGranted = false
+---@type integer?
+local StopIonCannon
+---@type table[]
+local StartingUnits = {}
+---@type table[]
+local NodBaseBuildings = {}
+---@type table[]
+local CommsHQs = {}
+---@type table<integer, boolean>
+local CommsCaptured = {}
+---@type integer
+local CommsCaptureCount = 0
+---@type table<integer, integer>
+local CommsObjectives = {}
 -- Cell, base name and objective suffix for the four GDI Communications
 -- Centers. The order matches the original HQ cells used by `rtal`.
-CommsSites = {
+---@type table[]
+local CommsSites = {
 	{ 2, 9, "northwest" },
 	{ 22, 40, "southwest" },
 	{ 26, 30, "central" },
 	{ 39, 40, "southeast" },
 }
+
+---@type actor?
+local AgentJeep
+---@type actor?
+local NodNuke
+---@type actor?
+local NodPad
+---@type actor?
+local NodSilo
+---@type integer?
+local FindNodBase
+---@type integer?
+local EliminateGDI
+---@type player
+local Civilians
+
+---@type function?
+local NodBaseDiscoveryCheck
+local DisableIonCannon
+local SetupNodStart
+local SetupIonTriggers
+local SetupDropZone
+local SetupAmbush
+local SetupSupr
+local SetupEchn
+local SetupAgentTriggers
+local SetupCommsObjective
+local SetupCaptureTriggers
+local PrepareTowerReveals
+local SetupNodBaseDiscovery
+local AliveStartingUnits
+local NodHasCargo
+local NodBaseStillPending
 
 -- Capturing a GDI Communications Center lets our agent relay false signals
 -- and delays the next GDI attack. Each additional center extends the delay.
@@ -99,7 +157,7 @@ IsNodPlayer = function(player)
 	return player ~= nil and player.InternalName ~= nil and player.InternalName:lower() == "nod"
 end
 
-IsCombatantPlayer = function(player)
+local function IsCombatantPlayer(player)
 	if player == nil or player.InternalName == nil then
 		return false
 	end
@@ -113,7 +171,11 @@ end
 TransportDropRange = 3
 
 -- Safe reinforcement landing south of the Nod helipad (HPAD at 4,45).
-HelipadLanding = CPos.New(4, 47)
+local HelipadLanding = CPos.New(4, 47)
+
+-- Original [BadGuy] credits: 30 * 100. Hard grants an extra 1000 because the
+-- hidden church money crate is easy to miss and gates the mission progress.
+local NodStartingCash = { easy = 3000, normal = 3000, hard = 4000 }
 
 WorldLoaded = function()
 	Nod = Player.GetPlayer("Nod")
@@ -127,8 +189,8 @@ WorldLoaded = function()
 	FindNodBase = AddPrimaryObjective(Nod, "find-nod-base")
 	EliminateGDI = AddPrimaryObjective(Nod, "eliminate-gdi-forces")
 
-	-- Original [BadGuy] credits: 30 * 100.
-	Nod.Cash = 3000
+	-- Original [BadGuy] credits: 30 * 100; hard has an extra 1000.
+	Nod.Cash = NodStartingCash[Difficulty or "normal"]
 
 	SetupNodStart()
 	SetupIonTriggers()
@@ -187,7 +249,7 @@ Tick = function()
 	end
 end
 
-ActorAt = function(kind, x, y)
+local function ActorAt(kind, x, y)
 	for _, actor in ipairs(Map.ActorsInWorld) do
 		if IsLive(actor) and actor.Type == kind and actor.HasProperty("Location")
 			and actor.Location.X == x and actor.Location.Y == y then
@@ -200,7 +262,7 @@ end
 -- Passengers are removed from the world while they are inside a transport.
 -- A consumed engineer is also removed, but with IsDead still false, so plain
 -- IsDead would count it as alive forever. Check the cargo list explicitly.
-IsInCargo = function(actor)
+local function IsInCargo(actor)
 	for _, transport in ipairs(Nod.GetActors()) do
 		if not transport.IsDead and transport.HasProperty("Passengers") then
 			local ok, passengers = pcall(function()
@@ -295,7 +357,7 @@ end
 -- The agent marks the landing zone with a flare and sends a small Nod
 -- reinforcement. Used by the original `dzon` cells and by capturing the
 -- `echn` Chinook.
-MarkDropZone = function()
+local function MarkDropZone()
 	if DropZoneMarked or MissionFinished then
 		return
 	end
@@ -549,7 +611,7 @@ end
 
 -- C&C1 `Destroyed` triggers are attached to whole object groups: the action
 -- only fires once every tagged object is gone (`yyyy`, `jog2`, `rchn`, `grds`).
-OnAllDestroyed = function(units, callback)
+local function OnAllDestroyed(units, callback)
 	local alive = 0
 	Utils.Do(units, function(unit)
 		if IsLive(unit) then
@@ -564,7 +626,7 @@ OnAllDestroyed = function(units, callback)
 	end)
 end
 
-ClosestNodUnitTo = function(cell)
+local function ClosestNodUnitTo(cell)
 	local best, bestDist = nil, math.huge
 	for _, unit in ipairs(Nod.GetActors()) do
 		if not unit.IsDead and unit.HasProperty("Location") and unit.HasProperty("Attack") then
@@ -585,7 +647,7 @@ end
 -- The pre-placed Neutral jeep reacts when anyone destroys a civilian or
 -- building in the village: it force-attacks the actual destroyer (Nod or GDI).
 -- For a C4 kill without a damage event it uses the last Nod unit adjacent.
-SetupVillageJeepReaction = function()
+local function SetupVillageJeepReaction()
 	if not IsLive(AgentJeep) then
 		return
 	end
@@ -607,7 +669,6 @@ SetupVillageJeepReaction = function()
 		end
 
 		VillageJeepTarget = attacker
-		VillageJeepTriggered = true
 		if AgentJeep.HasProperty("Stop") then
 			AgentJeep.Stop()
 		end
