@@ -1,0 +1,38 @@
+BoatMissile:
+	Range: 6c0
+
+BoatMissile.easy:
+	Inherits: BoatMissile
+	Range: 5c0
+
+Napalm.IN:
+	Inherits: Napalm
+	Projectile: GravityBomb
+		Image: BOMBLET
+	Warhead@1Dam: SpreadDamage
+		Spread: 426
+		Damage: 2000
+		InvalidTargets: Structure, Wall
+	Warhead@2StructDam: SpreadDamage
+		ValidTargets: Structure, Wall
+		Spread: 341
+		Damage: 40000
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Versus:
+			Wood: 35
+			Heavy: 80
+			Concrete: 80
+
+# The A10 gun would otherwise shred whole infantry groups on its own.
+Vulcan.IN:
+	Inherits: Vulcan
+	Warhead@1Dam: SpreadDamage
+		Damage: 1000
+
+227mm.stnk.mission:
+	Inherits: 227mm.stnk
+	Range: 8c0
+
+227mm.stnkAA.mission:
+	Inherits: 227mm.stnkAA
+	Range: 8c0
