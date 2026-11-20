@@ -1,0 +1,111 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, campaign-ai.lua, under-siege.lua, under-siege-AI.lua
+	MissionData:
+		Briefing: briefing
+		StartVideo: seige.vqa
+		LossVideo: bombaway.vqa
+		WinVideo: insites.vqa
+	# Original [Basic] has Theme=No theme, so there is no starting music.
+	# The engine default victory music is GDI's; Nod missions set their own.
+	MusicPlaylist:
+		VictoryMusic: nod_win1
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+	# Campaign missions are not skirmishes: never restrict building to the
+	# base radius. Hide the option entirely so it cannot be re-enabled.
+	MapBuildRadius:
+		BuildRadiusCheckboxEnabled: False
+		BuildRadiusCheckboxVisible: False
+
+Player:
+	EnemyWatcher:
+	PlayerResources:
+		DefaultCash: 0
+	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
+		Enabled: True
+
+HARV:
+	Harvester:
+		SearchFromProcRadius: 30
+		SearchFromHarvesterRadius: 20
+
+# The player's first airstrike is ready at mission start, but only for the
+# Communications Center that is already on the map. `StartFullyCharged` is
+# read once, when the support-power instance is created from the FIRST
+# airstrike-capable actor of a player. Putting it on the stock HQ would also
+# hand out a free strike to any HQ rebuilt after the originals are lost, so
+# the pre-placed building uses this non-buildable variant instead. Every HQ
+# the player builds charges normally over 7500 ticks.
+# The AirstrikePower block mirrors HQ in mods/cnc/rules/structures.yaml; a
+# trait override replaces the inherited trait, so keep both in sync.
+HQ.START:
+	Inherits: HQ
+	-Buildable:
+	# Do not add a second "Communications Center" entry to the encyclopedia.
+	-Encyclopedia:
+	RenderSprites:
+		Image: hq
+	AirstrikePower:
+		PauseOnCondition: lowpower
+		Prerequisites: ~techlevel.superweapons
+		Icon: airstrike
+		ChargeInterval: 7500
+		SquadSize: 3
+		QuantizedFacings: 8
+		Name: actor-hq.airstrikepower-name
+		Description: actor-hq.airstrikepower-description
+		EndChargeSpeechNotification: AirstrikeReady
+		SelectTargetSpeechNotification: SelectTarget
+		InsufficientPowerSpeechNotification: InsufficientPower
+		IncomingSpeechNotification: EnemyPlanesApproaching
+		EndChargeTextNotification: notification-airstrike-ready
+		SelectTargetTextNotification: notification-select-target
+		InsufficientPowerTextNotification: notification-insufficient-power
+		IncomingTextNotification: notification-enemy-planes-approaching
+		UnitType: a10
+		DisplayBeacon: True
+		BeaconPoster: airstrike
+		BeaconPosterPalette: beaconposter
+		DisplayRadarPing: True
+		CameraActor: camera
+		ArrowSequence: arrow
+		ClockSequence: clock
+		CircleSequence: circles
+		UseDirectionalTarget: True
+		DirectionArrowAnimation: airstrikedirection
+		SupportPowerPaletteOrder: 10
+		StartFullyCharged: True
+
+# Original engineers can capture base buildings. Nod needs the GDI refinery
+# and weapons factory to replace its exhausted income; this matches the
+# Deceit/Hostile Takeover convention.
+^BaseBuilding:
+	Capturable:
+		Types: building
+
+# arstrk is 2x A10 in the original. The proxy is invisible and only carries
+# the support power; the mission AI targets it explicitly every 480 s.
+airstrike.proxy:
+	AirstrikePower:
+		SquadSize: 2
+
+# Village props are pure scenery. The original leaves no mission-relevant
+# husks behind, and a neutral husk would only add noise/targeting.
+V01:
+	-SpawnActorOnDeath:
+V02:
+	-SpawnActorOnDeath:
+V03:
+	-SpawnActorOnDeath:
+V04:
+	-SpawnActorOnDeath:
+V07:
+	-SpawnActorOnDeath:
