@@ -56,6 +56,7 @@
 	Locomotor@HEAVYWHEELED:
 		Name: heavywheeled
 		Crushes: crate, infantry
+		CrushDamageTypes: CrushDeath
 		TerrainSpeeds:
 			Clear: 100
 			Rough: 63
@@ -67,6 +68,7 @@
 	Locomotor@TRACKED:
 		Name: tracked
 		Crushes: wall, crate, infantry
+		CrushDamageTypes: CrushDeath
 		TerrainSpeeds:
 			Clear: 100
 			Rough: 88
@@ -78,6 +80,7 @@
 	Locomotor@HEAVYTRACKED:
 		Name: heavytracked
 		Crushes: wall, heavywall, crate, infantry
+		CrushDamageTypes: CrushDeath
 		TerrainSpeeds:
 			Clear: 100
 			Rough: 88
