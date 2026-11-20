@@ -132,6 +132,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("When should the AI start building specific buildings.")]
 		public readonly FrozenDictionary<string, int> BuildingDelays = null;
 
+		[Desc("Prerequisites the AI additionally requires before it builds specific buildings.",
+			"Use this to stop the AI from building structures that are available but useless to it, e.g. at low tech levels.")]
+		public readonly FrozenDictionary<string, ImmutableArray<string>> BuildingPrerequisites = FrozenDictionary<string, ImmutableArray<string>>.Empty;
+
 		[Desc("Only queue construction of a new structure when above this requirement.")]
 		public readonly int ProductionMinCashRequirement = 500;
 

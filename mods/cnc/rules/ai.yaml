@@ -144,6 +144,9 @@ Player:
 			gun: 2000
 			gtwr: 2000
 			sam: 3000
+		BuildingPrerequisites:
+			hpad: techlevel.medium
+			sam: techlevel.medium
 	BaseBuilderBotModule@watson:
 		RequiresCondition: enable-watson-ai
 		BuildingQueues: Building.Nod, Building.GDI
@@ -199,6 +202,9 @@ Player:
 			gun: 2000
 			gtwr: 2000
 			sam: 3000
+		BuildingPrerequisites:
+			hpad: techlevel.medium
+			sam: techlevel.medium
 	BaseBuilderBotModule@hal9001:
 		RequiresCondition: enable-hal9001-ai
 		BuildingQueues: Building.Nod, Building.GDI
@@ -255,6 +261,9 @@ Player:
 			gun: 2000
 			gtwr: 2000
 			sam: 3000
+		BuildingPrerequisites:
+			hpad: techlevel.medium
+			sam: techlevel.medium
 	BuildingRepairBotModule:
 		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai
 	SquadManagerBotModule@cabal:
