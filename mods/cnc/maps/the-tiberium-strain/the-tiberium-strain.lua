@@ -480,8 +480,11 @@ local function PrepareBioCenters()
 	local offset = CVec.New(1, 0)
 
 	Utils.Do(centers, function(center)
+		-- Cache the cell before the center dies: dead actors no longer
+		-- expose Location.
+		local cell = center.Location
 		Trigger.OnKilled(center, function()
-			Actor.Create("flare", true, { Owner = GDI, Location = center.Location + offset })
+			Actor.Create("flare", true, { Owner = GDI, Location = cell + offset })
 		end)
 	end)
 
@@ -700,6 +703,9 @@ WorldLoaded = function()
 	InitObjectives(Nod)
 	BioObjective = AddPrimaryObjective(Nod, "destroy-gdi-bio-centers")
 	IntactObjective = AddPrimaryObjective(Nod, "keep-all-other-structures")
+	-- The villager objective is part of the win condition from the start;
+	-- the later discovery message only explains it.
+	AddVillagerObjective()
 
 	PrepareFootprints()
 	PrepareBase()
@@ -729,7 +735,9 @@ Tick = function()
 		MarkNodDead()
 	end
 
-	if Nod.IsObjectiveCompleted(BioObjective) and Nod.IsObjectiveCompleted(VillagerObjective) then
+	if Nod.IsObjectiveCompleted(BioObjective)
+		and VillagerObjective ~= nil
+		and Nod.IsObjectiveCompleted(VillagerObjective) then
 		Nod.MarkCompletedObjective(IntactObjective)
 	end
 end
