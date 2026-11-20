@@ -5,9 +5,21 @@
    as published by the Free Software Foundation, either version 3 of
    the License, or (at your option) any later version. For more
    information, see COPYING.
+
+   Shared with nod-death-squad.lua: GDI, InitGDI, MissionFinished, Nod.
 ]]
 
 local AI = CampaignAI
+
+local OnNodUnitKilled
+local OnMoveMtnkKilled
+local SetupGDIGarrison
+local SetupJeepPatrol
+local SetupJeep2Patrol
+local SetupScout1Patrol
+local SetupRespondTrigger
+local SetupMoveTrigger
+local SetupGredTrigger
 
 -- The imported map is 64 cells wide even though its playable bounds are
 -- x = 8..55, y = 7..55.
@@ -47,17 +59,19 @@ local Jeep2Route = {
 
 local Claimed = {}
 
-GDIHome = nil
-JeepPatrolTeam = {}
-Jeep2Team = {}
-ScoutTeam = {}
-MoveTeam = {}
-RespondTeam = {}
+local GDIHome = nil
+local JeepPatrolTeam = {}
+local Jeep2Team = {}
+local ScoutTeam = {}
+local MoveTeam = {}
+local RespondTeam = {}
+local GDICombatContext = nil
+local GDIRespondContext = nil
 
-BaseAlerted = false
-ResponseDone = false
-MoveMtnkKills = 0
-MoveTeamDone = false
+local BaseAlerted = false
+local ResponseDone = false
+local MoveMtnkKills = 0
+local MoveTeamDone = false
 
 local function AddClaimed(units)
 	for _, unit in ipairs(units) do
@@ -78,7 +92,7 @@ end
 -- solvable. Everything else (infantry, tanks, jeeps, Area Guard MSAM) goes
 -- to AttackAnything and the patrol loops stop, so the patrols and garrison
 -- actively hunt the player.
-AlertBase = function()
+local function AlertBase()
 	if MissionFinished or BaseAlerted then
 		return
 	end

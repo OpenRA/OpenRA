@@ -5,12 +5,20 @@
    as published by the Free Software Foundation, either version 3 of
    the License, or (at your option) any later version. For more
    information, see COPYING.
+
+   Shared with nod-death-squad-AI.lua: GDI, InitGDI, MissionFinished, Nod.
 ]]
 
 local AI = CampaignAI
 
 MissionFinished = false
-WinObjective = nil
+
+---@type integer?
+local WinObjective
+---@type player
+local Neutral
+local CheckObjectives
+local SetupWinCondition
 
 WorldLoaded = function()
 	Nod = Player.GetPlayer("Nod")
