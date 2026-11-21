@@ -10,8 +10,8 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
 using System.Threading;
 using OpenRA.FileFormats;
@@ -36,7 +36,7 @@ namespace OpenRA
 		public bool WindowHasInputFocus => Window.HasInputFocus;
 		public bool WindowIsSuspended => Window.IsSuspended;
 
-		public IReadOnlyDictionary<string, SpriteFont> Fonts;
+		public FrozenDictionary<string, SpriteFont> Fonts;
 
 		internal IPlatformWindow Window { get; }
 		internal IGraphicsContext Context { get; }
@@ -135,7 +135,7 @@ namespace OpenRA
 			{
 				fontSheetBuilder?.Dispose();
 				fontSheetBuilder = new SheetBuilder(SheetType.BGRA, modData.Manifest.RendererConstants.FontSheetSize);
-				Fonts = modData.GetOrCreate<Fonts>().FontList.ToDictionary(x => x.Key,
+				Fonts = modData.GetOrCreate<Fonts>().FontList.ToFrozenDictionary(x => x.Key,
 					x => new SpriteFont(
 						platform, x.Value.Font, modData.DefaultFileSystem.Open(x.Value.Font).ReadAllBytes(),
 						x.Value.Size, x.Value.Ascender, Window.EffectiveWindowScale, fontSheetBuilder));

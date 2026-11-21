@@ -10,9 +10,11 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Runtime.InteropServices;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Terrain;
@@ -107,7 +109,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			BakedAdjacency,
 		}
 
-		public static (T[] Types, U[] Weights) SplitDictionary<T, U>(IReadOnlyDictionary<T, U> typeWeights)
+		public static (T[] Types, U[] Weights) SplitDictionary<T, U>(FrozenDictionary<T, U> typeWeights)
 		{
 			var types = typeWeights
 				.Select(kv => kv.Key)
@@ -353,7 +355,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// (if allowedTerrain is non-null), is free of actors, and/or is free of resources.
 		/// </summary>
 		public CellLayer<bool> CheckSpace(
-			IReadOnlySet<byte> allowedTerrain,
+			FrozenSet<byte> allowedTerrain,
 			bool checkActors = false,
 			bool checkResources = false,
 			bool checkBounds = false,
@@ -433,7 +435,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// limit the zoneable area.
 		/// </summary>
 		public CellLayer<bool> GetZoneable(
-			IReadOnlySet<byte> zoneableTerrain,
+			FrozenSet<byte> zoneableTerrain,
 			CellLayer<bool> mask = null)
 		{
 			CheckHasMapShapeOrNull(mask);
@@ -500,7 +502,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// if they are also all recessive.
 		/// </param>
 		public CellLayer<bool> FindAsymmetries(
-			IReadOnlySet<byte> dominantTerrain,
+			FrozenSet<byte> dominantTerrain,
 			bool dominantActors,
 			bool strictTerrainTypes)
 		{
@@ -558,7 +560,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 					space,
 					[(start, true)],
 					Filler,
-					spread);
+					spread.AsSpan());
 			}
 
 			foreach (var mpos in Map.AllCells.MapCoords)
@@ -849,7 +851,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			MersenneTwister random,
 			CellLayer<bool> zoneable,
 			CellLayer<int> distribution,
-			IReadOnlyDictionary<string, int> weightedActorTypes,
+			FrozenDictionary<string, int> weightedActorTypes,
 			int targetCount,
 			bool weighted,
 			WDist? actorDezoneRadius = null)
@@ -921,7 +923,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public int AddActorCluster(
 			MersenneTwister random,
 			CellLayer<bool> zoneable,
-			IReadOnlyDictionary<string, int> weightedActorTypes,
+			FrozenDictionary<string, int> weightedActorTypes,
 			int targetCount,
 			int innerReservation,
 			int minimumRadius,
@@ -983,7 +985,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public void PaintArea(
 			MersenneTwister random,
 			CellLayer<MultiBrush.Replaceability> replace,
-			IReadOnlyList<MultiBrush> brushes,
+			ImmutableArray<MultiBrush> brushes,
 			bool alwaysPreferLargerBrushes = false)
 		{
 			CheckHasMapShape(replace);
@@ -1003,7 +1005,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public void PaintActors(
 			MersenneTwister random,
 			CellLayer<bool> mask,
-			IReadOnlyList<MultiBrush> brushes,
+			ImmutableArray<MultiBrush> brushes,
 			bool alwaysPreferLargerBrushes = false)
 		{
 			CheckHasMapShape(mask);
@@ -1033,7 +1035,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// </summary>
 		public void RepaintTiles(
 			MersenneTwister random,
-			IReadOnlyDictionary<ushort, IReadOnlyList<MultiBrush>> rules)
+			FrozenDictionary<ushort, ImmutableArray<MultiBrush>> rules)
 		{
 			foreach (var (tile, collection) in rules.OrderBy(kv => kv.Key))
 			{
@@ -1237,9 +1239,9 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// </param>
 		public List<TilingPath> PartitionPath(
 			int2[] path,
-			IReadOnlyList<PathPartitionZone> allZones,
+			ImmutableArray<PathPartitionZone> allZones,
 			Matrix<PathPartitionZone> zoneMask,
-			IReadOnlyList<MultiBrush> brushes,
+			ImmutableArray<MultiBrush> brushes,
 			int minimumStraight)
 		{
 			// Algorithmic Overview:
@@ -1257,7 +1259,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			//
 			// If there are multiple best solutions (with equal costs), there is a preference to
 			// solutions with more sub-paths.
-			if (allZones.Count == 0)
+			if (allZones.Length == 0)
 				throw new ArgumentException("no zones provided");
 
 			if (allZones.Count(zone => zone.RequiredSomewhere) > 1)
@@ -1303,8 +1305,8 @@ namespace OpenRA.Mods.Common.MapGenerator
 			// To optimize partition vote counting, we pre-sum all the matches for allZones[i]
 			// within zone[0..j] into partitionAcc[i][j]. This means we can quickly count the
 			// matches between a and b by subtracting partitionAcc[i][a] from partitionAcc[i][b].
-			var partitionAcc = new int[allZones.Count][];
-			for (var i = 0; i < allZones.Count; i++)
+			var partitionAcc = new int[allZones.Length][];
+			for (var i = 0; i < allZones.Length; i++)
 			{
 				partitionAcc[i] = new int[zones.Length + 1];
 				var sum = 0;
@@ -1318,7 +1320,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 			// This is declared outside of Vote() to avoid unnecessary re-allocations.
 			// The values are not reused across calls.
-			var voteCounts = new int[allZones.Count];
+			var voteCounts = new int[allZones.Length];
 
 			// Identifies valid zone choices in the given range and returns the cost (amount of
 			// disagreement) for the best choice(s). Optionally provides the winner(s) via the
@@ -1341,7 +1343,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 				var nonWildcards = 0;
 				var best = Unsuitable;
 
-				for (var i = 0; i < allZones.Count; i++)
+				for (var i = 0; i < allZones.Length; i++)
 				{
 					int count;
 					if (to <= from)
@@ -1372,7 +1374,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 					return int.MaxValue;
 
 				if (majorities != null)
-					for (var i = 0; i < allZones.Count; i++)
+					for (var i = 0; i < allZones.Length; i++)
 						if (voteCounts[i] == best)
 							majorities.Add(allZones[i]);
 
@@ -1567,7 +1569,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 				if (length + 1 == path.Length)
 					return SinglePath(fallbackPath);
 
-				var possibleZones = new List<PathPartitionZone>(allZones.Count);
+				var possibleZones = new List<PathPartitionZone>(allZones.Length);
 				Vote(from, length, true, possibleZones);
 				if (possibleZones[0] != lastZone)
 					ranges.Add((from, length, possibleZones[0]));
@@ -1637,17 +1639,17 @@ namespace OpenRA.Mods.Common.MapGenerator
 		}
 
 		/// <summary>Wrapper around PartitionPath to process multiple paths at once.</summary>
-		public List<TilingPath> PartitionPaths(
+		public ImmutableArray<TilingPath> PartitionPaths(
 			IEnumerable<int2[]> paths,
-			IReadOnlyList<PathPartitionZone> zones,
+			ImmutableArray<PathPartitionZone> zones,
 			Matrix<PathPartitionZone> partitionMask,
-			IReadOnlyList<MultiBrush> brushes,
+			ImmutableArray<MultiBrush> brushes,
 			int minStraight)
 		{
 			return paths
 				.SelectMany(path => PartitionPath(
 					path, zones, partitionMask, brushes, minStraight))
-				.ToList();
+				.ToImmutableArray();
 		}
 
 		/// <summary>
@@ -1666,17 +1668,17 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// <param name="heightOffset">Optional explicit height to paint at. Otherwise a height is picked automatically.</param>
 		public CellLayer<Side> PaintLoopsAndFill(
 			MersenneTwister random,
-			IReadOnlyList<TilingPath> tilingPaths,
+			ImmutableArray<TilingPath> tilingPaths,
 			Side fallback,
-			IReadOnlyList<MultiBrush> outside,
-			IReadOnlyList<MultiBrush> inside,
+			ImmutableArray<MultiBrush> outside,
+			ImmutableArray<MultiBrush> inside,
 			CellLayer<MultiBrush.Replaceability> replaceMask = null,
 			short? heightOffset = null)
 		{
 			CheckHasMapShapeOrNull(replaceMask);
 
-			var tilings = new MultiBrush[tilingPaths.Count];
-			for (var i = 0; i < tilingPaths.Count; i++)
+			var tilings = new MultiBrush[tilingPaths.Length];
+			for (var i = 0; i < tilingPaths.Length; i++)
 			{
 				var tiling = tilingPaths[i].Tile(random);
 				if (tiling == null)
@@ -1685,13 +1687,14 @@ namespace OpenRA.Mods.Common.MapGenerator
 				tilings[i] = tiling;
 			}
 
-			foreach (var tiling in tilings)
+			var tilingArray = ImmutableCollectionsMarshal.AsImmutableArray(tilings);
+			foreach (var tiling in tilingArray)
 				tiling.Paint(Map, ActorPlans, CPos.Zero, heightOffset, MultiBrush.Replaceability.Any, random);
 
 			if (inside == null && outside == null)
 				return null;
 
-			var sides = InsideOutside(tilings, fallback);
+			var sides = InsideOutside(tilingArray, fallback);
 
 			foreach (var (brushes, side) in new[] { (inside, Side.In), (outside, Side.Out) })
 			{
@@ -1719,13 +1722,13 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// <param name="tilings">Path tiling results which partition the space.</param>
 		/// <param name="fallback">Side to assume if no paths are contained in the map.</param>
 		public CellLayer<Side> InsideOutside(
-			IReadOnlyList<MultiBrush> tilings,
+			ImmutableArray<MultiBrush> tilings,
 			Side fallback)
 		{
 			var sides = new CellLayer<Side>(Map);
-			var tiledPoints = new CPos[tilings.Count][];
+			var tiledPoints = new CPos[tilings.Length][];
 			var tiledArea = new CellLayer<bool>(Map);
-			for (var i = 0; i < tilings.Count; i++)
+			for (var i = 0; i < tilings.Length; i++)
 			{
 				tiledPoints[i] = tilings[i].Segment.Points
 					.Select(vec => CPos.Zero + vec)
@@ -1788,7 +1791,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 				fillable,
 				fillSeeds,
 				fillAction,
-				DirectionExts.Spread4CVec);
+				DirectionExts.Spread4CVec.AsSpan());
 		}
 
 		/// <summary>
@@ -2007,12 +2010,12 @@ namespace OpenRA.Mods.Common.MapGenerator
 			CellLayer<int> pattern,
 			CellLayer<bool> mask,
 			ResourceTypeInfo defaultResource,
-			IReadOnlyList<ResourceBias> resourceBiases)
+			ReadOnlySpan<ResourceBias> resourceBiases)
 		{
 			CheckHasMapShape(pattern);
 			CheckHasMapShape(mask);
 
-			// IReadOnlyDictionary<string, ResourceTypeInfo> resourceSpawnSeeds = ...;
+			// FrozenDictionary<string, ResourceTypeInfo> resourceSpawnSeeds = ...;
 			var resourceTypes = Map.Rules.Actors[SystemActors.World]
 				.TraitInfoOrDefault<ResourceLayerInfo>()
 				.ResourceTypes

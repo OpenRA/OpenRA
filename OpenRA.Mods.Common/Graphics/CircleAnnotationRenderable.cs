@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Immutable;
 using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -18,7 +19,9 @@ namespace OpenRA.Mods.Common.Graphics
 	public class CircleAnnotationRenderable : IRenderable, IFinalizedRenderable
 	{
 		const int CircleSegments = 32;
-		static readonly WVec[] FacingOffsets = Exts.MakeArray(CircleSegments, i => new WVec(1024, 0, 0).Rotate(WRot.FromFacing(i * 256 / CircleSegments)));
+		static readonly ImmutableArray<WVec> FacingOffsets = Exts.MakeImmutableArray(CircleSegments, i => new WVec(1024, 0, 0)
+			.Rotate(WRot.FromFacing(i * 256 / CircleSegments)));
+
 		readonly WDist radius;
 		readonly int width;
 		readonly Color color;

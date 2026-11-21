@@ -167,27 +167,45 @@ namespace OpenRA
 			return list.Find(match);
 		}
 
+		public static T Random<T>(this ReadOnlySpan<T> ts, MersenneTwister r)
+		{
+			if (ts.Length == 0)
+				throw new ArgumentException("Collection must not be empty.", nameof(ts));
+			else
+				return ts[r.Next(ts.Length)];
+		}
+
+		public static T RandomOrDefault<T>(this ReadOnlySpan<T> ts, MersenneTwister r)
+		{
+			if (ts.Length == 0)
+				return default;
+			else
+				return ts[r.Next(ts.Length)];
+		}
+
+		public static T Random<T>(this List<T> ts, MersenneTwister r) => Random<T>(CollectionsMarshal.AsSpan(ts), r);
+		public static T RandomOrDefault<T>(this List<T> ts, MersenneTwister r) => RandomOrDefault<T>(CollectionsMarshal.AsSpan(ts), r);
+		public static T Random<T>(this T[] ts, MersenneTwister r) => Random<T>(ts.AsSpan(), r);
+		public static T RandomOrDefault<T>(this T[] ts, MersenneTwister r) => RandomOrDefault<T>(ts.AsSpan(), r);
+		public static T Random<T>(this ImmutableArray<T> ts, MersenneTwister r) => Random(ts.AsSpan(), r);
+		public static T RandomOrDefault<T>(this ImmutableArray<T> ts, MersenneTwister r) => RandomOrDefault(ts.AsSpan(), r);
+
 		public static T Random<T>(this IEnumerable<T> ts, MersenneTwister r)
 		{
-			return Random(ts, r, true);
+			var xs = ts as IReadOnlyCollection<T>;
+			xs ??= ts.ToArray();
+			if (xs.Count == 0)
+				throw new ArgumentException("Collection must not be empty.", nameof(ts));
+			else
+				return xs.ElementAt(r.Next(xs.Count));
 		}
 
 		public static T RandomOrDefault<T>(this IEnumerable<T> ts, MersenneTwister r)
 		{
-			return Random(ts, r, false);
-		}
-
-		static T Random<T>(IEnumerable<T> ts, MersenneTwister r, bool throws)
-		{
 			var xs = ts as IReadOnlyCollection<T>;
-			xs ??= ts.ToList();
+			xs ??= ts.ToArray();
 			if (xs.Count == 0)
-			{
-				if (throws)
-					throw new ArgumentException("Collection must not be empty.", nameof(ts));
-				else
-					return default;
-			}
+				return default;
 			else
 				return xs.ElementAt(r.Next(xs.Count));
 		}
@@ -480,6 +498,11 @@ namespace OpenRA
 				result[i] = f(i);
 
 			return result;
+		}
+
+		public static ImmutableArray<T> MakeImmutableArray<T>(int count, Func<int, T> f)
+		{
+			return ImmutableCollectionsMarshal.AsImmutableArray(MakeArray(count, f));
 		}
 
 		public static byte ParseByteInvariant(ReadOnlySpan<char> s)

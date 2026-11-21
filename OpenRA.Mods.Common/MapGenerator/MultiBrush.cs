@@ -150,7 +150,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 		public static ImmutableArray<MultiBrushInfo> ParseCollection(MiniYaml my)
 		{
-			var brushes = new List<MultiBrushInfo>();
+			var brushes = ImmutableArray.CreateBuilder<MultiBrushInfo>();
 			foreach (var node in my.Nodes)
 			{
 				switch (node.Key.Split('@')[0])
@@ -177,7 +177,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 				}
 			}
 
-			return brushes.ToImmutableArray();
+			return brushes.DrainToImmutable();
 		}
 	}
 
@@ -670,7 +670,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			Map map,
 			List<ActorPlan> actorPlans,
 			CellLayer<Replaceability> replace,
-			IReadOnlyList<MultiBrush> availableBrushes,
+			ImmutableArray<MultiBrush> availableBrushes,
 			MersenneTwister random,
 			bool alwaysPreferLargerBrushes = false,
 			short? heightOffset = null)
@@ -875,15 +875,15 @@ namespace OpenRA.Mods.Common.MapGenerator
 		}
 
 		/// <summary>Pick a random brush from a list, respecting brush weights.</summary>
-		public static MultiBrush PickAny(IReadOnlyList<MultiBrush> brushes, MersenneTwister random)
+		public static MultiBrush PickAny(ReadOnlySpan<MultiBrush> brushes, MersenneTwister random)
 		{
-			if (brushes.Count == 0)
+			if (brushes.Length == 0)
 				throw new ArgumentException("brushes was empty");
 
-			if (brushes.Count == 1)
+			if (brushes.Length == 1)
 				return brushes[0];
 
-			var weights = new int[brushes.Count];
+			var weights = new int[brushes.Length];
 			for (var i = 0; i < weights.Length; i++)
 				weights[i] = brushes[i].Weight;
 

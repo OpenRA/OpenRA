@@ -10,10 +10,12 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Data;
 using System.Linq;
+using System.Runtime.InteropServices;
 using OpenRA.Primitives;
 using OpenRA.Support;
 
@@ -401,7 +403,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 		record struct RampProperties
 		{
-			public MultiBrush[] Brushes;
+			public ImmutableArray<MultiBrush> Brushes;
 			public byte Tl;
 			public byte Tr;
 			public byte Br;
@@ -457,43 +459,50 @@ namespace OpenRA.Mods.Common.MapGenerator
 		readonly Map map;
 
 		// Contains single-tile brushes with zero height offset.
-		readonly RampProperties[] rampProperties;
+		readonly ImmutableArray<RampProperties> rampProperties;
 
 		// Lookup from a binary-concatenation of corner heights (0, 1, or 2) to ramp types.
 		// Only contains mappings for which there are brushes.
-		readonly Dictionary<int, List<byte>> rampLookup;
+		readonly FrozenDictionary<int, ImmutableArray<byte>> rampLookup;
 
 		public RampTiler(Map map, IEnumerable<ushort> rampTemplates)
 			: this(
 				map,
 				rampTemplates
 					.Select(t => new MultiBrush().WithTemplate(map, t, CVec.Zero))
-					.ToList())
+					.ToImmutableArray())
 		{ }
 
-		public RampTiler(Map map, IReadOnlyList<MultiBrush> rampBrushes)
+		public RampTiler(Map map, ImmutableArray<MultiBrush> rampBrushes)
 		{
 			this.map = map;
 			var heightStep = map.Grid.TileScale / 2;
+			var maxRamps = map.Grid.Ramps.Length;
 
-			var rampsToBrushes = new Dictionary<byte, List<MultiBrush>>();
+			// Group ramp brushes by ramp type.
+			var rampsToBrushesMap = new ImmutableArray<MultiBrush>.Builder[maxRamps];
 			foreach (var brush in rampBrushes)
 			{
-				var heightsAndRamps = brush.GetHeightsAndRamps().ToList();
-				if (heightsAndRamps.Count != 1 || heightsAndRamps[0].Height != 0)
+				var heightsAndRamps = brush.GetHeightsAndRamps();
+				using var enumerator = heightsAndRamps.GetEnumerator();
+
+				if (!enumerator.MoveNext())
 					throw new ArgumentException("brushes that are not single-tile are not supported");
 
-				var ramp = heightsAndRamps[0].Ramp;
-				if (!rampsToBrushes.ContainsKey(ramp))
-					rampsToBrushes.Add(ramp, []);
+				var (_, height, ramp) = enumerator.Current;
+				if (enumerator.MoveNext() || height != 0)
+					throw new ArgumentException("brushes that are not single-tile are not supported");
 
-				rampsToBrushes[ramp].Add(brush);
+				if (rampsToBrushesMap[ramp] == null)
+					rampsToBrushesMap[ramp] = ImmutableArray.CreateBuilder<MultiBrush>();
+
+				rampsToBrushesMap[ramp].Add(brush);
 			}
 
-			rampLookup = [];
-			rampProperties = new RampProperties[map.Grid.Ramps.Length];
-
-			for (byte ramp = 0; ramp < rampProperties.Length; ramp++)
+			// Build lookups.
+			var localRampProperties = new RampProperties[maxRamps];
+			var localRampLookup = new Dictionary<int, ImmutableArray<byte>.Builder>();
+			for (byte ramp = 0; ramp < localRampProperties.Length; ramp++)
 			{
 				var cellRamp = map.Grid.Ramps[ramp];
 				var tl = cellRamp.Corners[0].Z / heightStep;
@@ -501,24 +510,34 @@ namespace OpenRA.Mods.Common.MapGenerator
 				var br = cellRamp.Corners[2].Z / heightStep;
 				var bl = cellRamp.Corners[3].Z / heightStep;
 
-				rampProperties[ramp] = new RampProperties()
+				var brushBuilder = rampsToBrushesMap[ramp];
+				var brushes = brushBuilder != null ? brushBuilder.DrainToImmutable() : [];
+
+				localRampProperties[ramp] = new RampProperties()
 				{
-					Brushes = rampsToBrushes.GetValueOrDefault(ramp, []).ToArray(),
+					Brushes = brushes,
 					Tl = (byte)tl,
 					Tr = (byte)tr,
 					Br = (byte)br,
 					Bl = (byte)bl,
 				};
 
-				if (rampProperties[ramp].Brushes.Length > 0)
+				if (brushes.Length > 0)
 				{
 					var lookup = tl | (tr << 2) | (br << 4) | (bl << 6);
-					if (!rampLookup.ContainsKey(lookup))
-						rampLookup.Add(lookup, []);
 
-					rampLookup[lookup].Add(ramp);
+					ref var rampBuilder = ref CollectionsMarshal.GetValueRefOrAddDefault(localRampLookup, lookup, out var exists);
+					if (!exists)
+						rampBuilder = ImmutableArray.CreateBuilder<byte>();
+
+					rampBuilder.Add(ramp);
 				}
 			}
+
+			rampProperties = ImmutableCollectionsMarshal.AsImmutableArray(localRampProperties);
+			rampLookup = localRampLookup.ToFrozenDictionary(
+				kvp => kvp.Key,
+				kvp => kvp.Value.DrainToImmutable());
 		}
 
 		byte GetConnectionHeight(byte height, TerrainTileInfo info, Riser.Connection connection)
@@ -724,9 +743,9 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 				heights[cpos] = baseHeight;
 				ramps[cpos] =
-					validRamps.Count == 1
+					validRamps.Length == 1
 						? validRamps[0]
-						: validRamps[random.Next() % validRamps.Count];
+						: validRamps[random.Next() % validRamps.Length];
 			}
 
 			return (heights, ramps);
@@ -760,7 +779,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 					: map.Tiles.CellRegion;
 			foreach (var cpos in masked)
 			{
-				var brushes = rampProperties[ramps[cpos]].Brushes;
+				var brushes = rampProperties[ramps[cpos]].Brushes.AsSpan();
 				if (brushes.Length == 0)
 					return null;
 
