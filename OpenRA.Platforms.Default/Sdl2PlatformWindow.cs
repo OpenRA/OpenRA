@@ -97,6 +97,51 @@ namespace OpenRA.Platforms.Default
 
 		public int DisplayCount => SDL.SDL_GetNumVideoDisplays();
 
+		public Size DisplayResolution
+		{
+			get
+			{
+				SDL.SDL_GetCurrentDisplayMode(CurrentDisplay, out var display);
+				return new Size(display.w, display.h);
+			}
+		}
+
+		public Size MaxEffectiveWindowSize
+		{
+			get
+			{
+				lock (syncObject)
+				{
+					SDL.SDL_GetCurrentDisplayMode(CurrentDisplay, out var display);
+
+					if (Platform.CurrentPlatform == PlatformType.OSX)
+						return new Size(display.w, display.h);
+
+					return new Size((int)(display.w / windowScale), (int)(display.h / windowScale));
+				}
+			}
+		}
+
+		public Size MaxUsableWindowSize
+		{
+			get
+			{
+				lock (syncObject)
+				{
+					SDL.SDL_GetDisplayUsableBounds(CurrentDisplay, out var usable);
+
+					var titleBarHeight = 0;
+					if (SDL.SDL_GetWindowBordersSize(window, out var top, out _, out _, out _) == 0)
+						titleBarHeight = top;
+
+					if (Platform.CurrentPlatform == PlatformType.OSX)
+						return new Size(usable.w, usable.h - titleBarHeight);
+
+					return new Size((int)(usable.w / windowScale), (int)((usable.h - titleBarHeight) / windowScale));
+				}
+			}
+		}
+
 		public bool HasInputFocus { get; internal set; }
 
 		public bool IsSuspended { get; internal set; }
@@ -279,6 +324,26 @@ namespace OpenRA.Platforms.Default
 				}
 				else
 					windowSize = new Size((int)(surfaceSize.Width / windowScale), (int)(surfaceSize.Height / windowScale));
+
+				if (windowMode == WindowMode.Windowed)
+				{
+					SDL.SDL_GetWindowPosition(window, out var wx, out var wy);
+					SDL.SDL_GetDisplayUsableBounds(videoDisplay, out var usable);
+
+					SDL.SDL_GetWindowSize(window, out var nativeW, out var nativeH);
+
+					var titleBarHeight = 0;
+					if (SDL.SDL_GetWindowBordersSize(window, out var top, out _, out _, out _) == 0)
+						titleBarHeight = top;
+
+					var minY = usable.y + titleBarHeight;
+					var maxY = Math.Max(minY, usable.y + usable.h - nativeH);
+					var clampedX = Math.Clamp(wx, usable.x, Math.Max(usable.x, usable.x + usable.w - nativeW));
+					var clampedY = Math.Clamp(wy, minY, maxY);
+
+					if (clampedX != wx || clampedY != wy)
+						SDL.SDL_SetWindowPosition(window, clampedX, clampedY);
+				}
 
 				if (Game.Settings.Game.LockMouseWindow)
 					GrabWindowMouseFocus();

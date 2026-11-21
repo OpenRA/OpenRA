@@ -239,14 +239,43 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var origHeightText = windowHeight.Text = graphicSettings.WindowedSize.Y.ToString(NumberFormatInfo.CurrentInfo);
 			windowHeight.Text = graphicSettings.WindowedSize.Y.ToString(NumberFormatInfo.CurrentInfo);
 
+			var maxUsableSize = Game.Renderer.MaxUsableWindowSize;
+			const int MinWidth = 1024;
+			const int MinHeight = 720;
+
+			windowWidth.OnLoseFocus = () =>
+			{
+				if (int.TryParse(windowWidth.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var w))
+				{
+					if (w < MinWidth)
+						windowWidth.Text = MinWidth.ToString(NumberFormatInfo.CurrentInfo);
+					else if (w > maxUsableSize.Width)
+						windowWidth.Text = maxUsableSize.Width.ToString(NumberFormatInfo.CurrentInfo);
+				}
+			};
+
+			windowHeight.OnLoseFocus = () =>
+			{
+				if (int.TryParse(windowHeight.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var h))
+				{
+					if (h < MinHeight)
+						windowHeight.Text = MinHeight.ToString(NumberFormatInfo.CurrentInfo);
+					else if (h > maxUsableSize.Height)
+						windowHeight.Text = maxUsableSize.Height.ToString(NumberFormatInfo.CurrentInfo);
+				}
+			};
+
 			var resolutionPresetDropdown = panel.GetOrNull<DropDownButtonWidget>("RESOLUTION_PRESET_DROPDOWN");
 			if (resolutionPresetDropdown != null)
 			{
 				resolutionPresetDropdown.GetText = () =>
 				{
-					if (int.TryParse(windowWidth.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var w)
-						&& int.TryParse(windowHeight.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var h)
-						&& CommonResolutions.Contains(new Size(w, h)))
+					if (!int.TryParse(windowWidth.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var w)
+						|| !int.TryParse(windowHeight.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var h))
+						return selectPreset;
+
+					var selected = new Size(w, h);
+					if (CommonResolutions.Contains(selected) || selected == maxUsableSize)
 						return $"{w}x{h}";
 
 					return selectPreset;
@@ -403,18 +432,26 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		static void ShowResolutionPresetDropdown(DropDownButtonWidget dropdown, TextFieldWidget windowWidth, TextFieldWidget windowHeight)
 		{
-			var sortedModes = CommonResolutions
+			var maxUsableSize = Game.Renderer.MaxUsableWindowSize;
+
+			var commonModes = CommonResolutions
+				.Where(res => res.Width <= maxUsableSize.Width && res.Height <= maxUsableSize.Height)
 				.OrderBy(res => res.Width)
 					.ThenBy(res => res.Height)
 				.ToArray();
 
+			var includeMaxWindowed = !CommonResolutions.Contains(maxUsableSize);
+			var allModes = includeMaxWindowed
+				? commonModes.Append(maxUsableSize).ToArray()
+				: commonModes;
+
 			ScrollItemWidget SetupItem(Size resolution, ScrollItemWidget itemTemplate)
 			{
-				var currentWidth = int.TryParse(windowWidth.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var w) ? w : 0;
-				var currentHeight = int.TryParse(windowHeight.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var h) ? h : 0;
+				var hasCurrentWidth = int.TryParse(windowWidth.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var currentWidth);
+				var hasCurrentHeight = int.TryParse(windowHeight.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var currentHeight);
 
 				var item = ScrollItemWidget.Setup(itemTemplate,
-					() => currentWidth == resolution.Width && currentHeight == resolution.Height,
+					() => hasCurrentWidth && hasCurrentHeight && currentWidth == resolution.Width && currentHeight == resolution.Height,
 					() =>
 					{
 						windowWidth.Text = resolution.Width.ToString(NumberFormatInfo.CurrentInfo);
@@ -422,11 +459,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					});
 
 				var label = $"{resolution.Width}x{resolution.Height}";
+
 				item.Get<LabelWidget>("LABEL").GetText = () => label;
 				return item;
 			}
 
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 300, sortedModes, SetupItem);
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 300, allModes, SetupItem);
 		}
 
 		static void ShowGLProfileDropdown(DropDownButtonWidget dropdown, GraphicSettings graphicSettings)

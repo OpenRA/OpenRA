@@ -60,6 +60,9 @@ namespace OpenRA
 		int CurrentDisplay { get; }
 		bool HasInputFocus { get; }
 		bool IsSuspended { get; }
+		Size DisplayResolution { get; }
+		Size MaxEffectiveWindowSize { get; }
+		Size MaxUsableWindowSize { get; }
 
 		event Action<float, float, float, float> OnWindowScaleChanged;
 
