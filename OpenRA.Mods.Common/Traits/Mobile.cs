@@ -44,6 +44,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("If set to true, this unit won't stop to turn, it will turn while moving instead.")]
 		public readonly bool TurnsWhileMoving = false;
 
+		[Desc("Requires" + nameof(TurnsWhileMoving) +
+			". If set to true, The speed decreases as the difference bettween current facing and the moving direction increases.")]
+		public readonly bool SpeedRelatedWithFacing = false;
+
+		[Desc("Requires" + nameof(SpeedRelatedWithFacing) + ". The minimum speed percentage during turning. Allows negative number.")]
+		public readonly int InitSpeedPercentageWithFacing = 0;
+
 		[CursorReference]
 		[Desc("Cursor to display when a move order can be issued at target location.")]
 		public readonly string Cursor = "move";
