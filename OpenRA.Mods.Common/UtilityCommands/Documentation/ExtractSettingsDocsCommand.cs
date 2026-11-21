@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 				var fieldValue = field.GetValue(value)?.ToString();
 				if (fieldValue != null && !fieldValue.StartsWith("System.", StringComparison.Ordinal))
 				{
-					Console.WriteLine($"**Default Value:** {value}");
+					Console.WriteLine($"**Default Value:** {fieldValue}");
 					Console.WriteLine();
 					Console.WriteLine("```miniyaml");
 					Console.WriteLine($"{key}: ");
