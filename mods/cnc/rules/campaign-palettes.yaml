@@ -94,3 +94,7 @@ HARV.Husk:
 MCV.Husk:
 	RenderSprites:
 		PlayerPalette: player
+
+LST:
+	RenderSprites:
+		Palette: terrain
