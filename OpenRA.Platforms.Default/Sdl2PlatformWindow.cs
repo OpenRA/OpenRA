@@ -101,6 +101,8 @@ namespace OpenRA.Platforms.Default
 
 		public bool IsSuspended { get; internal set; }
 
+		internal bool IsMouseFocusGrabbed { get; private set; }
+
 		public GLProfile GLProfile
 		{
 			get
@@ -485,12 +487,14 @@ namespace OpenRA.Platforms.Default
 		{
 			VerifyThreadAffinity();
 			SDL.SDL_SetWindowGrab(Window, SDL.SDL_bool.SDL_TRUE);
+			IsMouseFocusGrabbed = true;
 		}
 
 		public void ReleaseWindowMouseFocus()
 		{
 			VerifyThreadAffinity();
 			SDL.SDL_SetWindowGrab(Window, SDL.SDL_bool.SDL_FALSE);
+			IsMouseFocusGrabbed = false;
 		}
 
 		public void PumpInput(IInputHandler inputHandler)
