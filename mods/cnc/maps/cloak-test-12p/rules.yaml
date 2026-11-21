@@ -1,0 +1,8 @@
+World:
+	-SpawnStartingUnits:
+	-CrateSpawner:
+	-ObjectivesPanel:
+
+Player:
+	-ConquestVictoryConditions:
+	-MissionObjectives:
