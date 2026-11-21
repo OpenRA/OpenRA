@@ -1,0 +1,150 @@
+World:
+	LuaScript:
+		Scripts: allies12.lua, allies12-AI.lua, campaign.lua, utils.lua
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: ally12.vqa
+		StartVideo: assess.vqa
+		WinVideo: aftrmath.vqa
+		LossVideo: frozen.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+	TimeLimitManager:
+		SkipTimerExpiredNotification: true
+		CountdownLabel: MISSION_TEXT
+		CountdownText: Soviet nuclear missile ready for launch in {0}
+
+LST.Reinforcement:
+	Inherits: LST
+	RejectsOrders:
+	-Buildable:
+	-Selectable:
+	RenderSprites:
+		Image: lst
+	Interactable:
+
+powerproxy.paratroopers:
+	ParatroopersPower:
+		DropItems: E1,E2,E2,E4,E4
+
+CA.blind:
+	Inherits: CA
+	RevealsShroud:
+		Range: 0c0
+	-RevealsShroud@GAPGEN:
+	Buildable:
+		Prerequisites: ~disabled
+	RenderSprites:
+		Image: ca
+	Armament@PRIMARY:
+		Name: primary
+		Turret: primary
+		Weapon: 8InchFast
+	Armament@SECONDARY:
+		Name: secondary
+		Turret: secondary
+		Weapon: 8InchFast
+
+V01:
+	SpawnActorOnDeath:
+		Actor: moneycrate
+		Offset: 0,1
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+MONEYCRATE:
+	GiveCashCrateAction:
+		Amount: 2000
+
+PROC:
+	InfiltrateForCash:
+		-Percentage:
+		Minimum: 0
+		Maximum: 2000
+
+SILO:
+	InfiltrateForCash:
+		-Percentage:
+		Minimum: 0
+		Maximum: 5000
+		Types: ThiefInfiltrate
+
+STEK:
+	Buildable:
+		Prerequisites: ~disabled
+	GrantConditionOnBotOwner@NOSELL:
+		Condition: soviet-owned
+		Bots: campaign
+	Sellable:
+		RequiresCondition: soviet-owned && !being-demolished && !being-captured
+	Targetable:
+		TargetTypes: GroundActor, Structure, C4, DetonateAttack
+
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+3TNK:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+V2RL:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+4TNK:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+	ScriptTags:
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+IRON:
+	Buildable:
+		Prerequisites: ~disabled
+	Capturable:
+		Types: ~disabled
+
+MSLO:
+	-WithColoredOverlay@IDISABLE:
+	NukePower:
+		DisplayTimerRelationships: Neutral
+	Buildable:
+		Prerequisites: ~disabled
+	Capturable:
+		Types: ~disabled
+
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+
+THF:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSUB:
+	Buildable:
+		Prerequisites: ~disabled
