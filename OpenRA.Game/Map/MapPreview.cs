@@ -38,7 +38,8 @@ namespace OpenRA
 		System = 1,
 		User = 2,
 		Remote = 4,
-		Generated = 8
+		Generated = 8,
+		Community = 16,
 	}
 
 	[SuppressMessage("StyleCop.CSharp.NamingRules",
@@ -556,23 +557,24 @@ namespace OpenRA
 			});
 		}
 
-		public void BeginRemoteSearch()
+		public void BeginRemoteSearch(MapClassification targetClass = MapClassification.Remote)
 		{
 			var newData = innerData.Clone();
-			newData.Class = MapClassification.Remote;
+			newData.Class = targetClass;
 			newData.Status = MapStatus.Searching;
 
 			// We may have been resolved to a local/generated map by another
 			// async task. Make sure we don't stomp over their state!
 			lock (syncRoot)
-				if (innerData.Class == MapClassification.Unknown || innerData.Class == MapClassification.Remote)
+				if (innerData.Class == MapClassification.Unknown || innerData.Class == targetClass)
 					innerData = newData;
 		}
 
-		public void CompleteRemoteSearch(MiniYaml yaml, Action<MapPreview> parseMetadata = null)
+		public void CompleteRemoteSearch(MiniYaml yaml, Action<MapPreview> parseMetadata = null,
+			MapClassification targetClass = MapClassification.Remote)
 		{
 			var newData = innerData.Clone();
-			newData.Class = MapClassification.Remote;
+			newData.Class = targetClass;
 			newData.Status = MapStatus.Unavailable;
 
 			if (yaml != null)
@@ -639,11 +641,11 @@ namespace OpenRA
 			lock (syncRoot)
 			{
 				mapClassification = innerData.Class;
-				if (mapClassification == MapClassification.Remote)
+				if (mapClassification == targetClass)
 					innerData = newData;
 			}
 
-			if (mapClassification == MapClassification.Remote)
+			if (mapClassification == targetClass)
 			{
 				if (innerData.Preview != null)
 					cache.CacheMinimap(this);
