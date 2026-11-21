@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -36,18 +35,12 @@ namespace OpenRA.Mods.Common.Traits
 		void IPaletteModifier.AdjustPalette(IReadOnlyDictionary<string, MutablePalette> b)
 		{
 			var i = (int)t;
+			var p = b[paletteName];
 
-			// Also affects the per-player variants (paletteName + player name)
-			foreach (var (name, p) in b)
+			for (var j = 0; j < colors.Length; j++)
 			{
-				if (!name.StartsWith(paletteName, StringComparison.Ordinal))
-					continue;
-
-				for (var j = 0; j < colors.Length; j++)
-				{
-					var k = (i + j) % 16 + 0xb0;
-					p.SetColor(k, colors[j]);
-				}
+				var k = (i + j) % 16 + 0xb0;
+				p.SetColor(k, colors[j]);
 			}
 		}
 
