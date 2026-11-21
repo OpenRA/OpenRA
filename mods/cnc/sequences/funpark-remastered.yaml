@@ -1,0 +1,23 @@
+steg:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\STEG.ZIP
+	icon:
+		RemasteredFilename:
+
+trex:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\TREX.ZIP
+	icon:
+		RemasteredFilename:
+
+tric:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\TRIC.ZIP
+	icon:
+		RemasteredFilename:
+
+rapt:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\RAPT.ZIP
+	icon:
+		RemasteredFilename:

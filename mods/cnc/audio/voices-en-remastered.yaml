@@ -1,0 +1,52 @@
+GenericVoice:
+	DefaultVariant: .WAV
+	Variants:
+		nod: .V01_EN-US.WAV, .V03_EN-US.WAV
+		gdi: .V01_EN-US.WAV, .V03_EN-US.WAV
+	Prefixes:
+		nod: EN-US\TDR_SFX_UNT_
+		gdi: EN-US\TDR_SFX_UNT_
+	Voices:
+		Attack: AFFIRM1.V01_EN-US, AFFIRM1.V03_EN-US, RITAWAY.V01_EN-US, RITAWAY.V03_EN-US, UGOTIT.V01_EN-US, UGOTIT.V03_EN-US, NOPROB.V01_EN-US, NOPROB.V02_EN-US, YESSIR1.V01_EN-US, YESSIR1.V03_EN-US
+	DisableVariants: Die, Burned, Zapped, Poisoned, Attack
+
+VehicleVoice:
+	Variants:
+		nod: .V00_EN-US.WAV, .V02_EN-US.WAV
+		gdi: .V00_EN-US.WAV, .V02_EN-US.WAV
+	Prefixes:
+		nod: EN-US\TDR_SFX_UNT_
+		gdi: EN-US\TDR_SFX_UNT_
+
+CivilianMaleVoice:
+	Variants:
+		nod: _EN-US.WAV
+		gdi: _EN-US.WAV
+	Prefixes:
+		nod: EN-US\TDR_SFX_UNT_
+		gdi: EN-US\TDR_SFX_UNT_
+
+CivilianFemaleVoice:
+	Variants:
+		nod: _EN-US.WAV
+		gdi: _EN-US.WAV
+	Prefixes:
+		nod: EN-US\TDR_SFX_UNT_
+		gdi: EN-US\TDR_SFX_UNT_
+
+MoebiusVoice:
+	Variants:
+		nod: _EN-US.WAV
+		gdi: _EN-US.WAV
+	Prefixes:
+		nod: EN-US\TDR_SFX_UNT_
+		gdi: EN-US\TDR_SFX_UNT_
+
+CommandoVoice:
+	Variants:
+		nod: _EN-US.WAV
+		gdi: _EN-US.WAV
+	Prefixes:
+		nod: EN-US\TDR_SFX_CMD_
+		gdi: EN-US\TDR_SFX_CMD_
+TDR

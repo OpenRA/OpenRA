@@ -1,0 +1,51 @@
+c1:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\C1.ZIP
+
+c2:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\C2.ZIP
+
+c3:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\C3.ZIP
+
+c4:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\C4.ZIP
+
+c5:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\C5.ZIP
+
+c6:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\C6.ZIP
+
+c7:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\C7.ZIP
+
+c8:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\C8.ZIP
+
+c9:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\C9.ZIP
+
+c10:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\C10.ZIP
+
+delphi:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\DELPHI.ZIP
+
+moebius:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\MOEBIUS.ZIP
+
+chan:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\CHAN.ZIP

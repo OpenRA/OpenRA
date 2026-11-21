@@ -1,0 +1,1198 @@
+split2:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\SPLIT2\SPLIT2.TEM-{0:D4}.DDS
+			Count: 55
+		RemasteredOffset: 59, -80
+		RemasteredPremultiplied: false
+
+split3:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\SPLIT3\SPLIT3.TEM-{0:D4}.DDS
+			Count: 55
+		RemasteredOffset: 37, -69
+		RemasteredPremultiplied: false
+
+rock1:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\ROCK1.DES\ROCK1.DES-0000.DDS
+		RemasteredPremultiplied: false
+
+rock2:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\ROCK2.DES\ROCK2.DES-0000.DDS
+		RemasteredPremultiplied: false
+
+rock3:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\ROCK3.DES\ROCK3.DES-0000.DDS
+		RemasteredPremultiplied: false
+
+rock4:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\ROCK4.DES\ROCK4.DES-0000.DDS
+		RemasteredPremultiplied: false
+
+rock5:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\ROCK5.DES\ROCK5.DES-0000.DDS
+		RemasteredPremultiplied: false
+
+rock6:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\ROCK6.DES\ROCK6.DES-0000.DDS
+		RemasteredPremultiplied: false
+
+rock7:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\ROCK7.DES\ROCK7.DES-0000.DDS
+		RemasteredPremultiplied: false
+
+tc04:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\TC04\TC04.TEM-{0:D4}.DDS
+			Count: 2
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\TC04.WIN\TC04.WIN-{0:D4}.DDS
+				Count: 2
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\TC04.WIN\TC04.WIN-{0:D4}.DDS
+				Count: 2
+		RemasteredPremultiplied: false
+
+tc04.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\TC04\TC04.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\TC04.WIN\TC04.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\TC04.WIN\TC04.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+tc05:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\TC05\TC05.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\TC05.WIN\TC05.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\TC05.WIN\TC05.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+tc05.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\TC05\TC05.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\TC05.WIN\TC05.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\TC05.WIN\TC05.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+tc03:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\TC03\TC03.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\TC03.WIN\TC03.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\TC03.WIN\TC03.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+tc03.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\TC03\TC03.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\TC03.WIN\TC03.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\TC03.WIN\TC03.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+tc02:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\TC02\TC02.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\TC02.WIN\TC02.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\TC02.WIN\TC02.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+tc02.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\TC02\TC02.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\TC02.WIN\TC02.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\TC02.WIN\TC02.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+tc01:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\TC01\TC01.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\TC01.WIN\TC01.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\TC01.WIN\TC01.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+tc01.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\TC01\TC01.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\TC01.WIN\TC01.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\TC01.WIN\TC01.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+t18:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\T18.DES\T18.DES-{0:D4}.DDS
+			Count: 3
+		RemasteredPremultiplied: false
+
+t18.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\T18.DES\T18.DES-{0:D4}.DDS
+			Count: 3
+		RemasteredPremultiplied: false
+
+t17:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T17\T17.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T17.WIN\T17.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T17.WIN\T17.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+t17.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T17\T17.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T17.WIN\T17.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T17.WIN\T17.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+t16:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T16\T16.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T16.WIN\T16.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T16.WIN\T16.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+t16.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T16\T16.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T16.WIN\T16.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T16.WIN\T16.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+t15:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T15\T15.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T15.WIN\T15.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T15.WIN\T15.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+t15.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T15\T15.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T15.WIN\T15.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T15.WIN\T15.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+t14:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T14\T14.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T14.WIN\T14.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T14.WIN\T14.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+t14.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T14\T14.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T14.WIN\T14.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T14.WIN\T14.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+t13:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T13\T13.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T13.WIN\T13.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T13.WIN\T13.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+t13.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T13\T13.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T13.WIN\T13.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T13.WIN\T13.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+t12:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T12\T12.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T12.WIN\T12.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T12.WIN\T12.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+t12.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T12\T12.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T12.WIN\T12.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T12.WIN\T12.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+t11:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T11\T11.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T11.WIN\T11.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T11.WIN\T11.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+t11.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T11\T11.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T11.WIN\T11.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T11.WIN\T11.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+t10:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T10\T10.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T10.WIN\T10.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T10.WIN\T10.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+t10.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T10\T10.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T10.WIN\T10.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T10.WIN\T10.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+t09:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\T09.DES\T09.DES-{0:D4}.DDS
+			Count: 3
+		RemasteredPremultiplied: false
+
+t09.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\T09.DES\T09.DES-{0:D4}.DDS
+			Count: 3
+		RemasteredPremultiplied: false
+
+t08:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T08\T08.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T08.WIN\T08.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T08.WIN\T08.WIN-{0:D4}.DDS
+				Count: 3
+			DESERT: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\T08.DES\T08.DES-{0:D4}.DDS
+				Count: 3
+		RemasteredScale: 0.5
+		RemasteredTilesetScales:
+			DESERT: 1.0
+		RemasteredPremultiplied: false
+
+t08.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T08\T08.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T08.WIN\T08.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T08.WIN\T08.WIN-{0:D4}.DDS
+				Count: 3
+			DESERT: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\T08.DES\T08.DES-{0:D4}.DDS
+				Count: 3
+		RemasteredScale: 0.5
+		RemasteredTilesetScales:
+			DESERT: 1.0
+		RemasteredPremultiplied: false
+
+t07:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T07\T07.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T07.WIN\T07.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T07.WIN\T07.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+t07.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T07\T07.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T07.WIN\T07.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T07.WIN\T07.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+t06:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T06\T06.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T06.WIN\T06.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T06.WIN\T06.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+t06.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T06\T06.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T06.WIN\T06.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T06.WIN\T06.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+t05:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T05\T05.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T05.WIN\T05.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T05.WIN\T05.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+t05.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T05\T05.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T05.WIN\T05.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T05.WIN\T05.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+t04:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\T04.DES\T04.DES-{0:D4}.DDS
+			Count: 3
+		RemasteredPremultiplied: false
+
+t04.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\T04.DES\T04.DES-{0:D4}.DDS
+			Count: 3
+		RemasteredPremultiplied: false
+
+t03:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T03\T03.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T03.WIN\T03.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T03.WIN\T03.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+t03.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T03\T03.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T03.WIN\T03.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T03.WIN\T03.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+t02:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T02\T02.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T02.WIN\T02.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T02.WIN\T02.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+t02.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T02\T02.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T02.WIN\T02.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T02.WIN\T02.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+t01:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T01\T01.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T01.WIN\T01.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T01.WIN\T01.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+t01.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\T01\T01.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T01.WIN\T01.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\T01.WIN\T01.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v01:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V01\V01.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V01.WIN\V01.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V01.WIN\V01.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v01.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V01\V01.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V01.WIN\V01.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V01.WIN\V01.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v02:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V02\V02.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V02.WIN\V02.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V02.WIN\V02.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v02.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V02\V02.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V02.WIN\V02.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V02.WIN\V02.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v03:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V03\V03.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V03.WIN\V03.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V03.WIN\V03.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v03.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V03\V03.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V03.WIN\V03.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V03.WIN\V03.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v04:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V04\V04.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V04.WIN\V04.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V04.WIN\V04.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v04.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V04\V04.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V04.WIN\V04.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V04.WIN\V04.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v05:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V05\V05.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V05.WIN\V05.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V05.WIN\V05.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v05.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V05\V05.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V05.WIN\V05.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V05.WIN\V05.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v06:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V06\V06.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V06.WIN\V06.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V06.WIN\V06.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v06.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V06\V06.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V06.WIN\V06.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V06.WIN\V06.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v07:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V07\V07.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V07.WIN\V07.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V07.WIN\V07.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v07.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V07\V07.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V07.WIN\V07.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V07.WIN\V07.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v08:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V08\V08.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V08.WIN\V08.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V08.WIN\V08.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v08.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V08\V08.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V08.WIN\V08.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V08.WIN\V08.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v09:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V09\V09.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V09.WIN\V09.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V09.WIN\V09.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v09.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V09\V09.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V09.WIN\V09.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V09.WIN\V09.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v10:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V10\V10.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V10.WIN\V10.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V10.WIN\V10.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v10.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V10\V10.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V10.WIN\V10.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V10.WIN\V10.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v11:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V11\V11.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V11.WIN\V11.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V11.WIN\V11.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v11.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V11\V11.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V11.WIN\V11.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V11.WIN\V11.WIN-{0:D4}.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v12:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V12\V12.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\RED_ALERT\TERRAIN\SNOW\V12.SNO\V12.SNO-0000.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\RED_ALERT\TERRAIN\SNOW\V12.SNO\V12.SNO-0000.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v12.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V12\V12.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\RED_ALERT\TERRAIN\SNOW\V12.SNO\V12.SNO-0001.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\RED_ALERT\TERRAIN\SNOW\V12.SNO\V12.SNO-0001.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v13:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V13\V13.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\RED_ALERT\TERRAIN\SNOW\V13.SNO\V13.SNO-0000.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\RED_ALERT\TERRAIN\SNOW\V13.SNO\V13.SNO-0000.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v13.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V13\V13.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\RED_ALERT\TERRAIN\SNOW\V13.SNO\V13.SNO-0001.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\RED_ALERT\TERRAIN\SNOW\V13.SNO\V13.SNO-0001.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v14:
+	Defaults:
+		RemasteredScale: 0.5
+		RemasteredTilesetScales:
+			SNOW: 1.0
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V14\V14.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V14.WIN\V14.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\RED_ALERT\TERRAIN\SNOW\V14.SNO\V14.SNO-0000.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v14.husk:
+	Defaults:
+		RemasteredScale: 0.5
+		RemasteredTilesetScales:
+			SNOW: 1.0
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V14\V14.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V14.WIN\V14.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\RED_ALERT\TERRAIN\SNOW\V14.SNO\V14.SNO-0001.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v15:
+	Defaults:
+		RemasteredScale: 0.5
+		RemasteredTilesetScales:
+			SNOW: 1.0
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V15\V15.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V15.WIN\V15.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\RED_ALERT\TERRAIN\SNOW\V15.SNO\V15.SNO-0000.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v15.husk:
+	Defaults:
+		RemasteredScale: 0.5
+		RemasteredTilesetScales:
+			SNOW: 1.0
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V15\V15.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V15.WIN\V15.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\RED_ALERT\TERRAIN\SNOW\V15.SNO\V15.SNO-0001.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v16:
+	Defaults:
+		RemasteredScale: 0.5
+		RemasteredTilesetScales:
+			SNOW: 1.0
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V16\V16.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V16.WIN\V16.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\RED_ALERT\TERRAIN\SNOW\V16.SNO\V16.SNO-0000.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v16.husk:
+	Defaults:
+		RemasteredScale: 0.5
+		RemasteredTilesetScales:
+			SNOW: 1.0
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V16\V16.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V16.WIN\V16.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\RED_ALERT\TERRAIN\SNOW\V16.SNO\V16.SNO-0001.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v17:
+	Defaults:
+		RemasteredScale: 0.5
+		RemasteredTilesetScales:
+			SNOW: 1.0
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V17\V17.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V17.WIN\V17.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\RED_ALERT\TERRAIN\SNOW\V17.SNO\V17.SNO-0000.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v17.husk:
+	Defaults:
+		RemasteredScale: 0.5
+		RemasteredTilesetScales:
+			SNOW: 1.0
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V17\V17.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V17.WIN\V17.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\RED_ALERT\TERRAIN\SNOW\V17.SNO\V17.SNO-0001.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v18:
+	Defaults:
+		RemasteredScale: 0.5
+		RemasteredTilesetScales:
+			SNOW: 1.0
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V18\V18.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V18.WIN\V18.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\RED_ALERT\TERRAIN\SNOW\V18.SNO\V18.SNO-0000.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v18.husk:
+	Defaults:
+		RemasteredScale: 0.5
+		RemasteredTilesetScales:
+			SNOW: 1.0
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\V18\V18.TEM-{0:D4}.DDS
+			Count: 3
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\V18.WIN\V18.WIN-{0:D4}.DDS
+				Count: 3
+			SNOW: DATA\ART\TEXTURES\SRGB\RED_ALERT\TERRAIN\SNOW\V18.SNO\V18.SNO-0001.DDS
+				Count: 3
+		RemasteredPremultiplied: false
+
+v19:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\V19.ZIP
+
+v19.husk:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\V19.ZIP
+	fire-start:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\FLMSPT.ZIP
+		RemasteredOffset: 37, -80
+	fire-loop:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\FLMSPT.ZIP
+		RemasteredOffset: 37, -80
+
+v20:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V20.DES\V20.DES-{0:D4}.DDS
+			Count: 6
+		RemasteredPremultiplied: false
+
+v20.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V20.DES\V20.DES-{0:D4}.DDS
+			Count: 7
+		RemasteredPremultiplied: false
+
+v21:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V21.DES\V21.DES-{0:D4}.DDS
+			Count: 6
+		RemasteredPremultiplied: false
+
+v21.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V21.DES\V21.DES-{0:D4}.DDS
+			Count: 7
+		RemasteredPremultiplied: false
+
+v22:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V22.DES\V22.DES-{0:D4}.DDS
+			Count: 6
+		RemasteredPremultiplied: false
+
+v22.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V22.DES\V22.DES-{0:D4}.DDS
+			Count: 7
+		RemasteredPremultiplied: false
+
+v23:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V23.DES\V23.DES-{0:D4}.DDS
+			Count: 6
+		RemasteredPremultiplied: false
+
+v23.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V23.DES\V23.DES-{0:D4}.DDS
+			Count: 7
+		RemasteredPremultiplied: false
+
+v24:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V24.DES\V24.DES-{0:D4}.DDS
+			Count: 2
+		RemasteredPremultiplied: false
+
+v24.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V24.DES\V24.DES-{0:D4}.DDS
+			Count: 3
+		RemasteredPremultiplied: false
+
+v25:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V25.DES\V25.DES-{0:D4}.DDS
+			Count: 2
+		RemasteredPremultiplied: false
+
+v25.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V25.DES\V25.DES-{0:D4}.DDS
+			Count: 3
+		RemasteredPremultiplied: false
+
+v26:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V26.DES\V26.DES-{0:D4}.DDS
+			Count: 2
+		RemasteredPremultiplied: false
+
+v26.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V26.DES\V26.DES-{0:D4}.DDS
+			Count: 3
+		RemasteredPremultiplied: false
+
+v27:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V27.DES\V27.DES-{0:D4}.DDS
+			Count: 2
+		RemasteredPremultiplied: false
+
+v27.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V27.DES\V27.DES-{0:D4}.DDS
+			Count: 3
+		RemasteredPremultiplied: false
+
+v28:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V28.DES\V28.DES-{0:D4}.DDS
+			Count: 2
+		RemasteredPremultiplied: false
+
+v28.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V28.DES\V28.DES-{0:D4}.DDS
+			Count: 3
+		RemasteredPremultiplied: false
+
+v29:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V29.DES\V29.DES-{0:D4}.DDS
+			Count: 2
+		RemasteredPremultiplied: false
+
+v29.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V29.DES\V29.DES-{0:D4}.DDS
+			Count: 3
+		RemasteredPremultiplied: false
+
+v30:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V30.DES\V30.DES-{0:D4}.DDS
+			Count: 3
+		RemasteredPremultiplied: false
+
+v30.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V30.DES\V30.DES-{0:D4}.DDS
+			Count: 3
+		RemasteredPremultiplied: false
+
+v31:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V31.DES\V31.DES-{0:D4}.DDS
+			Count: 2
+		RemasteredPremultiplied: false
+
+v31.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V31.DES\V31.DES-{0:D4}.DDS
+			Count: 3
+		RemasteredPremultiplied: false
+
+v32:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V32.DES\V32.DES-{0:D4}.DDS
+			Count: 2
+		RemasteredPremultiplied: false
+
+v32.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V32.DES\V32.DES-{0:D4}.DDS
+			Count: 3
+		RemasteredPremultiplied: false
+
+v33:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V33.DES\V33.DES-{0:D4}.DDS
+			Count: 2
+		RemasteredPremultiplied: false
+
+v33.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V33.DES\V33.DES-{0:D4}.DDS
+			Count: 3
+		RemasteredPremultiplied: false
+
+v34:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V34.DES\V34.DES-{0:D4}.DDS
+			Count: 2
+		RemasteredPremultiplied: false
+
+v34.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V34.DES\V34.DES-{0:D4}.DDS
+			Count: 3
+		RemasteredPremultiplied: false
+
+v35:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V35.DES\V35.DES_{0:D4}.DDS
+			Count: 2
+		RemasteredPremultiplied: false
+
+v35.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V35.DES\V35.DES_{0:D4}.DDS
+			Count: 3
+		RemasteredPremultiplied: false
+
+v36:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V36.DES\V36.DES_{0:D4}.DDS
+			Count: 2
+		RemasteredPremultiplied: false
+
+v36.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V36.DES\V36.DES_{0:D4}.DDS
+			Count: 3
+		RemasteredPremultiplied: false
+
+v37:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V37.DES\V37.DES_{0:D4}.DDS
+			Count: 2
+		RemasteredPremultiplied: false
+
+v37.husk:
+	Defaults:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\V37.DES\V37.DES_{0:D4}.DDS
+			Count: 3
+		RemasteredPremultiplied: false
+
+arco:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\ARCO.ZIP
+
+arco.husk:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\ARCO.ZIP

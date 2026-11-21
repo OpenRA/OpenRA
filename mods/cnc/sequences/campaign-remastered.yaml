@@ -1,0 +1,17 @@
+lst:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\LST.ZIP
+	icon:
+		RemasteredFilename:
+
+boat:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\BOAT.ZIP
+	wake-left:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\WAKE.ZIP
+		RemasteredOffset: 5, 11
+	wake-right:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\WAKE.ZIP
+		RemasteredOffset: -5,11
+	icon:
+		RemasteredFilename:

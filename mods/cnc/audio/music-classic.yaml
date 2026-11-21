@@ -1,0 +1,149 @@
+aoi: Act On Instinct
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_ACT_ON_INSTINCT
+	Extension: WAV
+airstrik: Air Strike
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_AIRSTRIKE
+	Extension: WAV
+ccthang: C&C Thang
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_CC_THANG
+	Extension: WAV
+ind2: Canyon Chase (Industrial 2)
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_CANYON_CHASE
+	Extension: WAV
+heavyg: Demolition (Heavy Gear)
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_DEMOLITION
+	Extension: WAV
+fwp: Fight Win Prevail
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_FIGHT_WIN_PREVAIL
+	Extension: WAV
+warfare: Full Stop (Warfare)
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_WARFARE_FULL_STOP
+	Extension: WAV
+win1: Great Shot!
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_GREAT_SHOT
+	Extension: WAV
+	Hidden: true
+win2: Great Shot! (Extended)
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_GREAT_SHOT_EXTENDED
+	Extension: WAV
+	Hidden: true
+iam: I Am - Times (Credits)
+	VolumeModifier: 0.6
+ind: Industrial
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_INDUSTRIAL
+	Extension: WAV
+linefire: In The Line Of Fire
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_IN_THE_LINE_OF_FIRE
+	Extension: WAV
+trouble: In Trouble
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_IN_TROUBLE
+	Extension: WAV
+justdoit: Just Do It Up
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_JUST_DO_IT_UP
+	Extension: WAV
+justdoit2: Just Do It Up (SFX)
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_JUST_DO_IT_UP_OST_VERSION
+	Extension: WAV
+jdi_v2: Just Do It Up 2 (Take 'Em Out)
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_TAKE_EM_OUT
+	Extension: WAV
+map1: Map Theme
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_GDI_MAP_THEME
+	Extension: WAV
+	Hidden: true
+march: March To Doom
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_MARCH_TO_DOOM
+	Extension: WAV
+nod_map1: Nod Map Theme
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_NOD_MAP_THEME
+	Extension: WAV
+	Hidden: true
+nod_win1: Nod Win Theme
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_NOD_SCORE
+	Extension: WAV
+	Hidden: true
+nomercy: No Mercy
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_NO_MERCY
+	Extension: WAV
+nomercy2: No Mercy (SFX)
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_NO_MERCY_OST_VERSION
+	Extension: WAV
+otp: On The Prowl
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_ON_THE_PROWL
+	Extension: WAV
+outtakes: Outtakes (Censored)
+	Filename: DATA\AUDIO\MUSIC\TDB_MUS_CC_CREDITS_OUTTAKES
+	Extension: WAV
+	Hidden: true
+prp: Prepare For Battle
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_PREPARE_FOR_BATTLE
+	Extension: WAV
+radio: Radio
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_RADIO
+	Extension: WAV
+rain: Rain In The Night
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_RAIN_IN_THE_NIGHT
+	Extension: WAV
+target: Target (Mechanical Man)
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_TARGET_MECHANICAL_MAN
+	Extension: WAV
+j1: Untamed Land (Jungle)
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_UNTAMED_LAND
+	Extension: WAV
+valkyrie: Ride Of The Valkyries
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_RIDE_OF_THE_VALKYRIES
+	Extension: WAV
+	Hidden: true
+stopthem: We Will Stop Them (Deception)
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_WE_WILL_STOP_THEM_DECEPTION
+	Extension: WAV
+deception: We Will Stop Them (SFX)
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_WE_WILL_STOP_THEM_DECEPTION_OST_VERSION
+	Extension: WAV
+aoi2: Act On Instinct (SFX)
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_ACT_ON_INSTINCT_OST_VERSION
+	Extension: WAV
+befeared: To Be Feared
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_TO_BE_FEARED
+	Extension: WAV
+befeared2: To Be Feared (SFX)
+	Filename: befeared
+	Extension: var
+die: Die
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_DIE
+	Extension: WAV
+heart: Heartbreak
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_HEARTBREAK
+	Extension: WAV
+trouble2: In Trouble (SFX)
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_IN_TROUBLE_OST_VERSION
+	Extension: WAV
+rout: Reaching Out
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_REACHING_OUT
+	Extension: WAV
+
+# Covert Operations tracks
+80mx226m: C&C 80's Mix
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_CC_80S_MIX
+	Extension: WAV
+crep226m: Creeping Upon
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_CREEPING_UPON
+	Extension: WAV
+chrg226m: Depth Charge
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_DEPTH_CHARGE
+	Extension: WAV
+dril226m: Drill
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_DRILL
+	Extension: WAV
+dron226m: Drone
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_DRONE
+	Extension: WAV
+fist226m: Iron Fist
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_IRON_FIST
+	Extension: WAV
+recn226m: Recon
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_RECON
+	Extension: WAV
+voic226m: Voice Rhythm
+	Filename: DATA\AUDIO\MUSIC\TDC_MUS_VOICE_RHYTHM
+	Extension: WAV

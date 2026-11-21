@@ -1,0 +1,381 @@
+fact:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\FACT.ZIP
+	make:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\FACTMAKE.ZIP
+	bib:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\BIB2\BIB2.TEM-{0:D4}.DDS
+			Count: 6
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\BIB2.WIN\BIB2.WIN-{0:D4}.DDS
+				Count: 6
+			DESERT: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\BIB2.DES\BIB2.DES-{0:D4}.DDS
+				Count: 6
+		RemasteredPremultiplied: false
+	icon:
+		RemasteredFilename:
+
+nuke:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\NUKE.ZIP
+	make:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\NUKEMAKE.ZIP
+	bib:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\BIB3\BIB3.TEM-{0:D4}.DDS
+			Count: 4
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\BIB3.WIN\BIB3.WIN-{0:D4}.DDS
+				Count: 4
+			DESERT: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\BIB3.DES\BIB3.DES-{0:D4}.DDS
+				Count: 4
+		RemasteredPremultiplied: false
+	icon:
+		RemasteredFilename:
+
+proc:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\PROC.ZIP
+		RemasteredOffset: 11, 21
+	make:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\PROCMAKE.ZIP
+	resources:
+		RemasteredMaskFilename: proctwr_mask.png
+		RemasteredOffset: 11, 21
+		RemasteredStart: 18
+	damaged-resources:
+		RemasteredMaskFilename: proctwr_damaged_mask.png
+		RemasteredOffset: 11, 21
+		RemasteredStart: 48
+	bib:
+		RemasteredOffset: 0, 0
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\BIB2\BIB2.TEM-{0:D4}.DDS
+			Count: 6
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\BIB2.WIN\BIB2.WIN-{0:D4}.DDS
+				Count: 6
+			DESERT: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\BIB2.DES\BIB2.DES-{0:D4}.DDS
+				Count: 6
+		RemasteredPremultiplied: false
+	icon:
+		RemasteredFilename:
+
+silo:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\SILO.ZIP
+		RemasteredOffset: 0,-5
+	make:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\SILOMAKE.ZIP
+	bib:
+		RemasteredFilename: blank.png
+	icon:
+		RemasteredFilename:
+
+hand:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\HAND.ZIP
+		RemasteredOffset: 0, -43
+	make:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\HANDMAKE.ZIP
+	bib:
+		RemasteredOffset: 0, 0
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\BIB3\BIB3.TEM-{0:D4}.DDS
+			Count: 4
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\BIB3.WIN\BIB3.WIN-{0:D4}.DDS
+				Count: 4
+			DESERT: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\BIB3.DES\BIB3.DES-{0:D4}.DDS
+				Count: 4
+		RemasteredPremultiplied: false
+	icon:
+		RemasteredFilename:
+
+pyle:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\PYLE.ZIP
+	make:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\PYLEMAKE.ZIP
+	bib:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\BIB3\BIB3.TEM-{0:D4}.DDS
+			Count: 4
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\BIB3.WIN\BIB3.WIN-{0:D4}.DDS
+				Count: 4
+			DESERT: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\BIB3.DES\BIB3.DES-{0:D4}.DDS
+				Count: 4
+		RemasteredPremultiplied: false
+	icon:
+		RemasteredFilename:
+
+weap:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\WEAP.ZIP
+		RemasteredOffset: 0,-64
+	build-top:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\WEAP2.ZIP
+	damaged-build-top:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\WEAP2.ZIP
+	place:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\WEAPMAKE.ZIP
+	make:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\WEAPMAKE.ZIP
+	bib:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\BIB2\BIB2.TEM-{0:D4}.DDS
+			Count: 6
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\BIB2.WIN\BIB2.WIN-{0:D4}.DDS
+				Count: 6
+			DESERT: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\BIB2.DES\BIB2.DES-{0:D4}.DDS
+				Count: 6
+		RemasteredOffset: 0,0
+		RemasteredPremultiplied: false
+	icon:
+		RemasteredFilename:
+
+afld:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\AFLD.ZIP
+	idle:
+		RemasteredMaskFilename: afld_mask.png
+	damaged-idle:
+		RemasteredMaskFilename: afld_damaged_mask.png
+	active:
+		RemasteredMaskFilename: afld_active_mask.png
+	damaged-active:
+		RemasteredMaskFilename: afld_active_damaged_mask.png
+	idle-dish:
+		RemasteredMaskFilename: afld_dish_mask.png
+	damaged-idle-dish:
+		RemasteredMaskFilename: afld_dish_damaged_mask.png
+	make:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\AFLDMAKE.ZIP
+	bib:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\BIB1\BIB1.TEM-{0:D4}.DDS
+			Count: 8
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\BIB1.WIN\BIB1.WIN-{0:D4}.DDS
+				Count: 8
+			DESERT: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\BIB1.DES\BIB1.DES-{0:D4}.DDS
+				Count: 8
+		RemasteredPremultiplied: false
+	icon:
+		RemasteredFilename:
+
+hq:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\HQ.ZIP
+	make:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\HQMAKE.ZIP
+	bib:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\BIB3\BIB3.TEM-{0:D4}.DDS
+			Count: 4
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\BIB3.WIN\BIB3.WIN-{0:D4}.DDS
+				Count: 4
+			DESERT: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\BIB3.DES\BIB3.DES-{0:D4}.DDS
+				Count: 4
+		RemasteredPremultiplied: false
+	icon:
+		RemasteredFilename:
+
+nuk2:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\NUK2.ZIP
+	make:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\NUK2MAKE.ZIP
+	bib:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\BIB3\BIB3.TEM-{0:D4}.DDS
+			Count: 4
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\BIB3.WIN\BIB3.WIN-{0:D4}.DDS
+				Count: 4
+			DESERT: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\BIB3.DES\BIB3.DES-{0:D4}.DDS
+				Count: 4
+		RemasteredPremultiplied: false
+	icon:
+		RemasteredFilename:
+
+hpad:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\HPAD.ZIP
+	make:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\HPADMAKE.ZIP
+	icon:
+		RemasteredFilename:
+
+fix:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\FIX.ZIP
+	make:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\FIXMAKE.ZIP
+	bib:
+		RemasteredFilename: blank.png
+	icon:
+		RemasteredFilename:
+
+eye:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\EYE.ZIP
+	make:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\EYEMAKE.ZIP
+	bib:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\BIB3\BIB3.TEM-{0:D4}.DDS
+			Count: 4
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\BIB3.WIN\BIB3.WIN-{0:D4}.DDS
+				Count: 4
+			DESERT: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\BIB3.DES\BIB3.DES-{0:D4}.DDS
+				Count: 4
+		RemasteredPremultiplied: false
+	icon:
+		RemasteredFilename:
+
+tmpl:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\TMPL.ZIP
+		RemasteredOffset: 0,-64
+	smoke:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\ATOMDOOR.ZIP
+		RemasteredOffset: 3, -275
+	make:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\TMPLMAKE.ZIP
+	bib:
+		RemasteredFilenamePattern: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\TEMPERATE\BIB2\BIB2.TEM-{0:D4}.DDS
+			Count: 6
+		RemasteredTilesetFilenamesPattern:
+			WINTER: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\WINTER\BIB2.WIN\BIB2.WIN-{0:D4}.DDS
+				Count: 6
+			DESERT: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\TERRAIN\DESERT\BIB2.DES\BIB2.DES-{0:D4}.DDS
+				Count: 6
+		RemasteredOffset: 0, 0
+		RemasteredPremultiplied: false
+	icon:
+		RemasteredFilename:
+
+obli:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\OBLI.ZIP
+		RemasteredOffset: 0,-64
+	make:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\OBLIMAKE.ZIP
+	bib:
+		RemasteredFilename: blank.png
+	icon:
+		RemasteredFilename:
+
+brik:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\BRIK.ZIP
+	icon:
+		RemasteredFilename:
+
+sbag:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\SBAG.ZIP
+	icon:
+		RemasteredFilename:
+
+cycl:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\CYCL.ZIP
+	icon:
+		RemasteredFilename:
+
+barb:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\BARB.ZIP
+
+wood:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\WOOD.ZIP
+
+gun:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\GUN.ZIP
+	idle:
+		RemasteredFilename: blank.png
+	make:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\GUNMAKE.ZIP
+	bib:
+		RemasteredFilename: blank.png
+	muzzle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\GUNFIRE.ZIP
+	icon:
+		RemasteredFilename:
+
+sam:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\SAM.ZIP
+	make:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\SAMMAKE.ZIP
+	muzzle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\SAMFIRE.ZIP
+	icon:
+		RemasteredFilename:
+
+gtwr:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\GTWR.ZIP
+	make:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\GTWRMAKE.ZIP
+	muzzle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\MINIGUN.ZIP
+	bib:
+		RemasteredFilename: blank.png
+	icon:
+		RemasteredFilename:
+
+atwr:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\ATWR.ZIP
+		RemasteredOffset: 0, -69
+	make:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\ATWRMAKE.ZIP
+	muzzle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\GUNFIRE.ZIP
+	bib:
+		RemasteredFilename: blank.png
+	icon:
+		RemasteredFilename:
+
+hosp:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\HOSP.ZIP
+		RemasteredOffset: 0, -11
+	make:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\HOSPMAKE.ZIP
+	bib:
+		RemasteredFilename: blank.png
+
+hosp.husk:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\HOSP.ZIP
+		RemasteredOffset: 0, -11
+	bib:
+		RemasteredFilename: blank.png
+
+bio:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\BIO.ZIP
+	make:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\BIOMAKE.ZIP
+
+bio.husk:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\BIO.ZIP
+
+miss:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\MISS.ZIP
+		RemasteredOffset: 0, -5
+	make:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\MISS.ZIP
+	bib:
+		RemasteredFilename: blank.png
+	icon:
+		RemasteredFilename:
+
+miss.husk:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\MISS.ZIP
+	bib:
+		RemasteredFilename: blank.png
