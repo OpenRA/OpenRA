@@ -67,6 +67,12 @@ namespace OpenRA.Mods.Common.AudioLoaders
 		public int SampleRate => mp3.Frequency;
 		public float LengthInSeconds { get; }
 		public Stream GetPCMInputStream() { return new MP3Stream(Clone(this)); }
+		public byte[] GetPCMData()
+		{
+			using var pcmStream = GetPCMInputStream();
+			return pcmStream.ReadAllBytes();
+		}
+
 		public void Dispose() { mp3.Dispose(); }
 
 		readonly MP3Stream mp3;

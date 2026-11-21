@@ -42,6 +42,12 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 		public int SampleRate { get; }
 		public float LengthInSeconds => (float)totalSamples / SampleRate;
 		public Stream GetPCMInputStream() { return new VocStream(new VocFormat(this)); }
+		public byte[] GetPCMData()
+		{
+			using var pcmStream = GetPCMInputStream();
+			return pcmStream.ReadAllBytes();
+		}
+
 		public void Dispose() { stream.Dispose(); }
 
 		readonly byte[] buffer = new byte[4096];

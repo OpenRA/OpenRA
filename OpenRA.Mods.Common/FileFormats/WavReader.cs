@@ -21,9 +21,11 @@ namespace OpenRA.Mods.Common.FileFormats
 	{
 		enum WaveType : short { Pcm = 0x1, MsAdpcm = 0x2, ImaAdpcm = 0x11 }
 
-		public static bool LoadSound(Stream s, out Func<Stream> result, out short channels, out int sampleBits, out int sampleRate, out float lengthInSeconds)
+		public static bool LoadSound(Stream s, out Func<Stream> result, out Func<byte[]> data,
+			out short channels, out int sampleBits, out int sampleRate, out float lengthInSeconds)
 		{
 			result = null;
+			data = null;
 			channels = -1;
 			sampleBits = -1;
 			sampleRate = -1;
@@ -41,7 +43,6 @@ namespace OpenRA.Mods.Common.FileFormats
 			WaveType audioType = 0;
 			var dataOffset = -1L;
 			var dataSize = -1;
-			var uncompressedSize = -1;
 			short blockAlign = -1;
 			while (s.Position < s.Length)
 			{
@@ -53,7 +54,6 @@ namespace OpenRA.Mods.Common.FileFormats
 
 				var blockType = s.ReadASCII(4);
 				var chunkSize = s.ReadUInt32();
-
 				switch (blockType)
 				{
 					case "fmt ":
@@ -71,18 +71,15 @@ namespace OpenRA.Mods.Common.FileFormats
 						lengthInSeconds = (float)(s.Length * 8) / (channels * sampleRate * sampleBits);
 						s.Position += chunkSize - 16; // Ignoring any optional extra params
 						break;
-					case "fact":
-						uncompressedSize = s.ReadInt32();
-						s.Position += chunkSize - 4; // Ignoring other formats than ADPCM, fact chunk not in standard PCM files
-						break;
 					case "data":
 						if (s.Position + chunkSize > s.Length)
 							chunkSize = (uint)(s.Length - s.Position); // Handle defective data chunk size by assuming it's the remainder of the file
 
-						dataOffset = s.Position;
 						dataSize = (int)chunkSize;
-						s.Position += chunkSize;
+						dataOffset = s.Position;
+						s.Position += dataSize;
 						break;
+					case "fact": // This chunk is often wrong, we will recalculate sample count ourselves
 					case "LIST":
 					case "cue ":
 					default:
@@ -103,101 +100,279 @@ namespace OpenRA.Mods.Common.FileFormats
 			{
 				var audioStream = SegmentStream.CreateWithoutOwningStream(s, dataOffset, dataSize);
 				if (audioType == WaveType.ImaAdpcm)
-					return new WavStreamImaAdpcm(audioStream, dataSize, blockAlign, chan, uncompressedSize);
+					return new WavStreamImaAdpcm(audioStream, dataSize, blockAlign, chan);
 				if (audioType == WaveType.MsAdpcm)
 					return new WavStreamMsAdpcm(audioStream, dataSize, blockAlign, chan);
 
 				return audioStream; // Data is already PCM format.
 			};
 
+			data = () =>
+			{
+				var currentPosition = s.Position;
+				byte[] data;
+				switch (audioType)
+				{
+					case WaveType.ImaAdpcm:
+						data = ImaAdpcmReader.ReadData(s, dataOffset, dataSize, blockAlign, chan);
+						break;
+					case WaveType.MsAdpcm:
+						var msStream = new WavStreamMsAdpcm(s, dataSize, blockAlign, chan);
+						data = msStream.ReadAllBytes();
+
+						break;
+					default:
+						s.Position = dataOffset;
+
+						// Data is already PCM format.
+						data = s.ReadBytes(dataSize);
+						break;
+				}
+
+				s.Position = currentPosition;
+
+				return data;
+			};
+
 			return true;
 		}
 
-		sealed class WavStreamImaAdpcm : ReadOnlyAdapterStream
+		sealed class WavStreamImaAdpcm : Stream
 		{
+			const int SamplesPerGroup = 8;
+			const int BytesPerSample = 2;
+
 			readonly short channels;
 			readonly int numBlocks;
-			readonly int blockDataSize;
-			readonly int outputSize;
-			readonly byte[] blockData;
+			readonly int inBlockDataSize;
+			readonly int outGroupSize;
 
-			int outOffset;
+			// NOTE: decoding a block is sequentually dependent on predictor/index.
+			readonly short[] predictor;
+			readonly byte[] index;
+
 			int currentBlock;
+			int inBlockOffset;
 
-			public WavStreamImaAdpcm(Stream stream, int dataSize, short blockAlign, short channels, int uncompressedSize)
-				: base(stream)
+			readonly byte[] ringBuf = new byte[8192];
+			int head, tail, count;
+
+			bool baseStreamEmpty;
+			readonly Stream baseStream;
+
+			public WavStreamImaAdpcm(Stream stream, int dataSize, short blockAlign, short channels)
 			{
-				this.channels = channels;
-				numBlocks = dataSize / blockAlign;
-				blockDataSize = blockAlign - channels * 4;
-				outputSize = uncompressedSize * channels * 2;
+				ArgumentNullException.ThrowIfNull(stream);
+				if (!stream.CanRead)
+					throw new ArgumentException("stream must be readable.", nameof(stream));
 
-				blockData = new byte[blockDataSize];
+				baseStream = stream;
+
+				this.channels = channels;
+
+				var inHeaderSize = 4 * channels;
+				inBlockDataSize = blockAlign - inHeaderSize;
+
+				numBlocks = dataSize / blockAlign;
+				var numGroupsPerBlock = inBlockDataSize / channels / SamplesPerGroup * BytesPerSample;
+
+				outGroupSize = SamplesPerGroup * BytesPerSample * channels;
+				var outHead = channels * BytesPerSample;
+				var outGroups = numGroupsPerBlock * outGroupSize;
+				Length = numBlocks * (outHead + outGroups);
+
+				predictor = new short[channels];
+				index = new byte[channels];
 			}
 
-			protected override bool BufferData(Stream baseStream, Queue<byte> data)
+			/// <summary>
+			/// Reads and decodes blocks from the base stream into the ring buffer.
+			/// </summary>
+			bool ReadBlocks()
 			{
-				// Decode each block of IMA ADPCM data
-				// Each block starts with a initial state per-channel
-				Span<int> predictor = stackalloc int[channels];
-				Span<int> index = stackalloc int[channels];
+				// Check if we have enough space for a group. Ask for a flush if not.
+				// If ring buffer size were too small this could loop forever, however
+				// we know our buffer will always be large enough.
+				var availableBytes = ringBuf.Length - count;
+				if (availableBytes < outGroupSize + 2)
+					return false;
 
-				Span<byte> channelData = stackalloc byte[channels * 4];
-				baseStream.ReadBytes(channelData);
-				var cd = 0;
-				for (var c = 0; c < channels; c++)
+				// PERF: The output is 16-bit PCM, so we can write bytes as if they were shorts for less CPU churn.
+				var outShorts = MemoryMarshal.Cast<byte, short>(ringBuf.AsSpan());
+
+				// PERF: Used for batch reading data from stream.
+				Span<byte> header = stackalloc byte[4];
+				Span<byte> group = stackalloc byte[4 * channels];
+
+				// Fill the ring buffer instead decoding just one group.
+				while (ringBuf.Length - count >= outGroupSize + 2 && currentBlock < numBlocks)
 				{
-					predictor[c] = (short)(channelData[cd++] | channelData[cd++] << 8);
-					index[c] = channelData[cd++];
-					cd++; // Unknown/Reserved
-
-					// Output first sample from input
-					data.Enqueue((byte)predictor[c]);
-					data.Enqueue((byte)(predictor[c] >> 8));
-					outOffset += 2;
-
-					if (outOffset >= outputSize)
-						return true;
-				}
-
-				// Decode and output remaining data in this block
-				Span<byte> decoded = stackalloc byte[16];
-				Span<byte> interleaveBuffer = stackalloc byte[channels * 16];
-				var blockDataSpan = blockData.AsSpan();
-				baseStream.ReadBytes(blockDataSpan);
-				var blockOffset = 0;
-				while (blockOffset < blockDataSize)
-				{
-					for (var c = 0; c < channels; c++)
+					// If we are at the start of a block, read the header
+					if (inBlockOffset == 0)
 					{
-						// Decode 4 bytes (to 16 bytes of output) per channel
-						ImaAdpcmReader.LoadImaAdpcmSound(blockDataSpan.Slice(blockOffset, 4), ref index[c], ref predictor[c], decoded);
-
-						// Interleave output, one sample per channel
-						var interleaveChannelOffset = 2 * c;
-						for (var i = 0; i < decoded.Length; i += 2)
+						for (var c = 0; c < channels; c++)
 						{
-							var interleaveSampleOffset = interleaveChannelOffset + i;
-							interleaveBuffer[interleaveSampleOffset] = decoded[i];
-							interleaveBuffer[interleaveSampleOffset + 1] = decoded[i + 1];
-							interleaveChannelOffset += 2 * (channels - 1);
-						}
+							baseStream.ReadExactly(header);
 
-						blockOffset += 4;
+							// Load initial values.
+							predictor[c] = (short)(header[0] | (header[1] << 8));
+							index[c] = header[2];
+
+							// header[3] is unknown/reserved
+
+							// Write initial predictor samples interleaved
+							var pos = tail / 2;
+							outShorts[pos] = predictor[c];
+							tail = (tail + 2) % ringBuf.Length;
+							count += 2;
+						}
 					}
 
-					var outputRemaining = outputSize - outOffset;
-					var toCopy = Math.Min(outputRemaining, interleaveBuffer.Length);
-					for (var i = 0; i < toCopy; i++)
-						data.Enqueue(interleaveBuffer[i]);
+					// Writing into a single buffer to improve cache locality, making sure data is serial.
+					for (var c = 0; c < channels; c++)
+						baseStream.ReadExactly(group.Slice(c * 4, 4));
 
-					outOffset += 16 * channels;
+					// Decode the group sequentially.
+					for (var c = 0; c < channels; c++)
+					{
+						ref var pred = ref predictor[c];
+						ref var idx = ref index[c];
 
-					if (outOffset >= outputSize)
-						return true;
+						var offset = c * 4;
+						var b0 = group[offset + 0];
+						var b1 = group[offset + 1];
+						var b2 = group[offset + 2];
+						var b3 = group[offset + 3];
+
+						// Decode into temporary variables so they could be easily turned into registers.
+						var s0 = ImaAdpcmReader.DecodeImaAdpcmSample((byte)(b0 & 0x0F), ref idx, ref pred);
+						var s1 = ImaAdpcmReader.DecodeImaAdpcmSample((byte)(b0 >> 4), ref idx, ref pred);
+						var s2 = ImaAdpcmReader.DecodeImaAdpcmSample((byte)(b1 & 0x0F), ref idx, ref pred);
+						var s3 = ImaAdpcmReader.DecodeImaAdpcmSample((byte)(b1 >> 4), ref idx, ref pred);
+						var s4 = ImaAdpcmReader.DecodeImaAdpcmSample((byte)(b2 & 0x0F), ref idx, ref pred);
+						var s5 = ImaAdpcmReader.DecodeImaAdpcmSample((byte)(b2 >> 4), ref idx, ref pred);
+						var s6 = ImaAdpcmReader.DecodeImaAdpcmSample((byte)(b3 & 0x0F), ref idx, ref pred);
+						var s7 = ImaAdpcmReader.DecodeImaAdpcmSample((byte)(b3 >> 4), ref idx, ref pred);
+
+						// Write interleaved samples (one sample per channel).
+						// Handle ring buffer wrap-around.
+						var basePos = tail / 2 + c;
+						outShorts[(basePos + 0 * channels) % outShorts.Length] = s0;
+						outShorts[(basePos + 1 * channels) % outShorts.Length] = s1;
+						outShorts[(basePos + 2 * channels) % outShorts.Length] = s2;
+						outShorts[(basePos + 3 * channels) % outShorts.Length] = s3;
+						outShorts[(basePos + 4 * channels) % outShorts.Length] = s4;
+						outShorts[(basePos + 5 * channels) % outShorts.Length] = s5;
+						outShorts[(basePos + 6 * channels) % outShorts.Length] = s6;
+						outShorts[(basePos + 7 * channels) % outShorts.Length] = s7;
+					}
+
+					tail = (tail + outGroupSize) % ringBuf.Length;
+					count += outGroupSize;
+
+					// We don't decode the entire block at once.
+					inBlockOffset += 4 * channels;
+					if (inBlockOffset >= inBlockDataSize)
+					{
+						inBlockOffset = 0;
+						currentBlock++;
+
+						// The file is done.
+						if (currentBlock >= numBlocks)
+							return true;
+					}
 				}
 
-				return ++currentBlock >= numBlocks;
+				return false;
+			}
+
+			public override bool CanSeek => false;
+			public override bool CanRead => true;
+			public override bool CanWrite => false;
+
+			public override long Length { get; }
+
+			public override long Position
+			{
+				get => throw new NotSupportedException();
+				set => throw new NotSupportedException();
+			}
+
+			public override long Seek(long offset, SeekOrigin origin) { throw new NotSupportedException(); }
+			public override void SetLength(long value) { throw new NotSupportedException(); }
+			public override void WriteByte(byte value) { throw new NotSupportedException(); }
+			public override void Write(byte[] buffer, int offset, int count) { throw new NotSupportedException(); }
+			public override void Write(ReadOnlySpan<byte> buffer) { throw new NotSupportedException(); }
+			public override void Flush() { throw new NotSupportedException(); }
+
+			public override int ReadByte()
+			{
+				while (true)
+				{
+					if (count > 0)
+					{
+						var b = ringBuf[head++];
+						if (head >= ringBuf.Length)
+							head = 0;
+
+						count--;
+						return b;
+					}
+
+					if (baseStreamEmpty)
+						return -1;
+
+					// Try to fill buffer
+					baseStreamEmpty = ReadBlocks();
+				}
+			}
+
+			public override int Read(byte[] buffer, int offset, int count)
+			{
+				return Read(buffer.AsSpan(offset, count));
+			}
+
+			public override int Read(Span<byte> buffer)
+			{
+				var copied = 0;
+
+				while (copied < buffer.Length)
+				{
+					if (count == 0)
+					{
+						if (baseStreamEmpty)
+							break;
+
+						baseStreamEmpty = ReadBlocks();
+						if (count == 0 && baseStreamEmpty)
+							break;
+
+						if (count == 0)
+							continue;
+					}
+
+					// Copy contiguous chunk to avoid per-byte copies
+					var contiguous = Math.Min(count, ringBuf.Length - head);
+					var toCopy = Math.Min(contiguous, buffer.Length - copied);
+
+					// memcpy-like copy
+					new Span<byte>(ringBuf, head, toCopy).CopyTo(buffer[copied..]);
+
+					head += toCopy;
+					if (head >= ringBuf.Length)
+						head -= ringBuf.Length;
+					count -= toCopy;
+					copied += toCopy;
+				}
+
+				return copied;
+			}
+
+			protected override void Dispose(bool disposing)
+			{
+				if (disposing)
+					baseStream.Dispose();
+				base.Dispose(disposing);
 			}
 		}
 
