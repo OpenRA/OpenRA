@@ -948,7 +948,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (!Info.LocomotorInfo.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
 					return;
 
-				self.QueueActivity(order.Queued, WrapMove(new Move(self, cell, WDist.FromCells(8), null, true, Info.TargetLineColor)));
+				var groupSpeedCap = (int)order.ExtraData;
+				self.QueueActivity(order.Queued, WrapMove(new Move(self, cell, WDist.FromCells(8), null, true, Info.TargetLineColor, groupSpeedCap)));
 				self.ShowTargetLines();
 			}
 
