@@ -199,8 +199,7 @@
 		CloakDelay: 90
 		CloakSound: trans1.aud
 		UncloakSound: trans1.aud
-		CloakStyle: Palette
-		CloakedPalette: cloak
+		CloakStyle: Alpha
 		PauseOnCondition: cloak-force-disabled
 		RequiresCondition: cloak-crate-collected
 	ExternalCondition@CLOAK:
