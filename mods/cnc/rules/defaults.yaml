@@ -201,6 +201,7 @@
 		UncloakSound: trans1.aud
 		CloakStyle: Palette
 		CloakedPalette: cloak
+		IsPlayerPalette: true
 		PauseOnCondition: cloak-force-disabled
 		RequiresCondition: cloak-crate-collected
 	ExternalCondition@CLOAK:

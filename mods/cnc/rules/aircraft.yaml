@@ -228,6 +228,7 @@ C17:
 		CloakDelay: 0
 		CloakStyle: Palette
 		CloakedPalette: cloak
+		IsPlayerPalette: true
 		DetectionTypes: C17
 		RequiresCondition: global-C17-stealth
 	Contrail@1:

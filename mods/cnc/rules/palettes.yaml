@@ -64,6 +64,10 @@
 		AllowModifiers: false
 	ColorPickerColorShift@colorpicker:
 		BasePalette: colorpicker
+	PaletteFromPlayerColorRGBA@playercloak:
+		BaseName: cloak
+		A: 140
+		PlayerColorStrength: 0.35
 	PaletteFromRGBA@cloak:
 		Name: cloak
 		R: 0

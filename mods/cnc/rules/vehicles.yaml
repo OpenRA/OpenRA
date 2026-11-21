@@ -792,6 +792,7 @@ STNK:
 		UncloakSound: trans1.aud
 		CloakStyle: Palette
 		CloakedPalette: cloak
+		IsPlayerPalette: true
 		UncloakOn: Attack, Unload, Dock, Damage, Heal
 		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
