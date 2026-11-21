@@ -1,0 +1,70 @@
+MapFormat: 12
+
+RequiresMod: cnc
+
+Title: Landing Craft Test
+
+Author: OpenRA
+
+Tileset: TEMPERAT
+
+MapSize: 64,64
+
+Bounds: 35,39,27,23
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: gdi
+	PlayerReference@Player:
+		Name: Player
+		Playable: True
+		AllowBots: False
+		Required: True
+		Faction: gdi
+		Color: F5D378
+		Allies: Other
+	PlayerReference@Other:
+		Name: Other
+		Faction: nod
+		Color: FE1100
+		Allies: Player
+
+Actors:
+	LstInfantry: lst
+		Location: 54,57
+		Owner: Player
+		Facing: 0
+		Cargo: e1, e2, e3, e1, e2
+	LstJeep: lst
+		Location: 57,57
+		Owner: Other
+		Facing: 0
+		Cargo: jeep
+	LstBuggy: lst
+		Location: 60,57
+		Owner: Player
+		Facing: 0
+		Cargo: bggy
+	Camera: camera
+		Location: 55,57
+		Owner: Player
+
+Rules:
+	World:
+		-SpawnStartingUnits:
+		-MapStartingLocations:
+		-CrateSpawner:
+	LST:
+		RenderSprites:
+			Palette: terrain
+	Player:
+		-ConquestVictoryConditions:
+		PlayerResources:
+			DefaultCash: 0
