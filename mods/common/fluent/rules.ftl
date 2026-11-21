@@ -55,6 +55,11 @@ dropdown-time-limit =
     .label = Time Limit
     .description = The player or team with the highest score at the end of this time wins
 
+## AttackRangeCirclesOptions
+checkbox-attack-range-circles =
+    .label = Attack Range Circles
+    .description = Allow showing attack range circles for selected units (hold hotkey)
+
 ## Tooltip
 label-tooltip-prefix =
     .ally = Ally
