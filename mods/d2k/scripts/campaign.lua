@@ -317,7 +317,7 @@ DefendActor = function(unit, defendingPlayer, defenderCount)
 			Trigger.AfterDelay(1500, function() EmergencyBuildRate[defendingPlayer] = false end)
 		end
 
-		CheckArea(defendingPlayer, unit.Location)
+		CheckArea(defendingPlayer, unit.Location, defenderCount)
 	end)
 end
 
