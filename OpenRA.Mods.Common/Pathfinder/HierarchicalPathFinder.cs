@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Pathfinder
@@ -120,7 +121,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// Abstract nodes with no connections are NOT present in the graph.
 		/// A lookup will fail, rather than return an empty list.
 		/// </summary>
-		Dictionary<CPos, List<GraphConnection>> abstractGraph;
+		Dictionary<CPos, GraphConnection[]> abstractGraph;
 
 		/// <summary>
 		/// The abstract domains are represented here.
@@ -184,11 +185,11 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// </summary>
 		sealed class AbstractGraphWithInsertedEdges
 		{
-			readonly Dictionary<CPos, List<GraphConnection>> abstractEdges;
+			readonly Dictionary<CPos, GraphConnection[]> abstractEdges;
 			readonly Dictionary<CPos, IEnumerable<GraphConnection>> changedEdges;
 
 			public AbstractGraphWithInsertedEdges(
-				Dictionary<CPos, List<GraphConnection>> abstractEdges,
+				Dictionary<CPos, GraphConnection[]> abstractEdges,
 				IList<GraphEdge> sourceEdges,
 				GraphEdge? targetEdge,
 				Func<CPos, CPos, int> costEstimator)
@@ -233,13 +234,12 @@ namespace OpenRA.Mods.Common.Pathfinder
 				}
 			}
 
-			public List<GraphConnection> GetConnections(CPos position)
+			public void PopulateConnections(CPos position, OutputBuffer<GraphConnection> connections)
 			{
 				if (changedEdges.TryGetValue(position, out var changedEdge))
-					return changedEdge.ToList();
-				if (abstractEdges.TryGetValue(position, out var abstractEdge))
-					return abstractEdge;
-				return [];
+					connections.AddRange(changedEdge);
+				else if (abstractEdges.TryGetValue(position, out var abstractEdge))
+					connections.AddRange(abstractEdge);
 			}
 		}
 
@@ -288,7 +288,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		}
 
 		public (
-			IReadOnlyDictionary<CPos, List<GraphConnection>> AbstractGraph,
+			IReadOnlyDictionary<CPos, GraphConnection[]> AbstractGraph,
 			IReadOnlyDictionary<CPos, uint> AbstractDomains) GetOverlayData()
 		{
 			if (costEstimator == null)
@@ -298,7 +298,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			RebuildDirtyGrids();
 			RebuildDomains();
 			return (
-				new ReadOnlyDictionary<CPos, List<GraphConnection>>(abstractGraph),
+				new ReadOnlyDictionary<CPos, GraphConnection[]>(abstractGraph),
 				new ReadOnlyDictionary<CPos, uint>(abstractDomains));
 		}
 
@@ -453,7 +453,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// </summary>
 		void BuildCostTable()
 		{
-			abstractGraph = new Dictionary<CPos, List<GraphConnection>>(gridXs * gridYs);
+			abstractGraph = new Dictionary<CPos, GraphConnection[]>(gridXs * gridYs);
 			var customMovementLayers = world.GetCustomMovementLayers();
 			for (var gridX = mapBounds.TopLeft.X; gridX < mapBounds.BottomRight.X; gridX += GridSize)
 				for (var gridY = mapBounds.TopLeft.Y; gridY < mapBounds.BottomRight.Y; gridY += GridSize)
@@ -466,7 +466,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// within adjacent grids on the same layer. Also determines any edges available to grids on other layers via
 		/// custom movement layers.
 		/// </summary>
-		IEnumerable<KeyValuePair<CPos, List<GraphConnection>>> GetAbstractEdgesForGrid(int gridX, int gridY, ICustomMovementLayer[] customMovementLayers)
+		IEnumerable<KeyValuePair<CPos, GraphConnection[]>> GetAbstractEdgesForGrid(int gridX, int gridY, ICustomMovementLayer[] customMovementLayers)
 		{
 			var abstractEdges = new HashSet<(CPos Src, CPos Dst)>();
 			for (byte gridLayer = 0; gridLayer < customMovementLayers.Length; gridLayer++)
@@ -573,7 +573,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				.GroupBy(edge => edge.Src)
 				.Select(group => KeyValuePair.Create(
 					group.Key,
-					group.Select(edge => new GraphConnection(edge.Dst, costEstimator(edge.Src, edge.Dst))).ToList()));
+					group.Select(edge => new GraphConnection(edge.Dst, costEstimator(edge.Src, edge.Dst))).ToArray()));
 		}
 
 		/// <summary>
@@ -814,7 +814,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			// Determine an abstract path to all sources, for use in a unidirectional search.
 			var estimatedSearchSize = (abstractGraph.Count + 2) / 8;
 			using (var reverseAbstractSearch = PathSearch.ToTargetCellOverGraph(
-				fullGraph.GetConnections, locomotor, target, target, estimatedSearchSize, pathFinderOverlay?.RecordAbstractEdges(self)))
+				fullGraph.PopulateConnections, locomotor, target, target, estimatedSearchSize, pathFinderOverlay?.RecordAbstractEdges(self)))
 			{
 				using (var fromSrc = GetLocalPathSearch(
 					self, sourcesWithPathableNodes, target, customCost, ignoreActor, check, laneBias, null, heuristicWeightPercentage,
@@ -904,13 +904,13 @@ namespace OpenRA.Mods.Common.Pathfinder
 			// Determine an abstract path in both directions, for use in a bidirectional search.
 			var estimatedSearchSize = (abstractGraph.Count + 2) / 8;
 			using (var forwardAbstractSearch = PathSearch.ToTargetCellOverGraph(
-				fullGraph.GetConnections, locomotor, source, target, estimatedSearchSize, pathFinderOverlay?.RecordAbstractEdges(self)))
+				fullGraph.PopulateConnections, locomotor, source, target, estimatedSearchSize, pathFinderOverlay?.RecordAbstractEdges(self)))
 			{
 				if (!forwardAbstractSearch.ExpandToTarget())
 					return PathFinder.NoPath;
 
 				using (var reverseAbstractSearch = PathSearch.ToTargetCellOverGraph(
-					fullGraph.GetConnections, locomotor, target, source, estimatedSearchSize, pathFinderOverlay?.RecordAbstractEdges(self)))
+					fullGraph.PopulateConnections, locomotor, target, source, estimatedSearchSize, pathFinderOverlay?.RecordAbstractEdges(self)))
 				{
 					reverseAbstractSearch.ExpandToTarget();
 
@@ -1062,11 +1062,10 @@ namespace OpenRA.Mods.Common.Pathfinder
 			if (abstractDomains.Count != 0)
 				return;
 
-			List<GraphConnection> AbstractEdge(CPos abstractCell)
+			void AbstractEdge(CPos abstractCell, OutputBuffer<GraphConnection> connections)
 			{
 				if (abstractGraph.TryGetValue(abstractCell, out var abstractEdge))
-					return abstractEdge;
-				return null;
+					connections.AddRange(abstractEdge);
 			}
 
 			// As in BuildGrid, flood fill the search graph until all disjoint domains are discovered.

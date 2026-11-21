@@ -25,6 +25,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 			void Add(CPos source, CPos destination, int costSoFar, int estimatedRemainingCost);
 		}
 
+		const int BufferSize = 8;
+
 		// PERF: Maintain a pool of layers used for paths searches for each world. These searches are performed often
 		// so we wish to avoid the high cost of initializing a new search space every time by reusing the old ones.
 		static readonly ConditionalWeakTable<World, CellInfoLayerPool> LayerPoolTable = [];
@@ -110,7 +112,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		}
 
 		public static PathSearch ToTargetCellOverGraph(
-			Func<CPos, List<GraphConnection>> edges, Locomotor locomotor, CPos from, CPos target,
+			Action<CPos, OutputBuffer<GraphConnection>> edges, Locomotor locomotor, CPos from, CPos target,
 			int estimatedSearchSize = 0, IRecorder recorder = null)
 		{
 			var graph = new SparsePathGraph(edges, estimatedSearchSize);
@@ -244,14 +246,15 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// using the A* algorithm (A-star) and returns that node.
 		/// </summary>
 		/// <returns>The most promising node of the iteration.</returns>
-		CPos Expand()
+		CPos Expand(List<GraphConnection> buffer)
 		{
 			var currentMinNode = openQueue.Pop().Destination;
 
 			var currentInfo = Graph[currentMinNode];
 			Graph[currentMinNode] = new CellInfo(CellStatus.Closed, currentInfo.CostSoFar, currentInfo.EstimatedTotalCost, currentInfo.PreviousNode);
 
-			foreach (var connection in Graph.GetConnections(currentMinNode, TargetPredicate))
+			Graph.PopulateConnections(currentMinNode, TargetPredicate, buffer);
+			foreach (var connection in buffer)
 			{
 				// Calculate the cost up to that point
 				var costSoFarToNeighbor = currentInfo.CostSoFar + connection.Cost;
@@ -288,6 +291,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 				openQueue.Add(new GraphConnection(neighbor, estimatedTotalCostToTarget));
 			}
 
+			buffer.Clear();
+
 			return currentMinNode;
 		}
 
@@ -301,8 +306,9 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// </remarks>
 		public bool ExpandToTarget()
 		{
+			var buffer = new List<GraphConnection>(BufferSize);
 			while (CanExpand())
-				if (TargetPredicate(Expand()))
+				if (TargetPredicate(Expand(buffer)))
 					return true;
 
 			return false;
@@ -314,9 +320,10 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// </summary>
 		public List<CPos> ExpandAll()
 		{
+			var buffer = new List<GraphConnection>(BufferSize);
 			var consideredCells = new List<CPos>();
 			while (CanExpand())
-				consideredCells.Add(Expand());
+				consideredCells.Add(Expand(buffer));
 			return consideredCells;
 		}
 
@@ -326,9 +333,10 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// </summary>
 		public List<CPos> FindPath()
 		{
+			var buffer = new List<GraphConnection>(BufferSize);
 			while (CanExpand())
 			{
-				var p = Expand();
+				var p = Expand(buffer);
 				if (TargetPredicate(p))
 					return MakePath(Graph, p);
 			}
@@ -359,17 +367,18 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// </summary>
 		public static List<CPos> FindBidiPath(PathSearch first, PathSearch second)
 		{
+			var buffer = new List<GraphConnection>(BufferSize);
 			while (first.CanExpand() && second.CanExpand())
 			{
 				// make some progress on the first search
-				var p = first.Expand();
+				var p = first.Expand(buffer);
 				var pInfo = second.Graph[p];
 				if (pInfo.Status == CellStatus.Closed &&
 					pInfo.CostSoFar != PathGraph.PathCostForInvalidPath)
 					return MakeBidiPath(first, second, p);
 
 				// make some progress on the second search
-				var q = second.Expand();
+				var q = second.Expand(buffer);
 				var qInfo = first.Graph[q];
 				if (qInfo.Status == CellStatus.Closed &&
 					qInfo.CostSoFar != PathGraph.PathCostForInvalidPath)
