@@ -438,8 +438,7 @@ namespace OpenRA.Mods.Common.Traits
 			refineries.Dispose();
 			harvestersIndex.Dispose();
 
-			if (resourceLayer != null)
-				resourceLayer.CellChanged -= ResourceCellChanged;
+			resourceLayer?.CellChanged -= ResourceCellChanged;
 		}
 
 		void IBotRespondToAttack.RespondToAttack(IBot bot, Actor self, AttackInfo e)

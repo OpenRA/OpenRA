@@ -557,8 +557,7 @@ namespace OpenRA
 					p.PlayerDisconnected(player);
 
 				var pi = gameInfo.GetPlayer(player);
-				if (pi != null)
-					pi.DisconnectFrame = OrderManager.NetFrameNumber;
+				pi?.DisconnectFrame = OrderManager.NetFrameNumber;
 			}
 		}
 

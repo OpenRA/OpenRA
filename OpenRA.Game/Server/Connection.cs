@@ -33,15 +33,12 @@ namespace OpenRA.Server
 		public readonly EndPoint EndPoint;
 		public readonly Stopwatch ConnectionTimer = Stopwatch.StartNew();
 
-		public long TimeSinceLastResponse => Game.RunTime - lastReceivedTime;
+		public long TimeSinceLastResponse { get => Game.RunTime - field; private set; } = 0;
 
 		public bool TimeoutMessageShown;
 		public bool Validated;
 		public bool HandshakeReceived;
 		public int LastOrdersFrame;
-
-		long lastReceivedTime = 0;
-
 		readonly BlockingCollection<byte[]> sendQueue = [];
 		readonly Queue<int> pingHistory = [];
 
@@ -101,7 +98,7 @@ namespace OpenRA.Server
 						if (read > 0)
 						{
 							readBuffer.AddRange(receiveBuffer.Take(read));
-							lastReceivedTime = Game.RunTime;
+							TimeSinceLastResponse = Game.RunTime;
 							TimeoutMessageShown = false;
 						}
 

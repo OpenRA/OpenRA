@@ -58,15 +58,11 @@ namespace OpenRA.Graphics
 		public int2 TopLeft => int2.FromVector(CenterLocation) - ViewportSize.ToInt2() / 2;
 		public int2 BottomRight => int2.FromVector(CenterLocation) + ViewportSize.ToInt2() / 2;
 		public Size ViewportSize { get; private set; }
-		ProjectedCellRegion cells;
-		bool cellsDirty = true;
 
-		ProjectedCellRegion allCells;
+		bool cellsDirty = true;
 		bool allCellsDirty = true;
 
 		WorldViewport lastViewportDistance;
-
-		float zoom = 1f;
 		bool unlockMinZoom;
 		float unlockedMinZoomScale;
 		float unlockedMinZoom = 1f;
@@ -78,16 +74,16 @@ namespace OpenRA.Graphics
 
 		public float Zoom
 		{
-			get => zoom;
+			get;
 
 			private set
 			{
-				zoom = value;
-				ViewportSize = Size.FromVector(1f / zoom * Game.Renderer.NativeResolution.ToVector2());
+				field = value;
+				ViewportSize = Size.FromVector(1f / field * Game.Renderer.NativeResolution.ToVector2());
 				cellsDirty = true;
 				allCellsDirty = true;
 			}
-		}
+		} = 1f;
 
 		public float MinZoom { get; private set; } = 1f;
 		public float MaxZoom { get; private set; } = 2f;
@@ -102,7 +98,7 @@ namespace OpenRA.Graphics
 		public void AdjustZoom(float dz)
 		{
 			// Exponential ensures that equal positive and negative steps have the same effect
-			Zoom = (zoom * (float)Math.Exp(dz)).Clamp(unlockMinZoom ? unlockedMinZoom : MinZoom, MaxZoom);
+			Zoom = (Zoom * (float)Math.Exp(dz)).Clamp(unlockMinZoom ? unlockedMinZoom : MinZoom, MaxZoom);
 		}
 
 		public void AdjustZoom(float dz, int2 center)
@@ -118,10 +114,10 @@ namespace OpenRA.Graphics
 		public void ToggleZoom()
 		{
 			// Unlocked zooms always reset to the default zoom
-			if (zoom < MinZoom)
+			if (Zoom < MinZoom)
 				Zoom = MinZoom;
 			else
-				Zoom = zoom > MinZoom ? MinZoom : MaxZoom;
+				Zoom = Zoom > MinZoom ? MinZoom : MaxZoom;
 		}
 
 		public void UnlockMinimumZoom(float scale)
@@ -422,11 +418,11 @@ namespace OpenRA.Graphics
 			{
 				if (cellsDirty)
 				{
-					cells = CalculateVisibleCells(true);
+					field = CalculateVisibleCells(true);
 					cellsDirty = false;
 				}
 
-				return cells;
+				return field;
 			}
 		}
 
@@ -436,11 +432,11 @@ namespace OpenRA.Graphics
 			{
 				if (allCellsDirty)
 				{
-					allCells = CalculateVisibleCells(false);
+					field = CalculateVisibleCells(false);
 					allCellsDirty = false;
 				}
 
-				return allCells;
+				return field;
 			}
 		}
 	}

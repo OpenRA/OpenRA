@@ -68,8 +68,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (tabsWidget.Value != null)
 				tabsWidget.Value.CurrentQueue = queue;
-			else if (paletteWidget.Value != null)
-				paletteWidget.Value.CurrentQueue = queue;
+			else
+				paletteWidget.Value?.CurrentQueue = queue;
 		}
 	}
 }

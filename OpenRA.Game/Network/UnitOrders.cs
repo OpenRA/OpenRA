@@ -370,8 +370,7 @@ namespace OpenRA.Network
 						if (strings[0] == "ConnectionQuality")
 						{
 							var client = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.Index == Exts.ParseInt32Invariant(strings[1]));
-							if (client != null)
-								client.ConnectionQuality = FieldLoader.GetValue<Session.ConnectionQuality>("ConnectionQuality", node.Value.Value);
+							client?.ConnectionQuality = FieldLoader.GetValue<Session.ConnectionQuality>("ConnectionQuality", node.Value.Value);
 						}
 					}
 

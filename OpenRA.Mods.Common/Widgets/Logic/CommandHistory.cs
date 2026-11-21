@@ -17,7 +17,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public sealed class CommandHistory
 	{
 		const int MaxHistorySize = 50;
-		static CommandHistory instance;
 		static readonly Lock LockObject = new();
 		readonly List<string> history = [];
 		int currentIndex = -1;
@@ -28,15 +27,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			get
 			{
-				if (instance == null)
+				if (field == null)
 				{
 					lock (LockObject)
 					{
-						instance ??= new CommandHistory();
+						field ??= new CommandHistory();
 					}
 				}
 
-				return instance;
+				return field;
 			}
 		}
 

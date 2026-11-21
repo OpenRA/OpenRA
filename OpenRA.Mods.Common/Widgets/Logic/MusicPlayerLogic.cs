@@ -103,31 +103,26 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var noSongPlaying = FluentProvider.GetMessage(NoSongPlaying);
 			var musicTitle = panel.GetOrNull<LabelWidget>("TITLE_LABEL");
-			if (musicTitle != null)
-				musicTitle.GetText = () => currentSong != null ? currentSong.Title : noSongPlaying;
+			musicTitle?.GetText = () => currentSong != null ? currentSong.Title : noSongPlaying;
 
 			var musicSlider = panel.Get<SliderWidget>("MUSIC_SLIDER");
 			musicSlider.OnChange += x => Game.Sound.MusicVolume = x;
 			musicSlider.Value = Game.Sound.MusicVolume;
 
 			var songWatcher = widget.GetOrNull<LogicTickerWidget>("SONG_WATCHER");
-			if (songWatcher != null)
+			songWatcher?.OnTick = () =>
 			{
-				songWatcher.OnTick = () =>
-				{
-					if (musicPlaylist.CurrentSongIsBackground && currentSong != null)
-						currentSong = null;
+				if (musicPlaylist.CurrentSongIsBackground && currentSong != null)
+					currentSong = null;
 
-					if (Game.Sound.CurrentMusic == null || currentSong == Game.Sound.CurrentMusic || musicPlaylist.CurrentSongIsBackground)
-						return;
+				if (Game.Sound.CurrentMusic == null || currentSong == Game.Sound.CurrentMusic || musicPlaylist.CurrentSongIsBackground)
+					return;
 
-					currentSong = Game.Sound.CurrentMusic;
-				};
-			}
+				currentSong = Game.Sound.CurrentMusic;
+			};
 
 			var backButton = panel.GetOrNull<ButtonWidget>("BACK_BUTTON");
-			if (backButton != null)
-				backButton.OnClick = () => { Game.Settings.Save(); Ui.CloseWindow(); onExit(); };
+			backButton?.OnClick = () => { Game.Settings.Save(); Ui.CloseWindow(); onExit(); };
 		}
 
 		public void BuildMusicTable()

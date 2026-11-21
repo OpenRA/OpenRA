@@ -36,20 +36,21 @@ namespace OpenRA.Mods.Common
 		readonly DiscordRpcClient client;
 		DiscordState currentState;
 
-		static DiscordService instance;
 		static DiscordService Service
 		{
 			get
 			{
-				if (instance != null)
-					return instance;
+				if (field != null)
+					return field;
 
 				if (!Game.Settings.Game.EnableDiscordService)
 					return null;
 
-				instance = Game.ModData.GetOrNull<DiscordService>();
-				return instance;
+				field = Game.ModData.GetOrNull<DiscordService>();
+				return field;
 			}
+
+			set;
 		}
 
 		public DiscordService(MiniYaml yaml)
@@ -217,7 +218,7 @@ namespace OpenRA.Mods.Common
 		public void Dispose()
 		{
 			client?.Dispose();
-			instance = null;
+			Service = null;
 		}
 
 		public static void UpdateStatus(DiscordState state, string details = null, string secret = null, int? players = null, int? slots = null)

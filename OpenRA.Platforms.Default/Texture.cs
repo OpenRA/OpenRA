@@ -18,7 +18,6 @@ namespace OpenRA.Platforms.Default
 	sealed class Texture : ThreadAffine, ITextureInternal
 	{
 		uint texture;
-		TextureScaleFilter scaleFilter;
 
 		public uint ID => texture;
 		public Size Size { get; private set; }
@@ -27,15 +26,15 @@ namespace OpenRA.Platforms.Default
 
 		public TextureScaleFilter ScaleFilter
 		{
-			get => scaleFilter;
+			get;
 
 			set
 			{
 				VerifyThreadAffinity();
-				if (scaleFilter == value)
+				if (field == value)
 					return;
 
-				scaleFilter = value;
+				field = value;
 				PrepareTexture();
 			}
 		}
@@ -52,7 +51,7 @@ namespace OpenRA.Platforms.Default
 			OpenGL.glBindTexture(OpenGL.GL_TEXTURE_2D, texture);
 			OpenGL.CheckGLError();
 
-			var filter = scaleFilter == TextureScaleFilter.Linear ? OpenGL.GL_LINEAR : OpenGL.GL_NEAREST;
+			var filter = ScaleFilter == TextureScaleFilter.Linear ? OpenGL.GL_LINEAR : OpenGL.GL_NEAREST;
 			OpenGL.glTexParameteri(OpenGL.GL_TEXTURE_2D, OpenGL.GL_TEXTURE_MAG_FILTER, filter);
 			OpenGL.CheckGLError();
 			OpenGL.glTexParameteri(OpenGL.GL_TEXTURE_2D, OpenGL.GL_TEXTURE_MIN_FILTER, filter);

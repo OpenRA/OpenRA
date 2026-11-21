@@ -25,35 +25,33 @@ namespace OpenRA.Traits
 		// The depth buffer may have been left enabled by the previous world
 		// Initializing this as dirty forces us to reset the default rendering before the first render
 		bool depthBufferDirty = true;
-		bool depthBuffer;
+
 		public bool DepthBuffer
 		{
-			get => depthBuffer;
+			get;
 			set
 			{
-				depthBuffer = value;
+				field = value;
 				depthBufferDirty = true;
 			}
 		}
 
-		float depthBufferContrast = 1f;
 		public float DepthBufferContrast
 		{
-			get => depthBufferContrast;
+			get;
 			set
 			{
-				depthBufferContrast = value;
+				field = value;
 				depthBufferDirty = true;
 			}
-		}
+		} = 1f;
 
-		float depthBufferOffset;
 		public float DepthBufferOffset
 		{
-			get => depthBufferOffset;
+			get;
 			set
 			{
-				depthBufferOffset = value;
+				field = value;
 				depthBufferDirty = true;
 			}
 		}
