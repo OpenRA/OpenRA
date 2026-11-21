@@ -56,7 +56,12 @@
 	PaletteFromFile@effect:
 		Name: effect
 		Filename: temperat.pal
-		ShadowIndex: 4
+		ShadowIndex: 4, 15
+	PaletteFromPaletteWithAlpha@muzzle:
+		Name: muzzle
+		BasePalette: effect
+		Indices: 15
+		Alpha: 0.2
 	ColorPickerPalette@colorpicker:
 		Name: colorpicker
 		BasePalette: terrain
