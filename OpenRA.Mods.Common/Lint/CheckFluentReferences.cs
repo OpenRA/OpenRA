@@ -398,7 +398,7 @@ namespace OpenRA.Mods.Common.Lint
 				var stream = openFile(path);
 				using (var reader = new StreamReader(stream))
 				{
-					var parser = new LinguiniParser(reader);
+					var parser = LinguiniParser.FromTextReader(reader, path);
 					var result = parser.Parse();
 
 					foreach (var entry in result.Entries)
