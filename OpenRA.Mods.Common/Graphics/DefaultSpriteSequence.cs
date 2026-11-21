@@ -169,15 +169,6 @@ namespace OpenRA.Mods.Common.Graphics
 		[Desc("Fade the animation from fully opaque on the first frame to fully transparent after the last frame.")]
 		protected static readonly SpriteSequenceField<bool> AlphaFade = new(nameof(AlphaFade), false);
 
-		[Desc("Name of the file containing the depth data sprite.")]
-		protected static readonly SpriteSequenceField<string> DepthSprite = new(nameof(DepthSprite), null);
-
-		[Desc("Frame index containing the depth data.")]
-		protected static readonly SpriteSequenceField<int> DepthSpriteFrame = new(nameof(DepthSpriteFrame), 0);
-
-		[Desc("X, Y offset to apply to the depth sprite.")]
-		protected static readonly SpriteSequenceField<Vector2> DepthSpriteOffset = new(nameof(DepthSpriteOffset), Vector2.Zero);
-
 		protected static readonly MiniYaml NoData = new(null);
 		protected static readonly ImmutableArray<int> FirstFrame = [0];
 
@@ -206,9 +197,6 @@ namespace OpenRA.Mods.Common.Graphics
 		protected ImmutableArray<float> alpha;
 		protected bool alphaFade;
 		protected Rectangle? bounds;
-
-		protected int? depthSpriteReservation;
-		protected Vector2 depthSpriteOffset;
 
 		protected void ThrowIfUnresolved()
 		{
@@ -374,12 +362,6 @@ namespace OpenRA.Mods.Common.Graphics
 			alpha = LoadField(Alpha, data, defaults);
 			alphaFade = LoadField(AlphaFade, data, defaults, out var alphaFadeLocation);
 
-			var depthSprite = LoadField(DepthSprite, data, defaults, out var depthSpriteLocation);
-			if (!string.IsNullOrEmpty(depthSprite))
-				depthSpriteReservation = cache.ReserveSprites(depthSprite, [LoadField(DepthSpriteFrame, data, defaults)], depthSpriteLocation);
-
-			depthSpriteOffset = LoadField(DepthSpriteOffset, data, defaults);
-
 			if (facings < 0)
 			{
 				reverseFacings = true;
@@ -469,35 +451,13 @@ namespace OpenRA.Mods.Common.Graphics
 			if (bounds != null)
 				return;
 
-			Sprite depthSprite = null;
-			if (depthSpriteReservation != null)
-				depthSprite = cache.ResolveSprites(depthSpriteReservation.Value).First(s => s != null);
-
 			var allSprites = spritesToLoad.SelectMany(r =>
 			{
 				var resolved = cache.ResolveSprites(r.Token);
 				if (r.Frames != null)
 					resolved = r.Frames.Select(f => resolved[f]).ToArray();
 
-				return resolved.Select(s =>
-				{
-					if (s == null)
-						return null;
-
-					var dx = r.Offset.X + (r.FlipX ? -s.Offset.X : s.Offset.X);
-					var dy = r.Offset.Y + (r.FlipY ? -s.Offset.Y : s.Offset.Y);
-					var dz = r.Offset.Z + s.Offset.Z + r.ZRamp * dy;
-					var sprite = new Sprite(s.Sheet, FlipRectangle(s.Bounds, r.FlipX, r.FlipY), r.ZRamp, new Vector3(dx, dy, dz), s.Channel, r.BlendMode);
-					if (depthSprite == null)
-						return sprite;
-
-					var cw = (depthSprite.Bounds.Left + depthSprite.Bounds.Right) / 2 + (int)(s.Offset.X + depthSpriteOffset.X);
-					var ch = (depthSprite.Bounds.Top + depthSprite.Bounds.Bottom) / 2 + (int)(s.Offset.Y + depthSpriteOffset.Y);
-					var w = s.Bounds.Width / 2;
-					var h = s.Bounds.Height / 2;
-
-					return new SpriteWithSecondaryData(sprite, depthSprite.Sheet, Rectangle.FromLTRB(cw - w, ch - h, cw + w, ch + h), depthSprite.Channel);
-				});
+				return resolved.Select(s => s != null ? CreateSprite(r, s) : null);
 			}).ToArray();
 
 			length ??= allSprites.Length - start;
@@ -536,6 +496,14 @@ namespace OpenRA.Mods.Common.Graphics
 				shadowSprites = index.Select(f => allSprites[f - start + shadowStart]).ToArray();
 
 			bounds = sprites.Concat(shadowSprites ?? Enumerable.Empty<Sprite>()).Select(OffsetSpriteBounds).Union();
+		}
+
+		protected virtual Sprite CreateSprite(SpriteReservation r, Sprite s)
+		{
+			var dx = r.Offset.X + (r.FlipX ? -s.Offset.X : s.Offset.X);
+			var dy = r.Offset.Y + (r.FlipY ? -s.Offset.Y : s.Offset.Y);
+			var dz = r.Offset.Z + s.Offset.Z + r.ZRamp * dy;
+			return new Sprite(s.Sheet, FlipRectangle(s.Bounds, r.FlipX, r.FlipY), r.ZRamp, new Vector3(dx, dy, dz), s.Channel, r.BlendMode);
 		}
 
 		protected static Rectangle OffsetSpriteBounds(Sprite sprite)
