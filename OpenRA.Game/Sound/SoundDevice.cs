@@ -16,6 +16,7 @@ namespace OpenRA
 {
 	public interface ISoundEngine : IDisposable
 	{
+		void Tick();
 		SoundDevice[] AvailableDevices();
 		ISoundSource AddSoundSourceFromMemory(byte[] data, int channels, int sampleBits, int sampleRate);
 		ISound Play2D(ISoundSource sound, bool loop, bool relative, WPos pos, float volume, bool attenuateVolume);

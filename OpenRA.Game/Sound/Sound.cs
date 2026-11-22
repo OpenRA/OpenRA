@@ -216,6 +216,8 @@ namespace OpenRA
 
 		public void Tick()
 		{
+			soundEngine.Tick();
+
 			// Song finished
 			if (MusicPlaying && music.Complete)
 			{
