@@ -195,6 +195,11 @@ namespace OpenRA
 
 		internal static void StartGame(Map map, WorldType type)
 		{
+			// Live map update tracking only pays off in the shell / lobby, where
+			// players expect downloaded maps to appear without a reload. Disable
+			// it during normal play to avoid burning CPU on file system events.
+			ModData.MapCache.SetMapUpdateTracking(type == WorldType.Shellmap);
+
 			// Dispose of the old world before creating a new one.
 			worldRenderer?.Dispose();
 
@@ -268,6 +273,12 @@ namespace OpenRA
 
 			// Reseed the RNG so this isn't an exact repeat of the last game
 			lobbyInfo.GlobalSettings.RandomSeed = CosmeticRandom.Next();
+
+			// Re-enable map update tracking to pick up maps that were changed on
+			// disk while playing (e.g. with an external editor), then apply any
+			// pending updates before resolving the map to restart.
+			ModData.MapCache.SetMapUpdateTracking(true);
+			ModData.MapCache.UpdateMaps();
 
 			// Note: the map may have been changed on disk outside the game, changing its UID.
 			// Use the updated UID if we have tracked the update instead of failing.
