@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Cnc.Activities
 
 			// Trigger screen desaturate effect
 			if (screenFlash)
-				foreach (var a in self.World.ActorsWithTrait<ChronoshiftPostProcessEffect>())
+				foreach (var a in self.World.ActorsWithTraitAsIterator<ChronoshiftPostProcessEffect>())
 					a.Trait.Enable();
 
 			if (teleporter != null && self != teleporter && !teleporter.Disposed)
