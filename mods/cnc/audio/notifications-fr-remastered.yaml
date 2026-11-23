@@ -1,0 +1,7 @@
+Speech:
+	Prefixes:
+		gdi: FR-FR\TDC_SFX_EVA_
+		nod: FR-FR\TDC_SFX_EVA_
+	Variants:
+		nod: _FR-FR.WAV
+		gdi: _FR-FR.WAV
