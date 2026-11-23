@@ -28,7 +28,7 @@ Players:
 		Name: Creeps
 		NonCombatant: True
 		Faction: Random
-		Enemies: Atreides, Harkonnen, HarkonnenSmall
+		Enemies: Atreides, Harkonnen, HarkonnenSmall, Corrino
 	PlayerReference@Harkonnen:
 		Name: Harkonnen
 		Bot: campaign
