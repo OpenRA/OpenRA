@@ -142,6 +142,11 @@ namespace OpenRA.Mods.Common.Traits
 			return spawnPointActors.Length > 0 ? spawnPointActors.Random(random).Actor : null;
 		}
 
+		public int GetActorCount()
+		{
+			return actorsPresent;
+		}
+
 		public void DecreaseActorCount()
 		{
 			actorsPresent--;
