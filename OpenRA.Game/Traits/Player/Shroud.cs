@@ -101,18 +101,17 @@ namespace OpenRA.Traits
 
 		bool disabledChanged;
 
-		[VerifySync]
-		bool disabled;
+		[field: VerifySync]
 		public bool Disabled
 		{
-			get => disabled;
+			get;
 
 			set
 			{
-				if (disabled == value)
+				if (field == value)
 					return;
 
-				disabled = value;
+				field = value;
 				disabledChanged = true;
 			}
 		}

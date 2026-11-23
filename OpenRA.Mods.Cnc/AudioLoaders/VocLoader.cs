@@ -50,7 +50,6 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 		readonly int totalSamples;
 
 		IEnumerator<VocBlock> currentBlock;
-		bool currentBlockEnded;
 		int samplesLeftInBlock;
 		int samplePosition;
 
@@ -271,7 +270,7 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 		void Rewind()
 		{
 			currentBlock = ((IEnumerable<VocBlock>)blocks).GetEnumerator();
-			currentBlockEnded = false;
+			EndOfData = false;
 			samplesLeftInBlock = 0;
 			samplePosition = 0;
 
@@ -285,10 +284,10 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 				}
 			}
 
-			currentBlockEnded = true;
+			EndOfData = true;
 		}
 
-		bool EndOfData => currentBlockEnded && samplesLeftInBlock == 0;
+		bool EndOfData { get => field && samplesLeftInBlock == 0; set; }
 
 		int FillBuffer(int maxSamples)
 		{
@@ -327,7 +326,7 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 					return;
 				}
 
-				currentBlockEnded = true;
+				EndOfData = true;
 			}
 		}
 

@@ -303,19 +303,18 @@ namespace OpenRA
 			soundEngine.PauseSound(music, true);
 		}
 
-		float soundVolumeModifier = 1.0f;
 		public float SoundVolumeModifier
 		{
-			get => soundVolumeModifier;
+			get;
 
 			set
 			{
-				soundVolumeModifier = value;
+				field = value;
 				soundEngine.SetSoundVolume(InternalSoundVolume, music, video);
 			}
-		}
+		} = 1.0f;
 
-		float InternalSoundVolume => SoundVolume * soundVolumeModifier;
+		float InternalSoundVolume => SoundVolume * SoundVolumeModifier;
 
 		public float SoundVolume
 		{
@@ -335,8 +334,7 @@ namespace OpenRA
 			set
 			{
 				Game.Settings.Sound.MusicVolume = value;
-				if (music != null)
-					music.Volume = value;
+				music?.Volume = value;
 			}
 		}
 
@@ -347,8 +345,7 @@ namespace OpenRA
 			set
 			{
 				Game.Settings.Sound.VideoVolume = value;
-				if (video != null)
-					video.Volume = value;
+				video?.Volume = value;
 			}
 		}
 

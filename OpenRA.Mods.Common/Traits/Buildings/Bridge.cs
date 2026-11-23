@@ -164,8 +164,7 @@ namespace OpenRA.Mods.Common.Traits
 					continue; // End piece type
 
 				neighbours[d] = GetNeighbor(offset, bridges);
-				if (neighbours[d] != null)
-					neighbours[d].neighbours[1 - d] = this; // Save reverse lookup
+				neighbours[d]?.neighbours[1 - d] = this; // Save reverse lookup
 			}
 		}
 

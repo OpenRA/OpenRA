@@ -82,7 +82,6 @@ namespace OpenRA
 		Vector2 lastViewportLocation;
 		ITexture currentPaletteTexture;
 		int currentPaletteHeight = 0;
-		IBatchRenderer currentBatchRenderer;
 		RenderType renderType = RenderType.None;
 
 		public Renderer(IPlatform platform, GraphicSettings graphicSettings, int vertexBatchSize)
@@ -395,14 +394,14 @@ namespace OpenRA
 
 		public IBatchRenderer CurrentBatchRenderer
 		{
-			get => currentBatchRenderer;
+			get;
 
 			set
 			{
-				if (currentBatchRenderer == value)
+				if (field == value)
 					return;
-				currentBatchRenderer?.Flush();
-				currentBatchRenderer = value;
+				field?.Flush();
+				field = value;
 			}
 		}
 

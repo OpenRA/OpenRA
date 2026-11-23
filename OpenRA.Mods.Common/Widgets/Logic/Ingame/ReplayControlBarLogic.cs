@@ -38,8 +38,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var replayNetTicks = connection.TickCount;
 
 				var background = widget.Parent.GetOrNull("OBSERVER_CONTROL_BG");
-				if (background != null)
-					background.Bounds.Height += container.Bounds.Height;
+				background?.Bounds.Height += container.Bounds.Height;
 
 				container.Visible = true;
 				var speed = PlaybackSpeed.Regular;
