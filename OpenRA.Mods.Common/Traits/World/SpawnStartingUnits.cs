@@ -54,16 +54,17 @@ namespace OpenRA.Mods.Common.Traits
 					startingUnits, StartingUnitsClass, DropdownLocked);
 		}
 
-		public override object Create(ActorInitializer init) { return new SpawnStartingUnits(this); }
+		public override object Create(ActorInitializer init) { return new SpawnStartingUnits(init, this); }
 	}
 
 	public class SpawnStartingUnits : IWorldLoaded
 	{
-		readonly SpawnStartingUnitsInfo info;
+		readonly string spawnClass;
 
-		public SpawnStartingUnits(SpawnStartingUnitsInfo info)
+		public SpawnStartingUnits(ActorInitializer init, SpawnStartingUnitsInfo info)
 		{
-			this.info = info;
+			spawnClass = init.GetOrDefault<StartingUnitsClassInit>()?.Value
+				?? init.World.LobbyInfo.GlobalSettings.OptionOrDefault("startingunits", info.StartingUnitsClass);
 		}
 
 		public void WorldLoaded(World world, WorldRenderer wr)
@@ -75,9 +76,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		void SpawnUnitsForPlayer(World w, Player p)
 		{
-			var spawnClass = p.PlayerReference.StartingUnitsClass ?? w.LobbyInfo.GlobalSettings
-				.OptionOrDefault("startingunits", info.StartingUnitsClass);
-
 			var unitGroup = w.Map.Rules.Actors[SystemActors.World].TraitInfos<StartingUnitsInfo>()
 				.Where(g => g.Class == spawnClass && g.Factions != null && g.Factions.Contains(p.Faction.InternalName))
 				.RandomOrDefault(w.SharedRandom);
@@ -164,5 +162,9 @@ namespace OpenRA.Mods.Common.Traits
 				]);
 			}
 		}
+	}
+
+	public class StartingUnitsClassInit(string value) : ValueActorInit<string>(value), ISingleInstanceInit
+	{
 	}
 }
