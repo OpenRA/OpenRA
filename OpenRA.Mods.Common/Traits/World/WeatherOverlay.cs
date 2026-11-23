@@ -173,7 +173,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Track particles in a viewport fixed to the minimum zoom level
 			var s = int2.FromVector(1f / minZoom * Game.Renderer.NativeResolution.ToVector2());
-			viewportSize = new Size(s.X, s.Y);
+			viewportSize = new Size(s.X + 1, s.Y + 1);
 
 			// Randomly distribute particles within the initial viewport
 			var particleCount = viewportSize.Width * viewportSize.Height * Info.ParticleDensityFactor / 10000;
