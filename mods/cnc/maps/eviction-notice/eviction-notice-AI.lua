@@ -7,401 +7,488 @@
    information, see COPYING.
 ]]
 
-GDInuke1 = { type = "nuk2", pos = CPos.New(6,3), blocked = false }
-GDIproc1 = { type = "proc", pos = CPos.New(8,12), blocked = false }
-GDIpyle = { type = "pyle", pos = CPos.New(17,4), blocked = false }
-GDIweap = { type = "weap", pos = CPos.New(10,9), blocked = false }
-GDIproc2 = { type = "proc", pos = CPos.New(12,3), blocked = false }
-GDInuke2 = { type = "nuk2", pos = CPos.New(4,11), blocked = false }
-GDInuke3 = { type = "nuk2", pos = CPos.New(3,14), blocked = false }
-GDIdef1 = { type = "atwr", pos = CPos.New(8,5), blocked = false }
-GDIdef2 = { type = "atwr", pos = CPos.New(6,10), blocked = false }
-GDIdef3 = { type = "atwr", pos = CPos.New(6,16), blocked = false }
-GDIdef4 = { type = "gtwr", pos = CPos.New(9,8), blocked = false }
-GDInuke4 = { type = "nuk2", pos = CPos.New(13,12), blocked = false }
-GDIdef5 = { type = "atwr", pos = CPos.New(15,10), blocked = false }
-GDIdef6 = { type = "atwr", pos = CPos.New(13,16), blocked = false }
-GDInuke5 = { type = "nuk2", pos = CPos.New(11,14), blocked = false }
-GDIsilo1 = { type = "silo", pos = CPos.New(3,6), blocked = false }
-GDIsilo2 = { type = "silo", pos = CPos.New(5,17), blocked = false }
-GDIdef7 = { type = "atwr", pos = CPos.New(19,5), blocked = false }
-GDIdef8 = { type = "atwr", pos = CPos.New(10,21), blocked = false }
-GDIsilo3 = { type = "silo", pos = CPos.New(17,2), blocked = false }
-GDIsilo4 = { type = "silo", pos = CPos.New(9,17), blocked = false }
-GDIdef9 = { type = "atwr", pos = CPos.New(18,20), blocked = false }
-GDIhpad1 = { type = "hpad", pos = CPos.New(3,18), blocked = false }
+-- GDI economy, production and attacks for "Eviction Notice" (SCB30EA.INI).
+--
+-- The original house is trigger-driven and passive until it is discovered.
+-- Placed units therefore use the same pattern as Bad Neighborhood: Defend for
+-- their own position, no proactive IdleDefense until the alert, and a shared
+-- damage handler that calls AlertGDI on the first contact.
+-- Production and the fixed Autocreate-style waves only start on the alert.
+--
+-- Shared with eviction-notice.lua: AlertGDI, GDI, GDI_AI, InitAi,
+-- IonCannonOnline, IsLive, MissionFinished, MissionStartTick, Nod,
+-- OnGDIProduced, RegisterGDIActor.
 
-GDIBase = { GDINuke1, GDIPyle, GDIWeap, GDINuke2, GDINuke3, GDIDef1, GDIDef2, GDIDef3, GDIDef4,
-	GDINuke4, GDIDef5, GDIDef6, GDINuke5, GDISilo1, GDISilo2, GDIDef7, GDIDef8, GDISilo3, GDISilo4, GDIDef9 }
-GDIRebuildList = { GDInuke1, GDIproc1, GDIpyle, GDIweap, GDIproc2, GDInuke2, GDInuke3, GDIdef1, GDIdef2, GDIdef3, GDIdef4,
-	GDInuke4, GDIdef5, GDIdef6, GDInuke5, GDIsilo1, GDIsilo2, GDIdef7, GDIdef8, GDIsilo3, GDIsilo4, GDIdef9 }
-BSizes = { nuk2 = CVec.New(2,3), proc = CVec.New(3,4), pyle = CVec.New(2,3), weap = CVec.New(3,3), atwr = CVec.New(1,1), gtwr = CVec.New(1,1), silo = CVec.New(2,1), hpad = CVec.New(2,2) }
+local AI = CampaignAI
 
-ProductionBuildings = { infantry = GDIPyle, vehicle = GDIWeap, aircraft = GDICYard }
+local GDIHasBase
+local FireIonCannon
+local MaintenanceTick
+local ProductionTick
+local ScheduleEngineers
+local SendEngineers
+local SendNextAutoWave
+local SendPressureSquad
+local StartIonCannon
+local StartPatrol
+local WaveTick
 
-ProductionQueue = { infantry = { }, vehicle = { }, aircraft = { } }
-NewTeam = { }
-TeamJob = "attack"
-AT1 = { "e2", "e2", "e2", "e3", "e3", "vehicle", "jeep", "jeep", "apc" }
-AT2 = { "e2", "e2", "e2", "e3", "e3", "e1", "e1", "e1", "e1" }
-AT3 = { "vehicle", "mtnk", "mtnk", "jeep", "jeep" }
-AT4 = { "e3", "e3", "e1", "e1", "e1", "vehicle", "mtnk", "mtnk", "msam" }
-AT5 = { "vehicle", "jeep", "jeep", "jeep", "apc", "apc" }
-AT6 = { "e3", "e3", "e1", "e1", "e1", "vehicle", "htnk" }
-AT7 = { "vehicle", "htnk", "htnk", "mtnk" }
-AT8 = { "vehicle", "htnk", "htnk", "msam" }
-AT9 = { "vehicle", "mtnk", "msam", "apc", "apc" }
-AT10 = { "e2", "e2", "e2", "e2", "e2", "e2", "e2", "e2", "e2", "e2" }
-OT1 = { "aircraft", "orca", "orca" }
-OT2 = { "aircraft", "orca", "orca", "orca", "orca" }
-AttackTeams = { AT1, AT2, AT3, AT4, AT5, AT6, AT7, AT8, AT9, AT10 }
-
-PT1 = { "vehicle", "htnk" }
-PT2 = { "vehicle", "mtnk", "mtnk" }
-PT3 = { "e2", "e2", "e2", "e3", "e3" }
-PatrolTeams = { PT1, PT2, PT3 }
-
-DT1 = { "vehicle", "mtnk", "mtnk", "msam", "msam" }
-DT2 = { "e3", "e3", "e1", "e1", "e1", "vehicle", "mtnk", "mtnk", "msam" }
-DT3 = { "vehicle", "htnk", "htnk", "msam" }
-DefenseTeams = { DT1, DT2, DT3 }
-
-AddOrcasTo = { AT1, AT2, AT5, AT6, AT9, DT1, DT2, DT3 }
-
-AP1 = { waypoint5.Location, waypoint9.Location, waypoint8.Location, waypoint13.Location }
-AP2 = { waypoint2.Location, waypoint5.Location, waypoint4.Location, waypoint6.Location }
-AP3 = { waypoint2.Location, waypoint3.Location, waypoint4.Location, waypoint6.Location }
-AP4 = { waypoint5.Location, waypoint9.Location, waypoint14.Location, PlayerStart.Location, waypoint13.Location }
-AP5 = { waypoint5.Location, waypoint9.Location, waypoint6.Location }
-AttackPaths = { AP1, AP2, AP3, AP4, AP5 }
-
-InitAi = function()
-
-	if Difficulty == "hard" then
-		PBDelay = 115
-		PUDelay = 30
-		ICDelay = 800
-		ProdCDSecs = 30
-		GDI.Resources = 10000
-		MinHarvs = 3
-		ProcUpgrade = "AIHProcUpgrade"
-		CivsBuildingsToDestroy = 8
-	end
-
-	if Difficulty == "normal" then
-		PBDelay = 140
-		PUDelay = 50
-		ICDelay = 1000
-		ProdCDSecs = 40
-		GDI.Resources = 7000
-		MinHarvs = 2
-		ProcUpgrade = "AINProcUpgrade"
-		CivsBuildingsToDestroy = 11
-	end
-
-	if Difficulty == "easy" then
-		PBDelay = 180
-		PUDelay = 70
-		ICDelay = 1200
-		ProdCDSecs = 50
-		GDI.Resources = 5000
-		MinHarvs = 2
-		Nod.Resources = 3000
-		CivsBuildingsToDestroy = 13
-	end
-
-	RepairNamedActors(GDI, 0.75)
-	SetAutoRebuild()
-
-	Trigger.OnKilled(GDIPyle, function()
-		ProductionQueue["infantry"] = { }
-	end)
-	Trigger.OnKilled(GDIWeap, function()
-		ProductionQueue["vehicle"] = { }
-	end)
-
-	if ProcUpgrade then
-		ProcUpg = Actor.Create(ProcUpgrade, true, { Owner = GDI })
-	end
-
-	Trigger.AfterDelay(DateTime.Seconds(PBDelay), function()
-
-		CheckBase()
-
-		Trigger.AfterDelay(DateTime.Seconds(PUDelay), function()
-			ProduceUnits()
-			ReduceProdCD()
-		end)
-
-		Trigger.AfterDelay(DateTime.Seconds(ICDelay), function()
-			FireIonCannon(270)
-		end)
-
-		if not GDIAdvComCenter.IsDead then
-			IonCannonOnline = true
-			Media.DisplayMessage(UserInterface.GetFluentMessage("destroy-ion-cannon-advice"))
-			DestroyIonCannon = AddSecondaryObjective(Nod, "quickly-destroy-ion-cannon")
-		end
-	end)
-
+IsLive = function(actor)
+	return AI.IsLive(actor)
 end
 
-ReduceProdCD = function()
-	Trigger.AfterDelay(DateTime.Minutes(2), function()
-		ProdCDSecs = ProdCDSecs - 1
-		if ProdCDSecs > 10 then
-			ReduceProdCD()
-		end
-	end)
-end
+local AlertTime = { easy = 1500, normal = 1200, hard = 900 }
+local AlertFirstWave = { easy = 75, normal = 50, hard = 35 }
+local AlertWaveInterval = { easy = 210, normal = 150, hard = 100 }
+local ProductionInterval = { easy = 30, normal = 22, hard = 15 }
+local EngineerDelay = { easy = 360, normal = 300, hard = 240 }
+local HomeGuardSize = { easy = 3, normal = 4, hard = 6 }
+local PressureSquadSize = { easy = 2, normal = 3, hard = 4 }
+local MaxGDIArmy = { easy = 8, normal = 12, hard = 16 }
+local StartingCash = 9000
+local IonCannonInterval = 300
 
-PrepareOrcas = function()
-	table.insert(GDIRebuildList, 11, GDIhpad1)
-	Utils.Do(AddOrcasTo, function(t)
-		Utils.Do(OT1, function(u)
-			table.insert(t, u)
-		end)
-	end)
-	table.insert(AttackTeams, OT2)
-	table.insert(PatrolTeams, OT1)
-end
+local GDIAlerted = false
+local GDIProductionStarted = false
+local GDIHome = nil
+-- GDI_AI is shared with eviction-notice.lua; keep it global.
+GDI_AI = nil
+local GDI_IDLE_DEFENSE = nil
+local GDIRegistered = {}
+local GDIProducedUnits = {}
+local NextUnitIndex = 1
+local NextWaveIndex = 1
+local NextPressureRoute = 1
 
---Building logic
-SetAutoRebuild = function()
-	Utils.Do(GDIBase, function(b)
-		Trigger.OnKilled(b, CheckBase)
-	end)
-end
+local UnitRotation = {
+	easy = { "e1", "e2", "e3", "jeep", "mtnk", "apc" },
+	normal = { "e1", "e2", "e3", "jeep", "mtnk", "apc", "msam", "e2", "mtnk" },
+	hard = { "e1", "e2", "e3", "jeep", "mtnk", "apc", "msam", "e2", "mtnk", "htnk" },
+}
 
-CheckBase = function()
-	if GDICYard.IsDead then return end
-	for i = 1, #GDIRebuildList do
-		if GDIRebuildList[i].blocked then
-			CheckBuildablePlace(GDIRebuildList[i])
-		else
-			local building = GDI.GetActorsByType(GDIRebuildList[i].type)
-			if #building < 1 then
-				BuildBuilding(GDIRebuildList[i], GDICYard)
-				return
+-- Keep production moving when a tech building is lost: the EYE gates the
+-- Mammoth tank, the HQ gates E2/MTNK/MSAM, and a destroyed factory removes
+-- its whole unit class from the rotation for that tick.
+local UnitPrerequisites = {
+	e1 = { "barracks" },
+	e2 = { "anyhq", "~techlevel.medium" },
+	e3 = { "barracks" },
+	jeep = { "weap" },
+	mtnk = { "anyhq", "~techlevel.medium" },
+	apc = { "pyle" },
+	msam = { "anyhq", "~techlevel.medium" },
+	htnk = { "eye", "~techlevel.high" },
+}
+
+-- Original [Base] layout. GDI rebuilds one entry per maintenance pass.
+local GDI_PLAN = {
+	{ "nuk2", 6, 3 }, { "proc", 8, 12 }, { "pyle", 17, 4 }, { "weap", 10, 8 }, { "proc", 12, 3 },
+	{ "nuk2", 4, 11 }, { "nuk2", 3, 14 }, { "atwr", 8, 4 }, { "atwr", 6, 9 }, { "atwr", 6, 15 },
+	{ "gtwr", 9, 8 }, { "nuk2", 13, 12 }, { "atwr", 15, 9 }, { "atwr", 13, 15 }, { "nuk2", 11, 14 },
+	{ "silo", 3, 6 }, { "silo", 5, 17 }, { "atwr", 19, 4 }, { "atwr", 10, 20 }, { "silo", 17, 2 },
+	{ "silo", 9, 17 }, { "atwr", 18, 19 },
+}
+
+local GDI_REBUILD_OPTIONS = {
+	plan = GDI_PLAN,
+	targets = { proc = 2, weap = 1, pyle = 1 },
+	reserve = 500,
+	-- Filled in InitAi once the GDI player lookup is available.
+	siteOptions = { },
+	isActive = function() return not MissionFinished and GDIHasBase() end,
+	optionalEntries = function()
+		local list = {}
+		for _, entry in ipairs(GDI_PLAN) do
+			if entry[1] == "silo" or entry[1] == "atwr" or entry[1] == "gtwr" then
+				table.insert(list, entry)
 			end
-			for ii = 1, #building do
-				if not building[ii].IsDead and building[ii].Location == GDIRebuildList[i].pos then
+		end
+		return list
+	end,
+	onComplete = function(building) RegisterGDIActor(building) end,
+}
+
+-- Original Autocreate-style attack teams. Compositions and routes follow the
+-- original [TeamTypes] data, but the entry point is consolidated to the
+-- north-east road near the top-right Tiberium field (WP3, 49,5) so waves no
+-- longer appear directly in front of the GDI base. The rotation is fixed and
+-- has no RNG.
+local AutoWaves = {
+	{ units = { "e2", "mtnk" }, entry = waypoint3, route = { }, baseAttack = false }, -- gatk5
+	{ units = { "e2", "e2", "e3", "e3", "mtnk" }, entry = waypoint3, route = { waypoint12 }, baseAttack = false }, -- gatk4
+	{ units = { "htnk" }, entry = waypoint3, route = { waypoint2 }, baseAttack = true }, -- gatk1
+	{ units = { "mtnk", "mtnk", "msam" }, entry = waypoint3, route = { }, baseAttack = true }, -- gatk2
+	{ units = { "jeep", "jeep", "jeep" }, entry = waypoint3, route = { }, baseAttack = false }, -- gatk3
+	{ units = { "e2", "e2", "e2", "e3", "e3", "e6" }, entry = waypoint3, route = { waypoint2, waypoint5 }, baseAttack = false }, -- gatk
+}
+
+local PressureRoutes = {
+	{ waypoint2, waypoint9, waypoint8 },
+	{ waypoint5, waypoint4, waypoint6 },
+	{ waypoint2, waypoint5 },
+}
+
+GDIHasBase = function()
+	return IsLive(GDICYard) and GDICYard.Owner == GDI
+end
+
+function RegisterGDIActor(actor)
+	if not IsLive(actor) or actor.Owner ~= GDI then return end
+	if actor.Type == "airstrike.proxy" or actor.Type == "airstrike.single" then return end
+	-- Aircraft husks inherit without ScriptTriggers; they cannot carry triggers.
+	if actor.Type:match("%.husk$") then return end
+	if not actor.HasProperty("Health") then return end
+	if GDIRegistered[actor] then return end
+	GDIRegistered[actor] = true
+
+	-- Harvesters are economy units and regularly drive past the Nod start on
+	-- their way to the nearby Tiberium field. They must not wake the whole GDI
+	-- base just because a player unit auto-targets one.
+	if actor.Type == "harv" then
+		if actor.HasProperty("Stance") then actor.Stance = "Defend" end
+		AI.TrackHarvester(GDIHome, actor)
+		if actor.HasProperty("FindResources") then actor.FindResources() end
+		return
+	end
+
+	if actor.HasProperty("Stance") then actor.Stance = "Defend" end
+	AI.RegisterDamageHandler(actor, GDI_AI)
+	Trigger.OnKilled(actor, function(_, killer)
+		if killer ~= nil and killer.Owner == Nod then
+			AlertGDI("combat")
+		end
+	end)
+	Trigger.OnCapture(actor, function(_, _, oldOwner, newOwner)
+		if oldOwner == GDI and newOwner == Nod then
+			AlertGDI("combat")
+		end
+	end)
+
+	if actor.Type == "harv" and actor.HasProperty("FindResources") then
+		AI.TrackHarvester(GDIHome, actor)
+		actor.FindResources()
+	end
+end
+
+function OnGDIProduced(producer, unit, productionType)
+	if MissionFinished or not IsLive(unit) or unit.Owner ~= GDI then return end
+	RegisterGDIActor(unit)
+
+	if unit.Type == "harv" or unit.Type == "mcv" or unit.Type == "a10"
+		or not unit.HasProperty("AttackMove") then
+		return
+	end
+
+	table.insert(GDIProducedUnits, unit)
+	AI.AddToPool(GDIHome, unit, GDI_AI)
+end
+
+local function CountProducedUnits()
+	local count = 0
+	local i = #GDIProducedUnits
+	while i >= 1 do
+		local unit = GDIProducedUnits[i]
+		if IsLive(unit) and unit.Owner == GDI then
+			count = count + 1
+		else
+			table.remove(GDIProducedUnits, i)
+		end
+		i = i - 1
+	end
+	return count
+end
+
+function InitAi()
+	local difficulty = Difficulty or "normal"
+	GDI.Cash = StartingCash
+	GDI_REBUILD_OPTIONS.siteOptions = { owner = GDI }
+	MissionStartTick = MissionStartTick or DateTime.GameTime
+
+	AI.ConfigureLand({ minX = 2, maxX = 61, minY = 2, maxY = 61, startCells = { } })
+	AI.BuildLandRegions()
+
+	GDIHome = AI.NewBase({
+		player = GDI,
+		yard = { GDICYard.Location.X, GDICYard.Location.Y },
+		defenderReserve = HomeGuardSize[difficulty],
+	})
+	AI.InitEconomy(GDIHome, {
+		harvesterKind = "harv",
+		refineryKind = "proc",
+		harvesterProductionKind = "weap",
+		incomeWindow = 180,
+	})
+
+	GDI_AI = {
+		enemy = Nod,
+		players = { GDI },
+		base = GDIHome,
+		repairThreshold = 0.7,
+		keepAttackers = true,
+		isActive = function() return not MissionFinished and GDIAlerted end,
+		isFinished = function() return MissionFinished end,
+		onDamage = function(self, attacker)
+			-- Only actual Nod aggression should wake the base. Nil/environment
+			-- damage (docking, crush, terrain, scripted effects) and friendly
+			-- fire must not trigger the discovery alarm.
+			if attacker ~= nil and attacker.Owner == Nod then
+				AlertGDI("combat")
+			end
+		end,
+		canRepair = function(actor)
+			return actor.Type == "nuk2" or actor.Type == "proc"
+				or actor.Type == "weap" or actor.Type == "pyle" or actor.Type == "fact"
+		end,
+	}
+	GDI_IDLE_DEFENSE = {
+		enemy = Nod,
+		players = { GDI },
+		isActive = function() return not MissionFinished and GDIAlerted end,
+		isFinished = function() return MissionFinished end,
+	}
+
+	Utils.Do(GDI.GetActors(), RegisterGDIActor)
+
+	Trigger.AfterDelay(DateTime.Seconds(12), StartPatrol)
+	Trigger.AfterDelay(DateTime.Seconds(10), MaintenanceTick)
+	AI.StartIdleDefense(GDI_IDLE_DEFENSE, 3)
+
+	Trigger.AfterDelay(DateTime.Seconds(AlertTime[difficulty]), function()
+		AlertGDI("time")
+	end)
+end
+
+StartPatrol = function()
+	if MissionFinished then return end
+
+	local patrol = { Actor103, Actor122, Actor123 }
+	local path = { waypoint2.Location, waypoint3.Location, waypoint4.Location, waypoint5.Location }
+	Utils.Do(patrol, function(unit)
+		if not IsLive(unit) then return end
+		if unit.HasProperty("Stance") then unit.Stance = "Defend" end
+		if unit.HasProperty("Patrol") then
+			unit.Patrol(path, true, DateTime.Seconds(20))
+		end
+	end)
+end
+
+MaintenanceTick = function()
+	if MissionFinished or not GDIHasBase() then return end
+
+	AI.SafeCall("maintenance", function()
+		Utils.Do(GDI.GetActorsByType("harv"), function(harv)
+			if IsLive(harv) then
+				if harv.HasProperty("Stance") then harv.Stance = "Defend" end
+				AI.TrackHarvester(GDIHome, harv)
+			end
+		end)
+		AI.MaintainHarvesters(GDIHome, { harvestersPerRefinery = 1 })
+		AI.ReplaceHarvester(GDIHome, {
+			harvesterCost = 1100,
+			reserve = 0,
+			canBuild = function(kind) return GDI.HasPrerequisites({ "proc" }) end,
+		})
+		AI.MaintainBase(GDIHome, GDI_REBUILD_OPTIONS)
+		AI.RecallReserve(GDIHome)
+	end)
+
+	Trigger.AfterDelay(DateTime.Seconds(15), MaintenanceTick)
+end
+
+local function StartGDIProduction()
+	if GDIProductionStarted or MissionFinished then return end
+	GDIProductionStarted = true
+	ProductionTick()
+end
+
+ProductionTick = function()
+	if MissionFinished or not GDIAlerted or not GDIHasBase() or GDI.HasNoRequiredUnits() then return end
+
+	local difficulty = Difficulty or "normal"
+	if CountProducedUnits() < MaxGDIArmy[difficulty] then
+		local rotation = UnitRotation[difficulty] or UnitRotation.normal
+		for _ = 1, #rotation do
+			local kind = rotation[NextUnitIndex]
+			NextUnitIndex = NextUnitIndex % #rotation + 1
+
+			local prerequisites = UnitPrerequisites[kind]
+			if prerequisites == nil or GDI.HasPrerequisites(prerequisites) then
+				local factory
+				if kind == "e1" or kind == "e2" or kind == "e3" then
+					factory = AI.LocalBuilding(GDIHome, "pyle", GDIHome.baseRadius)
+				else
+					factory = AI.LocalBuilding(GDIHome, "weap", GDIHome.baseRadius)
+				end
+
+				if factory ~= nil then
+					AI.QueueUnit(factory, kind, GDI)
 					break
 				end
-				if ii == #building then
-					BuildBuilding(GDIRebuildList[i], GDICYard)
-					return
-				end
 			end
 		end
 	end
-	if not CheckProgrammed then
-		CheckProgrammed = true
-		Trigger.AfterDelay(250, function()
-			CheckProgrammed = false
-			CheckBase()
-		end)
-	end
+
+	Trigger.AfterDelay(DateTime.Seconds(ProductionInterval[difficulty]), ProductionTick)
 end
 
-CheckBuildablePlace = function(b)
-	local actors = Map.ActorsInBox(WPos.New(b.pos.X * 1024, b.pos.Y * 1024, 0), WPos.New((b.pos.X + BSizes[b.type].X) * 1024, (b.pos.Y + BSizes[b.type].Y) * 1024, 0), function(a) return a.Owner == Nod end)
-	if #actors > 0 then
-		b.blocked = true
-		return false
-	else
-		b.blocked = false
-		return true
-	end
+function AlertGDI(reason)
+	if GDIAlerted or MissionFinished then return end
+
+	GDIAlerted = true
+
+	local messages = {
+		civilians = "civilians-reached-gdi",
+		time = "gdi-alerted-time",
+		combat = "gdi-alerted-combat",
+		base = "gdi-alerted-base",
+		hq = "gdi-alerted-hq",
+	}
+	Media.DisplayMessageToPlayer(Nod, UserInterface.GetFluentMessage(messages[reason] or "gdi-alerted"))
+
+	StartGDIProduction()
+	Trigger.AfterDelay(DateTime.Seconds(AlertFirstWave[Difficulty or "normal"]), WaveTick)
+	ScheduleEngineers()
+	StartIonCannon()
 end
 
-BuildBuilding = function(building, cyard)
-	if CyardIsBuilding or GDI.Resources < Actor.Cost(building.type) then
-		if Dontspam == true then
-			return
-		end
-		Dontspam = true
-		Trigger.AfterDelay(DateTime.Seconds(10), function()
-			Dontspam = false
-			CheckBase()
-		end)
-		return
-	end
+WaveTick = function()
+	if MissionFinished or not GDIHasBase() or GDI.HasNoRequiredUnits() then return end
 
-	CyardIsBuilding = true
-
-	GDI.Resources = GDI.Resources - Actor.Cost(building.type)
-	Trigger.AfterDelay(Actor.BuildTime(building.type), function()
-		CyardIsBuilding = false
-
-		if cyard.IsDead or cyard.Owner ~= GDI then
-			GDI.Resources = GDI.Resources + Actor.Cost(building.type)
-			return
-		end
-
-		if CheckBuildablePlace(building) == false then
-			CheckBase()
-			return
-		end
-
-		local newbuilding = Actor.Create(building.type, true, { Owner = GDI, Location = building.pos })
-		Trigger.OnKilled(newbuilding, function() CheckBase() end)
-		RepairBuilding(GDI, newbuilding, 0.75)
-		GuardBuilding(newbuilding)
-
-		if newbuilding.Type == "pyle" then
-			ProductionBuildings["infantry"] = newbuilding
-			Trigger.OnKilled(newbuilding, function() ProductionQueue["infantry"] = { } end)
-			RestartUnitProduction()
-		elseif newbuilding.Type == "weap" then
-			ProductionBuildings["vehicle"] = newbuilding
-			Trigger.OnKilled(newbuilding, function() ProductionQueue["vehicle"] = { } end)
-			RestartUnitProduction()
-			NeedHarv = false
-		elseif newbuilding.Type == "hpad" then
-			ProductionBuildings["aircraft"] = newbuilding
-			Trigger.OnKilled(newbuilding, function() ProductionQueue["aircraft"] = { } end)
-			RestartUnitProduction()
-		end
-
-		Trigger.AfterDelay(50, CheckBase)
+	AI.SafeCall("waves", function()
+		SendNextAutoWave()
+		SendPressureSquad()
 	end)
 
+	Trigger.AfterDelay(DateTime.Seconds(AlertWaveInterval[Difficulty or "normal"]), WaveTick)
 end
 
---Units production logic
-UniqueTeamsQueue = { }
-ProdCooldown = false
-CheckProduction = function()
-	if #GDI.GetActorsByType("proc") < 1 and GDI.Resources < 6000 then
-		Trigger.AfterDelay(250, CheckProduction)
-		return
-	elseif ProductionBuildings["infantry"].IsDead and ProductionBuildings["vehicle"].IsDead and ProductionBuildings["aircraft"].IsDead then
-		return
-	elseif not ProductionBuildings["vehicle"].IsDead and CheckForHarvester() then
-		NeedHarv = true
-		ProductionBuildings["vehicle"].Build( { "harv" }, function()
-			CheckProduction()
-			Trigger.AfterDelay(DateTime.Seconds(5), function()
-				if not ProductionBuildings["vehicle"].IsDead then
-					ProductionBuildings["vehicle"].Build( { "harv" } )
-				end
+SendNextAutoWave = function()
+	local def = AutoWaves[NextWaveIndex]
+	NextWaveIndex = NextWaveIndex % #AutoWaves + 1
+	if def == nil then return end
+
+	Reinforcements.Reinforce(GDI, def.units, { def.entry.Location }, 10, function(unit)
+		if not IsLive(unit) then return end
+		RegisterGDIActor(unit)
+		if unit.HasProperty("Stance") then unit.Stance = "AttackAnything" end
+		AI.SendTeam({ unit }, GDI, def.route, true, def.baseAttack, GDI_AI)
+	end)
+end
+
+SendPressureSquad = function()
+	local units = AI.TakeForAttack(GDIHome, PressureSquadSize[Difficulty or "normal"], true)
+	if #units == 0 then return end
+
+	local route = PressureRoutes[NextPressureRoute]
+	NextPressureRoute = NextPressureRoute % #PressureRoutes + 1
+	AI.SendTeam(units, GDI, route, true, false, GDI_AI)
+end
+
+ScheduleEngineers = function()
+	Trigger.AfterDelay(DateTime.Seconds(EngineerDelay[Difficulty or "normal"]), SendEngineers)
+end
+
+SendEngineers = function()
+	if MissionFinished or not GDIHasBase() or GDI.HasNoRequiredUnits() then return end
+
+	-- Original grnf2: four engineers in a Chinook, unload at WP10 and attack
+	-- the Nod base. The mission design uses this as a one-time attack after
+	-- the alert, not as a reaction to civilian deaths.
+	Reinforcements.ReinforceWithTransport(GDI, "tran", { "e6", "e6", "e6", "e6" },
+		{ waypoint3.Location, waypoint10.Location },
+		{ waypoint10.Location, CPos.New(61, 60) },
+		function(tran, cargo)
+			if MissionFinished or not IsLive(tran) then return end
+			if tran.HasProperty("UnloadPassengers") then tran.UnloadPassengers() end
+
+			Trigger.AfterDelay(DateTime.Seconds(1), function()
+				Utils.Do(cargo, function(unit)
+					if not IsLive(unit) then return end
+					RegisterGDIActor(unit)
+					if unit.HasProperty("Stance") then unit.Stance = "AttackAnything" end
+					AI.OrderAttack(unit, GDI_AI)
+				end)
+			end)
+
+			-- Never let a surviving transport block the All-Destroyed win check.
+			Trigger.AfterDelay(DateTime.Seconds(45), function()
+				if IsLive(tran) and tran.IsInWorld then tran.Destroy() end
 			end)
 		end)
-		return
-	end
-	NeedHarv = false
-
-	if #ProductionQueue["infantry"] + #ProductionQueue["vehicle"] + #ProductionQueue["aircraft"] < 1 and Producing then
-		Producing = false
-	end
-	if ProdCooldown or GDI.Resources < 4000 then
-		RestartUnitProduction()
-	else
-		ProduceUnits()
-	end
-
 end
 
-ProduceUnits = function()
-	if NeedHarv then
-		RestartUnitProduction()
-		return
-	end
-	if not Producing then
-		NewTeam = { }
-		CreateUnitsGroup()
-		if #ProductionQueue["infantry"] + #ProductionQueue["vehicle"] + #ProductionQueue["aircraft"] > 0 then
-			Producing = true
-		else
-			RestartUnitProduction()
-			return
-		end
-	end
+StartIonCannon = function()
+	if IonCannonOnline or MissionFinished then return end
+	if not IsLive(GDIAdvComCenter) or GDIAdvComCenter.Owner ~= GDI then return end
 
-	if #ProductionQueue["infantry"] > 0 and not ProductionBuildings["infantry"].IsDead and not ProductionBuildings["infantry"].IsProducing("e2") then
-		ProductionBuildings["infantry"].Build( { ProductionQueue["infantry"][1] }, function(u)
-			table.insert(NewTeam, u[1])
-			table.remove(ProductionQueue["infantry"], 1)
-			CheckTeamCompleted()
-		end)
-	end
-	if #ProductionQueue["vehicle"] > 0 and not ProductionBuildings["vehicle"].IsDead and not ProductionBuildings["vehicle"].IsProducing("mtnk") then
-		ProductionBuildings["vehicle"].Build( { ProductionQueue["vehicle"][1] }, function(u)
-			table.insert(NewTeam, u[1])
-			table.remove(ProductionQueue["vehicle"], 1)
-			CheckTeamCompleted()
-		end)
-	end
-	if #ProductionQueue["aircraft"] > 0 and not ProductionBuildings["aircraft"].IsDead and not ProductionBuildings["aircraft"].IsProducing("orca") then
-		ProductionBuildings["aircraft"].Build( { ProductionQueue["aircraft"][1] }, function(u)
-			table.insert(NewTeam, u[1])
-			table.remove(ProductionQueue["aircraft"], 1)
-			CheckTeamCompleted()
-		end)
-	end
+	IonCannonOnline = true
+	Media.DisplayMessageToPlayer(Nod, UserInterface.GetFluentMessage("ion-cannon-online"))
 
-	RestartUnitProduction()
-
+	-- Original first shot at 25:00. If GDI is alerted later, give it time to
+	-- charge; never fire before 25:00.
+	local elapsed = math.max(0, math.floor((DateTime.GameTime - MissionStartTick) / 25))
+	local delay = math.max(600, 1500 - elapsed)
+	Trigger.AfterDelay(DateTime.Seconds(delay), FireIonCannon)
 end
 
-CheckTeamCompleted = function()
-	if #ProductionQueue["infantry"] + #ProductionQueue["vehicle"] + #ProductionQueue["aircraft"] < 1 and #NewTeam > 0 then
-		NewTeam = Utils.Where(NewTeam, function(u) return not u.IsDead end)
-		if TeamJob == "attack" then
-			SendAttackGroup(NewTeam)
-		elseif TeamJob == "patrol" then
-			TeamJob = "attack"
-			PatrolTeam = NewTeam
-			StartPatrol()
-		elseif TeamJob == "defend" then
-			TeamJob = "attack"
-			BaseDefenseTeam = NewTeam
-			StartGuard()
-		end
-		Producing = false
-		ProdCooldown = true
-		NewTeam = { }
-		Trigger.AfterDelay(DateTime.Seconds(ProdCDSecs), function() ProdCooldown = false end)
-	else
-		ProduceUnits()
-	end
-end
-
-SendAttackGroup = function(team)
-	MoveAsGroup(team, Utils.Random(AttackPaths), 1, false)
-end
-
-CreateUnitsGroup = function()
-	local team = AttackTeams
-	if #UniqueTeamsQueue > 0 then
-		team = UniqueTeamsQueue[1].team
-		TeamJob = UniqueTeamsQueue[1].job
-		table.remove(UniqueTeamsQueue, 1)
-	end
-	local pb = "infantry"
-	Utils.Do(Utils.Random(team), function(u)
-		if u == "vehicle" or u == "aircraft" then
-			pb = u
-		elseif ProductionBuildings[pb] and not ProductionBuildings[pb].IsDead and ProductionBuildings[pb].Owner == GDI then
-			table.insert(ProductionQueue[pb], u)
+local function FindIonCannonTarget()
+	local eye = GDIAdvComCenter
+	local units = { }
+	Utils.Do(Nod.GetGroundAttackers(), function(unit)
+		if IsLive(unit) and unit.HasProperty("Location") then
+			table.insert(units, unit)
 		end
 	end)
+
+	if #units == 0 then
+		return AI.ClosestBuilding(eye, Nod, GDI_AI)
+	end
+
+	-- Deterministic target: the largest cluster of Nod ground units, with the
+	-- cluster closest to the EYE as the tie-breaker. No random target choice.
+	local best, bestScore, bestDistance
+	Utils.Do(units, function(unit)
+		local score = 0
+		Utils.Do(units, function(other)
+			if other ~= unit and AI.SameLand(unit.Location, other.Location) then
+				local dx = unit.Location.X - other.Location.X
+				local dy = unit.Location.Y - other.Location.Y
+				if dx * dx + dy * dy <= 4 then
+					score = score + 1
+				end
+			end
+		end)
+
+		local dx = unit.Location.X - eye.Location.X
+		local dy = unit.Location.Y - eye.Location.Y
+		local distance = dx * dx + dy * dy
+		if best == nil or score > bestScore or (score == bestScore and distance < bestDistance) then
+			best, bestScore, bestDistance = unit, score, distance
+		end
+	end)
+
+	return best
 end
 
-RestartUnitProduction = function()
-	if not Restarting then
-		Restarting = true
-	else
+FireIonCannon = function()
+	if MissionFinished or not IonCannonOnline then return end
+	if not IsLive(GDIAdvComCenter) or GDIAdvComCenter.Owner ~= GDI then
+		IonCannonOnline = false
 		return
 	end
-	Trigger.AfterDelay(DateTime.Seconds(5), function()
-		Restarting = false
-		CheckProduction()
-	end)
-end
 
-CheckForHarvester = function()
-	local harv = GDI.GetActorsByType("harv")
-	return #harv < MinHarvs
+	-- The original superweapon needs a working GDI power grid.
+	if GDI.PowerState ~= "Normal" then
+		Trigger.AfterDelay(DateTime.Seconds(30), FireIonCannon)
+		return
+	end
+
+	local target = FindIonCannonTarget()
+	if target == nil then
+		Trigger.AfterDelay(DateTime.Seconds(30), FireIonCannon)
+		return
+	end
+
+	GDIAdvComCenter.ActivateIonCannon(target.Location)
+	Trigger.AfterDelay(DateTime.Seconds(IonCannonInterval), FireIonCannon)
 end
