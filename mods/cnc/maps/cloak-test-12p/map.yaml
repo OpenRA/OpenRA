@@ -1,0 +1,276 @@
+MapFormat: 12
+
+RequiresMod: cnc
+
+Title: Cloak Test (12 Players)
+
+Author: OpenRA
+
+Tileset: TEMPERAT
+
+MapSize: 64,64
+
+Bounds: 2,2,60,60
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: gdi
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		LockColor: True
+		LockFaction: True
+		LockTeam: True
+		Team: 1
+		Faction: nod
+		Color: FE1100
+		Allies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7, Multi8, Multi9, Multi10, Multi11
+	PlayerReference@Multi1:
+		Name: Multi1
+		Faction: nod
+		Color: 1E4BFF
+		Allies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7, Multi8, Multi9, Multi10, Multi11
+	PlayerReference@Multi2:
+		Name: Multi2
+		Faction: nod
+		Color: 1EDC1E
+		Allies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7, Multi8, Multi9, Multi10, Multi11
+	PlayerReference@Multi3:
+		Name: Multi3
+		Faction: nod
+		Color: F5D378
+		Allies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7, Multi8, Multi9, Multi10, Multi11
+	PlayerReference@Multi4:
+		Name: Multi4
+		Faction: nod
+		Color: FF8000
+		Allies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7, Multi8, Multi9, Multi10, Multi11
+	PlayerReference@Multi5:
+		Name: Multi5
+		Faction: nod
+		Color: 00E5E5
+		Allies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7, Multi8, Multi9, Multi10, Multi11
+	PlayerReference@Multi6:
+		Name: Multi6
+		Faction: nod
+		Color: FF40FF
+		Allies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7, Multi8, Multi9, Multi10, Multi11
+	PlayerReference@Multi7:
+		Name: Multi7
+		Faction: nod
+		Color: FFFFFF
+		Allies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7, Multi8, Multi9, Multi10, Multi11
+	PlayerReference@Multi8:
+		Name: Multi8
+		Faction: nod
+		Color: 8000C0
+		Allies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7, Multi8, Multi9, Multi10, Multi11
+	PlayerReference@Multi9:
+		Name: Multi9
+		Faction: nod
+		Color: 8B4513
+		Allies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7, Multi8, Multi9, Multi10, Multi11
+	PlayerReference@Multi10:
+		Name: Multi10
+		Faction: nod
+		Color: 909090
+		Allies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7, Multi8, Multi9, Multi10, Multi11
+	PlayerReference@Multi11:
+		Name: Multi11
+		Faction: nod
+		Color: 202020
+		Allies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7, Multi8, Multi9, Multi10, Multi11
+
+Actors:
+	Actor0: stnk
+		Location: 29,29
+		Owner: Multi0
+		Facing: 512
+		Stance: HoldFire
+	Actor1: stnk
+		Location: 31,29
+		Owner: Multi0
+		Facing: 512
+		Stance: HoldFire
+	Actor2: stnk
+		Location: 33,29
+		Owner: Multi0
+		Facing: 512
+		Stance: HoldFire
+	Actor3: stnk
+		Location: 35,29
+		Owner: Multi1
+		Facing: 512
+		Stance: HoldFire
+	Actor4: stnk
+		Location: 37,29
+		Owner: Multi1
+		Facing: 512
+		Stance: HoldFire
+	Actor5: stnk
+		Location: 39,29
+		Owner: Multi1
+		Facing: 512
+		Stance: HoldFire
+	Actor6: stnk
+		Location: 29,31
+		Owner: Multi2
+		Facing: 512
+		Stance: HoldFire
+	Actor7: stnk
+		Location: 31,31
+		Owner: Multi2
+		Facing: 512
+		Stance: HoldFire
+	Actor8: stnk
+		Location: 33,31
+		Owner: Multi2
+		Facing: 512
+		Stance: HoldFire
+	Actor9: stnk
+		Location: 35,31
+		Owner: Multi3
+		Facing: 512
+		Stance: HoldFire
+	Actor10: stnk
+		Location: 37,31
+		Owner: Multi3
+		Facing: 512
+		Stance: HoldFire
+	Actor11: stnk
+		Location: 39,31
+		Owner: Multi3
+		Facing: 512
+		Stance: HoldFire
+	Actor12: stnk
+		Location: 29,33
+		Owner: Multi4
+		Facing: 512
+		Stance: HoldFire
+	Actor13: stnk
+		Location: 31,33
+		Owner: Multi4
+		Facing: 512
+		Stance: HoldFire
+	Actor14: stnk
+		Location: 33,33
+		Owner: Multi4
+		Facing: 512
+		Stance: HoldFire
+	Actor15: stnk
+		Location: 35,33
+		Owner: Multi5
+		Facing: 512
+		Stance: HoldFire
+	Actor16: stnk
+		Location: 37,33
+		Owner: Multi5
+		Facing: 512
+		Stance: HoldFire
+	Actor17: stnk
+		Location: 39,33
+		Owner: Multi5
+		Facing: 512
+		Stance: HoldFire
+	Actor18: stnk
+		Location: 29,35
+		Owner: Multi6
+		Facing: 512
+		Stance: HoldFire
+	Actor19: stnk
+		Location: 31,35
+		Owner: Multi6
+		Facing: 512
+		Stance: HoldFire
+	Actor20: stnk
+		Location: 33,35
+		Owner: Multi6
+		Facing: 512
+		Stance: HoldFire
+	Actor21: stnk
+		Location: 35,35
+		Owner: Multi7
+		Facing: 512
+		Stance: HoldFire
+	Actor22: stnk
+		Location: 37,35
+		Owner: Multi7
+		Facing: 512
+		Stance: HoldFire
+	Actor23: stnk
+		Location: 39,35
+		Owner: Multi7
+		Facing: 512
+		Stance: HoldFire
+	Actor24: stnk
+		Location: 29,37
+		Owner: Multi8
+		Facing: 512
+		Stance: HoldFire
+	Actor25: stnk
+		Location: 31,37
+		Owner: Multi8
+		Facing: 512
+		Stance: HoldFire
+	Actor26: stnk
+		Location: 33,37
+		Owner: Multi8
+		Facing: 512
+		Stance: HoldFire
+	Actor27: stnk
+		Location: 35,37
+		Owner: Multi9
+		Facing: 512
+		Stance: HoldFire
+	Actor28: stnk
+		Location: 37,37
+		Owner: Multi9
+		Facing: 512
+		Stance: HoldFire
+	Actor29: stnk
+		Location: 39,37
+		Owner: Multi9
+		Facing: 512
+		Stance: HoldFire
+	Actor30: stnk
+		Location: 29,39
+		Owner: Multi10
+		Facing: 512
+		Stance: HoldFire
+	Actor31: stnk
+		Location: 31,39
+		Owner: Multi10
+		Facing: 512
+		Stance: HoldFire
+	Actor32: stnk
+		Location: 33,39
+		Owner: Multi10
+		Facing: 512
+		Stance: HoldFire
+	Actor33: stnk
+		Location: 35,39
+		Owner: Multi11
+		Facing: 512
+		Stance: HoldFire
+	Actor34: stnk
+		Location: 37,39
+		Owner: Multi11
+		Facing: 512
+		Stance: HoldFire
+	Actor35: stnk
+		Location: 39,39
+		Owner: Multi11
+		Facing: 512
+		Stance: HoldFire
+	Actor100: mpspawn
+		Location: 34,30
+		Owner: Neutral
+
+Rules: rules.yaml
