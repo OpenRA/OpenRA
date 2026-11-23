@@ -217,11 +217,13 @@ install_linux_shortcuts() (
 
 			# wrapper scripts
 			install -d "${BUILD_PATH}/${BIN_PATH}"
-			sed -e 's/{DEBUG}/--debug/' -e "s|{GAME_INSTALL_DIR}|${OPENRA_PATH}|" -e "s|{BIN_DIR}|${BIN_PATH}|" -e "s/{MODID}/${MOD_ID}/g" -e "s/{TAG}/${VERSION}/g" -e "s/{MODNAME}/${MOD_NAME}/g" "${SRC_PATH}/packaging/linux/openra.in" > "${SRC_PATH}/packaging/linux/openra-${MOD_ID}"
-			sed -e 's/{DEBUG}/--debug/' -e "s|{GAME_INSTALL_DIR}|${OPENRA_PATH}|" -e "s/{MODID}/${MOD_ID}/g" "${SRC_PATH}/packaging/linux/openra-server.in" > "${SRC_PATH}/packaging/linux/openra-${MOD_ID}-server"
+			sed -e "s|{GAME_INSTALL_DIR}|${OPENRA_PATH}|" -e "s|{BIN_DIR}|${BIN_PATH}|" -e "s/{MODID}/${MOD_ID}/g" -e "s/{TAG}/${VERSION}/g" -e "s/{MODNAME}/${MOD_NAME}/g" "${SRC_PATH}/packaging/linux/openra.in" > "${SRC_PATH}/packaging/linux/openra-${MOD_ID}"
+			sed -e "s|{GAME_INSTALL_DIR}|${OPENRA_PATH}|" -e "s/{MODID}/${MOD_ID}/g" "${SRC_PATH}/packaging/linux/openra-server.in" > "${SRC_PATH}/packaging/linux/openra-${MOD_ID}-server"
+			sed -e "s|{GAME_INSTALL_DIR}|${OPENRA_PATH}|" "${SRC_PATH}/packaging/linux/openra-utility.in" > "${SRC_PATH}/packaging/linux/openra-utility"
 			install -m755 "${SRC_PATH}/packaging/linux/openra-${MOD_ID}" "${BUILD_PATH}/${BIN_PATH}"
 			install -m755 "${SRC_PATH}/packaging/linux/openra-${MOD_ID}-server" "${BUILD_PATH}/${BIN_PATH}"
-			rm "${SRC_PATH}/packaging/linux/openra-${MOD_ID}" "${SRC_PATH}/packaging/linux/openra-${MOD_ID}-server"
+			install -m755 "${SRC_PATH}/packaging/linux/openra-utility" "${BUILD_PATH}/${BIN_PATH}"
+			rm "${SRC_PATH}/packaging/linux/openra-${MOD_ID}" "${SRC_PATH}/packaging/linux/openra-${MOD_ID}-server" "${SRC_PATH}/packaging/linux/openra-utility"
 
 			# desktop files
 			install -d "${BUILD_PATH}${SHARE_PATH}/applications"
