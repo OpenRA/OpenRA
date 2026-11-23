@@ -215,7 +215,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					[
 						resolvedDefaultsNode.Value.Nodes.Select(n => n.Build()).ToArray(),
 						resolvedSequenceNode.Value.Nodes.Select(n => n.Build()).ToArray()
-					]).ConvertAll(n => new MiniYamlNodeBuilder(n));
+					]).Select(n => new MiniYamlNodeBuilder(n)).ToList();
 					resolvedSequenceNode.Value.Value ??= resolvedDefaultsNode.Value.Value;
 				}
 			}
