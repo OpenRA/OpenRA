@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -39,6 +40,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Premultiply color by the alpha component.")]
 		public readonly bool Premultiply = true;
 
+		[Desc("Only modify these palette indices. Leave empty to modify all.")]
+		public readonly int[] Indices = [];
+
 		public override object Create(ActorInitializer init) { return new PaletteFromPaletteWithAlpha(this); }
 	}
 
@@ -50,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void LoadPalettes(WorldRenderer wr)
 		{
-			var remap = new AlphaPaletteRemap(info.Alpha, info.Premultiply);
+			var remap = new AlphaPaletteRemap(info.Alpha, info.Premultiply, info.Indices);
 			wr.AddPalette(info.Name, new ImmutablePalette(wr.Palette(info.BasePalette).Palette, remap), info.AllowModifiers);
 		}
 
@@ -61,15 +65,20 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly float alpha;
 		readonly bool premultiply;
+		readonly int[] indices;
 
-		public AlphaPaletteRemap(float alpha, bool premultiply)
+		public AlphaPaletteRemap(float alpha, bool premultiply, int[] indices)
 		{
 			this.alpha = alpha;
 			this.premultiply = premultiply;
+			this.indices = indices;
 		}
 
 		public Color GetRemappedColor(Color original, int index)
 		{
+			if (indices.Length > 0 && !indices.Contains(index))
+				return original;
+
 			var a = (int)(original.A * alpha).Clamp(0, 255);
 			var r = premultiply ? (int)(alpha * original.R + 0.5f).Clamp(0, 255) : original.R;
 			var g = premultiply ? (int)(alpha * original.G + 0.5f).Clamp(0, 255) : original.G;

@@ -229,6 +229,7 @@ ARTY:
 		Weapon: ArtilleryShell
 		LocalOffset: 624,0,208
 		MuzzleSequence: muzzle
+		MuzzlePalette: muzzle
 	Encyclopedia:
 		Description: actor-arty.encyclopedia
 		Order: 110
@@ -489,6 +490,7 @@ LTNK:
 		RecoilRecovery: 17
 		LocalOffset: 720,0,90
 		MuzzleSequence: muzzle
+		MuzzlePalette: muzzle
 	Encyclopedia:
 		Description: actor-ltnk.encyclopedia
 		Order: 160
@@ -540,6 +542,7 @@ MTNK:
 		RecoilRecovery: 26
 		LocalOffset: 768,0,90
 		MuzzleSequence: muzzle
+		MuzzlePalette: muzzle
 	Encyclopedia:
 		Description: actor-mtnk.encyclopedia
 		Order: 170
@@ -599,6 +602,7 @@ HTNK:
 		Recoil: 170
 		RecoilRecovery: 42
 		MuzzleSequence: muzzle
+		MuzzlePalette: muzzle
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: MammothMissiles
