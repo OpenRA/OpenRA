@@ -10,9 +10,9 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Pathfinder
 {
@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			CVec.Directions.Exclude(new CVec(-1, -1)).ToArray(), // BR
 		];
 
-		public List<GraphConnection> GetConnections(CPos position, Func<CPos, bool> targetPredicate)
+		public void PopulateConnections(CPos position, Func<CPos, bool> targetPredicate, OutputBuffer<GraphConnection> connections)
 		{
 			var layer = position.Layer;
 			var info = this[position];
@@ -120,7 +120,6 @@ namespace OpenRA.Mods.Common.Pathfinder
 				? DirectedNeighborsConservative
 				: DirectedNeighbors)[index];
 
-			var validNeighbors = new List<GraphConnection>(directions.Length + (layer == 0 ? customMovementLayersEnabledForLocomotor : 1));
 			for (var i = 0; i < directions.Length; i++)
 			{
 				var dir = directions[i];
@@ -131,7 +130,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				var pathCost = GetPathCostToNode(position, neighbor, dir, targetPredicate);
 				if (pathCost != PathGraph.PathCostForInvalidPath &&
 					this[neighbor].Status != CellStatus.Closed)
-					validNeighbors.Add(new GraphConnection(neighbor, pathCost));
+					connections.Add(new GraphConnection(neighbor, pathCost));
 			}
 
 			if (layer == 0)
@@ -151,7 +150,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 						if (entryCost != PathGraph.MovementCostForUnreachableCell &&
 							CanEnterNode(position, layerPosition, targetPredicate) &&
 							this[layerPosition].Status != CellStatus.Closed)
-							validNeighbors.Add(new GraphConnection(layerPosition, entryCost));
+							connections.Add(new GraphConnection(layerPosition, entryCost));
 					}
 				}
 			}
@@ -164,11 +163,9 @@ namespace OpenRA.Mods.Common.Pathfinder
 					if (exitCost != PathGraph.MovementCostForUnreachableCell &&
 						CanEnterNode(position, groundPosition, targetPredicate) &&
 						this[groundPosition].Status != CellStatus.Closed)
-						validNeighbors.Add(new GraphConnection(groundPosition, exitCost));
+						connections.Add(new GraphConnection(groundPosition, exitCost));
 				}
 			}
-
-			return validNeighbors;
 		}
 
 		bool CanEnterNode(CPos srcNode, CPos destNode, Func<CPos, bool> targetPredicate)

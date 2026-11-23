@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Pathfinder
 {
@@ -23,18 +24,18 @@ namespace OpenRA.Mods.Common.Pathfinder
 	/// </summary>
 	sealed class SparsePathGraph : IPathGraph
 	{
-		readonly Func<CPos, List<GraphConnection>> edges;
+		readonly Action<CPos, OutputBuffer<GraphConnection>> edges;
 		readonly Dictionary<CPos, CellInfo> info;
 
-		public SparsePathGraph(Func<CPos, List<GraphConnection>> edges, int estimatedSearchSize = 0)
+		public SparsePathGraph(Action<CPos, OutputBuffer<GraphConnection>> edges, int estimatedSearchSize = 0)
 		{
 			this.edges = edges;
 			info = new Dictionary<CPos, CellInfo>(estimatedSearchSize);
 		}
 
-		public List<GraphConnection> GetConnections(CPos position, Func<CPos, bool> targetPredicate)
+		public void PopulateConnections(CPos position, Func<CPos, bool> targetPredicate, OutputBuffer<GraphConnection> connections)
 		{
-			return edges(position) ?? [];
+			edges(position, connections);
 		}
 
 		public CellInfo this[CPos pos]
