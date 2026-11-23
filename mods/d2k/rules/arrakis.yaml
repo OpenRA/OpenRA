@@ -93,6 +93,7 @@ sandworm:
 		RequiresCondition: !attacking
 	AmbientSound:
 		SoundFiles: WRMSIGN1.WAV
+		Delay: 160
 		Interval: 160
 		RequiresCondition: !attacking
 	WithAttackOverlay@mouth:
