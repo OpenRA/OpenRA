@@ -4,8 +4,12 @@ World:
 		LossVideo: bombaway.vqa
 		WinVideo: inferno.vqa
 		Briefing: briefing
+	# Original [Basic] has Theme=No theme, so there is no starting music.
+	# The engine default victory music is GDI's; Nod missions set their own.
+	MusicPlaylist:
+		VictoryMusic: nod_win1
 	LuaScript:
-		Scripts: campaign.lua, utils.lua, eviction-notice.lua , eviction-notice-AI.lua
+		Scripts: campaign.lua, utils.lua, campaign-ai.lua, eviction-notice.lua, eviction-notice-AI.lua
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
 		Label: dropdown-difficulty.label
@@ -15,13 +19,16 @@ World:
 			normal: options-difficulty.normal
 			hard: options-difficulty.hard
 		Default: normal
+	MapBuildRadius:
+		BuildRadiusCheckboxEnabled: False
 
 Player:
 	EnemyWatcher:
 	PlayerResources:
 		DefaultCash: 0
 
-# Disable husks for civilian buildings and initial flame tanks
+# Village buildings are scenery in this mission and must not block the narrow
+# streets with husks.
 V19:
 	-SpawnActorOnDeath:
 
@@ -29,8 +36,7 @@ V20:
 	-SpawnActorOnDeath:
 
 V21:
-	SpawnActorOnDeath:
-		Actor: smallmcrate
+	-SpawnActorOnDeath:
 
 V22:
 	-SpawnActorOnDeath:
@@ -39,16 +45,13 @@ V23:
 	-SpawnActorOnDeath:
 
 V24:
-	SpawnActorOnDeath:
-		Actor: smallmcrate
+	-SpawnActorOnDeath:
 
 V25:
-	SpawnActorOnDeath:
-		Actor: moneycrate
+	-SpawnActorOnDeath:
 
 V26:
-	SpawnActorOnDeath:
-		Actor: smallmcrate
+	-SpawnActorOnDeath:
 
 V27:
 	-SpawnActorOnDeath:
@@ -67,22 +70,17 @@ V31:
 
 C5:
 	AnnounceOnSeen:
+	# The two runners are deliberately a little slower than regular infantry,
+	# so the player has a fair chance to intercept them before they reach GDI.
+	Mobile:
+		Speed: 40
 
 C8:
 	AnnounceOnSeen:
+	Mobile:
+		Speed: 40
 
-MoneyCrate:
-	ScriptTriggers:
-
-SmallMCrate:
-	Inherits: MoneyCrate
-	ScriptTriggers:
-	GiveCashCrateAction:
-		Amount: 1000
-		Sequence: dollar
-		UseCashTick: true
-
-# Initial flame tanks can't move due to their own husks
+# Initial flame tanks can't move if they leave a husk behind.
 FTNK.nohusk:
 	Inherits: FTNK
 	-Buildable:
@@ -90,40 +88,20 @@ FTNK.nohusk:
 		Image: FTNK
 	-SpawnActorOnDeath:
 
+# The HQ must not grant Nod a usable AirstrikePower when captured. Scripted
+# GDI strikes use dedicated proxy actors instead.
 HQ:
-	ExternalCondition@CAPTURED:
-		Condition: captured
+	-AirstrikePower:
+
+# `bomb` is a single astk2 strike (3 A10); `owi2` and `astk` are single planes.
+airstrike.proxy:
 	AirstrikePower:
-		StartFullyCharged: True
-		RequiresCondition: captured
+		SquadSize: 3
 
-PROC:
-	GrantConditionOnPrerequisite@AIN:
-		Condition: ain
-		Prerequisites: diffnorm
-	GrantConditionOnPrerequisite@AIH:
-		Condition: aih
-		Prerequisites: diffhard
-	ResourceValueMultiplier@AIN:
-		Modifier: 150
-		RequiresCondition: ain
-	ResourceValueMultiplier@AIH:
-		Modifier: 300
-		RequiresCondition: aih
-
-AIHProcUpgrade:
-	ProvidesPrerequisite:
-		Prerequisite: diffhard
-	Interactable:
-
-AINProcUpgrade:
-	ProvidesPrerequisite:
-		Prerequisite: diffnorm
-	Interactable:
-
-HTNK:
-	Buildable:
-		Prerequisites: ~techlevel.high
+airstrike.single:
+	Inherits: airstrike.proxy
+	AirstrikePower:
+		SquadSize: 1
 
 A10:
 	Targetable:
