@@ -95,6 +95,7 @@ hotkey-description-repair = Repair mode
 hotkey-description-placebeacon = Place beacon
 hotkey-description-cyclestatusbars = Cycle status bars display
 hotkey-description-togglemute = Toggle audio mute
+hotkey-description-releasemousefocus = Release mouse cursor
 hotkey-description-toggleplayerstancecolor = Toggle relationship colors
 hotkey-description-takescreenshot = Take screenshot
 hotkey-description-quicksave = Quick Save

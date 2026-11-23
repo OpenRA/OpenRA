@@ -2,13 +2,14 @@ Container@MAINMENU:
 	Logic: MainMenuLogic
 	Children:
 		LogicKeyListener@GLOBAL_KEYHANDLER:
-			Logic: MusicHotkeyLogic, ScreenshotHotkeyLogic, MuteHotkeyLogic
+			Logic: MusicHotkeyLogic, ScreenshotHotkeyLogic, MuteHotkeyLogic, ReleaseMouseFocusHotkeyLogic
 				StopMusicKey: StopMusic
 				PauseMusicKey: PauseMusic
 				PrevMusicKey: PrevMusic
 				NextMusicKey: NextMusic
 				TakeScreenshotKey: TakeScreenshot
 				MuteAudioKey: ToggleMute
+				ReleaseMouseFocusKey: ReleaseMouseFocus
 		Label@VERSION_LABEL:
 			Logic: VersionLabelLogic
 			X: WINDOW_WIDTH - 10

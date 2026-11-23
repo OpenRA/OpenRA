@@ -188,7 +188,7 @@ Container@EDITOR_ROOT:
 	Logic: LoadMapEditorLogic
 	Children:
 		LogicKeyListener@GLOBAL_KEYHANDLER:
-			Logic: MusicHotkeyLogic, ScreenshotHotkeyLogic, MuteHotkeyLogic, EditorQuickSaveHotkeyLogic, DisableUIKeyLogic, DisableAllUIKeyLogic
+			Logic: MusicHotkeyLogic, ScreenshotHotkeyLogic, MuteHotkeyLogic, EditorQuickSaveHotkeyLogic, DisableUIKeyLogic, DisableAllUIKeyLogic, ReleaseMouseFocusHotkeyLogic
 				StopMusicKey: StopMusic
 				PauseMusicKey: PauseMusic
 				PrevMusicKey: PrevMusic
@@ -198,6 +198,7 @@ Container@EDITOR_ROOT:
 				QuickSaveKey: EditorQuickSave
 				DisableUIKey: DisableUserInterface
 				DisableAllUIKey: DisableAllUserInterface
+				ReleaseMouseFocusKey: ReleaseMouseFocus
 		LogicKeyListener@WORLD_KEYHANDLER:
 			Logic: ResetZoomHotkeyLogic
 				ResetZoomKey: ResetZoom
