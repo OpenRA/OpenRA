@@ -50,6 +50,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			this.world = world;
 			tabs = widget.Get<ProductionTabsWidget>("PRODUCTION_TABS");
+			tabs.RefreshQueueCache(world);
 			world.ActorAdded += tabs.ActorChanged;
 			world.ActorRemoved += tabs.ActorChanged;
 			Game.BeforeGameStart += UnregisterEvents;
