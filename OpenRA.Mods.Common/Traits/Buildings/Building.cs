@@ -215,15 +215,15 @@ namespace OpenRA.Mods.Common.Traits
 			var buildingMaxBounds = Dimensions;
 
 			var scanStart = world.Map.Clamp(topLeft - new CVec(adjacent, adjacent));
-			var scanEnd = world.Map.Clamp(topLeft + buildingMaxBounds + new CVec(adjacent, adjacent));
+			var scanEnd = world.Map.Clamp(topLeft + buildingMaxBounds + new CVec(adjacent - 1, adjacent - 1));
 
 			var nearnessCandidates = new List<CPos>();
 			var bi = world.WorldActor.Trait<BuildingInfluence>();
 			var allyBuildEnabled = mapBuildRadius != null && mapBuildRadius.AllyBuildRadiusEnabled;
 
-			for (var y = scanStart.Y; y < scanEnd.Y; y++)
+			for (var y = scanStart.Y; y <= scanEnd.Y; y++)
 			{
-				for (var x = scanStart.X; x < scanEnd.X; x++)
+				for (var x = scanStart.X; x <= scanEnd.X; x++)
 				{
 					var c = new CPos(x, y);
 					if (AnyGivesBuildableArea(world.ActorMap.GetActorsAt(c), p, allyBuildEnabled, requiresBuildableArea))
