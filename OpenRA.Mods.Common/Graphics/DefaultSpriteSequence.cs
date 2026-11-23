@@ -16,6 +16,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 
@@ -287,28 +288,43 @@ namespace OpenRA.Mods.Common.Graphics
 				return default;
 
 			// Only request the subset of frames that we actually need
-			var usedFrames = new List<int>();
+			var len = length.Value;
+			var baseCount = facings * len;
+			var totalCount = shadowStart >= 0 ? baseCount * 2 : baseCount;
+			var usedFrames = new int[totalCount];
+			var hasFrames = !frames.IsDefault;
+			var resultIndex = 0;
+
 			for (var facing = 0; facing < facings; facing++)
 			{
 				var facingInner = reverseFacings ? (facings - facing) % facings : facing;
-				for (var frame = 0; frame < length.Value; frame++)
+				if (transpose)
 				{
-					var i = transpose ? frame * facings + facingInner :
-						facingInner * stride + frame;
-
-					usedFrames.Add(frames != null ? frames[i] : start + i);
+					for (var frame = 0; frame < len; frame++)
+					{
+						var i = frame * facings + facingInner;
+						usedFrames[resultIndex++] = hasFrames ? frames[i] : start + i;
+					}
+				}
+				else
+				{
+					var baseOffset = facingInner * stride;
+					for (var frame = 0; frame < len; frame++)
+					{
+						var i = baseOffset + frame;
+						usedFrames[resultIndex++] = hasFrames ? frames[i] : start + i;
+					}
 				}
 			}
 
 			if (shadowStart >= 0)
 			{
 				var shadowOffset = shadowStart - start;
-				var frameCount = usedFrames.Count;
-				for (var i = 0; i < frameCount; i++)
-					usedFrames.Add(usedFrames[i] + shadowOffset);
+				for (var i = 0; i < baseCount; i++)
+					usedFrames[baseCount + i] = usedFrames[i] + shadowOffset;
 			}
 
-			return usedFrames.ToImmutableArray();
+			return ImmutableCollectionsMarshal.AsImmutableArray(usedFrames);
 		}
 
 		protected virtual IEnumerable<ReservationInfo> ParseFilenames(ModData modData, string tileset, ImmutableArray<int> frames, MiniYaml data, MiniYaml defaults)
@@ -337,7 +353,7 @@ namespace OpenRA.Mods.Common.Graphics
 			{
 				var subStart = LoadField("Start", 0, data);
 				var subLength = LoadField("Length", 1, data);
-				frames = Exts.MakeArray(subLength, i => subStart + i).ToImmutableArray();
+				frames = Exts.MakeImmutableArray(subLength, i => subStart + i);
 			}
 
 			yield return new ReservationInfo(filename, frames, frames, location);
@@ -505,12 +521,12 @@ namespace OpenRA.Mods.Common.Graphics
 			if (alpha != null)
 			{
 				if (alpha.Length == 1)
-					alpha = Exts.MakeArray(length.Value, _ => alpha[0]).ToImmutableArray();
+					alpha = Exts.MakeImmutableArray(length.Value, _ => alpha[0]);
 				else if (alpha.Length != length.Value)
 					throw new YamlException($"Sequence {image}.{Name} must define either 1 or {length.Value} Alpha values.");
 			}
 			else if (alphaFade)
-				alpha = Exts.MakeArray(length.Value, i => OpenRA.Graphics.Util.Lerp(1f, 0f, i / (length.Value - 1f))).ToImmutableArray();
+				alpha = Exts.MakeImmutableArray(length.Value, i => OpenRA.Graphics.Util.Lerp(1f, 0f, i / (length.Value - 1f)));
 
 			// Reindex sprites to order facings anti-clockwise and remove unused frames
 			var index = CalculateFrameIndices(start, length.Value, stride ?? length.Value, facings, default, transpose, reverseFacings, -1);

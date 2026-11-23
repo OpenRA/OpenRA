@@ -16,6 +16,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -424,14 +425,14 @@ namespace OpenRA
 				// Actor definitions may change if the map format changes
 				if (yaml.TryGetValue("Actors", out var actorDefinitions))
 				{
-					var spawns = new List<CPos>();
+					var spawns = ImmutableArray.CreateBuilder<CPos>();
 					foreach (var kv in actorDefinitions.Nodes.Where(d => d.Value.Value == "mpspawn"))
 					{
 						var s = new ActorReference(kv.Value.Value, kv.Value);
 						spawns.Add(s.Get<LocationInit>().Value);
 					}
 
-					newData.SpawnPoints = spawns.ToImmutableArray();
+					newData.SpawnPoints = spawns.DrainToImmutable();
 				}
 				else
 					newData.SpawnPoints = [];
@@ -502,7 +503,7 @@ namespace OpenRA
 				newData.SetCustomRules(modData, this, ruleDefinitions, null);
 
 				// Placeholder to satisfy server-side lint checks
-				newData.SpawnPoints = Exts.MakeArray(newData.PlayerCount, i => new CPos(i, i)).ToImmutableArray();
+				newData.SpawnPoints = Exts.MakeImmutableArray(newData.PlayerCount, i => new CPos(i, i));
 			}
 			catch (Exception e)
 			{
@@ -593,7 +594,7 @@ namespace OpenRA
 					var spawns = new CPos[r.spawnpoints.Length / 2];
 					for (var j = 0; j < r.spawnpoints.Length; j += 2)
 						spawns[j / 2] = new CPos(r.spawnpoints[j], r.spawnpoints[j + 1]);
-					newData.SpawnPoints = spawns.ToImmutableArray();
+					newData.SpawnPoints = ImmutableCollectionsMarshal.AsImmutableArray(spawns);
 
 					newData.GridType = r.map_grid_type;
 					if (cache.LoadPreviewImages)

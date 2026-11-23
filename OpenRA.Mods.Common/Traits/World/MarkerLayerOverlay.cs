@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public class MarkerLayer
 		{
-			public readonly Dictionary<int, CPos[]> Tiles;
+			public readonly FrozenDictionary<int, ImmutableArray<CPos>> Tiles;
 			public readonly MarkerTileMirrorMode MirrorMode;
 			public readonly int NumSides;
 			public readonly int AxisAngle;
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			public MarkerLayer(MarkerLayerOverlay markerLayerOverlay)
 			{
-				Tiles = markerLayerOverlay.Tiles.ToDictionary(d => d.Key, d => d.Value.ToArray());
+				Tiles = markerLayerOverlay.Tiles.ToFrozenDictionary(d => d.Key, d => d.Value.ToImmutableArray());
 				MirrorMode = markerLayerOverlay.MirrorMode;
 				NumSides = markerLayerOverlay.NumSides;
 				AxisAngle = markerLayerOverlay.AxisAngle;
@@ -176,7 +176,7 @@ namespace OpenRA.Mods.Common.Traits
 				NumSides = file.NumSides;
 				AxisAngle = file.AxisAngle;
 
-				SetAll(file.Tiles.ToFrozenDictionary(d => d.Key, d => d.Value.ToImmutableArray()));
+				SetAll(file.Tiles);
 			}
 			catch (Exception e)
 			{

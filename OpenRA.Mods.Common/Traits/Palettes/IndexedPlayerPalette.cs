@@ -65,7 +65,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.PlayerIndex.TryGetValue(playerName, out var remap))
 				pal = new ImmutablePalette(
 					basePalette,
-					new IndexedColorRemap(basePalette, info.RemapIndex.Length == 0 ? Enumerable.Range(0, 256).ToImmutableArray() : info.RemapIndex, remap));
+					new IndexedColorRemap(basePalette, info.RemapIndex.Length == 0
+							? Enumerable.Range(0, 256).ToImmutableArray().AsSpan()
+							: info.RemapIndex.AsSpan(),
+						remap.AsSpan()));
 			else
 				pal = new ImmutablePalette(basePalette);
 
