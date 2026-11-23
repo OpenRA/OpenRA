@@ -128,6 +128,7 @@ silo:
 		Filename: mbSILO.tem
 		TilesetFilenames:
 			DESERT: mbSILO.des
+			SNOW: mbSILO.sno
 		Length: *
 		Offset: 0,1
 	icon:
@@ -384,6 +385,7 @@ fix:
 		Filename: mbFIX.tem
 		TilesetFilenames:
 			DESERT: mbFIX.des
+			SNOW: mbFIX.sno
 		Length: *
 		Offset: 0,-9
 	icon:
@@ -477,6 +479,7 @@ obli:
 		Filename: mbOBLI.tem
 		TilesetFilenames:
 			DESERT: mbOBLI.des
+			SNOW: mbOBLI.sno
 		Length: *
 		Offset: -1,-3
 	icon:
@@ -564,6 +567,7 @@ gun:
 		Filename: mbGUN.tem
 		TilesetFilenames:
 			DESERT: mbGUN.des
+			SNOW: mbGUN.sno
 		Length: *
 		Offset: -1,-1
 	icon:
@@ -638,6 +642,7 @@ gtwr:
 		Filename: mbGTWR.tem
 		TilesetFilenames:
 			DESERT: mbGTWR.des
+			SNOW: mbGTWR.sno
 		Length: *
 		Offset: 0,-2
 	icon:
@@ -664,6 +669,7 @@ atwr:
 		Filename: mbGTWR.tem
 		TilesetFilenames:
 			DESERT: mbGTWR.des
+			SNOW: mbGTWR.sno
 		Length: *
 		Offset: -3,0
 	icon:
@@ -690,6 +696,7 @@ hosp:
 		Filename: mbHOSP.tem
 		TilesetFilenames:
 			DESERT: mbHOSP.des
+			SNOW: mbHOSP.sno
 		Length: *
 		Offset: 0,1
 
@@ -701,6 +708,7 @@ hosp.husk:
 		Filename: mbHOSP.tem
 		TilesetFilenames:
 			DESERT: mbHOSP.des
+			SNOW: mbHOSP.sno
 		Length: *
 		Offset: 0,1
 
@@ -714,11 +722,25 @@ bio:
 		Filename: biomake.shp
 		Length: *
 		Tick: 80
+	bib:
+		Filename: mbHOSP.tem
+		TilesetFilenames:
+			DESERT: mbHOSP.des
+			SNOW: mbHOSP.sno
+		Length: *
+		Offset: 0,1
 
 bio.husk:
 	idle:
 		Filename: bio.shp
 		Start: 2
+	bib:
+		Filename: mbHOSP.tem
+		TilesetFilenames:
+			DESERT: mbHOSP.des
+			SNOW: mbHOSP.sno
+		Length: *
+		Offset: 0,1
 
 miss:
 	Defaults:
@@ -737,6 +759,7 @@ miss:
 		Filename: mbMISS.tem
 		TilesetFilenames:
 			DESERT: mbMISS.des
+			SNOW: mbMISS.sno
 		Length: *
 		Offset: 0,1
 	icon:
@@ -750,5 +773,6 @@ miss.husk:
 		Filename: mbMISS.tem
 		TilesetFilenames:
 			DESERT: mbMISS.des
+			SNOW: mbMISS.sno
 		Length: *
 		Offset: 0,1
