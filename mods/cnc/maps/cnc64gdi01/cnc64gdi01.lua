@@ -75,7 +75,7 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnDamaged(Biolab, function()
-		Utils.Do(Nod.GetGroundAttackers(), IdleHunt)
+		Utils.Do(Nod.GetGroundAttackers(), HuntFromRally)
 	end)
 
 	RepairNamedActors(Nod, 0.9)
@@ -116,14 +116,15 @@ Tick = function()
 	end
 end
 
--- Overwrite the default to send the units to UnitsRally first
-IdleHunt = function(unit)
-	if not unit.IsDead then
-		Trigger.OnIdle(unit, function()
-			unit.AttackMove(UnitsRally.Location, 50)
-			unit.Hunt()
-		end)
+HuntFromRally = function(unit)
+	if unit.IsDead then
+		return
 	end
+
+	Trigger.OnIdle(unit, function()
+		unit.AttackMove(UnitsRally.Location, 50)
+		unit.Hunt()
+	end)
 end
 
 HeliHunt = function()

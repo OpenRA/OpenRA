@@ -297,24 +297,28 @@ WorldLoaded = function()
 		Utils.Do(Atreides.GetGroundAttackers(), IdleHunt)
 	end)
 
+	-- Retreat to the main base if possible.
 	Trigger.OnAllKilledOrCaptured(AtreidesSmallBase, function()
+		if AConyard.IsDead or AConyard.Owner ~= Atreides then
+			Utils.Do(AtreidesSmall.GetGroundAttackers(), IdleHunt)
+			return
+		end
+
+		local ownerChanged = false
+
 		Utils.Do(AtreidesSmall.GetGroundAttackers(), function(actor)
-			-- if possible retreat to main base
-			if AConyard.IsDead then
-				IdleHunt()
-			else
-				OwnerChanged = false
-				if actor.IsMobile  then
-					actor.Move(AConyard.Location, 5)
-					actor.CallFunc(function()
-						IdlingUnits[Atreides][#IdlingUnits[Atreides] + 1] = actor
-						if OwnerChanged == false then
-							ChangeOwner(AtreidesSmall, Atreides)
-							OwnerChanged = true
-						end
-					end)
-				end
+			if not actor.IsMobile then
+				return
 			end
+
+			actor.Move(AConyard.Location, 5)
+			actor.CallFunc(function()
+				IdlingUnits[Atreides][#IdlingUnits[Atreides] + 1] = actor
+				if ownerChanged == false then
+					ChangeOwner(AtreidesSmall, Atreides)
+					ownerChanged = true
+				end
+			end)
 		end)
 	end)
 
