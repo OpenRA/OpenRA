@@ -33,7 +33,7 @@ namespace OpenRA.Primitives
 			}
 		}
 
-		public static BitSetIndex GetBits(string[] values)
+		public static BitSetIndex GetBits(ReadOnlySpan<string> values)
 		{
 			BitSetIndex bits = 0;
 			lock (SyncObject)
@@ -43,7 +43,7 @@ namespace OpenRA.Primitives
 			return bits;
 		}
 
-		public static BitSetIndex GetBitsNoAlloc(string[] values)
+		public static BitSetIndex GetBitsNoAlloc(ReadOnlySpan<string> values)
 		{
 			// Map strings to existing bits; do not allocate missing values new bits
 			BitSetIndex bits = 0;
@@ -84,9 +84,12 @@ namespace OpenRA.Primitives
 		public BitSet(params string[] values)
 			: this(BitSetAllocator<T>.GetBits(values)) { }
 
+		public BitSet(params ReadOnlySpan<string> values)
+			: this(BitSetAllocator<T>.GetBits(values)) { }
+
 		BitSet(BitSetIndex bits) { this.bits = bits; }
 
-		public static BitSet<T> FromStringsNoAlloc(string[] values)
+		public static BitSet<T> FromStringsNoAlloc(ReadOnlySpan<string> values)
 		{
 			return new BitSet<T>(BitSetAllocator<T>.GetBitsNoAlloc(values));
 		}

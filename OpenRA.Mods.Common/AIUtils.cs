@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,7 +55,7 @@ namespace OpenRA.Mods.Common
 			return actorIndex.Actors.Count(a => !a.IsDead);
 		}
 
-		public static void BotDebug(string format, params object[] args)
+		public static void BotDebug(string format, params ReadOnlySpan<object> args)
 		{
 			if (Game.Settings.Debug.BotDebug)
 				TextNotificationsManager.Debug(format, args);

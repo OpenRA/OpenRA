@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return true;
 		}
 
-		static bool IncompatibleReplayDialog(ModData modData, Action onCancel, string text, params object[] args)
+		static bool IncompatibleReplayDialog(ModData modData, Action onCancel, string text, params ReadOnlySpan<object> args)
 		{
 			ConfirmationDialogs.ButtonPrompt(
 				modData, IncompatibleReplayTitle, text, textArguments: args, onCancel: onCancel, cancelText: IncompatibleReplayAccept);

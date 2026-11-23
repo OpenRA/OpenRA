@@ -260,7 +260,7 @@ namespace OpenRA
 		/// Functionality mirrors <see cref="FluentProvider.GetMessage"/>, except instead of using
 		/// loaded <see cref="Map"/>'s fluent bundle as backup, we use this <see cref="MapPreview"/>'s.
 		/// </summary>
-		public string GetMessage(string key, object[] args = null)
+		public string GetMessage(string key, ReadOnlySpan<object> args = default)
 		{
 			if (TryGetMessage(key, out var message, args))
 				return message;
@@ -272,7 +272,7 @@ namespace OpenRA
 		/// Functionality mirrors <see cref="FluentProvider.TryGetMessage"/>, except instead of using
 		/// loaded <see cref="Map"/>'s fluent bundle as backup, we use this <see cref="MapPreview"/>'s.
 		/// </summary>
-		public bool TryGetMessage(string key, out string message, object[] args = null)
+		public bool TryGetMessage(string key, out string message, ReadOnlySpan<object> args = default)
 		{
 			// PERF: instead of loading mod level strings per each MapPreview, reuse the already loaded one in FluentProvider.
 			if (FluentProvider.TryGetModMessage(key, out message, args))

@@ -58,12 +58,12 @@ namespace OpenRA.Network
 		[FieldLoader.LoadUsing(nameof(LoadArguments))]
 		public readonly ImmutableArray<object> Arguments;
 
-		static object LoadArguments(MiniYaml yaml)
+		static ImmutableArray<object> LoadArguments(MiniYaml yaml)
 		{
 			var argumentsNode = yaml.NodeWithKeyOrDefault("Arguments");
 
 			if (argumentsNode == null)
-				return ImmutableArray<object>.Empty;
+				return [];
 
 			var arguments = new List<object>(argumentsNode.Value.Nodes.Length * 2);
 			foreach (var argumentNode in argumentsNode.Value.Nodes)
@@ -90,7 +90,7 @@ namespace OpenRA.Network
 			FieldLoader.Load(this, yaml);
 		}
 
-		public static string Serialize(string key, object[] args)
+		public static string Serialize(string key, ReadOnlySpan<object> args)
 		{
 			var root = new List<MiniYamlNode>
 			{
@@ -98,7 +98,7 @@ namespace OpenRA.Network
 				new("Key", key),
 			};
 
-			if (args != null)
+			if (!args.IsEmpty)
 			{
 				var nodes = new List<MiniYamlNode>();
 				for (var i = 0; i < args.Length; i += 2)

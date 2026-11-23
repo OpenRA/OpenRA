@@ -137,7 +137,7 @@ namespace OpenRA
 			}
 		}
 
-		public string GetMessage(string key, object[] args = null)
+		public string GetMessage(string key, ReadOnlySpan<object> args = default)
 		{
 			if (!TryGetMessage(key, out var message, args))
 				message = key;
@@ -145,7 +145,7 @@ namespace OpenRA
 			return message;
 		}
 
-		public bool TryGetMessage(string key, out string value, object[] args = null)
+		public bool TryGetMessage(string key, out string value, ReadOnlySpan<object> args = default)
 		{
 			ArgumentNullException.ThrowIfNull(key);
 
@@ -158,7 +158,7 @@ namespace OpenRA
 				}
 
 				Dictionary<string, IFluentType> fluentArgs = null;
-				if (args != null)
+				if (!args.IsEmpty)
 				{
 					if (args.Length % 2 != 0)
 						throw new ArgumentException("Expected a comma separated list of name, value arguments " +

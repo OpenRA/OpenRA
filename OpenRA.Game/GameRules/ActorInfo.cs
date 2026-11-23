@@ -65,7 +65,7 @@ namespace OpenRA
 			}
 		}
 
-		public ActorInfo(string name, params TraitInfo[] traitInfos)
+		public ActorInfo(string name, params ReadOnlySpan<TraitInfo> traitInfos)
 		{
 			Name = name;
 			foreach (var t in traitInfos)

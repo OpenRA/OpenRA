@@ -51,7 +51,7 @@ namespace OpenRA
 			}
 		}
 
-		public static string GetMessage(string key, params object[] args)
+		public static string GetMessage(string key, params ReadOnlySpan<object> args)
 		{
 			lock (SyncObject)
 			{
@@ -67,7 +67,7 @@ namespace OpenRA
 			}
 		}
 
-		public static bool TryGetMessage(string key, out string message, params object[] args)
+		public static bool TryGetMessage(string key, out string message, params ReadOnlySpan<object> args)
 		{
 			lock (SyncObject)
 			{
@@ -84,7 +84,7 @@ namespace OpenRA
 		}
 
 		/// <summary>Should only be used by <see cref="MapPreview"/>.</summary>
-		internal static bool TryGetModMessage(string key, out string message, params object[] args)
+		internal static bool TryGetModMessage(string key, out string message, params ReadOnlySpan<object> args)
 		{
 			lock (SyncObject)
 			{
