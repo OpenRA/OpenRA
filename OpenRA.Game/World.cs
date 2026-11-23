@@ -230,7 +230,7 @@ namespace OpenRA
 			if (preview.Class == MapClassification.Generated)
 				gameInfo.MapGenerationArgs = preview.GenerationArgs;
 
-			RulesContainTemporaryBlocker = Map.Rules.Actors.Any(a => a.Value.HasTraitInfo<ITemporaryBlockerInfo>());
+			RulesContainTemporaryBlocker = Map.Rules.Actors.Values.Any(a => a.HasTraitInfo<ITemporaryBlockerInfo>());
 			gameSettings = GetSettings<GameSettings>();
 		}
 

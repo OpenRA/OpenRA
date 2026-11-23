@@ -30,22 +30,22 @@ namespace OpenRA.Mods.Common.Lint
 
 		static void Run(Action<string> emitError, Ruleset rules)
 		{
-			foreach (var actorInfo in rules.Actors)
+			foreach (var actorInfo in rules.Actors.Values)
 			{
 				// Catch TypeDictionary errors.
 				try
 				{
-					var health = actorInfo.Value.TraitInfoOrDefault<IHealthInfo>();
+					var health = actorInfo.TraitInfoOrDefault<IHealthInfo>();
 					if (health == null)
 						continue;
 
-					var hitShapes = actorInfo.Value.TraitInfos<HitShapeInfo>();
+					var hitShapes = actorInfo.TraitInfos<HitShapeInfo>();
 					if (hitShapes.Count == 0)
-						emitError($"Actor type `{actorInfo.Key}` has a Health trait but no HitShape trait.");
+						emitError($"Actor type `{actorInfo.Name}` has a Health trait but no HitShape trait.");
 				}
 				catch (InvalidOperationException e)
 				{
-					emitError($"{e.Message} (Actor type `{actorInfo.Key}`).");
+					emitError($"{e.Message} (Actor type `{actorInfo.Name}`).");
 				}
 			}
 		}

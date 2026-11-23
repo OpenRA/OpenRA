@@ -370,8 +370,8 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 				// Actors
 				if (ActorDataByActorCode.TryGetValue(tileSpecialInfo, out var kvp))
 				{
-					if (!rules.Actors.ContainsKey(kvp.Actor.ToLowerInvariant()))
-						Console.WriteLine($"Ignoring unknown actor type: `{kvp.Actor.ToLowerInvariant()}`");
+					if (!rules.Actors.ContainsKey(kvp.Actor))
+						Console.WriteLine($"Ignoring unknown actor type: `{kvp.Actor}`");
 					else
 					{
 						var a = new ActorReference(kvp.Actor)

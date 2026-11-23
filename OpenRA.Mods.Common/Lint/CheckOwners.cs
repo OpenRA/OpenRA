@@ -24,9 +24,9 @@ namespace OpenRA.Mods.Common.Lint
 				.ToHashSet();
 
 			// Check for actors that require specific owners.
-			var actorsWithRequiredOwner = map.Rules.Actors
-				.Where(a => a.Value.HasTraitInfo<RequiresSpecificOwnersInfo>())
-				.ToDictionary(a => a.Key, a => a.Value.TraitInfo<RequiresSpecificOwnersInfo>());
+			var actorsWithRequiredOwner = map.Rules.Actors.Values
+				.Where(a => a.HasTraitInfo<RequiresSpecificOwnersInfo>())
+				.ToDictionary(a => a.Name, a => a.TraitInfo<RequiresSpecificOwnersInfo>());
 
 			foreach (var kv in map.ActorDefinitions)
 			{

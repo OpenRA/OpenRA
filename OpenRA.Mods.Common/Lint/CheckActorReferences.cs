@@ -24,16 +24,16 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		void ILintRulesPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
 		{
-			foreach (var actorInfo in rules.Actors)
-				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
-					CheckTrait(emitError, actorInfo.Value, traitInfo, rules);
+			foreach (var actorInfo in rules.Actors.Values)
+				foreach (var traitInfo in actorInfo.TraitInfos<TraitInfo>())
+					CheckTrait(emitError, actorInfo, traitInfo, rules);
 		}
 
 		void ILintServerMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, MapPreview map, Ruleset mapRules)
 		{
-			foreach (var actorInfo in mapRules.Actors)
-				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
-					CheckTrait(emitError, actorInfo.Value, traitInfo, mapRules);
+			foreach (var actorInfo in mapRules.Actors.Values)
+				foreach (var traitInfo in actorInfo.TraitInfos<TraitInfo>())
+					CheckTrait(emitError, actorInfo, traitInfo, mapRules);
 		}
 
 		static void CheckTrait(Action<string> emitError, ActorInfo actorInfo, TraitInfo traitInfo, Ruleset rules)
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Lint
 		}
 
 		static void CheckActorReference(Action<string> emitError, ActorInfo actorInfo, TraitInfo traitInfo,
-			FieldInfo fieldInfo, IReadOnlyDictionary<string, ActorInfo> dict, ActorReferenceAttribute attribute)
+			FieldInfo fieldInfo, ActorInfoDictionary dict, ActorReferenceAttribute attribute)
 		{
 			var values = LintExts.GetFieldValues(traitInfo, fieldInfo, attribute.DictionaryReference);
 			if (values == null)
@@ -65,11 +65,7 @@ namespace OpenRA.Mods.Common.Lint
 				if (value == null)
 					continue;
 
-				// NOTE: Once https://github.com/OpenRA/OpenRA/issues/4124 is resolved we won't
-				//       have to .ToLower* anything here.
-				var v = value.ToLowerInvariant();
-
-				if (!dict.ContainsKey(v))
+				if (!dict.TryGetValue(value, out var actor))
 				{
 					emitError($"`{actorInfo.Name}.{traitInfo.GetType().Name}.{fieldInfo.Name}`: Missing actor `{value}`.");
 
@@ -77,7 +73,7 @@ namespace OpenRA.Mods.Common.Lint
 				}
 
 				foreach (var requiredTrait in attribute.RequiredTraits)
-					if (!dict[v].TraitsInConstructOrder().Any(t => t.GetType() == requiredTrait || t.GetType().IsSubclassOf(requiredTrait)))
+					if (!actor.TraitsInConstructOrder().Any(t => t.GetType() == requiredTrait || t.GetType().IsSubclassOf(requiredTrait)))
 						emitError($"Actor type `{value}` does not have trait `{requiredTrait.Name}` which is required by `{traitInfo.GetType().Name}.{fieldInfo.Name}`.");
 			}
 		}
