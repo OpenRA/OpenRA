@@ -636,6 +636,7 @@ label-restart-required-container-audio-desc = Device changes will be applied aft
 label-gameplay-section-header = Gameplay
 label-auto-save-interval = Auto-save frequency:
 label-auto-save-max-file-number = Auto-save limit:
+label-max-replay-count = Replay limit:
 checkbox-hide-replay-chat-container = Hide Chat in Replays
 
 label-forum-profile-section-header = OpenRA Forum Account
