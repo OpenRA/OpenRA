@@ -1,0 +1,112 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, nod13b.lua, nod13b-AI.lua
+	MusicPlaylist:
+		StartingMusic: march
+		VictoryMusic: nod_win1
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: nod13.vqa
+		LossVideo: banner.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+	MapBuildRadius:
+		BuildRadiusCheckboxEnabled: False
+	-LegacyBridgeLayer:
+
+Player:
+	EnemyWatcher:
+	PlayerResources:
+		DefaultCash: 5000
+	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
+		Enabled: True
+
+HARV:
+	Harvester:
+		SearchFromProcRadius: 30
+		SearchFromHarvesterRadius: 20
+
+^BaseBuilding:
+	Capturable:
+		Types: building
+
+GTWR:
+	AnnounceOnSeen:
+
+ATWR:
+	AnnounceOnSeen:
+
+HQ:
+	# The surviving GDI forces retain Mammoth Tank access even if the
+	# Advanced Communications Center is destroyed.
+	ProvidesPrerequisite@eye:
+		Prerequisite: eye
+	AirstrikePower:
+		Prerequisites: gdi
+		SquadSize: 2
+
+# Nod SAM sites must be able to intercept the scripted GDI airstrikes.
+A10:
+	Health:
+		HP: 10000
+	Armor:
+		Type: Light
+	Targetable:
+		TargetTypes: Air
+	HitShape:
+
+# The campaign's three previously collected components are assumed present in
+# this standalone mission. The original single-player strike recharges for
+# fourteen minutes and can only be fired once.
+TMPL:
+	NukePower:
+		ChargeInterval: 21000
+		OneShot: true
+		-PauseOnCondition:
+
+# The original All Destr. check ignores empty transport aircraft.
+TRAN:
+	-MustBeDestroyed:
+
+# The empty GDI transport from chn2 lands and can be captured by Nod's E6.
+E6:
+	Captures@transport:
+		CaptureTypes: mission-transport
+		ValidRelationships: Enemy
+
+TRAN.CAPTURE:
+	Inherits: TRAN
+	RenderSprites:
+		Image: TRAN
+	Buildable:
+		Prerequisites: ~disabled
+	Cargo:
+		LoadedCondition: carrying-passengers
+	CaptureManager:
+	Capturable:
+		Types: mission-transport
+		RequiresCondition: !airborne && !carrying-passengers
+
+# Gunboats count towards the original All Destr. victory condition. The
+# ^Ship default has no MustBeDestroyed trait, so it is added back here.
+BOAT:
+	MustBeDestroyed:
+
+# GDI reinforcements use a non-selectable transport variant so the scripted
+# landings cannot be hijacked through the normal transport UI.
+TRAN.IN:
+	Inherits: TRAN
+	RenderSprites:
+		Image: TRAN
+	Buildable:
+		Prerequisites: ~disabled
+	RejectsOrders:
+	-Selectable:
+	Interactable:
