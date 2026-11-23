@@ -398,6 +398,11 @@ namespace OpenRA.Mods.Common.Traits
 				if (!buildableThings.Any(b => b.Name == name))
 					continue;
 
+				// Does the AI have the additional prerequisites that make this structure worthwhile?
+				if (baseBuilder.Info.BuildingPrerequisites.TryGetValue(name, out var requiredPrerequisites)
+					&& !player.PlayerActor.Trait<TechTree>().HasPrerequisites(requiredPrerequisites))
+					continue;
+
 				// Check the number of this structure and its variants
 				var actorInfo = world.Map.Rules.Actors[name];
 				var buildingVariantInfo = actorInfo.TraitInfoOrDefault<PlaceBuildingVariantsInfo>();
