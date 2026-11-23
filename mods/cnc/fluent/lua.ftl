@@ -145,11 +145,7 @@ keep-commando-alive = Keep your Commando alive.
 nod-soldier = Nod Soldier
 
 ## eviction-notice
-take-civilians-money-crates = Find all the civilians' money; they won't be needing it anymore.
-quickly-destroy-ion-cannon = Disable the GDI Ion Cannon before it fires twice.
 civilians-running = Hey, those civilians... where are they going?
-destroy-ion-cannon-advice = The GDI are preparing their Ion Cannon. Don't let them get comfortable using it.
-village-destruction-warning = Be careful, commander. The GDI won't stay idle while we burn the entire village.
 
 ## the-tiberium-strain
 destroy-gdi-bio-centers = Destroy the GDI bio centers.
