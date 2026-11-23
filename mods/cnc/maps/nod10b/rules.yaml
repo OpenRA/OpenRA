@@ -1,6 +1,8 @@
 World:
 	LuaScript:
 		Scripts: campaign.lua, utils.lua, nod10b.lua
+	MusicPlaylist:
+		VictoryMusic: nod_win1
 	MissionData:
 		Briefing: briefing
 		BackgroundVideo: kanepre.vqa
