@@ -31,6 +31,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference]
 		const string AnyContext = HotkeyDefinition.ContextFluentPrefix + "-any";
 
+		// The "AttackMove" hotkey is repurposed as plain Move while AttackMoveIsDefault is set (see
+		// CommandBarLogic, which does the equivalent swap for the in-game command bar tooltip) - the
+		// Hotkeys settings list needs the same swap so it doesn't keep calling it "Attack Move".
+		[FluentReference]
+		const string AttackMoveAsMoveDescription = "hotkey-description-attackmove-as-move";
+
+		static string DescriptionMessage(HotkeyDefinition hd)
+		{
+			if (hd.Name == "AttackMove" && Game.Settings.Game.AttackMoveIsDefault)
+				return FluentProvider.GetMessage(AttackMoveAsMoveDescription);
+
+			return FluentProvider.GetMessage(hd.Description);
+		}
+
 		public static IEnumerable<(string Key, FluentReferenceAttribute Reference)> DynamicFluentReferences(Dictionary<string, MiniYaml> logicArgs)
 		{
 			if (logicArgs.TryGetValue("HotkeyGroups", out var hotkeyGroupsYaml))
@@ -75,7 +89,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			key.Id = hd.Name;
 			key.IsVisible = () => true;
 
-			var desc = FluentProvider.GetMessage(hd.Description) + ":";
+			var desc = DescriptionMessage(hd) + ":";
 			key.Get<LabelWidget>("FUNCTION").GetText = () => desc;
 
 			var remapButton = key.Get<ButtonWidget>("HOTKEY");
@@ -232,7 +246,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var label = panel.Get<LabelWidget>("HOTKEY_LABEL");
 			var labelText = new CachedTransform<HotkeyDefinition, string>(
-				hd => (hd != null ? FluentProvider.GetMessage(hd.Description) : "") + ":");
+				hd => (hd != null ? DescriptionMessage(hd) : "") + ":");
 			label.IsVisible = () => selectedHotkeyDefinition != null;
 			label.GetText = () => labelText.Update(selectedHotkeyDefinition);
 
@@ -243,7 +257,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				hd != null
 					? FluentProvider.GetMessage(
 						DuplicateNotice,
-						"key", FluentProvider.GetMessage(hd.Description),
+						"key", DescriptionMessage(hd),
 						"context", FluentProvider.GetMessage(hd.Contexts.First(c => selectedHotkeyDefinition.Contexts.Contains(c))))
 					: "");
 			duplicateNotice.GetText = () => duplicateNoticeText.Update(duplicateHotkeyDefinition);
