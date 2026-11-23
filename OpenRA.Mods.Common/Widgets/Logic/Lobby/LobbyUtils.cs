@@ -222,9 +222,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				flag.GetImageName = () => factionId;
 
 				var description = faction.Description != null ? FluentProvider.GetMessage(faction.Description) : null;
-				var (text, desc) = SplitOnFirstToken(description);
-				item.GetTooltipText = () => text;
-				item.GetTooltipDesc = () => desc;
+
+				if (string.IsNullOrEmpty(description))
+				{
+					item.GetTooltipText = null;
+					item.GetTooltipDesc = null;
+				}
+				else
+				{
+					var (text, desc) = SplitOnFirstToken(description);
+					item.GetTooltipText = () => text;
+					item.GetTooltipDesc = () => desc;
+				}
 
 				return item;
 			}
@@ -582,9 +591,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			dropdown.OnMouseDown = _ => ShowFactionDropDown(dropdown, c, orderManager, factions);
 
 			var description = factions[c.Faction].Description != null ? FluentProvider.GetMessage(factions[c.Faction].Description) : null;
-			var (text, desc) = SplitOnFirstToken(description);
-			dropdown.GetTooltipText = () => text;
-			dropdown.GetTooltipDesc = () => desc;
+
+			if (string.IsNullOrEmpty(description))
+			{
+				dropdown.GetTooltipText = null;
+				dropdown.GetTooltipDesc = null;
+			}
+			else
+			{
+				var (text, desc) = SplitOnFirstToken(description);
+				dropdown.GetTooltipText = () => text;
+				dropdown.GetTooltipDesc = () => desc;
+			}
 
 			SetupFactionWidget(dropdown, c, factions);
 		}
