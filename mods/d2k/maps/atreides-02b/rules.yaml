@@ -8,6 +8,7 @@ World:
 	MissionData:
 		Briefing: briefing
 		BriefingVideo: A_BR02_E.VQA
+		LossVideo: A_LOSE_E.VQA
 	MapOptions:
 		TechLevel: low
 	ScriptLobbyDropdown@difficulty:

@@ -137,6 +137,7 @@ World:
 	MissionData:
 		Briefing: briefing
 		BriefingVideo: O_BR07_E.VQA
+		LossVideo: O_LOSE_E.VQA
 	MapOptions:
 		TechLevel: nopowers
 	ScriptLobbyDropdown@difficulty:
