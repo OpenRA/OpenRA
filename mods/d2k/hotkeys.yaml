@@ -37,3 +37,8 @@ PowerDown: X
 	Description: hotkey-description-powerdown
 	Types: OrderGenerator
 	Contexts: player
+
+ToggleVariant: N
+	Description: hotkey-description-rotate
+	Types: Production
+	Contexts: player
