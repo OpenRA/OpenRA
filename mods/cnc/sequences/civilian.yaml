@@ -60,6 +60,7 @@ c1:
 		Start: 16
 		Length: 4
 		Tick: 1600
+		ZOffset: -511
 
 c2:
 	Inherits: c1
@@ -156,6 +157,7 @@ moebius:
 		Start: 16
 		Length: 4
 		Tick: 1600
+		ZOffset: -511
 
 chan:
 	Inherits: moebius
