@@ -117,6 +117,9 @@ namespace OpenRA.Mods.Common.Scripting
 			Self.QueueActivity(new SimpleTeleport(cell));
 		}
 
+		[Desc("The unique actor ID. Stable for the lifetime of the actor.")]
+		public int ActorID => (int)Self.ActorID;
+
 		[ScriptActorPropertyActivity]
 		[Desc("Run an arbitrary Lua function.")]
 		public void CallFunc([ScriptEmmyTypeOverride("fun()")] LuaFunction func)
