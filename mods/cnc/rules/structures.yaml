@@ -1326,7 +1326,7 @@ BRIK:
 	BlocksProjectiles:
 	Crushable:
 		CrushClasses: heavywall
-		-CrushSound:
+		CrushSound: xplos.aud
 	LineBuild:
 		NodeTypes: concrete
 	LineBuildNode:
