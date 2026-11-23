@@ -204,6 +204,24 @@ namespace OpenRA.Platforms.Default
 			OpenGL.CheckGLError();
 		}
 
+		public void SetStencilReference(byte reference)
+		{
+			VerifyThreadAffinity();
+			if (reference == 0)
+			{
+				OpenGL.glDisable(OpenGL.GL_STENCIL_TEST);
+				OpenGL.CheckGLError();
+				return;
+			}
+
+			OpenGL.glEnable(OpenGL.GL_STENCIL_TEST);
+			OpenGL.CheckGLError();
+			OpenGL.glStencilFunc(OpenGL.GL_NOTEQUAL, reference, 0xFF);
+			OpenGL.CheckGLError();
+			OpenGL.glStencilOp(OpenGL.GL_KEEP, OpenGL.GL_KEEP, OpenGL.GL_REPLACE);
+			OpenGL.CheckGLError();
+		}
+
 		public void SetBlendMode(BlendMode mode)
 		{
 			VerifyThreadAffinity();

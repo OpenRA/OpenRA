@@ -15,7 +15,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
-	public class SpriteRenderable : IPalettedRenderable, IModifyableRenderable, IFinalizedRenderable
+	public class SpriteRenderable : IPalettedRenderable, IModifyableRenderable, IStencilGroupRenderable, IFinalizedRenderable
 	{
 		public static readonly IEnumerable<IRenderable> None = [];
 
@@ -25,7 +25,7 @@ namespace OpenRA.Graphics
 		readonly WAngle rotation = WAngle.Zero;
 
 		public SpriteRenderable(Sprite sprite, WPos pos, WVec offset, int zOffset, PaletteReference palette, float scale, float alpha,
-			Vector3 tint, TintModifiers tintModifiers, bool isDecoration, WAngle rotation)
+			Vector3 tint, TintModifiers tintModifiers, bool isDecoration, WAngle rotation, byte stencilGroup = 0)
 		{
 			this.sprite = sprite;
 			this.pos = pos;
@@ -38,6 +38,7 @@ namespace OpenRA.Graphics
 			IsDecoration = isDecoration;
 			TintModifiers = tintModifiers;
 			Alpha = alpha;
+			StencilGroup = stencilGroup;
 
 			// PERF: Remove useless palette assignments for RGBA sprites
 			// HACK: This is working around the fact that palettes are defined on traits rather than sequences
@@ -59,35 +60,41 @@ namespace OpenRA.Graphics
 		public float Alpha { get; }
 		public Vector3 Tint { get; }
 		public TintModifiers TintModifiers { get; }
+		public byte StencilGroup { get; }
 
 		public IPalettedRenderable WithPalette(PaletteReference newPalette)
 		{
-			return new SpriteRenderable(sprite, pos, Offset, ZOffset, newPalette, scale, Alpha, Tint, TintModifiers, IsDecoration, rotation);
+			return new SpriteRenderable(sprite, pos, Offset, ZOffset, newPalette, scale, Alpha, Tint, TintModifiers, IsDecoration, rotation, StencilGroup);
 		}
 
 		public IRenderable WithZOffset(int newOffset)
 		{
-			return new SpriteRenderable(sprite, pos, Offset, newOffset, Palette, scale, Alpha, Tint, TintModifiers, IsDecoration, rotation);
+			return new SpriteRenderable(sprite, pos, Offset, newOffset, Palette, scale, Alpha, Tint, TintModifiers, IsDecoration, rotation, StencilGroup);
 		}
 
 		public IRenderable OffsetBy(in WVec vec)
 		{
-			return new SpriteRenderable(sprite, pos + vec, Offset, ZOffset, Palette, scale, Alpha, Tint, TintModifiers, IsDecoration, rotation);
+			return new SpriteRenderable(sprite, pos + vec, Offset, ZOffset, Palette, scale, Alpha, Tint, TintModifiers, IsDecoration, rotation, StencilGroup);
 		}
 
 		public IRenderable AsDecoration()
 		{
-			return new SpriteRenderable(sprite, pos, Offset, ZOffset, Palette, scale, Alpha, Tint, TintModifiers, true, rotation);
+			return new SpriteRenderable(sprite, pos, Offset, ZOffset, Palette, scale, Alpha, Tint, TintModifiers, true, rotation, StencilGroup);
 		}
 
 		public IModifyableRenderable WithAlpha(float newAlpha)
 		{
-			return new SpriteRenderable(sprite, pos, Offset, ZOffset, Palette, scale, newAlpha, Tint, TintModifiers, IsDecoration, rotation);
+			return new SpriteRenderable(sprite, pos, Offset, ZOffset, Palette, scale, newAlpha, Tint, TintModifiers, IsDecoration, rotation, StencilGroup);
 		}
 
 		public IModifyableRenderable WithTint(in Vector3 newTint, TintModifiers newTintModifiers)
 		{
-			return new SpriteRenderable(sprite, pos, Offset, ZOffset, Palette, scale, Alpha, newTint, newTintModifiers, IsDecoration, rotation);
+			return new SpriteRenderable(sprite, pos, Offset, ZOffset, Palette, scale, Alpha, newTint, newTintModifiers, IsDecoration, rotation, StencilGroup);
+		}
+
+		public IRenderable WithStencilGroup(byte group)
+		{
+			return new SpriteRenderable(sprite, pos, Offset, ZOffset, Palette, scale, Alpha, Tint, TintModifiers, IsDecoration, rotation, group);
 		}
 
 		Vector3 ScreenPosition(WorldRenderer wr)
@@ -109,7 +116,7 @@ namespace OpenRA.Graphics
 			if ((TintModifiers & TintModifiers.ReplaceColor) != 0)
 				a *= -1;
 
-			wsr.DrawSprite(sprite, Palette, ScreenPosition(wr), scale, t, a, rotation.RendererRadians());
+			wsr.DrawSprite(sprite, Palette, ScreenPosition(wr), scale, t, a, rotation.RendererRadians(), StencilGroup);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr)

@@ -43,18 +43,18 @@ namespace OpenRA.Platforms.Default
 			OpenGL.glFramebufferTexture2D(OpenGL.GL_FRAMEBUFFER, OpenGL.GL_COLOR_ATTACHMENT0, OpenGL.GL_TEXTURE_2D, texture.ID, 0);
 			OpenGL.CheckGLError();
 
-			// Depth
+			// Depth and stencil
 			OpenGL.glGenRenderbuffers(1, out depth);
 			OpenGL.CheckGLError();
 
 			OpenGL.glBindRenderbuffer(OpenGL.GL_RENDERBUFFER, depth);
 			OpenGL.CheckGLError();
 
-			var glDepth = OpenGL.Profile == GLProfile.Embedded ? OpenGL.GL_DEPTH_COMPONENT16 : OpenGL.GL_DEPTH_COMPONENT;
+			var glDepth = OpenGL.Profile == GLProfile.Embedded ? OpenGL.GL_DEPTH24_STENCIL8 : OpenGL.GL_DEPTH_STENCIL;
 			OpenGL.glRenderbufferStorage(OpenGL.GL_RENDERBUFFER, glDepth, size.Width, size.Height);
 			OpenGL.CheckGLError();
 
-			OpenGL.glFramebufferRenderbuffer(OpenGL.GL_FRAMEBUFFER, OpenGL.GL_DEPTH_ATTACHMENT, OpenGL.GL_RENDERBUFFER, depth);
+			OpenGL.glFramebufferRenderbuffer(OpenGL.GL_FRAMEBUFFER, OpenGL.GL_DEPTH_STENCIL_ATTACHMENT, OpenGL.GL_RENDERBUFFER, depth);
 			OpenGL.CheckGLError();
 
 			// Test for completeness
@@ -95,7 +95,7 @@ namespace OpenRA.Platforms.Default
 			OpenGL.CheckGLError();
 			OpenGL.glClearColor(clearColor.R, clearColor.G, clearColor.B, clearColor.A);
 			OpenGL.CheckGLError();
-			OpenGL.glClear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
+			OpenGL.glClear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT | OpenGL.GL_STENCIL_BUFFER_BIT);
 			OpenGL.CheckGLError();
 		}
 

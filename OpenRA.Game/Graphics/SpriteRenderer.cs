@@ -25,12 +25,14 @@ namespace OpenRA.Graphics
 			public readonly int Start;
 			public int Length;
 			public readonly BlendMode Mode;
+			public readonly byte StencilReference;
 
-			public BlendSpan(int start, int length, BlendMode mode)
+			public BlendSpan(int start, int length, BlendMode mode, byte stencilReference)
 			{
 				Start = start;
 				Length = length;
 				Mode = mode;
+				StencilReference = stencilReference;
 			}
 		}
 
@@ -73,12 +75,19 @@ namespace OpenRA.Graphics
 			indexBuffer.Bind();
 			shader.Bind();
 
-			// PERF: this allows us to batch render sprites with interleaved blend modes
+			// PERF: this allows us to batch render sprites with interleaved blend modes and stencil references
 			// without expensive binding and data writing between draw calls.
+			byte stencilReference = 0;
 			foreach (var span in blendSpans)
 			{
 				if (span.Length <= 0)
 					continue;
+
+				if (span.StencilReference != stencilReference)
+				{
+					stencilReference = span.StencilReference;
+					renderer.Context.SetStencilReference(stencilReference);
+				}
 
 				renderer.Context.SetBlendMode(span.Mode);
 				renderer.Context.DrawElements(span.Length / 4 * 6, span.Start * 6);
@@ -87,6 +96,9 @@ namespace OpenRA.Graphics
 			if (blendSpans[^1].Mode != BlendMode.None)
 				renderer.Context.SetBlendMode(BlendMode.None);
 
+			if (stencilReference != 0)
+				renderer.Context.SetStencilReference(0);
+
 			PerfHistory.Increment("batches", 1);
 			blendSpans.Clear();
 			Array.Clear(sheets, 0, SheetCount);
@@ -94,10 +106,10 @@ namespace OpenRA.Graphics
 			sheetCount = 0;
 		}
 
-		void TrackQuad(BlendMode blendMode)
+		void TrackQuad(BlendMode blendMode, byte stencilReference = 0)
 		{
-			if (blendSpans.Count == 0 || blendSpans[^1].Mode != blendMode)
-				blendSpans.Add(new BlendSpan(vertexCount, 4, blendMode));
+			if (blendSpans.Count == 0 || blendSpans[^1].Mode != blendMode || blendSpans[^1].StencilReference != stencilReference)
+				blendSpans.Add(new BlendSpan(vertexCount, 4, blendMode, stencilReference));
 			else
 			{
 				// PERF: modify in-place.
@@ -197,18 +209,19 @@ namespace OpenRA.Graphics
 		}
 
 		internal void DrawSprite(Sprite s, int paletteTextureIndex, in Vector3 location, float scale, in Vector3 tint, float alpha,
-			float rotation = 0f)
+			float rotation = 0f, byte stencilReference = 0)
 		{
 			var samplers = SetRenderStateForSprite(s);
 			Util.FastCreateQuad(vertices, location + scale * s.Offset, s, samplers, paletteTextureIndex, vertexCount, scale * s.Size, tint, alpha,
 								rotation);
-			TrackQuad(s.BlendMode);
+			TrackQuad(s.BlendMode, stencilReference);
 		}
 
+		// Sprites drawn with the same non-zero stencilReference cover each pixel at most once
 		public void DrawSprite(Sprite s, PaletteReference pal, in Vector3 location, float scale, in Vector3 tint, float alpha,
-			float rotation = 0f)
+			float rotation = 0f, byte stencilReference = 0)
 		{
-			DrawSprite(s, ResolveTextureIndex(s, pal), location, scale, tint, alpha, rotation);
+			DrawSprite(s, ResolveTextureIndex(s, pal), location, scale, tint, alpha, rotation, stencilReference);
 		}
 
 		internal void DrawSprite(Sprite s, int paletteTextureIndex, in Vector3 a, in Vector3 b, in Vector3 c, in Vector3 d, in Vector3 tint, float alpha)
