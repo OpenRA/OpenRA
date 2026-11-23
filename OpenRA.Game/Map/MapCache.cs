@@ -284,8 +284,9 @@ namespace OpenRA
 				List<MapPreview> todo;
 				lock (syncRoot)
 				{
-					todo = generateMinimap.Where(p => p.GetMinimap() == null).ToList();
+					todo = generateMinimap.ToList();
 					generateMinimap.Clear();
+					todo = todo.Where(p => p.GetMinimap() == null).ToList();
 					if (keepAlive > 0)
 						keepAlive--;
 					if (keepAlive == 0 && todo.Count == 0)
