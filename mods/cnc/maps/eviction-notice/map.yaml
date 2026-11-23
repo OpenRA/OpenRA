@@ -200,6 +200,12 @@ Actors:
 	Actor52: v19
 		Location: 60,42
 		Owner: Civilians
+	Actor53: v19
+		Location: 61,41
+		Owner: Civilians
+	Actor59: v19
+		Location: 61,42
+		Owner: Civilians
 	Actor54: v29
 		Location: 60,44
 		Owner: Civilians
@@ -246,19 +252,19 @@ Actors:
 		Location: 4,11
 		Owner: GDI
 	GDIWeap: weap
-		Location: 10,9
+		Location: 10,8
 		Owner: GDI
 	GDINuke3: nuk2
 		Location: 3,14
 		Owner: GDI
 	GDIDef7: atwr
-		Location: 19,5
+		Location: 19,4
 		Owner: GDI
 	GDIDef5: atwr
-		Location: 15,10
+		Location: 15,9
 		Owner: GDI
 	GDIDef6: atwr
-		Location: 13,16
+		Location: 13,15
 		Owner: GDI
 	GDISilo2: silo
 		Location: 5,17
@@ -267,22 +273,22 @@ Actors:
 		Location: 9,17
 		Owner: GDI
 	GDIDef1: atwr
-		Location: 8,5
+		Location: 8,4
 		Owner: GDI
 	GDIDef2: atwr
-		Location: 6,10
+		Location: 6,9
 		Owner: GDI
 	GDIDef3: atwr
-		Location: 6,16
+		Location: 6,15
 		Owner: GDI
 	GDIDef4: gtwr
 		Location: 9,8
 		Owner: GDI
 	GDIDef8: atwr
-		Location: 10,21
+		Location: 10,20
 		Owner: GDI
 	GDIDef9: atwr
-		Location: 18,20
+		Location: 18,19
 		Owner: GDI
 	GDINuke4: nuk2
 		Location: 13,12
@@ -391,12 +397,12 @@ Actors:
 		Owner: GDI
 		Facing: 640
 	Actor109: c8
-		Location: 59,45
+		Location: 52,43
 		Owner: Civilians
 		Facing: 512
 		SubCell: 1
 	Actor110: c5
-		Location: 59,45
+		Location: 54,42
 		Owner: Civilians
 		Facing: 640
 		SubCell: 4
@@ -465,31 +471,6 @@ Actors:
 		Owner: GDI
 		Facing: 640
 		SubCell: 2
-	Actor124: e2
-		Location: 26,48
-		Owner: GDI
-		Facing: 640
-		SubCell: 1
-	Actor125: e2
-		Location: 25,48
-		Owner: GDI
-		Facing: 384
-		SubCell: 0
-	Actor126: e2
-		Location: 32,50
-		Owner: GDI
-		SubCell: 3
-		Facing: 256
-	Actor127: e2
-		Location: 33,52
-		Owner: GDI
-		SubCell: 1
-		Facing: 768
-	Actor128: e2
-		Location: 32,51
-		Owner: GDI
-		SubCell: 3
-		Facing: 512
 	Actor129: e1
 		Location: 19,6
 		Owner: GDI
@@ -505,27 +486,12 @@ Actors:
 		Owner: GDI
 		Facing: 768
 		SubCell: 2
-	Actor133: e2
-		Location: 16,59
-		Owner: GDI
-		SubCell: 1
-		Facing: 896
-	Actor134: e2
-		Location: 15,60
-		Owner: GDI
-		SubCell: 4
-		Facing: 384
-	Actor136: e2
-		Location: 16,58
-		Owner: GDI
-		SubCell: 0
-		TurretFacing: 0
-		Facing: 640
-	Actor137: e1
+	Actor137: c1
 		Location: 46,54
-		Owner: Nod
-		Health: 60
+		Owner: Civilians
+		Health: 8
 		SubCell: 2
+		Facing: 0
 	DefaultChinookTarget: waypoint
 		Location: 32,32
 		Owner: Neutral
@@ -535,9 +501,6 @@ Actors:
 	DefaultFlareLocation: waypoint
 		Location: 47,54
 		Owner: Neutral
-	waypoint13: waypoint
-		Owner: Neutral
-		Location: 29,51
 	waypoint12: waypoint
 		Location: 13,7
 		Owner: Neutral
@@ -577,70 +540,11 @@ Actors:
 	PlayerStart: waypoint
 		Location: 24,60
 		Owner: Neutral
-	Wel1: apc
-		Owner: GDI
-		Location: 13,55
-		Facing: 649
 	Def35: e1
 		Location: 15,8
 		Owner: GDI
 		SubCell: 4
 		Facing: 896
-	Wel3: jeep
-		Owner: GDI
-		Location: 19,44
-		Facing: 617
-	Wel2: jeep
-		Owner: GDI
-		Location: 21,43
-		Facing: 384
-	Actor152: msam
-		Owner: GDI
-		Location: 5,18
-		Facing: 657
-	Actor153: msam
-		Owner: GDI
-		Location: 3,17
-		Facing: 576
-	Actor154: msam
-		Owner: GDI
-		Location: 15,12
-		Facing: 657
-	Actor155: htnk
-		Owner: GDI
-		Location: 4,23
-		Facing: 527
-	Actor156: htnk
-		Owner: GDI
-		Location: 3,23
-		Facing: 495
-	waypoint14: waypoint
-		Owner: Neutral
-		Location: 10,45
-	Def1: mtnk
-		Owner: GDI
-		Location: 14,6
-		Facing: 384
-	Def2: mtnk
-		Owner: GDI
-		Location: 12,7
-		Facing: 384
-	Def3: mtnk
-		Owner: GDI
-		Location: 14,8
-		Facing: 384
-	Def4: msam
-		Owner: GDI
-		Location: 13,8
-		Facing: 384
-	Wel4: jeep
-		Owner: GDI
-		Location: 36,53
-		Facing: 227
-	Wel5: apc
-		Owner: GDI
-		Location: 37,51
-		Facing: 349
 
 Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|rules/campaign-palettes.yaml, rules.yaml
 

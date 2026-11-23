@@ -1,0 +1,37 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, campaign-ai.lua, nod-death-squad.lua, nod-death-squad-AI.lua
+	MissionData:
+		Briefing: briefing
+		StartVideo: iontest.vqa
+		LossVideo: akira.vqa
+		WinVideo: banr_nod.vqa
+	# Original [Basic] has Theme=No theme, so there is no starting music.
+	# The engine default victory music is GDI's; Nod missions set their own.
+	MusicPlaylist:
+		VictoryMusic: nod_win1
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+	# Campaign missions are not skirmishes: never restrict building to the
+	# base radius. Hide the option entirely so it cannot be re-enabled.
+	MapBuildRadius:
+		BuildRadiusCheckboxEnabled: False
+		BuildRadiusCheckboxVisible: False
+
+Player:
+	PlayerResources:
+		DefaultCash: 0
+
+# The original "All Destr." trigger counts every BadGuy unit, including the
+# two Stealth Tanks. OpenRA's STNK removes MustBeDestroyed by default so a
+# cloaked straggler cannot block a skirmish; this mission needs the original
+# loss condition, so put it back for the map only.
+STNK:
+	MustBeDestroyed:

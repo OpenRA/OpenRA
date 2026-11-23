@@ -1,0 +1,95 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, campaign-ai.lua, cloak-and-dagger.lua, cloak-and-dagger-AI.lua
+	MissionData:
+		StartVideo: gdilose.vqa
+		LossVideo: bombflee.vqa
+		WinVideo: stealth.vqa
+		Briefing: briefing
+	# Original [Basic] has Theme=No theme, so there is no starting music.
+	# The engine default victory music is GDI's; Nod missions set their own.
+	MusicPlaylist:
+		VictoryMusic: nod_win1
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+	MapBuildRadius:
+		BuildRadiusCheckboxEnabled: False
+
+Player:
+	PlayerResources:
+		DefaultCash: 0
+
+# The original stealth tank starts the mission cloaked, not after the default
+# 85-tick spawn delay.
+STNK:
+	Cloak:
+		InitialDelay: 0
+
+# Engineers capture base buildings immediately, matching the Deceit /
+# nod11a / nod11b missions. The mod default only allows sabotage for
+# healthy buildings; this override makes E6 capture them directly.
+^BaseBuilding:
+	Capturable:
+		Types: building
+
+# The six NUK2 are just enough for the base at normal power because the
+# restored ATWRs draw more power in this mission. Destroying the outpost
+# reactor at (43,31) drops the base to low power, which switches the
+# ATWR/EYE sensors and weapons off through the standard power mechanic.
+# GDI rebuilds the missing NUK2 from [Base] after the prod trigger.
+ATWR:
+	Power:
+		Amount: -120
+
+# Scripted engineer transports are not part of the All-Destroyed win check;
+# the original mission lets them linger after unloading.
+APC:
+	-MustBeDestroyed:
+
+TRAN:
+	-MustBeDestroyed:
+
+# campaign-maprules.yaml demotes MISS to scenery. The original apch trigger
+# fires when Nod captures this Tech Center, so make it capturable again.
+MISS:
+	Tooltip:
+		Name: actor-miss.name
+	CaptureManager:
+	Capturable:
+		Types: building
+
+# The village is scenery; husks would litter the narrow streets and the
+# gohp trigger only needs the attack event, not the wreck.
+V01:
+	-SpawnActorOnDeath:
+
+V02:
+	-SpawnActorOnDeath:
+
+V03:
+	-SpawnActorOnDeath:
+
+V04:
+	-SpawnActorOnDeath:
+
+V05:
+	-SpawnActorOnDeath:
+
+V06:
+	-SpawnActorOnDeath:
+
+V07:
+	-SpawnActorOnDeath:
+
+V08:
+	-SpawnActorOnDeath:
+
+V10:
+	-SpawnActorOnDeath:
