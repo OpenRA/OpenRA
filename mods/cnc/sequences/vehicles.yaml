@@ -218,9 +218,10 @@ ftnk:
 				Length: *
 				Offset: 8,7
 			2:
-				Filename: flame-w.shp
+				Filename: flame-e.shp
 				Length: *
-				Offset: 8,2
+				FlipX: True
+				Offset: 7,2
 			3:
 				Filename: flame-sw.shp
 				Length: *
