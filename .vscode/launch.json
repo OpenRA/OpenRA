@@ -20,7 +20,7 @@
 			"windows": {
 				"program": "${workspaceRoot}/bin/OpenRA.exe",
 			},
-			"args": ["Game.Mod=ra", "Engine.EngineDir=.."],
+			"args": ["Game.Mod=ra", "Engine.EngineDir=..","Launch.Map=01test"],
 			"preLaunchTask": "build",
 		},
 		{
@@ -31,7 +31,7 @@
 			"windows": {
 				"program": "${workspaceRoot}/bin/OpenRA.exe",
 			},
-			"args": ["Game.Mod=d2k", "Engine.EngineDir=.."],
+			"args": ["Game.Mod=d2k", "Engine.EngineDir=..","Launch.Map=01test"],
 			"preLaunchTask": "build",
 		},
 		{

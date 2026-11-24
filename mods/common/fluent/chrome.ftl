@@ -351,6 +351,7 @@ button-stance-bar-holdfire =
 productionpalette-sidebar-production-palette =
     .ready = READY
     .hold = ON HOLD
+    .stock = In Stock: 
 
 button-production-types-scroll-up-tooltip = Scroll up
 button-production-types-scroll-down-tooltip = Scroll down

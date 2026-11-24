@@ -246,7 +246,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		IEnumerable<ActorInfo> AllBuildables(string category)
+		protected IEnumerable<ActorInfo> AllBuildables(string category)
 		{
 			return Actor.World.Map.Rules.Actors.Values
 				.Where(x =>
@@ -401,7 +401,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public bool CanQueue(ActorInfo actor, out string notificationAudio, out string notificationText)
+		public virtual bool CanQueue(ActorInfo actor, out string notificationAudio, out string notificationText)
 		{
 			notificationAudio = Info.BlockedAudio;
 			notificationText = Info.BlockedTextNotification;

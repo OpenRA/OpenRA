@@ -1,0 +1,86 @@
+Player:
+	BulkProductionQueue@Starport:
+		DeliveryDelay: 100
+		MaxStockCapacity: 3
+	DeveloperMode:
+		CheckboxEnabled: true
+		CheckboxLocked: true
+
+mcv.starport:
+	Inherits: mcv
+	Buildable:
+		Prerequisites: starport
+		Queue: Starport
+		BuildDuration: 200
+
+harvester.starport:
+	Inherits: harvester
+	Buildable:
+		Prerequisites: starport
+		Queue: Starport
+		BuildDuration: 200
+
+trike.starport:
+	Inherits: trike
+	Buildable:
+		Prerequisites: starport
+		Queue: Starport
+		BuildDuration: 200
+
+quad.starport:
+	Inherits: quad
+	Buildable:
+		Prerequisites: starport
+		Queue: Starport
+		BuildDuration: 200
+
+siege_tank.starport:
+	Inherits: siege_tank
+	Buildable:
+		Prerequisites: starport
+		Queue: Starport
+		BuildDuration: 200
+
+missile_tank.starport:
+	Inherits: missile_tank
+	Buildable:
+		Prerequisites: starport
+		Queue: Starport
+		BuildDuration: 200
+
+combat_tank_a.starport:
+	Inherits: combat_tank_a
+	Buildable:
+		Prerequisites: ~starport.atreides_combat
+		Queue: Starport
+		BuildDuration: 200
+
+combat_tank_h.starport:
+	Inherits: combat_tank_h
+	Buildable:
+		Prerequisites: ~starport.harkonnen_combat
+		Queue: Starport
+		BuildDuration: 200
+
+combat_tank_o.starport:
+	Inherits: combat_tank_o
+	Buildable:
+		Prerequisites: ~starport.ordos_combat
+		Queue: Starport
+		BuildDuration: 200
+
+carryall.starport:
+	Inherits: carryall
+	Buildable:
+		Prerequisites: starport
+		Queue: Starport
+		BuildDuration: 200
+
+starport:
+	Buildable:
+		Prerequisites: wind_trap
+		Queue: Building
+		BuildPaletteOrder: 530
+		BuildDuration: 1
+		BuildDurationModifier: 100
+		Description: actor-starport.description

@@ -883,8 +883,6 @@ starport:
 			smuggler: starport.smuggler
 	WithDeliveryOverlay:
 		RequiresCondition: !build-incomplete
-	ProductionBar:
-		ProductionType: Starport
 	PrimaryBuilding:
 		ProductionQueues: Starport
 	ProvidesPrerequisite@atreides:

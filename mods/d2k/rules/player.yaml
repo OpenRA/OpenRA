@@ -69,10 +69,7 @@ Player:
 		PayUpFront: true
 		StartDeliveryNotification: OrderPlaced
 		DeliveryProgressNotifications: TMinusFive, TMinusFour, TMinusThree, TMinusTwo, TMinusOne
-		BlockedAudio: NoRoom
 		BlockedTextNotification: notification-no-room-for-new-unit
-		OnHoldAudio: OnHold
-		CancelledAudio: Cancelled
 	ClassicProductionQueue@Aircraft:
 		Type: Aircraft
 		DisplayOrder: 5
