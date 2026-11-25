@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (sourceDropdown != null)
 			{
 				sourceDropdown.OnMouseDown = _ => ShowSourceDropdown(sourceDropdown);
-				var sourceName = new CachedTransform<IReadOnlyPackage, string>(GetSourceDisplayName);
+				var sourceName = new CachedTransform<IReadOnlyPackage, string>(source => GetSourceDisplayName(source, sourceDropdown));
 				sourceDropdown.GetText = () => sourceName.Update(assetSource);
 			}
 
@@ -603,7 +603,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		bool ShowSourceDropdown(DropDownButtonWidget dropdown)
 		{
-			var sourceName = new CachedTransform<IReadOnlyPackage, string>(GetSourceDisplayName);
+			var sourceName = new CachedTransform<IReadOnlyPackage, string>(source => GetSourceDisplayName(source, dropdown));
 			ScrollItemWidget SetupItem(IReadOnlyPackage source, ScrollItemWidget itemTemplate)
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
@@ -674,7 +674,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return true;
 		}
 
-		string GetSourceDisplayName(IReadOnlyPackage source)
+		string GetSourceDisplayName(IReadOnlyPackage source, DropDownButtonWidget dropdown)
 		{
 			if (source == null)
 				return allPackages;
@@ -696,10 +696,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					name = "^" + name[Platform.SupportDir.Length..];
 			}
 
-			if (name.Length > 18)
-				name = "..." + name[^15..];
-
-			return name;
+			return WidgetUtils.TruncateText(name, dropdown.UsableWidth - dropdown.LeftMargin - dropdown.RightMargin, Game.Renderer.Fonts[dropdown.Font], false);
 		}
 
 		// Mute/UnMute code copied from MissionBrowserLogic.
