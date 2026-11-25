@@ -81,7 +81,7 @@ Player:
 	SquadManagerBotModule@test:
 		RequiresCondition: enable-test-ai
 		SquadSize: 20
-		ExcludeFromSquadsTypes: harv, mcv, dpod, hunter
+		ExcludeFromSquadsTypes: harv, mcv, dpod, hunter, subtank
 		ConstructionYardTypes: gacnst
 		AirUnitsTypes: orca, orcab, scrin, apache, jumpjet
 		ProtectionTypes: gapowr, gapile, gaweap, gahpad, gadept, garadr, gatech, gaplug, gagate_a, gagate_b, gactwr, napowr, naapwr, nahand, naweap, nahpad, naradr, natech, nastlh, natmpl, namisl, nawast, nagate_a, nagate_b, nalasr, naobel, nasam, weed, gacnst, proc, gasilo, napuls, mcv, harv
@@ -121,3 +121,13 @@ Player:
 		ConstructionYardTypes: gacnst
 		McvFactoryTypes: gaweap, naweap
 		MinimumConstructionYardCount: 2
+	SendUnitToAttackBotModule@test:
+		RequiresCondition: enable-test-ai
+		ActorTypesAndAttackOptions:
+			subtank:
+				AttackDesireOfEach: 10
+				MoveToOrderName: Move
+				MoveBackOrderName: Move
+		ValidTargets: Building
+		InvalidTargets: Defense
+		TargetDistances: Furthest, Random
