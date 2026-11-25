@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using OpenRA.FileSystem;
 using OpenRA.Mods.Common.Traits;
@@ -95,7 +96,67 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		const string RemoteMapsTab = "button-mapchooser-remote-maps-tab";
 
 		[FluentReference]
+		const string CommunityMapsTab = "button-mapchooser-community-maps-tab";
+
+		[FluentReference]
 		const string GeneratedMapsTab = "button-mapchooser-generated-maps-tab";
+
+		[FluentReference]
+		const string CommunityMapsLoading = "label-community-maps-loading";
+
+		[FluentReference]
+		const string CommunityMapsError = "label-community-maps-error";
+
+		[FluentReference("total")]
+		const string CommunityPageTotal = "label-community-page-total";
+
+		[FluentReference]
+		const string CommunityPageTotalLoading = "label-community-page-total-loading";
+
+		[FluentReference]
+		const string CommunitySortLatest = "label-community-sort-latest";
+
+		[FluentReference]
+		const string CommunitySortOldest = "label-community-sort-oldest";
+
+		[FluentReference]
+		const string CommunitySortTitle = "label-community-sort-title";
+
+		[FluentReference]
+		const string CommunitySortTitleReversed = "label-community-sort-title-reversed";
+
+		[FluentReference]
+		const string CommunitySortPlayers = "label-community-sort-players";
+
+		[FluentReference]
+		const string CommunitySortLatelyCommented = "label-community-sort-lately-commented";
+
+		[FluentReference]
+		const string CommunitySortRating = "label-community-sort-rating";
+
+		[FluentReference]
+		const string CommunitySortViews = "label-community-sort-views";
+
+		[FluentReference]
+		const string CommunitySortDownloads = "label-community-sort-downloads";
+
+		[FluentReference]
+		const string CommunitySortRevisions = "label-community-sort-revisions";
+
+		[FluentReference]
+		const string CommunityFilterTilesetAny = "label-community-filter-tileset-any";
+
+		[FluentReference]
+		const string CommunityFilterTagsChoose = "label-community-filter-tags-choose";
+
+		[FluentReference]
+		const string CommunityFilterTagsAdvanced = "label-community-filter-tags-advanced";
+
+		[FluentReference]
+		const string CommunityFilterTagsLua = "label-community-filter-tags-lua";
+
+		[FluentReference("count")]
+		const string CommunityCount = "label-community-count";
 
 		public static string MapSizeLabel(Size size)
 		{
@@ -122,6 +183,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		int remoteSearching = 0;
 		int remoteUnavailable = 0;
 
+		readonly Widget filterContainer;
+		readonly int filterContainerDefaultY;
+
 		readonly Dictionary<MapClassification, ScrollPanelWidget> scrollpanels = [];
 		readonly Dictionary<MapClassification, MapPreview[]> tabMaps = [];
 		readonly Dictionary<MapClassification, string> tabLabels = [];
@@ -137,6 +201,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		string mapFilter;
 
 		Func<MapPreview, long> orderByFunc;
+
+		CommunityMapQuery communityQuery;
+		int communitySearching;
+		string communityStatusText;
+		TextFieldWidget communityPageInput;
+		bool communityFiltersDirty;
+
+		// Community sort options: display label → API sort_by value.
+		readonly Dictionary<string, string> communitySortOptions = [];
+		string selectedCommunitySortLabel;
+
+		// Community filter state.
+		string selectedCommunityTileset;
+		string selectedCommunityTilesetLabel;
+		bool filterAdvanced;
+		bool filterLua;
 
 		[ObjectCreator.UseCtor]
 		internal MapChooserLogic(Widget widget, ModData modData, string initialMap, MapGenerationArgs initialGeneratedMap, FrozenSet<string> remoteMapPool,
@@ -196,9 +276,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			SetupOrderByDropdown();
 
-			var filterContainer = widget.GetOrNull("FILTER_ORDER_CONTROLS");
+			filterContainer = widget.GetOrNull("FILTER_ORDER_CONTROLS");
 			if (filterContainer != null)
+			{
+				filterContainerDefaultY = filterContainer.Bounds.Y;
 				filterContainer.IsVisible = () => currentTab != MapClassification.Generated;
+			}
 
 			var mapFilterInput = widget.GetOrNull<TextFieldWidget>("MAPFILTER_INPUT");
 			if (mapFilterInput != null)
@@ -234,7 +317,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					scrollpanels[currentTab].ScrollToItem(uid, smooth: true);
 				};
 				randomMapButton.IsDisabled = () => visibleMaps == null || visibleMaps.Length == 0;
-				randomMapButton.IsVisible = () => currentTab != MapClassification.Generated;
+				randomMapButton.IsVisible = () => currentTab != MapClassification.Generated
+					&& currentTab != MapClassification.Community;
 			}
 
 			var deleteMapButton = widget.Get<ButtonWidget>("DELETE_MAP_BUTTON");
@@ -288,6 +372,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SetupMapPanel(MapClassification.System, "SYSTEM_MAPS_TAB");
 			SetupMapPanel(MapClassification.Remote, "REMOTE_MAPS_TAB");
 
+			// Community maps tab is available when downloading is allowed and not in a server pool.
+			if (remoteMapPool == null && Game.Settings.Game.AllowDownloading)
+				SetupCommunityMapsPanel();
+
 			var hasGenerator = modData.DefaultRules.Actors[SystemActors.EditorWorld].HasTraitInfo<IEditorMapGeneratorInfo>();
 			if (onSelectGenerated != null && hasGenerator)
 				SetupGenerateMapPanel(MapClassification.Generated, "GENERATE_MAP_TAB", initialGeneratedMap);
@@ -302,6 +390,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			else
 			{
 				tabLabels[MapClassification.System] = SystemMapsTab;
+				tabLabels[MapClassification.Community] = CommunityMapsTab;
 				tabLabels[MapClassification.User] = UserMapsTab;
 				if (onSelectGenerated != null && hasGenerator)
 					tabLabels[MapClassification.Generated] = GeneratedMapsTab;
@@ -328,9 +417,402 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SetupMapTabs();
 		}
 
+		void SetupCommunityMapsPanel()
+		{
+			var services = modData.GetOrCreate<WebServices>();
+			communityQuery = new CommunityMapQuery(modData, services.MapBrowserApi, services.MapRepository);
+
+			SetupMapPanel(MapClassification.Community, "COMMUNITY_MAPS_TAB");
+
+			var communityMapLabel = widget.GetOrNull<LabelWidget>("COMMUNITY_MAP_LABEL");
+			if (communityMapLabel != null)
+			{
+				communityMapLabel.IsVisible = () => currentTab == MapClassification.Community && communityStatusText != null;
+				communityMapLabel.GetText = () => communityStatusText;
+			}
+
+			var communityFilterControls = widget.GetOrNull("COMMUNITY_FILTER_CONTROLS");
+			if (communityFilterControls != null)
+				communityFilterControls.IsVisible = () => currentTab == MapClassification.Community;
+
+			SetupCommunityTilesetFilter();
+			SetupCommunityTagsFilter();
+			SetupCommunityPlayersFilter();
+			SetupCommunitySortDropdown();
+			SetupCommunityPagination();
+			SetupCommunitySearchButton();
+
+			// Start loading the first page automatically.
+			SearchCommunityMaps();
+		}
+
+		void SetupCommunityTilesetFilter()
+		{
+			var tilesetDropdown = widget.GetOrNull<DropDownButtonWidget>("COMMUNITY_TILESET_FILTER");
+			if (tilesetDropdown == null)
+				return;
+
+			var anyLabel = FluentProvider.GetMessage(CommunityFilterTilesetAny);
+			selectedCommunityTilesetLabel = anyLabel;
+
+			// Build tileset options from the current mod's terrain definitions.
+			var tilesets = new List<(string Id, string Label)> { (null, anyLabel) };
+			foreach (var kv in modData.DefaultTerrainInfo)
+				tilesets.Add((kv.Key, kv.Key));
+
+			tilesetDropdown.GetText = () => selectedCommunityTilesetLabel;
+			tilesetDropdown.OnClick = () =>
+			{
+				ScrollItemWidget SetupItem((string Id, string Label) ts, ScrollItemWidget template)
+				{
+					var item = ScrollItemWidget.Setup(template,
+						() => selectedCommunityTileset == ts.Id,
+						() =>
+						{
+							selectedCommunityTileset = ts.Id;
+							selectedCommunityTilesetLabel = ts.Label;
+							communityQuery.Tileset = ts.Id;
+							communityFiltersDirty = true;
+						});
+					item.Get<LabelWidget>("LABEL").GetText = () => ts.Label;
+					return item;
+				}
+
+				tilesetDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", tilesets.Count * 30, tilesets, SetupItem);
+			};
+		}
+
+		void SetupCommunityTagsFilter()
+		{
+			var tagsDropdown = widget.GetOrNull<DropDownButtonWidget>("COMMUNITY_TAGS_FILTER");
+			if (tagsDropdown == null)
+				return;
+
+			var advancedLabel = FluentProvider.GetMessage(CommunityFilterTagsAdvanced);
+			var luaLabel = FluentProvider.GetMessage(CommunityFilterTagsLua);
+
+			var chooseLabel = FluentProvider.GetMessage(CommunityFilterTagsChoose);
+			tagsDropdown.GetText = () =>
+			{
+				if (filterAdvanced && filterLua)
+					return $"{advancedLabel}, {luaLabel}";
+				if (filterAdvanced)
+					return advancedLabel;
+				if (filterLua)
+					return luaLabel;
+				return chooseLabel;
+			};
+
+			var tagsPanel = CreateCommunityTagsPanel(advancedLabel, luaLabel);
+			tagsDropdown.OnMouseDown = _ =>
+			{
+				tagsDropdown.RemovePanel();
+				tagsDropdown.AttachPanel(tagsPanel);
+			};
+		}
+
+		Widget CreateCommunityTagsPanel(string advancedLabel, string luaLabel)
+		{
+			var panel = Ui.LoadWidget("COMMUNITY_TAGS_PANEL", null, []);
+			var template = panel.Get<CheckboxWidget>("COMMUNITY_TAG_TEMPLATE");
+
+			var advancedCheckbox = template.Clone();
+			advancedCheckbox.GetText = () => advancedLabel;
+			advancedCheckbox.IsChecked = () => filterAdvanced;
+			advancedCheckbox.IsVisible = () => true;
+			advancedCheckbox.OnClick = () =>
+			{
+				filterAdvanced = !filterAdvanced;
+				communityQuery.OnlyAdvanced = filterAdvanced;
+				communityFiltersDirty = true;
+			};
+
+			panel.AddChild(advancedCheckbox);
+
+			var luaCheckbox = template.Clone();
+			luaCheckbox.GetText = () => luaLabel;
+			luaCheckbox.IsChecked = () => filterLua;
+			luaCheckbox.IsVisible = () => true;
+			luaCheckbox.OnClick = () =>
+			{
+				filterLua = !filterLua;
+				communityQuery.OnlyLua = filterLua;
+				communityFiltersDirty = true;
+			};
+
+			panel.AddChild(luaCheckbox);
+
+			return panel;
+		}
+
+		void SetupCommunityPlayersFilter()
+		{
+			var playersField = widget.GetOrNull<TextFieldWidget>("COMMUNITY_PLAYERS_FILTER");
+			if (playersField == null)
+				return;
+
+			playersField.Type = TextFieldType.Integer;
+			playersField.MaxLength = 2;
+			playersField.OnTextEdited = () =>
+			{
+				if (int.TryParse(playersField.Text, out var players) && players > 0)
+					communityQuery.Players = players;
+				else
+					communityQuery.Players = null;
+
+				communityFiltersDirty = true;
+			};
+		}
+
+		void SetupCommunitySortDropdown()
+		{
+			var sortDropdown = widget.GetOrNull<DropDownButtonWidget>("COMMUNITY_SORT");
+			if (sortDropdown == null)
+				return;
+
+			// Build the sort options mapping display labels to API sort_by values.
+			communitySortOptions[FluentProvider.GetMessage(CommunitySortLatest)] = "latest";
+			communitySortOptions[FluentProvider.GetMessage(CommunitySortOldest)] = "oldest";
+			communitySortOptions[FluentProvider.GetMessage(CommunitySortTitle)] = "title";
+			communitySortOptions[FluentProvider.GetMessage(CommunitySortTitleReversed)] = "title_reversed";
+			communitySortOptions[FluentProvider.GetMessage(CommunitySortPlayers)] = "players";
+			communitySortOptions[FluentProvider.GetMessage(CommunitySortLatelyCommented)] = "lately_commented";
+			communitySortOptions[FluentProvider.GetMessage(CommunitySortRating)] = "rating";
+			communitySortOptions[FluentProvider.GetMessage(CommunitySortViews)] = "views";
+			communitySortOptions[FluentProvider.GetMessage(CommunitySortDownloads)] = "downloads";
+			communitySortOptions[FluentProvider.GetMessage(CommunitySortRevisions)] = "revisions";
+
+			selectedCommunitySortLabel = communitySortOptions.Keys.First();
+
+			sortDropdown.GetText = () => selectedCommunitySortLabel;
+			sortDropdown.OnClick = () =>
+			{
+				ScrollItemWidget SetupItem(string label, ScrollItemWidget template)
+				{
+					var item = ScrollItemWidget.Setup(template,
+						() => selectedCommunitySortLabel == label,
+						() =>
+						{
+							selectedCommunitySortLabel = label;
+							communityQuery.SortBy = communitySortOptions[label];
+							communityFiltersDirty = true;
+						});
+					item.Get<LabelWidget>("LABEL").GetText = () => label;
+					return item;
+				}
+
+				sortDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", communitySortOptions.Count * 30, communitySortOptions.Keys, SetupItem);
+			};
+		}
+
+		void SetupCommunitySearchButton()
+		{
+			var searchButton = widget.GetOrNull<ButtonWidget>("COMMUNITY_SEARCH");
+			if (searchButton == null)
+				return;
+
+			searchButton.IsVisible = () => currentTab == MapClassification.Community;
+			searchButton.IsDisabled = () => communityQuery.IsLoading;
+			searchButton.OnClick = SearchCommunityMaps;
+		}
+
+		void SetupCommunityPagination()
+		{
+			var pageFirst = widget.GetOrNull<ButtonWidget>("COMMUNITY_PAGE_FIRST");
+			if (pageFirst != null)
+			{
+				pageFirst.IsVisible = () => currentTab == MapClassification.Community;
+				pageFirst.IsDisabled = () => communityFiltersDirty || communityQuery.IsLoading || communityQuery.CurrentPage <= 1;
+				pageFirst.OnClick = () => GoToCommunityPage(1);
+			}
+
+			var pagePrev = widget.GetOrNull<ButtonWidget>("COMMUNITY_PAGE_PREV");
+			if (pagePrev != null)
+			{
+				pagePrev.IsVisible = () => currentTab == MapClassification.Community;
+				pagePrev.IsDisabled = () => communityFiltersDirty || communityQuery.IsLoading || communityQuery.CurrentPage <= 1;
+				pagePrev.OnClick = () => GoToCommunityPage(communityQuery.CurrentPage - 1);
+
+				var prevIcon = pagePrev.GetOrNull<ImageWidget>("IMAGE_PREV");
+				if (prevIcon != null)
+					prevIcon.GetImageName = () => pagePrev.IsDisabled() ? "left-disabled" : "left";
+			}
+
+			var pageNext = widget.GetOrNull<ButtonWidget>("COMMUNITY_PAGE_NEXT");
+			if (pageNext != null)
+			{
+				pageNext.IsVisible = () => currentTab == MapClassification.Community;
+				pageNext.IsDisabled = () => communityFiltersDirty || communityQuery.IsLoading
+					|| (communityQuery.TotalPages.HasValue && communityQuery.CurrentPage >= communityQuery.TotalPages.Value);
+				pageNext.OnClick = () => GoToCommunityPage(communityQuery.CurrentPage + 1);
+
+				var nextIcon = pageNext.GetOrNull<ImageWidget>("IMAGE_NEXT");
+				if (nextIcon != null)
+					nextIcon.GetImageName = () => pageNext.IsDisabled() ? "right-disabled" : "right";
+			}
+
+			var pageLast = widget.GetOrNull<ButtonWidget>("COMMUNITY_PAGE_LAST");
+			if (pageLast != null)
+			{
+				pageLast.IsVisible = () => currentTab == MapClassification.Community;
+				pageLast.IsDisabled = () => communityFiltersDirty || communityQuery.IsLoading || !communityQuery.TotalPages.HasValue
+					|| communityQuery.CurrentPage >= communityQuery.TotalPages.Value;
+				pageLast.OnClick = () => GoToCommunityPage(communityQuery.TotalPages.Value);
+			}
+
+			var pageLabel = widget.GetOrNull<LabelWidget>("COMMUNITY_PAGE_LABEL");
+			if (pageLabel != null)
+				pageLabel.IsVisible = () => currentTab == MapClassification.Community;
+
+			communityPageInput = widget.GetOrNull<TextFieldWidget>("COMMUNITY_PAGE_INPUT");
+			if (communityPageInput != null)
+			{
+				communityPageInput.IsVisible = () => currentTab == MapClassification.Community;
+				communityPageInput.IsDisabled = () => communityFiltersDirty || communityQuery.IsLoading;
+				communityPageInput.Type = TextFieldType.Integer;
+				communityPageInput.MaxLength = 4;
+				communityPageInput.Text = communityQuery.CurrentPage.ToString(CultureInfo.InvariantCulture);
+				communityPageInput.OnEnterKey = _ =>
+				{
+					if (int.TryParse(communityPageInput.Text, out var page) && page >= 1)
+					{
+						if (communityQuery.TotalPages.HasValue)
+							page = Math.Min(page, communityQuery.TotalPages.Value);
+
+						GoToCommunityPage(page);
+					}
+
+					return true;
+				};
+
+				communityPageInput.OnLoseFocus = () =>
+					communityPageInput.Text = communityQuery.CurrentPage.ToString(CultureInfo.InvariantCulture);
+			}
+
+			var pageTotal = widget.GetOrNull<LabelWidget>("COMMUNITY_PAGE_TOTAL");
+			if (pageTotal != null)
+			{
+				pageTotal.IsVisible = () => currentTab == MapClassification.Community;
+				pageTotal.GetText = () =>
+				{
+					var totalPages = communityQuery.TotalPages;
+					return totalPages.HasValue
+						? FluentProvider.GetMessage(CommunityPageTotal, "total", totalPages.Value)
+						: FluentProvider.GetMessage(CommunityPageTotalLoading);
+				};
+			}
+
+			var countLabel = widget.GetOrNull<LabelWidget>("COMMUNITY_COUNT_LABEL");
+			if (countLabel != null)
+			{
+				countLabel.IsVisible = () => currentTab == MapClassification.Community && communityQuery.TotalAvailable.HasValue;
+				countLabel.GetText = () =>
+				{
+					var total = communityQuery.TotalAvailable;
+					return total.HasValue
+						? FluentProvider.GetMessage(CommunityCount, "count", total.Value)
+						: "";
+				};
+			}
+
+			var resourceCenterButton = widget.GetOrNull<ButtonWidget>("COMMUNITY_RESOURCE_CENTER_BUTTON");
+			if (resourceCenterButton != null)
+			{
+				var services = modData.GetOrCreate<WebServices>();
+				resourceCenterButton.IsVisible = () => currentTab == MapClassification.Community;
+				resourceCenterButton.OnClick = () => Game.Renderer.TryOpenUrl(services.ResourceCenter);
+			}
+		}
+
+		void GoToCommunityPage(int page)
+		{
+			communityStatusText = FluentProvider.GetMessage(CommunityMapsLoading);
+			communityQuery.GoToPage(page, OnCommunityMapsLoaded, OnCommunityMapsError);
+		}
+
+		void SearchCommunityMaps()
+		{
+			communityFiltersDirty = false;
+			communityStatusText = FluentProvider.GetMessage(CommunityMapsLoading);
+			communityQuery.Search(OnCommunityMapsLoaded, OnCommunityMapsError);
+		}
+
+		void OnCommunityMapsLoaded()
+		{
+			if (disposed)
+				return;
+
+			// Update the page input field to reflect the current page.
+			if (communityPageInput != null)
+				communityPageInput.Text = communityQuery.CurrentPage.ToString(CultureInfo.InvariantCulture);
+
+			// Community maps are loaded asynchronously via QueryRemoteMapDetails.
+			// Poll for results until all previews are resolved.
+			communitySearching = 0;
+			RefreshCommunityMaps();
+
+			if (communitySearching > 0)
+			{
+				Game.RunAfterDelay(1000, () =>
+				{
+					if (disposed)
+						return;
+
+					OnCommunityMapsLoaded();
+				});
+			}
+			else
+				communityStatusText = null;
+
+			if (currentTab == MapClassification.Community)
+				EnumerateMaps(MapClassification.Community);
+
+			SetupMapTabs();
+		}
+
+		void OnCommunityMapsError(string error)
+		{
+			if (disposed)
+				return;
+
+			communityStatusText = FluentProvider.GetMessage(CommunityMapsError);
+			Log.Write("debug", $"Community map browser error: {error}");
+		}
+
+		void RefreshCommunityMaps()
+		{
+			var loaded = new List<MapPreview>();
+			communitySearching = 0;
+			foreach (var preview in modData.MapCache)
+			{
+				if (preview.Class != MapClassification.Community)
+					continue;
+
+				// Only include maps that belong to the current query results.
+				if (!communityQuery.ContainsHash(preview.Uid))
+					continue;
+
+				if (preview.Status == MapStatus.Searching)
+					communitySearching++;
+				else if (preview.Status == MapStatus.DownloadAvailable || preview.Status == MapStatus.Available
+					|| preview.Status == MapStatus.Downloading)
+					loaded.Add(preview);
+			}
+
+			tabMaps[MapClassification.Community] = loaded.ToArray();
+		}
+
 		void SwitchTab(MapClassification tab)
 		{
 			currentTab = tab;
+
+			// On the Community tab, move the filter row up to make room
+			// for the community-specific filter controls on the row below.
+			if (filterContainer != null)
+				filterContainer.Bounds.Y = tab == MapClassification.Community
+					? filterContainerDefaultY - 30
+					: filterContainerDefaultY;
+
 			EnumerateMaps(tab);
 		}
 
@@ -339,6 +821,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (tab == MapClassification.System || tab == MapClassification.User)
 				tabMaps[tab] = modData.MapCache.Where(m => m.Status == MapStatus.Available &&
 					m.Class == tab && (m.Visibility & filter) != 0).ToArray();
+			else if (tab == MapClassification.Community)
+				RefreshCommunityMaps();
 			else if (remoteMapPool != null)
 			{
 				var loaded = new List<MapPreview>();
@@ -379,7 +863,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void SetupMapTabs()
 		{
-			for (var i = 0; i < 3; i++)
+			for (var i = 0; i < 4; i++)
 				widget.Get<ButtonWidget>($"BUTTON{i + 1}").Visible = false;
 
 			var tabCount = 0;
@@ -387,6 +871,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var tab = kv.Key;
 				if (tab == MapClassification.User && tabMaps[tab].Length == 0)
+					continue;
+
+				// Hide the Community tab when downloading is disabled or not configured.
+				if (tab == MapClassification.Community && communityQuery == null)
 					continue;
 
 				var tabButton = widget.Get<ButtonWidget>($"BUTTON{++tabCount}");
@@ -480,6 +968,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var orderByDropdown = widget.GetOrNull<DropDownButtonWidget>("ORDERBY");
 			if (orderByDropdown == null)
 				return;
+
+			// Hide the standard Order By controls on the Community tab (replaced by COMMUNITY_SORT).
+			orderByDropdown.IsVisible = () => currentTab != MapClassification.Community;
+
+			var orderByLabel = widget.GetOrNull<LabelWidget>("ORDERBY_LABEL");
+			if (orderByLabel != null)
+				orderByLabel.IsVisible = () => currentTab != MapClassification.Community;
 
 			var orderByPlayer = FluentProvider.GetMessage(OrderMapsByPlayers);
 
@@ -650,6 +1145,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		protected override void Dispose(bool disposing)
 		{
 			disposed = true;
+
+			communityQuery?.CancelPending();
 
 			generatedMapPackage?.Dispose();
 			generatedMapPackage = null;
