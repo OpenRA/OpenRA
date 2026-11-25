@@ -119,6 +119,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return true;
 			};
 
+			var randomNameButton = panel.Get<ButtonWidget>("RANDOM_NAME_BUTTON");
+			randomNameButton.IsDisabled = () => world.Type != WorldType.Shellmap;
+			randomNameButton.OnClick = () =>
+			{
+				var randomName = RandomNameGenerator.GenerateRandomName(modData);
+				nameTextfield.Text = Settings.SanitizedPlayerName(randomName);
+				playerSettings.Name = nameTextfield.Text;
+			};
+
 			var colorManager = modData.DefaultRules.Actors[SystemActors.World].TraitInfo<IColorPickerManagerInfo>();
 
 			var colorDropdown = panel.Get<DropDownButtonWidget>("PLAYERCOLOR");
