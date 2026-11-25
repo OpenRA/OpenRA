@@ -421,6 +421,8 @@ namespace OpenRA.Mods.Common.Activities
 			protected readonly int Distance;
 			protected readonly bool MovingOnGroundLayer;
 			protected readonly bool TurnsWhileMoving;
+			protected readonly bool SpeedRelatedWithFacing;
+			protected readonly int InitSpeedPercentageWithFacing;
 			readonly int terrainOrientationMargin;
 			protected int progress;
 
@@ -443,6 +445,8 @@ namespace OpenRA.Mods.Common.Activities
 				IsInterruptible = false; // See comments in Move.Cancel()
 
 				TurnsWhileMoving = move.mobile.Info.TurnsWhileMoving;
+				SpeedRelatedWithFacing = move.mobile.Info.SpeedRelatedWithFacing;
+				InitSpeedPercentageWithFacing = move.mobile.Info.InitSpeedPercentageWithFacing;
 
 				// Calculate an elliptical arc that joins from and to
 				if (shouldArc)
@@ -477,7 +481,16 @@ namespace OpenRA.Mods.Common.Activities
 				// Only move by a full speed step if we didn't already move this tick.
 				// If we did, we limit the move to any carried-over leftover progress.
 				if (Move.lastMovePartCompletedTick < self.World.WorldTick)
-					progress += mobile.MovementSpeedForCell(mobile.ToCell);
+				{
+					var curspeed = mobile.MovementSpeedForCell(mobile.ToCell);
+					if (TurnsWhileMoving && SpeedRelatedWithFacing)
+					{
+						var speedfactor = ((100 - InitSpeedPercentageWithFacing) * Math.Abs((mobile.Facing - ToFacing).Cos()) + 1024 * InitSpeedPercentageWithFacing) >> 10;
+						curspeed = curspeed * speedfactor / 100;
+					}
+
+					progress += curspeed;
+				}
 
 				if (progress >= Distance)
 				{
