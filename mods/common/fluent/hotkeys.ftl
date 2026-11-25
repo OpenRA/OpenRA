@@ -107,6 +107,8 @@ hotkey-description-stanceattackanything = Attack anything
 hotkey-description-stancedefend = Defend
 hotkey-description-stancereturnfire = Return fire
 hotkey-description-stanceholdfire = Hold fire
+hotkey-description-showattackrangecircles = Show attack range circles
+
 hotkey-description-stopmusic = Stop
 hotkey-description-pausemusic = Pause or Resume
 hotkey-description-prevmusic = Previous

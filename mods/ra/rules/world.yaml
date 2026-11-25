@@ -297,6 +297,8 @@ World:
 		TerrainFlashImage: moveflsh
 		TerrainFlashSequence: idle
 		TerrainFlashPalette: moveflash
+	AttackRangeCirclesOptions:
+		CheckboxDisplayOrder: 11
 
 EditorWorld:
 	Inherits: ^BaseWorld
