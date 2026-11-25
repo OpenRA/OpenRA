@@ -54,6 +54,7 @@ dropdownbutton-save-map-background-visibility-dropdown = Map Visibility
 label-save-map-background-directory = Directory:
 label-save-map-background-filename = Filename:
 button-save-map-panel = Save
+button-save-map-panel-map-folder = Open
 label-actor-edit-panel-id = ID
 button-container-ok = OK
 button-editor-world-root-options-tooltip = Menu
