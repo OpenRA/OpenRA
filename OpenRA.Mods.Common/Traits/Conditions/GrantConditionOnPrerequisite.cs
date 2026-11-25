@@ -69,12 +69,16 @@ namespace OpenRA.Mods.Common.Traits
 			if (available == wasAvailable)
 				return;
 
-			if (available && conditionToken == Actor.InvalidConditionToken)
-				conditionToken = self.GrantCondition(info.Condition);
-			else if (!available && conditionToken != Actor.InvalidConditionToken)
-				conditionToken = self.RevokeCondition(conditionToken);
+			// Workaround (putting inside AddFrameEndTask) to prevent crash and odd behaviour when actors initially exist on map
+			self.World.AddFrameEndTask(w =>
+			{
+				if (available && conditionToken == Actor.InvalidConditionToken)
+					conditionToken = self.GrantCondition(info.Condition);
+				else if (!available && conditionToken != Actor.InvalidConditionToken)
+					conditionToken = self.RevokeCondition(conditionToken);
 
-			wasAvailable = available;
+				wasAvailable = available;
+			});
 		}
 	}
 }
