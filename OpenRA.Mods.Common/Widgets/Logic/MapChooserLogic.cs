@@ -265,6 +265,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				});
 			};
 
+			var resourceCenterButton = widget.Get<ButtonWidget>("RESOURCE_CENTER_BUTTON");
+			resourceCenterButton.IsVisible = () => currentTab == MapClassification.User;
+			resourceCenterButton.OnClick = () => Game.Renderer.TryOpenUrl(modData.GetOrCreate<WebServices>().ResourceCenter);
+
 			var remoteMapLabel = widget.Get<LabelWidget>("REMOTE_MAP_LABEL");
 			var remoteMapText = new CachedTransform<(int Searching, int Unavailable), string>(counts =>
 			{

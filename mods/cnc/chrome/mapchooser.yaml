@@ -181,6 +181,12 @@ Container@MAPCHOOSER_PANEL:
 					Width: 140
 					Height: 35
 					Text: button-bg-delete-all-maps
+				Button@RESOURCE_CENTER_BUTTON:
+					X: PARENT_WIDTH - 600 - WIDTH
+					Y: PARENT_HEIGHT - 1
+					Width: 140
+					Height: 35
+					Text: button-mapchooser-resource-center
 				Button@BUTTON_OK:
 					Key: return
 					X: PARENT_WIDTH - WIDTH
