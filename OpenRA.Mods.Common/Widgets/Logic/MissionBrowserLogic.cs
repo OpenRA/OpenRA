@@ -24,6 +24,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class MissionBrowserLogic : ChromeLogic
 	{
+		[YamlNode("MissionSelector", shared: false)]
+		public class MissionSettings : SettingsModule
+		{
+			public string Map;
+			public string Difficulty;
+			public string GameSpeed;
+		}
+
 		enum PlayingVideo { None, Info, Briefing, GameStart }
 		enum PanelType { MissionInfo, Options }
 
@@ -49,6 +57,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		const string NotAvailable = "label-not-available";
 
 		readonly ModData modData;
+		readonly MissionSettings missionSettings;
 		readonly Action onStart;
 		readonly Widget missionDetail;
 		readonly Widget optionsContainer;
@@ -74,11 +83,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly string unsetDifficulty;
 		readonly string defaultTooltop;
 
-		// For remembering options
-		// TODO: this should be persistent across game sessions
-		string selectedDifficulty;
-		string selectedGameSpeed;
-
 		bool minifiedOptions = true;
 		MapPreview selectedMap;
 		PlayingVideo playingVideo;
@@ -91,6 +95,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.modData = modData;
 			this.onStart = onStart;
 			Game.BeforeGameStart += OnGameStart;
+
+			missionSettings = modData.GetSettings<MissionSettings>();
 
 			missionList = widget.Get<ScrollPanelWidget>("MISSION_LIST");
 
@@ -349,18 +355,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void SetMapDifficulty(LobbyOption option)
 		{
-			selectedDifficulty ??= option.DefaultValue;
-			if (option.Values.ContainsKey(selectedDifficulty))
-				missionOptions[option.Id] = selectedDifficulty;
+			missionSettings.Difficulty ??= option.DefaultValue;
+			if (option.Values.ContainsKey(missionSettings.Difficulty))
+				missionOptions[option.Id] = missionSettings.Difficulty;
 			else
 				missionOptions[option.Id] = option.DefaultValue;
 		}
 
 		void SetMapSpeed(LobbyOption option)
 		{
-			selectedGameSpeed ??= option.DefaultValue;
-			if (option.Values.ContainsKey(selectedGameSpeed))
-				missionOptions[option.Id] = selectedGameSpeed;
+			missionSettings.GameSpeed ??= option.DefaultValue;
+			if (option.Values.ContainsKey(missionSettings.GameSpeed))
+				missionOptions[option.Id] = missionSettings.GameSpeed;
 			else
 				missionOptions[option.Id] = option.DefaultValue;
 		}
@@ -369,9 +375,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			// Only remember when the user manually changes the value
 			if (optionId == "difficulty")
-				selectedDifficulty = value;
+			{
+				missionSettings.Difficulty = value;
+				missionSettings.Save();
+			}
 			else if (optionId == "gamespeed")
-				selectedGameSpeed = value;
+			{
+				missionSettings.GameSpeed = value;
+				missionSettings.Save();
+			}
 
 			missionOptions[optionId] = value;
 		}
@@ -610,6 +622,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			selectedMap = modData.MapCache[map];
 			var orders = new List<Order>();
+
+			missionSettings.Map = selectedMap.Uid.ToString();
+			missionSettings.Save();
 
 			foreach (var option in missionOptions)
 				orders.Add(Order.Command($"option {option.Key} {option.Value}"));
