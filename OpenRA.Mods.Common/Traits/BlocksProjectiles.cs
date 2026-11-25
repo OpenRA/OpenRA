@@ -44,13 +44,16 @@ namespace OpenRA.Mods.Common.Traits
 					.Any(Exts.IsTraitEnabled));
 		}
 
-		public static bool AnyBlockingActorsBetween(World world, Player owner, WPos start, WPos end, WDist width, out WPos hit)
+		public static bool AnyBlockingActorsBetween(World world, Player owner, WPos start, WPos end, WDist width, out WPos hit, Actor ignoreActor = null)
 		{
 			var actors = world.FindBlockingActorsOnLine(start, end, width);
 			var length = (end - start).Length;
 
 			foreach (var a in actors)
 			{
+				if (a == ignoreActor)
+					continue;
+
 				var blockers = a.TraitsImplementing<IBlocksProjectiles>()
 					.Where(Exts.IsTraitEnabled).Where(t => t.ValidRelationships.HasRelationship(a.Owner.RelationshipWith(owner)))
 					.ToList();
