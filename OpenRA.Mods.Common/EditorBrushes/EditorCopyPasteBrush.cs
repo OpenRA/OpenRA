@@ -87,6 +87,8 @@ namespace OpenRA.Mods.Common.Widgets
 			return false;
 		}
 
+		public bool HandleKeyboardInput(KeyInput ki) => false;
+
 		void IEditorBrush.TickRender(WorldRenderer wr, Actor self) { }
 		IEnumerable<IRenderable> IEditorBrush.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{

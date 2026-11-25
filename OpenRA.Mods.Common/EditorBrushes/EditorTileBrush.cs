@@ -9,8 +9,11 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Terrain;
 using OpenRA.Mods.Common.Traits;
@@ -28,9 +31,12 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly EditorViewportControllerWidget editorWidget;
 		readonly EditorActionManager editorActionManager;
 
-		bool painting;
+		bool linePainting;
+		CPos lineStart;
 
 		readonly ITiledTerrainRenderer terrainRenderer;
+
+		PaintTileEditorAction action;
 
 		CPos cell;
 		readonly List<IRenderable> preview = [];
@@ -70,42 +76,56 @@ namespace OpenRA.Mods.Common.Widgets
 				return false;
 			}
 
-			if (mi.Button == MouseButton.Left)
-			{
-				if (mi.Event == MouseInputEvent.Down)
-					painting = true;
-				else if (mi.Event == MouseInputEvent.Up)
-					painting = false;
-			}
-
-			if (!painting)
-				return true;
-
-			if (mi.Event != MouseInputEvent.Down && mi.Event != MouseInputEvent.Move)
-				return true;
-
 			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
-			var isMoving = mi.Event == MouseInputEvent.Move;
 
-			if (mi.Modifiers.HasModifier(Modifiers.Shift))
+			if (mi.Button != MouseButton.Left)
+				return true;
+
+			if (mi.Event == MouseInputEvent.Down && mi.Modifiers.HasModifier(Modifiers.Shift))
+			{
+				linePainting = true;
+				lineStart = cell;
+			}
+			else if (mi.Event == MouseInputEvent.Down && mi.Modifiers.HasModifier(Modifiers.Alt))
 			{
 				FloodFillWithBrush(cell);
-				painting = false;
 			}
-			else
-				PaintCell(cell, isMoving);
+			else if (mi.Event == MouseInputEvent.Up)
+			{
+				if (linePainting)
+				{
+					var cells = Util.GetCurvedLine(lineStart, cell, TerrainTemplate.Size)
+						.Where(c => world.Map.Contains(c) && !PlacementOverlapsSameTemplate(TerrainTemplate, c)).ToList();
+
+					if (cells.Count > 0)
+					{
+						var action = new PaintTileEditorAction(Template, world.Map);
+						action.Add(CollectionsMarshal.AsSpan(cells));
+						editorActionManager.Add(action);
+					}
+
+					linePainting = false;
+					UpdatePreview(true);
+				}
+				else if (action != null)
+				{
+					editorActionManager.Add(action);
+					action = null;
+				}
+			}
+			else if (!linePainting)
+			{
+				if (!PlacementOverlapsSameTemplate(TerrainTemplate, cell))
+				{
+					action ??= new PaintTileEditorAction(Template, world.Map);
+					action.Add([cell]);
+				}
+			}
 
 			return true;
 		}
 
-		void PaintCell(CPos cell, bool isMoving)
-		{
-			var template = terrainInfo.Templates[Template];
-			if (isMoving && PlacementOverlapsSameTemplate(template, cell))
-				return;
-
-			editorActionManager.Add(new PaintTileEditorAction(Template, world.Map, cell));
-		}
+		public bool HandleKeyboardInput(KeyInput ki) => false;
 
 		void FloodFillWithBrush(CPos cell)
 		{
@@ -143,25 +163,35 @@ namespace OpenRA.Mods.Common.Widgets
 			return false;
 		}
 
-		void UpdatePreview()
+		void UpdatePreview(bool forceRefresh = false)
 		{
-			var pos = world.Map.CenterOfCell(cell);
+			var currentCell = worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos);
+			if (!forceRefresh && cell == currentCell)
+				return;
+
+			cell = currentCell;
 
 			preview.Clear();
-			preview.AddRange(terrainRenderer.RenderPreview(worldRenderer, TerrainTemplate, pos));
-		}
 
-		void IEditorBrush.TickRender(WorldRenderer wr, Actor self)
-		{
-			var currentCell = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
-			if (cell != currentCell)
+			if (linePainting)
 			{
-				cell = currentCell;
-				UpdatePreview();
+				foreach (var c in Util.GetCurvedLine(lineStart, cell, TerrainTemplate.Size))
+				{
+					var p = world.Map.CenterOfCell(c);
+					preview.AddRange(terrainRenderer.RenderPreview(worldRenderer, TerrainTemplate, p));
+				}
+			}
+			else
+			{
+				var pos = world.Map.CenterOfCell(cell);
+				preview.AddRange(terrainRenderer.RenderPreview(worldRenderer, TerrainTemplate, pos));
 			}
 		}
 
+		void IEditorBrush.TickRender(WorldRenderer wr, Actor self) { UpdatePreview(); }
+
 		IEnumerable<IRenderable> IEditorBrush.RenderAboveShroud(Actor self, WorldRenderer wr) { return preview; }
+
 		IEnumerable<IRenderable> IEditorBrush.RenderAnnotations(Actor self, WorldRenderer wr) { yield break; }
 
 		public void Tick() { }
@@ -171,59 +201,31 @@ namespace OpenRA.Mods.Common.Widgets
 
 	sealed class PaintTileEditorAction : IEditorAction
 	{
-		[FluentReference("id")]
+		[FluentReference("id", "count")]
 		const string AddedTile = "notification-added-tile";
 
-		public string Text { get; }
+		public string Text { get; private set; }
 
 		readonly ushort template;
 		readonly Map map;
-		readonly CPos cell;
+		readonly List<CPos> cells = [];
 
-		readonly Queue<UndoTile> undoTiles = [];
-		readonly TerrainTemplateInfo terrainTemplate;
+		readonly Queue<UndoTile> undoTiles = new();
 
-		public PaintTileEditorAction(ushort template, Map map, CPos cell)
+		public PaintTileEditorAction(ushort template, Map map)
 		{
 			this.template = template;
 			this.map = map;
-			this.cell = cell;
-
-			var terrainInfo = (ITemplatedTerrainInfo)map.Rules.TerrainInfo;
-			terrainTemplate = terrainInfo.Templates[template];
-			Text = FluentProvider.GetMessage(AddedTile, "id", terrainTemplate.Id);
 		}
 
 		public void Execute()
 		{
-			Do();
+			cells.TrimExcess();
 		}
 
 		public void Do()
 		{
-			var mapTiles = map.Tiles;
-			var mapHeight = map.Height;
-			var baseHeight = mapHeight.Contains(cell) ? mapHeight[cell] : (byte)0;
-
-			var i = 0;
-			for (var y = 0; y < terrainTemplate.Size.Y; y++)
-			{
-				for (var x = 0; x < terrainTemplate.Size.X; x++, i++)
-				{
-					if (terrainTemplate.Contains(i) && terrainTemplate[i] != null)
-					{
-						var index = terrainTemplate.PickAny ? (byte)Game.CosmeticRandom.Next(0, terrainTemplate.TilesCount) : (byte)i;
-						var c = cell + new CVec(x, y);
-						if (!mapTiles.Contains(c))
-							continue;
-
-						undoTiles.Enqueue(new UndoTile(c, mapTiles[c], mapHeight[c]));
-
-						mapTiles[c] = new TerrainTile(template, index);
-						mapHeight[c] = (byte)(baseHeight + terrainTemplate[index].Height).Clamp(0, map.Grid.MaximumTerrainHeight);
-					}
-				}
-			}
+			UpdateCells(CollectionsMarshal.AsSpan(cells));
 		}
 
 		public void Undo()
@@ -238,6 +240,46 @@ namespace OpenRA.Mods.Common.Widgets
 				mapTiles[undoTile.Cell] = undoTile.MapTile;
 				mapHeight[undoTile.Cell] = undoTile.Height;
 			}
+		}
+
+		public void Add(ReadOnlySpan<CPos> additionalCells)
+		{
+			cells.AddRange(additionalCells);
+			UpdateCells(additionalCells);
+		}
+
+		void UpdateCells(ReadOnlySpan<CPos> additionalCells)
+		{
+			var mapTiles = map.Tiles;
+			var mapHeight = map.Height;
+			var terrainInfo = (ITemplatedTerrainInfo)map.Rules.TerrainInfo;
+			var terrainTemplate = terrainInfo.Templates[template];
+
+			foreach (var cell in additionalCells)
+			{
+				var baseHeight = mapHeight.Contains(cell) ? mapHeight[cell] : (byte)0;
+				var i = 0;
+				for (var y = 0; y < terrainTemplate.Size.Y; y++)
+				{
+					for (var x = 0; x < terrainTemplate.Size.X; x++, i++)
+					{
+						if (terrainTemplate.Contains(i) && terrainTemplate[i] != null)
+						{
+							var index = terrainTemplate.PickAny ? (byte)Game.CosmeticRandom.Next(0, terrainTemplate.TilesCount) : (byte)i;
+							var c = cell + new CVec(x, y);
+							if (!mapTiles.Contains(c))
+								continue;
+
+							undoTiles.Enqueue(new UndoTile(c, mapTiles[c], mapHeight[c]));
+
+							mapTiles[c] = new TerrainTile(template, index);
+							mapHeight[c] = (byte)(baseHeight + terrainTemplate[index].Height).Clamp(0, map.Grid.MaximumTerrainHeight);
+						}
+					}
+				}
+			}
+
+			Text = FluentProvider.GetMessage(AddedTile, "id", terrainTemplate.Id, "count", cells.Count);
 		}
 	}
 
