@@ -191,7 +191,7 @@ namespace OpenRA.Network
 			if (pendingOrders.TryGetValue(clientId, out var queue))
 				queue.Enqueue((orders.Frame, orders.Orders));
 			else
-				throw new InvalidDataException($"Received packet from disconnected client '{clientId}'");
+				Log.Write("debug", $"Received packet from disconnected client '{clientId}'");
 		}
 
 		void ReceiveAllOrdersAndCheckSync()
